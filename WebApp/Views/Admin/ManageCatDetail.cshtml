@@ -1,0 +1,439 @@
+﻿@using Domain.Entity.Product
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutAdmin";
+    List<CategoryDetail> categoryDetails = ViewBag.CatDetail;
+    List<SubCategory> subCategories = ViewBag.SubCat;
+    List<Feature> features = ViewBag.Feature;
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت ویژگی دسته بندی ها</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                    <li class="breadcrumb-item active">جزئیات دسته بندی</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <p class="text-muted text-center">خلاصه وضعیت</p>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>تعداد ویژگی ها</b> <a class="float-left"> @features.Count</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>دسته بندی های فعال</b> <a class="float-left"> @categoryDetails.Count</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">دسته بندی ویژگی ها</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#SubCategory" data-toggle="tab">ویژگی ها</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column justify-content-around align-items-around align-content-around p-4" asp-action="InsertDetailCat" asp-controller="Admin" method="post">
+                                    <div class="d-flex flex-wrap justify-content-between p-2 ">
+                                        <div class="form-group p-2">
+                                            <label for="exampleInputPassword1">عنوان دسته بندی ویژگی</label>
+                                            <input name="title" type="text" class="form-control" id="exampleInputPassword1" placeholder="عنوان دسته بندی ویژگی را وارد کنید">
+                                        </div>
+                                        <div class="form-group p-2">
+                                            <label for="exampleInputPassword1">قابلیت ها</label>
+                                            <input name="option" type="text" class="form-control" id="exampleInputPassword1" placeholder="قابلیت های مورد نظر را وارد کنید">
+                                        </div>
+                                        <div class="form-group p-2">
+                                            <label for="exampleInputPassword1">نوع اطلاعات</label>
+                                            <select style="min-width: 200px;" name="dataType" class="form-select" aria-label="Default select example">
+                                                <option selected value="0">TextBox</option>
+                                                <option value="1">SelectBox</option>
+                                                <option value="2">AreaBox</option>
+                                                <option value="3">CheckBox</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap justify-content-between p-2 ">
+                                        <div class="form-group p-2">
+                                            <label  for="exampleInputPassword1">نوع ویژگی</label>
+                                            <select  style="min-width: 200px;" name="featureId" class="form-select" aria-label="Default select example">
+                                                @{
+                                                    int index = 0;
+                                                    foreach (var i in features)
+                                                    {
+                                                        if (index == 0)
+                                                        {
+                                                            <option value="@i.Id" selected>@i.Title</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">@i.Title</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group p-2">
+                                            <label for="exampleInputPassword1">نوع زیر دسته </label>
+                                            <select  style="min-width: 200px;" name="subCatId" class="form-select" aria-label="Default select example">
+                                                @{
+                                                    int index1 = 0;
+                                                    foreach (var i in subCategories)
+                                                    {
+                                                        if (index1 == 0)
+                                                        {
+                                                            <option value="@i.Id" selected>@i.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">@i.Name</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="d-flex flex-column gap2">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input name="isActive" class="form-check-input" type="checkbox" value="option1">
+                                                    <label class="form-check-label">نمایش در جستجو</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="form-input">
+                                                    <button type="submit" class="btn btn-primary">ثبت</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                                <div class="card mt-3">
+                                    <div class="input-group p-3 w-25  m-2">
+                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 20%">زیردسته</th>
+                                                <th class="text-center" style="width: 20%">نوع ویژگی</th>
+                                                <th class="text-center" style="width: 30%">نوع اطلاعات</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (categoryDetails.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            یافت نشد
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in categoryDetails)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Title</td>
+                                                            <td class="text-center">@i.SubCategory.Name</td>
+                                                            <td class="text-center">@i.Feature.Title</td>
+                                                            <td class="text-center">@i.DataType</td>
+                                                            <td class="text-center">
+                                                                <span class="badge bg-warning text-muted">ویرایش</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+                            </div>
+                            <div class="tab-pane" id="SubCategory">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start p-2 gap-3" asp-action="InsertFeature" asp-controller="Admin" method="post">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان ویژگی</label>
+                                        <input name="title" type="text" class="form-control" id="exampleInputPassword1" placeholder="عنوان دسته بندی را وارد کنید">
+                                    </div>
+                                    <div class="d-flex flex-column align-items-center justify-content-end">
+                                        <div class="form-group">
+                                            <div class="form-input">
+                                                <button type="submit" class="btn btn-primary">ثبت</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                                <div class="card mt-3">
+                                    <div class="input-group p-3  w-25 m-2">
+                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (features.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            یافت نشد
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in features)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Title</td>
+                                                            <td class="text-center">
+                                                                <span class="badge bg-warning text-muted">ویرایش</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
+                <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">نام محصول</span>
+                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Name">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">برند</span>
+                        <input type="text" id="Brand" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Brand">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">وزن</span>
+                        <input type="text" id="Weight" style="border-radius: 5px 0px 0px 5px;" name="Weight" class="form-control weightP" required="required">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">اجرت</span>
+                        <input type="text" id="Wages" style="border-radius: 5px 0px 0px 5px;" name="Wages" class="form-control wagesP" required="required">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">موجودی محصول</span>
+                        <input type="text" id="Inventory" style="border-radius: 5px 0px 0px 5px;" name="Inventory" class="form-control inventoryP" required="required">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <select class="form-select catIdP" id="CategoryIdProd" name="CategoryId" required="required">
+                            @* @{ *@
+                            @* int Index = 0; *@
+                            @* foreach (Category i in ViewBag.categories) *@
+                            @* { *@
+                            @* if (Index == 0) *@
+                            @* { *@
+                            @* <option selected="selected" value="@i.Id">@i.Name</option> *@
+                            @* } *@
+                            @* else *@
+                            @* { *@
+                            @* <option value="@i.Id">@i.Name</option> *@
+                            @* } *@
+                            @* *@
+                            @* Index++; *@
+                            @* } *@
+                            @* } *@
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between" style="background-color:	rgb(220,220,220,0.4)">
+                    <div class=" m-2  p-3">
+                        <input type="file" id="ImageBanner" name="ImageBanner" title="test" class="form-control">
+                        <div class="input-group p-1 " style="justify-content: space-between;">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس اول</span>
+                            <img src="./main_image.jpg" style="object-fit: cover" class="imageOneP" width="150"/>
+                            <input type="text" id="ImageBannerName" name="ImageBannerName" class="mImageOneP" hidden="hidden"/>
+                        </div>
+                    </div>
+
+                    <div class=" m-2  p-3">
+                        <input type="file" id="ImageThumb" name="ImageThumb" title="test" class="form-control">
+                        <div class="input-group  p-1" style="justify-content: space-between;">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس دوم</span>
+                            <img src="./main_image.jpg" style="object-fit: cover" class="imageTwoP" width="150"/>
+                            <input type="text" id="ImageThumbName" name="ImageThumbName" class="mImageTwoP" hidden="hidden"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" m-2  p-3" style="background-color:	rgb(220,220,220,0.4)">
+                    <input type="file" id="Image" name="Image" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: space-between;">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس سوم</span>
+                        <img src="./main_image.jpg" style="object-fit: cover" class="imageThreeP" width="150"/>
+                        <input type="text" id="ImageName" name="ImageName" class="mImageThreeP" hidden="hidden"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="button" class="btn btn-danger" onclick="softDeleteProduct()">حذف محصول</button>
+                <button type="submit" class="btn btn-primary " onclick="UpdateProduct()">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+
+    <script>
+    function ApiPrice(){
+        $("#Admin").removeClass("checked");
+        $("#Api").addClass("checked");
+    }
+    function AdminPrice(){
+        $("#Api").removeClass("checked");
+        $("#Admin").addClass("checked");
+    }
+    $(document).ready(function () {
+
+        $(".modalProduct").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
+            $(".nameP").val(currentrow.find($("input.mName[type=text]")).val());
+            $(".brandP").val(currentrow.find($("input.mBrand[type=text]")).val());
+            $('.imageOneP').attr("src", '/images/product/'+(currentrow.find($("input.mImageBanner[type=text]")).val()));
+            $('.imageTwoP').attr("src", '/images/product/'+(currentrow.find($("input.mImageThumb[type=text]")).val()));
+            $('.imageThreeP').attr("src", '/images/product/'+(currentrow.find($("input.mImage[type=text]")).val()));
+            $('.mImageOneP').val(currentrow.find($("input.mImageBanner[type=text]")).val());
+            $('.mImageTwoP').val(currentrow.find($("input.mImageThumb[type=text]")).val());
+            $('.mImageThreeP').val(currentrow.find($("input.mImage[type=text]")).val());
+            $(".weightP").val(currentrow.find($("input.mWeight[type=text]")).val());
+            $(".wagesP").val(currentrow.find($("input.mWages[type=text]")).val());
+            $(".inventoryP").val(currentrow.find($("input.mInventory[type=text]")).val());
+            $(".catIdP ").val(currentrow.find($("input.mCategoryId[type=text]")).val()).change();
+        });
+    });
+</script>
+    <script>
+    function SetGoldPrice(){
+        $.ajax({
+            type: "Post",
+            data: {price: $('#goldPriced').val()},
+            url: "/Admin/SetManualGoldPrice",
+            success: function (data) {
+                window.location.href= "/admin/product";
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+            }
+        });
+    }
+    function UpdateProduct(){
+        var product = new FormData();
+        product.append("Id",$("#id").val());
+        product.append("Name",$("#Name").val());
+        product.append("Brand",$("#Brand").val());
+        product.append("ImageBanner",$("#ImageBanner")[0].files[0]);
+        product.append("ImageBannerName",$("#ImageBannerName").val());
+        product.append("ImageThumb",$("#ImageThumb")[0].files[0]);
+        product.append("ImageThumbName",$("#ImageThumbName").val());
+        product.append("Image",$("#Image")[0].files[0]);
+        product.append("ImageName",$("#ImageName").val());
+        product.append("Weight",$("#Weight").val());
+        product.append("Wages",$("#Wages").val());
+        product.append("Inventory",$("#Inventory").val());
+        product.append("CategoryId",$("#CategoryIdProd").val());
+        $.ajax({
+            type: "Put",
+            data: product,
+            url: "/Admin/UpdateProduct",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                window.location.href= "/admin/product";
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+            }
+        });
+    };
+    function softDeleteProduct(){
+        window.location.href= "/admin/SoftDeleteProduct?id="+$("#id").val();
+    }
+</script>
+}

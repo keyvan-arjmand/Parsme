@@ -1,0 +1,702 @@
+﻿@using Domain.Entity.Product
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutAdmin";
+    List<Brand> brands = ViewBag.Brands;
+    List<SubCategory> subCategories = ViewBag.SubCats;
+    List<Color> colors = ViewBag.Colors;
+}
+
+@section link
+{
+    <style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #007bff !important;
+        color: #fff;
+    }
+
+    .select2-selection--multiple {
+        min-width: 200px;
+    }
+
+    .ck-content {
+        min-height: 200px;
+        height: fit-content;
+    }
+</style>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت محصولات</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                    <li class="breadcrumb-item active">محصولات</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-3">
+
+    <!-- Profile Image -->
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+            <p class="text-muted text-center">خلاصه وضعیت</p>
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>تعداد محصول</b> <a class="float-left"> ViewBag.productCount</a>
+                </li>
+                <li class="list-group-item">
+                    <b>موجودی</b> <a class="float-left"> ViewBag.inventory</a>
+                </li>
+                <li class="list-group-item">
+                    <b>محصول جدید</b> <a class="float-left"> ViewBag.inventory</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<!-- /.col -->
+<div class="col-md-9">
+<div class="card">
+<div class="card-header p-2">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active show" href="#activity" data-toggle="tab">محصولات</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">اضافه کردن کالا</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+<div class="tab-content">
+<div class="tab-pane active show" id="activity">
+    <div class="input-group p-3 w-50 m-2">
+        <input type="text" class="form-control " name="search"
+               style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+        <button class="input-group-text" type="submit"
+                style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">
+            جستجو
+        </button>
+    </div>
+    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap p-3">
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="width: 17rem;border-radius: 25px">
+            <img class="card-img-top"
+                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
+                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Title</h5>
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">Category</p>
+                    <p class="card-text">Colors</p>
+                </div>
+
+                <div class="d-flex justify-content-between ">
+                    <p class="card-text">موجودی:12</p>
+                    <a href="#" class="btn btn-primary">ویرایش</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane p-5" id="SubCategory">
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
+        <div class="form-group w-50">
+            <label>عنوان</label>
+            <input id="Title" type="text" class="form-control">
+        </div>
+        <div class="form-group w-50">
+            <label>عنوان فارسی</label>
+            <input id="PersianTitle" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50">
+            <label>معرفی</label>
+            <textarea id="Detail" class="form-control"></textarea>
+        </div>
+        <div class="form-group w-50">
+            <label>توضیحات Meta</label>
+            <input id="MetaDesc" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50">
+            <label>تگ ها</label>
+            <input id="MetaKeyword" type="text" class="form-control">
+        </div>
+        <div class="form-group w-50">
+            <label>هـدایا</label>
+            <input id="ProductGift" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50">
+            <label for="exampleInputFile">تصویر کالا</label>
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="ImageUri">
+                    <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group w-50">
+            <label for="exampleInputPassword1">دسته بندی</label>
+            <select id="SubCatSelect" class="form-select" aria-label="Default select example">
+                @{
+                    int index1 = 0;
+                    foreach (var i in subCategories)
+                    {
+                        if (index1 == 0)
+                        {
+                            <option selected value="@i.Id">@i.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50">
+            <label for="exampleInputPassword1">برند</label>
+            <select id="BrandId" class="form-select" aria-label="Default select example">
+                @{
+                    int index = 0;
+                    foreach (var i in brands)
+                    {
+                        if (index == 0)
+                        {
+                            <option selected value="@i.Id">@i.Title</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Title</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group w-50">
+            <label>موجودی</label>
+            <input id="Inventory" type="text" class="form-control">
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50">
+            <label for="exampleInputPassword1">وضعیت کالا</label>
+            <select id="ProductStatus" class="form-select" aria-label="Default select example">
+                <option selected value="0">موجود</option>
+                <option value="1">غیر موجود</option>
+                <option value="2">به زودی</option>
+                <option value="3">از رده خارج</option>
+            </select>
+        </div>
+
+        <div class="form-group w-50">
+            <label>مبلغ تخفیف</label>
+            <input id="DiscountAmount" type="text" class="form-control">
+        </div>
+
+    </div>
+    <div class="d-flex flex-column">
+        <label>رنگ</label>
+        <div class="form-group w-100">
+            <select id="Colors" class="form-control select2" multiple="multiple"
+                    style="width: fit-content;min-width: 200px;text-align: right">
+                @{
+                    foreach (var i in colors)
+                    {
+                        <option value="@i.Id,@i.Title">@i.Title</option>
+                    }
+                }
+            </select>
+        </div>
+        <div>
+            <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
+            <div id="colorProduct"
+                 class="form-group w-100 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+
+            </div>
+        </div>
+        <div>
+            <label id="labelDetail" style="display: none">ویژگی های محصول</label>
+
+            <div id="DetailProduct"
+                 class="form-group w-100 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    CKEditor5
+                    <small>پیشرفته به همراه همه امکانات</small>
+                </h3>
+                <!-- tools box -->
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool btn-sm"
+                            data-widget="collapse"
+                            data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool btn-sm"
+                            data-widget="remove"
+                            data-toggle="tooltip"
+                            title="Remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- /. tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="mb-3">
+                    <textarea id="editor1" name="editor1" style="width: 100%">لطفا متن مورد نظر خودتان را وارد کنید</textarea>
+                </div>
+                <p class="text-sm mb-0">مشاهده مستندات مربوط به این ویرایشگر متن <a href="https://ckeditor.com/ckeditor-5-builds/#classic">CKEditor</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
+        <div class="form-input w-50">
+            <button type="button" onclick="insertProduct()" class="btn btn-primary w-100">
+                ثبت
+            </button>
+        </div>
+        <div class="form-group w-25">
+            <div class="form-check">
+                @Html.CheckBox("isActive")
+                <label class="form-check-label">وضعیت فعال</label>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div><!-- /.card-body -->
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
+                <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">نام محصول</span>
+                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"
+                               required="required" name="Name">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
+                              id="basic-addon2">
+                            برند
+                        </span>
+                        <input type="text" id="Brand" style="border-radius: 5px 0px 0px 5px;"
+                               class="form-control brandP" required="required" name="Brand">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
+                              id="basic-addon2">
+                            وزن
+                        </span>
+                        <input type="text" id="Weight" style="border-radius: 5px 0px 0px 5px;" name="Weight"
+                               class="form-control weightP" required="required">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
+                              id="basic-addon2">
+                            اجرت
+                        </span>
+                        <input type="text" id="Wages" style="border-radius: 5px 0px 0px 5px;" name="Wages"
+                               class="form-control wagesP" required="required">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">موجودی محصول</span>
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <select class="form-select catIdP" id="CategoryIdProd" name="CategoryId" required="required">
+                            @* @{ *@
+                            @* int Index = 0; *@
+                            @* foreach (Category i in ViewBag.categories) *@
+                            @* { *@
+                            @* if (Index == 0) *@
+                            @* { *@
+                            @* <option selected="selected" value="@i.Id">@i.Name</option> *@
+                            @* } *@
+                            @* else *@
+                            @* { *@
+                            @* <option value="@i.Id">@i.Name</option> *@
+                            @* } *@
+                            @* *@
+                            @* Index++; *@
+                            @* } *@
+                            @* } *@
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between" style="background-color:	rgb(220,220,220,0.4)">
+                    <div class=" m-2  p-3">
+                        <input type="file" id="ImageBanner" name="ImageBanner" title="test" class="form-control">
+                        <div class="input-group p-1 " style="justify-content: space-between;">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس اول</span>
+                            <img src="./main_image.jpg" style="object-fit: cover" class="imageOneP" width="150"/>
+                            <input type="text" id="ImageBannerName" name="ImageBannerName" class="mImageOneP"
+                                   hidden="hidden"/>
+                        </div>
+                    </div>
+
+                    <div class=" m-2  p-3">
+                        <input type="file" id="ImageThumb" name="ImageThumb" title="test" class="form-control">
+                        <div class="input-group  p-1" style="justify-content: space-between;">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس دوم</span>
+                            <img src="./main_image.jpg" style="object-fit: cover" class="imageTwoP" width="150"/>
+                            <input type="text" id="ImageThumbName" name="ImageThumbName" class="mImageTwoP"
+                                   hidden="hidden"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" m-2  p-3" style="background-color:	rgb(220,220,220,0.4)">
+                    <input type="file" id="Image" name="Image" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: space-between;">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
+                              id="basic-addon2">
+                            عکس سوم
+                        </span>
+                        <img src="./main_image.jpg" style="object-fit: cover" class="imageThreeP" width="150"/>
+                        <input type="text" id="ImageName" name="ImageName" class="mImageThreeP" hidden="hidden"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="button" class="btn btn-danger" onclick="softDeleteProduct()">حذف محصول</button>
+                <button type="submit" class="btn btn-primary " onclick="UpdateProduct()">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+    <script>
+    function insertProduct() {
+        const colorGroups = document.querySelectorAll('.form-group.colors-form');
+        const colorsArray = [];
+        colorGroups.forEach(formGroup => {
+            const colorIdValue = formGroup.querySelector('input[name="ColorId"]').value;
+            const colorNameValue = formGroup.querySelector('input[name="colorPrice"]').value;
+            colorsArray.push({
+                colorId: colorIdValue,
+                colorName: colorNameValue
+            });
+        });
+        const detailGroups = document.querySelectorAll('.form-group.detail-form');
+        const detailsArray = [];
+        detailGroups.forEach(formGroup => {
+            const detailIdValue = formGroup.querySelector('input[name="DetailId"]').value;
+            const detailNameValue = formGroup.querySelector('input[name="DetailVal"]').value;
+            detailsArray.push({
+                detailId: detailIdValue,
+                detailName: detailNameValue
+            });
+        });
+        console.dir(document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML)
+        FormData = {
+            ProductColors: colorsArray,
+            ProductDetails: detailsArray,
+            Title:$("#Title").val(),
+            PersianTitle:$("#PersianTitle").val(),
+            Detail:$("#Detail").val(),
+            MetaDesc:$("#MetaDesc").val(),
+            MetaKeyword:$("#MetaKeyword").val(),
+            FullDesc:document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
+            ImageUri:$("#ImageUri").val(),
+            ProductGift:$("#ProductGift").val(),
+            DiscountAmount:$("#DiscountAmount").val(),
+            BrandId:$("#BrandId").val(),
+            SubCategoryId:$("#SubCatSelect").val(),
+            Inventory:$("#Inventory").val(),
+            IsActive:$("#IsActive").val(),
+        }
+        console.dir(FormData)
+    }
+
+    $(function () {
+        $('#Colors').change(function (e) {
+            var selected = $(e.target).val();
+            var html = '';
+            selected.map(x => {
+                html += `
+                             <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
+                             <div class="input-group-prepend">
+                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.split(",")[1]}</i></span>
+                              </div>
+                              <input name="colorPrice" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                              <input name="ColorId" value="${x.split(",")[0]}" hidden="hidden">
+                             </div>
+                             `;
+            })
+            if (selected.length < 1) {
+                $("#labelColor").css("display", "none");
+
+            } else {
+                $("#labelColor").css("display", "block");
+
+            }
+            document.getElementById("colorProduct").innerHTML = html;
+
+        });
+        $('#SubCatSelect').change(function (e) {
+            var selected = $(e.target).val();
+            $.ajax({
+                type: "Get",
+                data: {subCatId: selected},
+                url: "/Admin/GetCategoryDetailBySubCatId/",
+                success: function (data) {
+                    let html = ``;
+                    data.map(x => {
+                        html += `
+                             <div class="form-group d-flex w-100 detail-form" style="max-width: 250px;">
+                             <div class="input-group-prepend">
+                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
+                              </div>
+                              <input name="DetailVal" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                              <input name="DetailId" value="${x.id}" hidden="hidden">
+                             </div>
+                             `;
+                    })
+                    $("#labelDetail").css("display", "block");
+                    document.getElementById("DetailProduct").innerHTML = html;
+
+                },
+                error: function (xhr) {
+                    alert("خطای داخلی در سرور");
+                }
+            });
+        });
+    });
+</script>
+    <script>
+    function ApiPrice() {
+        $("#Admin").removeClass("checked");
+        $("#Api").addClass("checked");
+    }
+
+    function AdminPrice() {
+        $("#Api").removeClass("checked");
+        $("#Admin").addClass("checked");
+    }
+
+    $(document).ready(function () {
+
+        $(".modalProduct").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
+            $(".nameP").val(currentrow.find($("input.mName[type=text]")).val());
+            $(".brandP").val(currentrow.find($("input.mBrand[type=text]")).val());
+            $('.imageOneP').attr("src", '/images/product/' + (currentrow.find($("input.mImageBanner[type=text]")).val()));
+            $('.imageTwoP').attr("src", '/images/product/' + (currentrow.find($("input.mImageThumb[type=text]")).val()));
+            $('.imageThreeP').attr("src", '/images/product/' + (currentrow.find($("input.mImage[type=text]")).val()));
+            $('.mImageOneP').val(currentrow.find($("input.mImageBanner[type=text]")).val());
+            $('.mImageTwoP').val(currentrow.find($("input.mImageThumb[type=text]")).val());
+            $('.mImageThreeP').val(currentrow.find($("input.mImage[type=text]")).val());
+            $(".weightP").val(currentrow.find($("input.mWeight[type=text]")).val());
+            $(".wagesP").val(currentrow.find($("input.mWages[type=text]")).val());
+            $(".inventoryP").val(currentrow.find($("input.mInventory[type=text]")).val());
+            $(".catIdP ").val(currentrow.find($("input.mCategoryId[type=text]")).val()).change();
+        });
+    });
+</script>
+    <script>
+    function SetGoldPrice() {
+        $.ajax({
+            type: "Post",
+            data: {price: $('#goldPriced').val()},
+            url: "/Admin/SetManualGoldPrice",
+            success: function (data) {
+                window.location.href = "/admin/product";
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+            }
+        });
+    }
+
+    function UpdateProduct() {
+        var product = new FormData();
+        product.append("Id", $("#id").val());
+        product.append("Name", $("#Name").val());
+        product.append("Brand", $("#Brand").val());
+        product.append("ImageBanner", $("#ImageBanner")[0].files[0]);
+        product.append("ImageBannerName", $("#ImageBannerName").val());
+        product.append("ImageThumb", $("#ImageThumb")[0].files[0]);
+        product.append("ImageThumbName", $("#ImageThumbName").val());
+        product.append("Image", $("#Image")[0].files[0]);
+        product.append("ImageName", $("#ImageName").val());
+        product.append("Weight", $("#Weight").val());
+        product.append("Wages", $("#Wages").val());
+        product.append("Inventory", $("#Inventory").val());
+        product.append("CategoryId", $("#CategoryIdProd").val());
+        $.ajax({
+            type: "Put",
+            data: product,
+            url: "/Admin/UpdateProduct",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                window.location.href = "/admin/product";
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+            }
+        });
+    };
+
+    function softDeleteProduct() {
+        window.location.href = "/admin/SoftDeleteProduct?id=" + $("#id").val();
+    }
+</script>
+}

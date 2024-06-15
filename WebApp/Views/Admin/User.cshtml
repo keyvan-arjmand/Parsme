@@ -1,0 +1,158 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    int productsPage = ViewBag.productsPage;
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">کاربران</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="#">خانه</a>
+                    </li>
+                    <li class="breadcrumb-item active">کاربران</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">لیست کاربران سایت</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="example1_length">
+                                        <label>
+                                            فیلتر استان
+                                            <select name="example1_length" aria-controls="example1" class="form-control form-control-sm">
+                                                <option value="10">تهران</option><option value="25">کرج</option><option value="50">مشهد</option><option value="100">اصفهان</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-group p-3  m-2">
+                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو محصول</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="موتور رندر: activate to sort column descending" style="width: 20%;">
+                                             اسم
+                                            </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="مرورگر: activate to sort column ascending" style="width: 20%;">
+                                                فامیل
+                                            </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="سیستم عامل: activate to sort column ascending" style="width: 15%;">
+                                                شهر
+                                            </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="ورژن: activate to sort column ascending" style="width: 25%;">
+                                                شماره تماس
+                                            </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="امتیاز: activate to sort column ascending" style="width: 20%">
+                                                تعداد خرید
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">علی</td>
+                                            <td>احمدی</td>
+                                            <td>تهران</td>
+                                            <td>0925112485</td>
+                                            <td>11</td>
+                                        </tr>
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5"></div>
+                                <div class="col-sm-12 col-md-7">
+                                     <div class="d-flex justify-content-center">
+                                            <nav aria-label="Page navigation example w-100">
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage - 1 })" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    @for (var i = productsPage; i <= productsPage + 2; i++)
+                                                    {
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @i })">@i</a>
+                                                        </li>
+                                                    }
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage + 1 })" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
