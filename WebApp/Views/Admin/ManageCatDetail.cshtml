@@ -71,9 +71,9 @@
                                             <label for="exampleInputPassword1">قابلیت ها</label>
                                             <input name="option" type="text" class="form-control" id="exampleInputPassword1" placeholder="قابلیت های مورد نظر را وارد کنید">
                                         </div>
-                                        <div class="form-group p-2">
+                                        <div class="form-group d-flex flex-column p-2">
                                             <label for="exampleInputPassword1">نوع اطلاعات</label>
-                                            <select style="min-width: 200px;" name="dataType" class="form-select" aria-label="Default select example">
+                                            <select style="min-width: 200px;" name="dataType" class="form-select select2" aria-label="Default select example">
                                                 <option selected value="0">TextBox</option>
                                                 <option value="1">SelectBox</option>
                                                 <option value="2">AreaBox</option>
@@ -82,9 +82,9 @@
                                         </div>
                                     </div>
                                     <div class="d-flex flex-wrap justify-content-between p-2 ">
-                                        <div class="form-group p-2">
+                                        <div class="form-group d-flex flex-column p-2">
                                             <label  for="exampleInputPassword1">نوع ویژگی</label>
-                                            <select  style="min-width: 200px;" name="featureId" class="form-select" aria-label="Default select example">
+                                            <select  style="min-width: 200px;" name="featureId" class="form-select select2" aria-label="Default select example">
                                                 @{
                                                     int index = 0;
                                                     foreach (var i in features)
@@ -101,9 +101,9 @@
                                                 }
                                             </select>
                                         </div>
-                                        <div class="form-group p-2">
+                                        <div class="form-group p-2 d-flex flex-column">
                                             <label for="exampleInputPassword1">نوع زیر دسته </label>
-                                            <select  style="min-width: 200px;" name="subCatId" class="form-select" aria-label="Default select example">
+                                            <select  style="min-width: 200px;" name="subCatId" class="form-select select2" aria-label="Default select example">
                                                 @{
                                                     int index1 = 0;
                                                     foreach (var i in subCategories)

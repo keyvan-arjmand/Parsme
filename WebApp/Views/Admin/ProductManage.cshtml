@@ -214,96 +214,103 @@
     </div>
 </div>
 <div class="tab-pane p-5" id="SubCategory">
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
-        <div class="form-group w-50">
-            <label>عنوان</label>
-            <input id="Title" type="text" class="form-control">
+    <div class="p-2" style="background-color:	rgb(220,220,220,0.4)">
+        <div class="p-3 m-2">
+            <label>مشخصات کلی محصول</label>
+            
         </div>
-        <div class="form-group w-50">
-            <label>عنوان فارسی</label>
-            <input id="PersianTitle" type="text" class="form-control">
-        </div>
-    </div>
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50">
-            <label>معرفی</label>
-            <textarea id="Detail" class="form-control"></textarea>
-        </div>
-        <div class="form-group w-50">
-            <label>توضیحات Meta</label>
-            <input id="MetaDesc" type="text" class="form-control">
-        </div>
-    </div>
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50">
-            <label>تگ ها</label>
-            <input id="MetaKeyword" type="text" class="form-control">
-        </div>
-        <div class="form-group w-50">
-            <label>هـدایا</label>
-            <input id="ProductGift" type="text" class="form-control">
-        </div>
-    </div>
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50">
-            <label for="exampleInputFile">تصویر کالا</label>
-            <div class="input-group">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="ImageUri">
-                    <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
+            <div class="form-group w-50 p-3">
+                <label>عنوان</label>
+                <input id="Title" type="text" class="form-control">
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>عنوان فارسی</label>
+                <input id="PersianTitle" type="text" class="form-control">
             </div>
         </div>
-        <div class="form-group w-50">
-            <label for="exampleInputPassword1">دسته بندی</label>
-            <select id="SubCatSelect" class="form-select" aria-label="Default select example">
-                @{
-                    int index1 = 0;
-                    foreach (var i in subCategories)
-                    {
-                        if (index1 == 0)
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>معرفی</label>
+                <textarea id="Detail" class="form-control"></textarea>
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>توضیحات Meta</label>
+                <input id="MetaDesc" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>تگ ها</label>
+                <input id="MetaKeyword" type="text" class="form-control">
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>هـدایا</label>
+                <input id="ProductGift" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label for="exampleInputFile">تصویر کالا</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="ImageUri">
+                        <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group w-50 p-3 d-flex flex-column">
+                <label for="exampleInputPassword1">دسته بندی</label>
+                <select id="SubCatSelect" class="form-select select2" aria-label="Default select example">
+                    @{
+                        int index1 = 0;
+                        foreach (var i in subCategories)
                         {
-                            <option selected value="@i.Id">@i.Name</option>
-                        }
-                        else
-                        {
-                            <option value="@i.Id">@i.Name</option>
+                            if (index1 == 0)
+                            {
+                                <option selected value="@i.Id">@i.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
                         }
                     }
-                }
-            </select>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50">
-            <label for="exampleInputPassword1">برند</label>
-            <select id="BrandId" class="form-select" aria-label="Default select example">
-                @{
-                    int index = 0;
-                    foreach (var i in brands)
-                    {
-                        if (index == 0)
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3  d-flex flex-column">
+                <label for="exampleInputPassword1">برند</label>
+                <select id="BrandId" class="form-select select2" aria-label="Default select example">
+                    @{
+                        int index = 0;
+                        foreach (var i in brands)
                         {
-                            <option selected value="@i.Id">@i.Title</option>
-                        }
-                        else
-                        {
-                            <option value="@i.Id">@i.Title</option>
+                            if (index == 0)
+                            {
+                                <option selected value="@i.Id">@i.Title</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Title</option>
+                            }
                         }
                     }
-                }
-            </select>
-        </div>
-        <div class="form-group w-50">
-            <label>موجودی</label>
-            <input id="Inventory" type="text" class="form-control">
-        </div>
+                </select>
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>موجودی</label>
+                <input id="Inventory" type="text" class="form-control">
+            </div>
 
+        </div>
     </div>
+
     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50">
+        <div class="form-group w-50  d-flex flex-column">
             <label for="exampleInputPassword1">وضعیت کالا</label>
-            <select id="ProductStatus" class="form-select" aria-label="Default select example">
+            <select id="ProductStatus" class="form-select select2" aria-label="Default select example">
                 <option selected value="0">موجود</option>
                 <option value="1">غیر موجود</option>
                 <option value="2">به زودی</option>
@@ -320,7 +327,7 @@
     <div class="d-flex flex-column">
         <label>رنگ</label>
         <div class="form-group w-100">
-            <select id="Colors" class="form-control select2" multiple="multiple"
+            <select id="Colors" class="form-control select2 w-100" multiple="multiple"
                     style="width: fit-content;min-width: 200px;text-align: right">
                 @{
                     foreach (var i in colors)
@@ -376,7 +383,8 @@
                 <div class="mb-3">
                     <textarea id="editor1" name="editor1" style="width: 100%">لطفا متن مورد نظر خودتان را وارد کنید</textarea>
                 </div>
-                <p class="text-sm mb-0">مشاهده مستندات مربوط به این ویرایشگر متن <a href="https://ckeditor.com/ckeditor-5-builds/#classic">CKEditor</a>
+                <p class="text-sm mb-0">
+                    مشاهده مستندات مربوط به این ویرایشگر متن <a href="https://ckeditor.com/ckeditor-5-builds/#classic">CKEditor</a>
                 </p>
             </div>
         </div>
@@ -410,6 +418,9 @@
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
         <form class="modal-content">
+            <div>
+
+            </div>
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
                 <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal"

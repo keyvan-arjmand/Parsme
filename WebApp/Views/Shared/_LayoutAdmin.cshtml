@@ -45,6 +45,10 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
         select {
             min-width: 200px;
         }
+
+        textarea {
+            min-height: 40px;
+        }
     </style>
     <title>پـنل ادمین</title>
 </head>
@@ -369,7 +373,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
         // bootstrap WYSIHTML5 - text editor
 
         $('.textarea').wysihtml5({
-            toolbar: { fa: true }
+            toolbar: {fa: true}
         })
     })
 </script>

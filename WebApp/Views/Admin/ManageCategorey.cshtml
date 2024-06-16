@@ -157,9 +157,9 @@
                                         <label for="exampleInputPassword1">عنوان زیر دسته</label>
                                         <input name="title" type="text" class="form-control" id="exampleInputPassword1">
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group d-flex flex-column">
                                         <label for="exampleInputPassword1">نوع دسته بندی</label>
-                                        <select name="catId" class="form-select" aria-label="Default select example">
+                                        <select name="catId" class="form-select select2 w-100 p-3" aria-label="Default select example">
                                             @{
                                                 int index = 0;
                                                 foreach (var i in categories)
