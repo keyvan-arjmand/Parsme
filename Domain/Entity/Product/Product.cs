@@ -26,7 +26,6 @@ public class Product : BaseEntity
     public ICollection<ProductColor> ProductColors { get; set; } = default!;
 
     public ProductStatus ProductStatus { get; set; }
-    public int Inventory { get; set; }
     public bool IsActive { get; set; }
     public DateTime InsertDate { get; set; }
 }

@@ -16,7 +16,7 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<AppDbContext>(s =>
     s.UseSqlServer(
-        "Data Source=DESKTOP-M202FR8\\KEY1;Initial Catalog=Parsme;Integrated Security=True;Trust Server Certificate=True"));
+        "Data Source=185.165.118.72,1433;Initial Catalog=Develop;User ID=key1;Password=7Dwuv15@;Trust Server Certificate=True"));
 builder.Services.AddIdentity<User, Role>(option =>
     {
         option.Password.RequireDigit = false;

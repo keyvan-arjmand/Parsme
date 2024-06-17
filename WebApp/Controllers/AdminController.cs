@@ -406,7 +406,6 @@ public class AdminController : Controller
         if (User.Identity.IsAuthenticated)
         {
             ViewBag.productCount = _work.GenericRepository<Product>().TableNoTracking.Count();
-            ViewBag.inventory = _work.GenericRepository<Product>().TableNoTracking.Count(x => x.Inventory > 0);
             ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.ToList();
             // ViewBag.goldPrice = await _work.GenericRepository<GoldPrice>().TableNoTracking.FirstAsync();
             // switch (string.IsNullOrWhiteSpace(search), catId <= 0)

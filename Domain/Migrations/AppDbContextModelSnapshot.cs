@@ -274,9 +274,6 @@ namespace Domain.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Inventory")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -330,9 +327,8 @@ namespace Domain.Migrations
                     b.Property<int>("GuaranteeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUri")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Inventory")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
