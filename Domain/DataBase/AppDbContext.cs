@@ -10,15 +10,15 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-
+//"Data Source=185.165.118.72,1433;Initial Catalog=Develop;User ID=key1;Password=7Dwuv15@;Trust Server Certificate=True"
     public AppDbContext()
     {
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            "Data Source=185.165.118.72,1433;Initial Catalog=Develop;User ID=key1;Password=7Dwuv15@;Trust Server Certificate=True");
+        optionsBuilder.UseSqlServer("Data Source=DESKTOP-M202FR8\\KEY1;Initial Catalog=Parsme;Integrated Security=True;Trust Server Certificate=True"
+            );
         base.OnConfiguring(optionsBuilder);
     }
 

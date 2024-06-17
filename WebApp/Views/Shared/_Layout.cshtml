@@ -1,49 +1,2006 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - WebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه اینترنتی کالا مارکت</title>
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin-------------------------------------->
+    <link rel="stylesheet" href="assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="assetsCli/css/vendor/nice-select.css">
+    <link rel="stylesheet" href="assetsCli/css/vendor/jquery.jqZoom.css">
+    <!-- main-style---------------------------------->
+    <link rel="stylesheet" href="assetsCli/css/main.css">
+    <link rel="stylesheet" href="assetsCli/css/responsive.css">
 </head>
+
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                </ul>
+<!-- header-------------------------------->
+<header class="header-main">
+    <div class="d-block">
+        <section class="h-main-row">
+            <div class="col-lg-9 col-md-12 col-xs-12 pr">
+                <div class="header-right">
+                    <div class="col-lg-3 pr">
+                        <div class="header-logo row text-right">
+                            <a href="#">
+                                <img src="assetsCli/images/logo.png" alt="کالامارکت">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 pr">
+                        <div class="header-search row text-right">
+                            <div class="header-search-box">
+                                <form action="#" class="form-search">
+                                    <input type="search" class="header-search-input" name="search-input"
+                                           placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                                    <div class="action-btns">
+                                        <button class="btn btn-search" type="submit">
+                                            <img src="assetsCli/images/search.png" alt="search">
+                                        </button>
+                                        <div class="search-filter">
+                                            <div class="form-ui">
+                                                <div class="custom-select-ui">
+                                                    <select class="right">
+                                                        <option>همه دسته ها</option>
+                                                        <option>کالای دیجیتال</option>
+                                                        <option>آرایشی بهداشتی</option>
+                                                        <option>ابزاری اداری</option>
+                                                        <option>مد پوشاک</option>
+                                                        <option>خانه آشپز خانه</option>
+                                                        <option>لوازم تحریر و هنر</option>
+                                                        <option>کودک و نوزاد</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="search-result">
+                                    <ul class="search-result-list mb-0">
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                کالای دیجیتال
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                آرایشی و بهداشتی
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                گوشی موبایل
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                تبلت
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                لپ تاپ
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                                دوربین
+                                                <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </button>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="localSearchSimple"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-0 col-xs-12 pl">
+                <div class="header-left">
+                    <div class="header-account text-left">
+                        <div class="d-block">
+                            <div class="account-box">
+                                <div class="nav-account d-block pl">
+                                        <span class="icon-account">
+                                            <img src="assetsCli/images/man.png" class="avator">
+                                        </span>
+                                    <span class="title-account">حساب کاربری</span>
+                                    <div class="dropdown-menu">
+                                        <ul class="account-uls mb-0">
+                                            <li class="account-item">
+                                                <a href="#" class="account-link">پنل کاربری</a>
+                                            </li>
+                                            <li class="account-item">
+                                                <a href="#" class="account-link">سفارشات من</a>
+                                            </li>
+                                            <li class="account-item">
+                                                <a href="#" class="account-link">تنظیمات</a>
+                                            </li>
+                                            <li class="account-item">
+                                                <a href="#" class="account-link">خروج</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <nav class="header-main-nav">
+            <div class="d-block">
+                <div class="align-items-center">
+                    <ul class="menu-ul mega-menu-level-one">
+                        <li id="nav-menu-item" class="menu-item nav-overlay">
+                            <a href="#" class="current-link-menu">
+                                کالای دیجیتال
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="sub-menu is-mega-menu mega-menu-level-two">
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        موبایل
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اپل
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سامسونگ
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                نوکیا
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ایسوس
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                هواوی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                الجی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اچ تی سی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سونی
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        تبلت و کتابخوان
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اپل
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سامسونگ
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                نوکیا
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ایسوس
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ایسر
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                الجی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اچ تی سی
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        کامپیوتر و تجهیزات جانبی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                هارد دیسک
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ماوس
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کیبورد
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                نمایشگر
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                پردازنده
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                مادربرد
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کارت گرافیک
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        دوربین
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                دوربین عکاسی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                دوربین فیلم برداری
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تلسکوپ
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                میکروسکوپ و ذره بین
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                لوازم جانبی عکاسی و فیلم برداری
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="bg-image">
+                                    <img src="assetsCli/images/menu-main/digital.png" alt="">
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item nav-overlay" data-id="190">
+                            <a href="#" class="current-link-menu">
+                                آرایشی و بهداشتی
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="sub-menu is-mega-menu mega-menu-level-two">
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم آرایشی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش چشم و ابرو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش لب
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش صورت
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تجهیزات جانبی آرایش
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سنگ پا و زیبایی ناخن
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                مواد آرایش مو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کرم و مراقبت پوست
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                شامپو و مراقبت مو
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم شخصی برقی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ماشین اصلاح صورت
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ماشین اصلاح سر
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سشوار
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اصلاح بدن آقایان
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اصلاح موی گوش، بینی و ابرو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                برس پاک سازی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اتو مو و حالت دهنده
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم بهداشتی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کرم و مراقبت پوست
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                شامپو و مراقبت مو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                بهداشت دهان و دندان
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                بهداشت و مراقبت بدن
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ضد تعریق
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        ابزار سلامت و طبی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                مچ بند و ساعت هوشمند
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ترازو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کالای خواب و استراحت طبی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تست قند خون
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تب سنج
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                فشارسنج
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ابزار مراقبت پا
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                نمایشگر ضربان قلب
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="bg-image">
+                                    <img src="assetsCli/images/menu-main/cosmetic.png" alt="">
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item">
+                            <a href="#" class="current-link-menu">
+                                ابزار و اداری
+                            </a>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item">
+                            <a href="#" class="current-link-menu">
+                                مد و پوشاک
+                            </a>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item nav-overlay">
+                            <a href="#" class="current-link-menu">
+                                خانه و آشپزخانه
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="sub-menu is-mega-menu mega-menu-level-two">
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم آرایشی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش چشم و ابرو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش لب
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                آرایش صورت
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تجهیزات جانبی آرایش
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سنگ پا و زیبایی ناخن
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                مواد آرایش مو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کرم و مراقبت پوست
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                شامپو و مراقبت مو
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم شخصی برقی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ماشین اصلاح صورت
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ماشین اصلاح سر
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                سشوار
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اصلاح بدن آقایان
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اصلاح موی گوش، بینی و ابرو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                برس پاک سازی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                اتو مو و حالت دهنده
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم بهداشتی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کرم و مراقبت پوست
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                شامپو و مراقبت مو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                بهداشت دهان و دندان
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                بهداشت و مراقبت بدن
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ضد تعریق
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu">
+                                    <a href="#" class="mega-menu-link">
+                                        ابزار سلامت و طبی
+                                    </a>
+                                    <ul class="sub-menu mega-menu-level-three">
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                مچ بند و ساعت هوشمند
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ترازو
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                کالای خواب و استراحت طبی
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تست قند خون
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                تب سنج
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                فشارسنج
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                ابزار مراقبت پا
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item-three">
+                                            <a href="#">
+                                                نمایشگر ضربان قلب
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="bg-image">
+                                    <img src="assetsCli/images/menu-main/kitchen.png" alt="">
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item nav-overlay">
+                            <a href="#" class="current-link-menu">
+                                لوازم تحریر و هنر
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="sub-menu is-mega-menu-small">
+                                <li class="menu-mega-item menu-item-type-mega-menu item-small">
+                                    <a href="#" class="mega-menu-link">
+                                        کتاب و مجله
+                                    </a>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu item-small">
+                                    <a href="#" class="mega-menu-link">
+                                        کتاب صوتی
+                                    </a>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu item-small">
+                                    <a href="#" class="mega-menu-link">
+                                        محتوای آموزشی
+                                    </a>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu item-small">
+                                    <a href="#" class="mega-menu-link">
+                                        لوازم تحریر
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                    <ul class="sub-menu is-mega-menu-small-three">
+                                        <li class="menu-mega-item menu-item-type-mega-menu item-small-three">
+                                            <a href="#">
+                                                چراغ مطالعه
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item menu-item-type-mega-menu item-small-three">
+                                            <a href="#">
+                                                نوشت افزار
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item menu-item-type-mega-menu item-small-three">
+                                            <a href="#">
+                                                دفتر و کاغذ
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item menu-item-type-mega-menu item-small-three">
+                                            <a href="#">
+                                                میز تحریر
+                                            </a>
+                                        </li>
+                                        <li class="menu-mega-item menu-item-type-mega-menu item-small-three">
+                                            <a href="#">
+                                                البوم عکس
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-mega-item menu-item-type-mega-menu item-small">
+                                    <a href="#" class="mega-menu-link">
+                                        نرم افزار
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="nav-menu-item" class="menu-item">
+                            <a href="#" class="current-link-menu">
+                                کودک و نوزاد
+                            </a>
+                        </li>
+                        <li class="divider-space-card">
+                            <div class="header-cart-basket">
+                                <a href="#" class="cart-basket-box">
+                                        <span class="icon-cart">
+                                            <i class="mdi mdi-shopping"></i>
+                                        </span>
+                                    <span class="title-cart">سبد خرید</span>
+                                    <span class="price-cart">25,000,000
+                                            <span>تومان</span>
+                                        </span>
+                                    <span class="count-cart">2</span>
+                                </a>
+                                <div class="widget-shopping-cart">
+                                    <div class="widget-shopping-cart-content">
+                                        <div class="wrapper">
+                                            <div class="scrollbar" id="style-1">
+                                                <div class="force-overflow">
+                                                    <ul class="product-list-widget">
+                                                        <li class="mini-cart-item">
+                                                            <div class="mini-cart-item-content">
+                                                                <a href="#" class="mini-cart-item-close">
+                                                                    <i class="mdi mdi-close"></i>
+                                                                </a>
+                                                                <a href="#" class="mini-cart-item-image d-block">
+                                                                    <img src="assetsCli/images/menu-main/img-card.jpg">
+                                                                </a>
+                                                                <span class="product-name-card">لپ تاپ چووی
+                                                                        الترابوک 14
+                                                                        اینچ پرو</span>
+                                                                <div class="variation">
+                                                                        <span class="variation-n">فروشنده :
+                                                                        </span>
+                                                                    <p class="mb-0">کالامارکت </p>
+                                                                </div>
+                                                                <div class="header-basket-list-item-color-badge">
+                                                                    رنگ:
+                                                                    <span style="background: #000"></span>
+                                                                </div>
+                                                                <div class="quantity">
+                                                                        <span class="quantity-Price-amount">
+                                                                            15,000,000
+                                                                            <span>تومان</span>
+                                                                        </span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="mini-cart-item">
+                                                            <div class="mini-cart-item-content">
+                                                                <a href="#" class="mini-cart-item-close">
+                                                                    <i class="mdi mdi-close"></i>
+                                                                </a>
+                                                                <a href="#" class="mini-cart-item-image d-block">
+                                                                    <img
+                                                                        src="assetsCli/images/menu-main/img-card-2.jpg">
+                                                                </a>
+                                                                <span class="product-name-card">هواوای میت
+                                                                        بوک X پرو
+                                                                        13.9 اینچ</span>
+                                                                <div class="variation">
+                                                                        <span class="variation-n">فروشنده :
+                                                                        </span>
+                                                                    <p class="mb-0">کالامارکت </p>
+                                                                </div>
+                                                                <div class="header-basket-list-item-color-badge">
+                                                                    رنگ:
+                                                                    <span style="background: #ccc"></span>
+                                                                </div>
+                                                                <div class="quantity">
+                                                                        <span class="quantity-Price-amount">
+                                                                            10,000,000
+                                                                            <span>تومان</span>
+                                                                        </span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mini-card-total">
+                                            <strong>قیمت کل : </strong>
+                                            <span class="price-total"> 25,000,000
+                                                    <span>تومان</span>
+                                                </span>
+                                        </div>
+                                        <div class="mini-card-button">
+                                            <a href="cart.html" class="view-card">مشاهده سبد خرید</a>
+                                            <a href="checkout.html" class="card-checkout">تسویه حساب</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header-cart-interest">
+                                <a href="#" class="d-block">
+                                    <i class="fa fa-heart"></i>
+                                    <span class="counter">۲</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--    responsive-megamenu-mobile----------------->
+        <nav class="sidebar">
+            <div class="nav-header">
+                <div class="header-cover"></div>
+                <div class="logo-wrap">
+                    <a class="logo-icon" href="#"><img alt="logo-icon" src="assetsCli/images/logo.png" width="40"></a>
+                </div>
+            </div>
+            <ul class="nav-categories ul-base">
+                <li>
+                    <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
+                       aria-expanded="false" aria-controls="collapseOne"><i class="mdi mdi-chevron-down"></i>کالای
+                        دیجیتال</a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                         data-parent="#accordionExample" style="">
+                        <ul>
+                            <li class="has-sub"><a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                    <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">گوشی موبایل</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                    <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                    <li><a href="#" class="category-level-3">اپل</a></li>
+                                    <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                    <li><a href="#" class="category-level-3">آنر</a></li>
+                                    <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">دوربین</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="false" aria-controls="collapseTwo"><i class="mdi mdi-chevron-down"></i>آرایشی
+                        و بهداشتی</a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                         data-parent="#accordionExample" style="">
+                        <ul>
+                            <li class="has-sub"><a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                    <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">گوشی موبایل</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                    <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                    <li><a href="#" class="category-level-3">اپل</a></li>
+                                    <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                    <li><a href="#" class="category-level-3">آنر</a></li>
+                                    <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">دوربین</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">ابزار و اداری</a></li>
+                <li><a href="#">مد و پوشاک</a></li>
+                <li><a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+                       aria-expanded="false" aria-controls="collapseThree"><i class="mdi mdi-chevron-down"></i>خانه
+                        و آشپزخانه</a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#accordionExample" style="">
+                        <ul>
+                            <li class="has-sub"><a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                    <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">گوشی موبایل</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                    <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                    <li><a href="#" class="category-level-3">اپل</a></li>
+                                    <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                    <li><a href="#" class="category-level-3">آنر</a></li>
+                                    <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                    <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub"><a href="#" class="category-level-2">دوربین</a>
+                                <ul>
+                                    <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                    <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">لوازم تحریر و هنر</a></li>
+                <li><a href="#">کودک و نوزاد</a></li>
+            </ul>
+        </nav>
+        <div class="nav-btn nav-slider">
+            <span class="linee1"></span>
+            <span class="linee2"></span>
+            <span class="linee3"></span>
+        </div>
+        <div class="overlay"></div>
+        <!-- bottom-menu-joomy -->
+        <div class="bottom-menu-joomy">
+            <ul class="mb-0">
+                <li>
+                    <a href="home-1.html">
+                        <i class="mdi mdi-home"></i>
+                        صفحه اصلی
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="nav-btn nav-slider">
+                            <i class="mdi mdi-menu" aria-hidden="true"></i>
+                        </div>
+                        دسته بندی ها
+                    </a>
+                </li>
+                <li>
+                    <a href="cart.html">
+                        <i class="mdi mdi-cart"></i>
+                        سبد خرید
+                        <div class="shopping-bag-item">2</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
+                        <i class="mdi mdi-magnify"></i>
+                        جستجو
+                    </a>
+                </li>
+                <li>
+                    <a href="login.html">
+                        <i class="mdi mdi-account"></i>
+                        حساب کاربری
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--    responsive-megamenu-mobile----------------->
+    </div>
+</header>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">جستجو</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="header-search text-right">
+                    <div class="header-search-box">
+                        <form action="#" class="form-search">
+                            <input type="search" class="header-search-input" name="search-input"
+                                   placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                            <div class="action-btns">
+                                <button class="btn btn-search" type="submit">
+                                    <img src="assetsCli/images/search.png" alt="search">
+                                </button>
+                                <div class="search-filter">
+                                    <div class="form-ui">
+                                        <div class="custom-select-ui">
+                                            <select class="right">
+                                                <option>همه دسته ها</option>
+                                                <option>کالای دیجیتال</option>
+                                                <option>آرایشی بهداشتی</option>
+                                                <option>ابزاری اداری</option>
+                                                <option>مد پوشاک</option>
+                                                <option>خانه آشپز خانه</option>
+                                                <option>لوازم تحریر و هنر</option>
+                                                <option>کودک و نوزاد</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="search-result">
+                            <ul class="search-result-list mb-0">
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        کالای دیجیتال
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        آرایشی و بهداشتی
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        گوشی موبایل
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        تبلت
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        لپ تاپ
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="mdi mdi-clock-outline"></i>
+                                        دوربین
+                                        <button class="btn btn-light btn-continue-search" type="submit">
+                                            <i class="fa fa-angle-left"></i>
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="localSearchSimple"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-</header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2024 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
+</div>
+<div class="nav-categories-overlay"></div>
+<div class="overlay-search-box"></div>
+<!-- header-------------------------------->
+
+<!-- sidebar------------------------->
+<div class="container-main">
+    <aside class="col-lg-3 col-md-3 col-xs-12 order-2 order-lg-2 pr sticky-sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-main widget-banner widget card">
+                <!-- category-menu-------------------------->
+                <div class="sidebar-menu-widget-area">
+                    <section class="megamenu-widget">
+                        <div class="header-main-menu">
+                            <ul class="main-menu-ul category-menu mega-menu-level-one">
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/smartphone.png">
+                                        کالای دیجیتال
+                                    </a>
+                                    <ul class="mega-menu-category sub-menu mega-menu-level-two">
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <div class="bg-image">
+                                            <img src="assetsCli/images/menu-main/digital.png" alt="">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/makeup.png">
+                                        آرایشی و بهداشتی
+                                    </a>
+                                    <ul class="mega-menu-category sub-menu mega-menu-level-two" style="top: 50px;">
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <div class="bg-image">
+                                            <img src="assetsCli/images/menu-main/cosmetic.png" alt="">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/print.png">
+                                        ابزار و اداری
+                                    </a>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/suit.png">
+                                        مد و پوشاک
+                                    </a>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/home.png">
+                                        خانه و آشپزخانه
+                                    </a>
+                                    <ul class="mega-menu-category sub-menu mega-menu-level-two" style="top: 150px;">
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-category-item menu-item-type-custom menu-item">
+                                            <a href="#" class="menu-category-link-title">
+                                                موبایل
+                                            </a>
+                                            <ul class="sub-menu-category mega-menu-level-there">
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اپل
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سامسونگ
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        نوکیا
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        ایسوس
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        هواوی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        الجی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        اچ تی سی
+                                                    </a>
+                                                </li>
+                                                <li class="menu-category-item-there">
+                                                    <a href="#">
+                                                        سونی
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <div class="bg-image">
+                                            <img src="assetsCli/images/menu-main/kitchen.png" alt="">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/edit.png">
+                                        لوازم و تحریر
+                                    </a>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/child.png">
+                                        کودک و نوزاد
+                                    </a>
+                                </li>
+                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                    <a href="#" class="main-menu-link-category">
+                                        <img src="assetsCli/images/menu-main/category/cup.png">
+                                        ورزشی و اسپرت
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+                <!-- moment-slider-------------------------->
+                <div class="slider-moments mt-4">
+                    <div class="widget-suggestion widget card">
+                        <header class="card-header promo-single-headline">
+                            <h3 class="card-title float-none">پیشنهاد لحظه‌ای</h3>
+                        </header>
+                        <div id="suggestion-slider" class="owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage"
+                                     style="transform: translate3d(1369px, 0px, 0px); transition: all 0.25s ease 0s; width: 2190px;">
+                                    <div class="owl-item cloned" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="#">
+                                                <img src="assetsCli/images/slider-moment/sm-1.jpg" class="w-100"
+                                                     alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="#"> تیشرت آستین کوتاه مردانه مدل T41 </a>
+                                            </h3>
+                                            <div class="price">
+                                                    <span class="amount">۲۳,۰۰۰
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="#">
+                                                <img src="assetsCli/images/slider-moment/sm-2.jpg" class="w-100"
+                                                     alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="#">تی شرت آستین کوتاه تارکان کد btt 152-1</a>
+                                            </h3>
+                                            <div class="price">
+                                                    <span class="amount">۵۹,۰۰۰
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="#">
+                                                <img src="assetsCli/images/slider-moment/sm-3.jpg" class="w-100"
+                                                     alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="#"> لپ تاپ 17 اینچی ایسوس مدل VivoBook A712FB-P </a>
+                                            </h3>
+                                            <div class="price">
+                                                    <span class="amount">۱۳,۰۰۰,۰۰۰
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="#">
+                                                <img src="assetsCli/images/slider-moment/sm-4.jpg" class="w-100"
+                                                     alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="#"> لپ تاپ 16 اینچی اپل مدل MacBook Pro MVVK2 2019 همراه با
+                                                    تاچ بار
+                                                </a>
+                                            </h3>
+                                            <div class="price">
+                                                    <span class="amount">۴۷,۰۰۰,۰۰۰
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="#">
+                                                <img src="assetsCli/images/slider-moment/sm-5.jpg" class="w-100"
+                                                     alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="#">گوشی موبایل سامسونگ مدل Galaxy S10 SM-G973F/DS دو سیم
+                                                    کارت ظرفیت 128 گیگابایت
+                                                </a>
+                                            </h3>
+                                            <div class="price">
+                                                    <span class="amount">۱۱,۰۰۰,۰۰۰
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="progressBar">
+                            <div class="slide-progress" style="width: 100%; transition: width 5000ms ease 0s;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- adplacement------------------------------->
+                <div class="adplacement-container-row adplacement-sidebar">
+                    <a href="#" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="assetsCli/images/adplacement/a-3.jpg">
+                        </div>
+                    </a>
+                    <a href="#" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="assetsCli/images/adplacement/a-10.jpg">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+<!-- sidebar-------------------------------->
+
+<!-- content-site--------------------------->
+@RenderBody()
+<!-- content-site--------------------------->
+
+<!-- footer------------------------------------------->
+<footer class="footer-main-site">
+    <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
+        <div class="footer-shopping-social">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                    <div class="logo">
+                        <a href="#">
+                            <img src="assetsCli/images/logo.png" alt="کالامارکت">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                    <div class="footer-populated text-left">
+                        <div class="footer-social">
+                            <h5 class="footer-populated-title">ما را دنبال کنید</h5>
+                            <ul>
+                                <li>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-telegram"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="footer-middlebar">
+                    <div class="col-lg-8 d-block pr">
+                        <div class="footer-links">
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                با کالامارکت
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    اتاق خبر کالامارکت
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    فروش در کالامارکت
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    همکاری با سازمان‌ها
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    فرصت‌های شغلی
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                خدمات مشتریان
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    پاسخ به پرسش‌های متداول
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    رویه‌های بازگرداندن کالا
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    شرایط استفاده
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    حریم خصوصی
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                راهنمای خرید از کالامارکت
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    نحوه ثبت سفارش
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    رویه ارسال سفارش
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    شیوه‌های پرداخت
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-block pl">
+                        <div class="shortcode-widget-area">
+                            <form action="#" class="form-newsletter">
+                                <fieldset>
+                                        <span class="form-newsletter-title"> با عضویت در خبرنامه از آخرین اخبار و
+                                            محصولات سایت مطلع شوید...</span>
+                                    <div class="input-group-newsletter">
+                                        <input type="email" class="input-field form-control"
+                                               placeholder="آدرس ایمیل خود را وارد کنید">
+                                        <button class="btn btn-info btn-secondary" type="submit">ارسال</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer-more-info">
+                        <div class="col-lg-10 pr">
+                            <div class="footer-content d-block">
+                                <div class="text pr-1">
+                                    <h2 class="title">فروشگاه اینترنتی کالامارکت</h2>
+                                    <p class="desc"> کالامارکت به عنوان یکی از قدیمی‌ترین فروشگاه های اینترنتی با
+                                        بیش از یک دهه تجربه، با پایبندی به سه اصل کلیدی، پرداخت در محل، 7 روز ضمانت
+                                        بازگشت کالا و تضمین اصل‌بودن کالا، موفق شده تا همگام با فروشگاه‌های معتبر
+                                        جهان، به بزرگ‌ترین فروشگاه اینترنتی ایران تبدیل شود. به محض ورود به دیجی
+                                        اسمارت با یک سایت پر از کالا رو به رو می‌شوید! هر آنچه که نیاز دارید و به
+                                        ذهن شما خطور می‌کند در اینجا پیدا خواهید کرد.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 pl">
+                            <div class="footer-safety-partner">
+                                <div class="widget widget-product card mb-0">
+                                    <div
+                                        class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                                        <div class="owl-stage-outer">
+                                            <div class="owl-stage"
+                                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                                                <div class="owl-item active"
+                                                     style="width: 300.75px; margin-left: 10px;">
+                                                    <div class="item">
+                                                        <a href="#" class="d-block hover-img-link">
+                                                            <img src="assetsCli/images/footer/license/L-1.png"
+                                                                 class="img-fluid img-brand" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="owl-item active"
+                                                     style="width: 300.75px; margin-left: 10px;">
+                                                    <div class="item">
+                                                        <a href="#" class="d-block hover-img-link mt-0">
+                                                            <img src="assetsCli/images/footer/license/L-2.png"
+                                                                 class="img-fluid img-brand" alt="">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-copyright">
+                            <div class="footer-copyright-text">
+                                <p>تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی کالامارکت می باشد.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+<!-- footer------------------------------------------->
+<!-- scroll_Progress------------------------->
+<div class="progress-wrap">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+    </svg>
+</div>
+<!-- scroll_Progress------------------------->
+<!-- Page Loader----------------------------->
+<div class="P-loader">
+    <div class="P-loader-content">
+        <div class="logo-loader">
+            <img src="assetsCli/images/logo.png" alt="logo">
+        </div>
+        <div class="pic-loader text-center">
+            <img src="assetsCli/images/three-dots.svg" width="50" alt="">
+        </div>
+    </div>
+</div>
+<!-- Page Loader----------------------------->
 </body>
+<!-- file js---------------------------------------------------->
+<script src="assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin----------------------------------------------------->
+<script src="assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<script src="assetsCli/js/vendor/jquery.jqZoom.js"></script>
+<!-- main js---------------------------------------------------->
+<script src="assetsCli/js/main.js"></script>
+
 </html>
