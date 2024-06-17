@@ -23,6 +23,15 @@
         min-height: 200px;
         height: fit-content;
     }
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .image-container img {
+        max-width: 150px;
+        height: auto;
+    }
 </style>
 }
 
@@ -214,10 +223,30 @@
     </div>
 </div>
 <div class="tab-pane p-5" id="SubCategory">
-    <div class="p-2" style="background-color:	rgb(220,220,220,0.4)">
-        <div class="p-3 m-2">
-            <label>مشخصات کلی</label>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">مشخصات کلی</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
             <div class="form-group w-50 p-3">
                 <label>عنوان</label>
@@ -262,18 +291,18 @@
                 <label for="exampleInputPassword1">دسته بندی</label>
                 <select id="SubCatSelect" class="form-select select2" aria-label="Default select example">
                     @{
-                        int index1 = 0;
-                        foreach (var i in subCategories)
-                        {
-                            if (index1 == 0)
-                            {
-                                <option selected value="@i.Id">@i.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Name</option>
-                            }
-                        }
+                    int index1 = 0;
+                    foreach (var i in subCategories)
+                    {
+                    if (index1 == 0)
+                    {
+                    <option selected value="@i.Id">@i.Name</option>
+                    }
+                    else
+                    {
+                    <option value="@i.Id">@i.Name</option>
+                    }
+                    }
                     }
                 </select>
             </div>
@@ -283,18 +312,18 @@
                 <label for="exampleInputPassword1">برند</label>
                 <select id="BrandId" class="form-select select2" aria-label="Default select example">
                     @{
-                        int index = 0;
-                        foreach (var i in brands)
-                        {
-                            if (index == 0)
-                            {
-                                <option selected value="@i.Id">@i.Title</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Title</option>
-                            }
-                        }
+                    int index = 0;
+                    foreach (var i in brands)
+                    {
+                    if (index == 0)
+                    {
+                    <option selected value="@i.Id">@i.Title</option>
+                    }
+                    else
+                    {
+                    <option value="@i.Id">@i.Title</option>
+                    }
+                    }
                     }
                 </select>
             </div>
@@ -305,108 +334,149 @@
 
         </div>
     </div>
-    <div class="p-2" style="background-color:	rgb(220,220,220,0.4)">
-        <div class="p-3 m-2">
-            <label>قیمت و موجودی</label>
-        </div>
-        
-        </div>
-    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-        <div class="form-group w-50  d-flex flex-column">
-            <label for="exampleInputPassword1">وضعیت کالا</label>
-            <select id="ProductStatus" class="form-select select2" aria-label="Default select example">
-                <option selected value="0">موجود</option>
-                <option value="1">غیر موجود</option>
-                <option value="2">به زودی</option>
-                <option value="3">از رده خارج</option>
-            </select>
-        </div>
+</div>
 
-        <div class="form-group w-50">
-            <label>مبلغ تخفیف</label>
-            <input id="DiscountAmount" type="text" class="form-control">
-        </div>
-
-    </div>
-    <div class="d-flex flex-column">
-        <label>رنگ</label>
-        <div class="form-group w-100">
-            <select id="Colors" class="form-control select2 w-100" multiple="multiple"
-                    style="width: fit-content;min-width: 200px;text-align: right">
-                @{
-                    foreach (var i in colors)
-                    {
-                        <option value="@i.Id,@i.Title">@i.Title</option>
-                    }
-                }
-            </select>
-        </div>
-        <div>
-            <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
-            <div id="colorProduct"
-                 class="form-group w-100 d-flex justify-content-start align-content-center gap-4 flex-wrap">
-
-            </div>
-        </div>
-        <div>
-            <label id="labelDetail" style="display: none">ویژگی های محصول</label>
-
-            <div id="DetailProduct"
-                 class="form-group w-100 d-flex justify-content-start align-content-center gap-4 flex-wrap">
-
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="card card-info card-outline">
-            <div class="card-header">
-                <h3 class="card-title">
-                    CKEditor5
-                    <small>پیشرفته به همراه همه امکانات</small>
-                </h3>
-                <!-- tools box -->
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="collapse"
-                            data-toggle="tooltip"
-                            title="Collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="remove"
-                            data-toggle="tooltip"
-                            title="Remove">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <!-- /. tools -->
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <div class="mb-3">
-                    <textarea id="editor1" name="editor1" style="width: 100%">لطفا متن مورد نظر خودتان را وارد کنید</textarea>
-                </div>
-                <p class="text-sm mb-0">
-                    مشاهده مستندات مربوط به این ویرایشگر متن <a href="https://ckeditor.com/ckeditor-5-builds/#classic">CKEditor</a>
-                </p>
-            </div>
-        </div>
-
-    </div>
-    <div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
-        <div class="form-input w-50">
-            <button type="button" onclick="insertProduct()" class="btn btn-primary w-100">
-                ثبت
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">قیمت و موجودی</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
             </button>
         </div>
-        <div class="form-group w-25">
-            <div class="form-check">
-                @Html.CheckBox("isActive")
-                <label class="form-check-label">وضعیت فعال</label>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3  d-flex flex-column">
+                <label for="exampleInputPassword1">وضعیت کالا</label>
+                <select id="ProductStatus" class="form-select select2" aria-label="Default select example">
+                    <option selected value="0">موجود</option>
+                    <option value="1">غیر موجود</option>
+                    <option value="2">به زودی</option>
+                    <option value="3">از رده خارج</option>
+                </select>
+            </div>
+
+            <div class="form-group w-50 p-3">
+                <label>مبلغ تخفیف</label>
+                <input id="DiscountAmount" type="text" class="form-control">
+            </div>
+
+        </div>
+        <div class="d-flex flex-column  p-3">
+            <label>رنگ</label>
+            <div class="form-group w-100 p-3">
+                <select id="Colors" class="form-control select2 w-100" multiple="multiple"
+                        style="width: fit-content;min-width: 200px;text-align: right">
+                    @{
+                        foreach (var i in colors)
+                        {
+                            <option value="@i.Id,@i.Title">@i.Title</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div>
+                <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
+                <div id="colorProduct"
+                     class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+
+                </div>
+            </div>
+            <div>
+                <label>پیشنهاد ویژه</label>
+                <input type="checkbox"/>
+                <label>مبلغ تخفیف</label>
+                <input id="DiscountAm2313ount" type="text" class="form-control">
+                <label>زمان</label>
+                <input id="DiscountAm2313ount" type="text" class="form-control">
             </div>
         </div>
     </div>
+</div>
+<div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
+    <div class="p-3 m-2">
+        <label class="h4">گالری عکس</label>
+        <div class="form-group w-100 p-3">
+            <input type="file" id="imageInput" accept="image/*" multiple>
+            <br><br>
+            <div id="imageContainer" class="image-container"></div>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <label id="labelDetail" style="display: none">ویژگی های محصول</label>
+
+    <div id="DetailProduct"
+         class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+
+    </div>
+</div>
+<div>
+    <div class="card card-info card-outline">
+        <div class="card-header">
+            <h3 class="card-title">
+                CKEditor5
+                <small class="h4">پیشرفته به همراه همه امکانات</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="mb-3">
+                <textarea id="editor1" name="editor1" style="width: 100%">لطفا متن مورد نظر خودتان را وارد کنید</textarea>
+            </div>
+            <p class="text-sm mb-0">
+                مشاهده مستندات مربوط به این ویرایشگر متن <a href="https://ckeditor.com/ckeditor-5-builds/#classic">CKEditor</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+<div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
+    <div class="form-input w-50">
+        <button type="button" onclick="insertProduct()" class="btn btn-primary w-100">
+            ثبت
+        </button>
+    </div>
+    <div class="form-group w-25">
+        <div class="form-check">
+            <input type="checkbox"/>
+            <label class="form-check-label">وضعیت فعال</label>
+        </div>
+    </div>
+</div>
 
 </div>
 </div>
@@ -535,6 +605,36 @@
 </div>
 
 @section script{
+    <script>
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const imageContainer = document.getElementById('imageContainer');
+        imageContainer.innerHTML = ''; // Clear previous images
+        var data =  [];
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Display the image
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    imageContainer.appendChild(img);
+
+                    // Convert image to base64
+                    const base64 = e.target.result.split(',')[1]; // Strip off data:image/jpeg;base64, part
+                    const fileName = file.name;
+
+                    // Append base64 data to the list
+
+                    data.push(`${base64}`)
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        console.dir(data);
+    });
+</script>
     <script>
     function insertProduct() {
         const colorGroups = document.querySelectorAll('.form-group.colors-form');
