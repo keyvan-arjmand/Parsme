@@ -392,6 +392,13 @@ public class AdminController : Controller
         // gold.PricePerGram = price;
         // gold.PriceType = PriceType.Manual;
         // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
+        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
         return RedirectToAction("Product");
     }
 
