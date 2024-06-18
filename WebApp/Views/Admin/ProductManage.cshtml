@@ -16,7 +16,7 @@
     }
 
     .select2-selection--multiple {
-        min-width: 200px;
+        min-width: 300px;
     }
 
     .ck-content {
@@ -291,18 +291,18 @@
                 <label for="exampleInputPassword1">دسته بندی</label>
                 <select id="SubCatSelect" class="form-select select2" aria-label="Default select example">
                     @{
-                    int index1 = 0;
-                    foreach (var i in subCategories)
-                    {
-                    if (index1 == 0)
-                    {
-                    <option selected value="@i.Id">@i.Name</option>
-                    }
-                    else
-                    {
-                    <option value="@i.Id">@i.Name</option>
-                    }
-                    }
+                        int index1 = 0;
+                        foreach (var i in subCategories)
+                        {
+                            if (index1 == 0)
+                            {
+                                <option selected value="@i.Id">@i.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        }
                     }
                 </select>
             </div>
@@ -312,26 +312,32 @@
                 <label for="exampleInputPassword1">برند</label>
                 <select id="BrandId" class="form-select select2" aria-label="Default select example">
                     @{
-                    int index = 0;
-                    foreach (var i in brands)
-                    {
-                    if (index == 0)
-                    {
-                    <option selected value="@i.Id">@i.Title</option>
-                    }
-                    else
-                    {
-                    <option value="@i.Id">@i.Title</option>
-                    }
-                    }
+                        int index = 0;
+                        foreach (var i in brands)
+                        {
+                            if (index == 0)
+                            {
+                                <option selected value="@i.Id">@i.Title</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Title</option>
+                            }
+                        }
                     }
                 </select>
             </div>
-            <div class="form-group w-50 p-3">
-                <label>موجودی</label>
-                <input id="Inventory" type="text" class="form-control">
-            </div>
 
+
+        </div>
+
+        <div>
+            <label id="labelDetail" style="display: none">ویژگی های محصول</label>
+
+            <div id="DetailProduct"
+                 class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+
+            </div>
         </div>
     </div>
 </div>
@@ -370,10 +376,29 @@
                     <option value="3">از رده خارج</option>
                 </select>
             </div>
-
-            <div class="form-group w-50 p-3">
+          
+            <div class="form-group w-50 p-3" id="">
                 <label>مبلغ تخفیف</label>
                 <input id="DiscountAmount" type="text" class="form-control">
+            </div>
+
+        </div>
+        <div>
+            <div class="d-flex flex-column align-items-start">
+                <label>پیشنهاد ویژه</label>
+                <input type="checkbox" id="Offer"/>
+            </div>
+            <div style="display: none !important" id="OfferForm">
+                <div class="d-flex justify-content-center gap-3"  >
+                    <div class="d-flex flex-column w-50">
+                        <label>مبلغ</label>
+                        <input id="OfferAmount" type="text" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column w-50">
+                        <label>زمان</label>
+                        <input id="OfferTime" type="text" class="form-control">
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -393,47 +418,60 @@
             <div>
                 <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
                 <div id="colorProduct"
-                     class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+                     class="form-group w-100 p-3 d-flex justify-content-between align-content-center gap-4 flex-wrap">
 
                 </div>
             </div>
-            <div>
-                <label>پیشنهاد ویژه</label>
-                <input type="checkbox"/>
-                <label>مبلغ تخفیف</label>
-                <input id="DiscountAm2313ount" type="text" class="form-control">
-                <label>زمان</label>
-                <input id="DiscountAm2313ount" type="text" class="form-control">
-            </div>
+          
         </div>
-    </div>
-</div>
-<div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
-    <div class="p-3 m-2">
-        <label class="h4">گالری عکس</label>
-        <div class="form-group w-100 p-3">
-            <input type="file" id="imageInput" accept="image/*" multiple>
-            <br><br>
-            <div id="imageContainer" class="image-container"></div>
-        </div>
-    </div>
-
-</div>
-
-<div>
-    <label id="labelDetail" style="display: none">ویژگی های محصول</label>
-
-    <div id="DetailProduct"
-         class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
 
     </div>
 </div>
-<div>
-    <div class="card card-info card-outline">
+    <div class="card card-info card-outline mt-4">
         <div class="card-header">
             <h3 class="card-title">
-                CKEditor5
-                <small class="h4">پیشرفته به همراه همه امکانات</small>
+                <small class="h4">قیمت و موجودی</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body" >
+            <div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
+                <div class="p-3 m-2">
+                    <label class="h4">گالری عکس</label>
+                    <div class="form-group w-100 p-3">
+                        <input type="file" id="imageInput" accept="image/*" multiple>
+                        <br><br>
+                        <div id="imageContainer" class="image-container"></div>
+                    </div>
+                </div>
+
+            </div>
+ 
+
+        </div>
+    </div>
+
+<div>
+    <div class="card card-info card-outline mt-4">
+        <div class="card-header">
+            <h3 class="card-title">
+                <small class="h5">ویرایشگر معرفی محصول</small>
             </h3>
             <!-- tools box -->
             <div class="card-tools">
@@ -684,13 +722,21 @@
             var html = '';
             selected.map(x => {
                 html += `
-                             <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
-                             <div class="input-group-prepend">
-                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.split(",")[1]}</i></span>
-                              </div>
-                              <input name="colorPrice" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                              <input name="ColorId" value="${x.split(",")[0]}" hidden="hidden">
-                             </div>
+                            <div class="d-flex flex-column">
+                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
+                               <div class="input-group-prepend">
+                                   <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.split(",")[1]}</i></span>
+                               </div>
+                               <input name="colorPrice" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                               <input name="ColorId" value="${x.split(",")[0]}" hidden="hidden">
+                           </div>
+                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
+                               <div class="input-group-prepend">
+                                   <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</i></span>
+                               </div>
+                               <input name="colorInv" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                           </div>
+                        </div>
                              `;
             })
             if (selected.length < 1) {
@@ -730,6 +776,21 @@
                     alert("خطای داخلی در سرور");
                 }
             });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const checkbox = document.getElementById('Offer');
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                $("#OfferForm").css("display", "block");
+                $('#DiscountAmount').prop('disabled', true);
+                $('#DiscountAmount').val("");
+            } else {
+                $("#OfferForm").css("display", "none");
+                $('#DiscountAmount').prop('disabled', false);
+                $('#OfferAmount').val("");
+                $('#OfferTime').val("");
+            }
         });
     });
 </script>
