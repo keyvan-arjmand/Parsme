@@ -8,6 +8,7 @@ using Application.Dtos.Factor;
 using Application.Dtos.Products;
 using Application.Dtos.User;
 using Application.Interfaces;
+using Application.Products.Commands;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;
@@ -276,6 +277,7 @@ public class AdminController : Controller
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.ToListAsync();
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
             ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
 
             #endregion
 
@@ -386,25 +388,17 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> SetManualGoldPrice(double price)
+    public async Task<ActionResult> InsertProduct(InsertProductCommand request)
     {
-        // var gold = await _work.GenericRepository<GoldPrice>().TableNoTracking.FirstAsync(x => x.Id == 1);
-        // gold.PricePerGram = price;
-        // gold.PriceType = PriceType.Manual;
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        // await _work.GenericRepository<GoldPrice>().UpdateAsync(gold, new CancellationToken());
-        return RedirectToAction("Product");
+ 
+        return RedirectToAction("ProductManage");
     }
 
     public async Task<List<CategoryDetail>> GetCategoryDetailBySubCatId(int subCatId)
     {
-        return await _work.GenericRepository<CategoryDetail>().TableNoTracking.Include(x => x.Feature)
+        return await _work.GenericRepository<CategoryDetail>()
+            .TableNoTracking
+            .Include(x => x.Feature)
             .Where(x => x.SubCategoryId == subCatId).ToListAsync();
     }
 

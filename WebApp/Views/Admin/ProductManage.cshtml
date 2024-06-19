@@ -5,6 +5,7 @@
     List<Brand> brands = ViewBag.Brands;
     List<SubCategory> subCategories = ViewBag.SubCats;
     List<Color> colors = ViewBag.Colors;
+    List<Guarantee> Guarantees = ViewBag.Guarantee;
 }
 
 @section link
@@ -289,7 +290,7 @@
             </div>
             <div class="form-group w-50 p-3 d-flex flex-column">
                 <label for="exampleInputPassword1">دسته بندی</label>
-                <select id="SubCatSelect" class="form-select select2" aria-label="Default select example">
+                <select id="SubCatSelect" class="form-control select2" aria-label="Default select example">
                     @{
                         int index1 = 0;
                         foreach (var i in subCategories)
@@ -310,7 +311,7 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">برند</label>
-                <select id="BrandId" class="form-select select2" aria-label="Default select example">
+                <select id="BrandId" class="form-control select2" aria-label="Default select example">
                     @{
                         int index = 0;
                         foreach (var i in brands)
@@ -335,7 +336,7 @@
             <label id="labelDetail" style="display: none">ویژگی های محصول</label>
 
             <div id="DetailProduct"
-                 class="form-group w-100 p-3 d-flex justify-content-start align-content-center gap-4 flex-wrap">
+                 class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap" style="gap: 30px">
 
             </div>
         </div>
@@ -369,7 +370,7 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">وضعیت کالا</label>
-                <select id="ProductStatus" class="form-select select2" aria-label="Default select example">
+                <select id="ProductStatus" class="form-control select2" aria-label="Default select example">
                     <option selected value="0">موجود</option>
                     <option value="1">غیر موجود</option>
                     <option value="2">به زودی</option>
@@ -389,14 +390,24 @@
                 <input type="checkbox" id="Offer"/>
             </div>
             <div style="display: none !important" id="OfferForm">
-                <div class="d-flex justify-content-center gap-3"  >
+                <div class="d-flex justify-content-center p-3" style="gap: 20px" >
                     <div class="d-flex flex-column w-50">
                         <label>مبلغ</label>
                         <input id="OfferAmount" type="text" class="form-control">
                     </div>
-                    <div class="d-flex flex-column w-50">
-                        <label>زمان</label>
-                        <input id="OfferTime" type="text" class="form-control">
+                    <div class="d-flex justify-content-between w-50" style="gap: 10px">
+                        <div class="d-flex flex-column">
+                            <label for="days">روز</label>
+                            <input type="number" id="days" name="days" min="0" max="30" value="0" class="form-control"><br><br>
+                        </div> 
+                        <div class="d-flex flex-column">
+                            <label for="hours">ساعت</label>
+                            <input type="number" id="hours" name="hours" min="0" max="24" value="0" class="form-control"><br><br>
+                        </div> 
+                        <div class="d-flex flex-column">
+                            <label for="minutes">دقیقه</label>
+                            <input type="number" id="minutes" name="minutes" min="0" max="60" value="0" class="form-control"><br><br>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -418,7 +429,7 @@
             <div>
                 <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
                 <div id="colorProduct"
-                     class="form-group w-100 p-3 d-flex justify-content-between align-content-center gap-4 flex-wrap">
+                     class="form-group w-100 p-3 d-flex flex-column justify-content-between align-content-center gap-4 flex-wrap">
 
                 </div>
             </div>
@@ -430,7 +441,7 @@
     <div class="card card-info card-outline mt-4">
         <div class="card-header">
             <h3 class="card-title">
-                <small class="h4">قیمت و موجودی</small>
+                <small class="h4">گالری عکس</small>
             </h3>
             <!-- tools box -->
             <div class="card-tools">
@@ -453,7 +464,6 @@
         <div class="card-body" >
             <div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
                 <div class="p-3 m-2">
-                    <label class="h4">گالری عکس</label>
                     <div class="form-group w-100 p-3">
                         <input type="file" id="imageInput" accept="image/*" multiple>
                         <br><br>
@@ -717,24 +727,32 @@
     }
 
     $(function () {
+  
         $('#Colors').change(function (e) {
+            let json12 =@Json.Serialize(Guarantees);
+            const optionsHTML = json12.map(option => `<option value="${option.id}">${option.title}</option>`).join('') ;
             var selected = $(e.target).val();
             var html = '';
             selected.map(x => {
                 html += `
-                            <div class="d-flex flex-column">
-                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
+                            <div class="d-flex justify-content-between" style="gap: 25px">
+                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
                                <div class="input-group-prepend">
                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.split(",")[1]}</i></span>
                                </div>
                                <input name="colorPrice" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
                                <input name="ColorId" value="${x.split(",")[0]}" hidden="hidden">
                            </div>
-                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;">
+                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
                                <div class="input-group-prepend">
                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</i></span>
                                </div>
                                <input name="colorInv" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                           </div>
+                            <div class="form-group w-100  d-flex flex-column">
+                               <select id="Gu" class="form-control select2 Guarantees" aria-label="Default select example">
+                                 
+                               </select>
                            </div>
                         </div>
                              `;
@@ -747,6 +765,10 @@
 
             }
             document.getElementById("colorProduct").innerHTML = html;
+            const selectElements = document.getElementsByClassName('Guarantees');
+            Array.from(selectElements).forEach(element => {
+                element.innerHTML = optionsHTML;
+            });
 
         });
         $('#SubCatSelect').change(function (e) {

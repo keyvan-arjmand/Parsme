@@ -10,7 +10,7 @@
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 28px;
+    /*height: 28px;*/
     user-select: none;
     -webkit-user-select: none;
 }
