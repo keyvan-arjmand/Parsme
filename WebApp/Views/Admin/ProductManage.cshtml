@@ -385,12 +385,18 @@
 
         </div>
         <div>
-            <div class="d-flex flex-column align-items-start">
+            <div class="d-flex flex-column align-items-start p-3">
                 <label>پیشنهاد ویژه</label>
                 <input type="checkbox" id="Offer"/>
             </div>
             <div style="display: none !important" id="OfferForm">
-                <div class="d-flex justify-content-center p-3" style="gap: 20px" >
+                <div class="d-flex justify-content-center p-3" style="gap: 20px">
+                    <div class="form-group w-100  d-flex flex-column">
+                        <label for="exampleInputPassword1">رنگ مورد نظر</label>
+                        <select id="OfferColor" class="form-control select2" aria-label="Default select example">
+                       
+                        </select>
+                    </div>
                     <div class="d-flex flex-column w-50">
                         <label>مبلغ</label>
                         <input id="OfferAmount" type="text" class="form-control">
@@ -399,11 +405,11 @@
                         <div class="d-flex flex-column">
                             <label for="days">روز</label>
                             <input type="number" id="days" name="days" min="0" max="30" value="0" class="form-control"><br><br>
-                        </div> 
+                        </div>
                         <div class="d-flex flex-column">
                             <label for="hours">ساعت</label>
                             <input type="number" id="hours" name="hours" min="0" max="24" value="0" class="form-control"><br><br>
-                        </div> 
+                        </div>
                         <div class="d-flex flex-column">
                             <label for="minutes">دقیقه</label>
                             <input type="number" id="minutes" name="minutes" min="0" max="60" value="0" class="form-control"><br><br>
@@ -414,7 +420,7 @@
 
         </div> 
         <div class="d-flex flex-column  p-3">
-            <label>رنگ</label>
+            <label>رنگ محصول</label>
             <div class="form-group w-100 p-3">
                 <select id="Colors" class="form-control select2 w-100" multiple="multiple"
                         style="width: fit-content;min-width: 200px;text-align: right">
@@ -534,124 +540,6 @@
 </div>
 </section>
 
-
-<!-- Modal -->
-<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content">
-            <div>
-
-            </div>
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
-                <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal"
-                        aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">نام محصول</span>
-                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"
-                               required="required" name="Name">
-                    </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
-                              id="basic-addon2">
-                            برند
-                        </span>
-                        <input type="text" id="Brand" style="border-radius: 5px 0px 0px 5px;"
-                               class="form-control brandP" required="required" name="Brand">
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
-                              id="basic-addon2">
-                            وزن
-                        </span>
-                        <input type="text" id="Weight" style="border-radius: 5px 0px 0px 5px;" name="Weight"
-                               class="form-control weightP" required="required">
-                    </div>
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
-                              id="basic-addon2">
-                            اجرت
-                        </span>
-                        <input type="text" id="Wages" style="border-radius: 5px 0px 0px 5px;" name="Wages"
-                               class="form-control wagesP" required="required">
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">موجودی محصول</span>
-                    </div>
-                    <div class="input-group p-3  m-2">
-                        <select class="form-select catIdP" id="CategoryIdProd" name="CategoryId" required="required">
-                            @* @{ *@
-                            @* int Index = 0; *@
-                            @* foreach (Category i in ViewBag.categories) *@
-                            @* { *@
-                            @* if (Index == 0) *@
-                            @* { *@
-                            @* <option selected="selected" value="@i.Id">@i.Name</option> *@
-                            @* } *@
-                            @* else *@
-                            @* { *@
-                            @* <option value="@i.Id">@i.Name</option> *@
-                            @* } *@
-                            @* *@
-                            @* Index++; *@
-                            @* } *@
-                            @* } *@
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between" style="background-color:	rgb(220,220,220,0.4)">
-                    <div class=" m-2  p-3">
-                        <input type="file" id="ImageBanner" name="ImageBanner" title="test" class="form-control">
-                        <div class="input-group p-1 " style="justify-content: space-between;">
-                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس اول</span>
-                            <img src="./main_image.jpg" style="object-fit: cover" class="imageOneP" width="150"/>
-                            <input type="text" id="ImageBannerName" name="ImageBannerName" class="mImageOneP"
-                                   hidden="hidden"/>
-                        </div>
-                    </div>
-
-                    <div class=" m-2  p-3">
-                        <input type="file" id="ImageThumb" name="ImageThumb" title="test" class="form-control">
-                        <div class="input-group  p-1" style="justify-content: space-between;">
-                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس دوم</span>
-                            <img src="./main_image.jpg" style="object-fit: cover" class="imageTwoP" width="150"/>
-                            <input type="text" id="ImageThumbName" name="ImageThumbName" class="mImageTwoP"
-                                   hidden="hidden"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class=" m-2  p-3" style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="Image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: space-between;">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;"
-                              id="basic-addon2">
-                            عکس سوم
-                        </span>
-                        <img src="./main_image.jpg" style="object-fit: cover" class="imageThreeP" width="150"/>
-                        <input type="text" id="ImageName" name="ImageName" class="mImageThreeP" hidden="hidden"/>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="button" class="btn btn-danger" onclick="softDeleteProduct()">حذف محصول</button>
-                <button type="submit" class="btn btn-primary " onclick="UpdateProduct()">ذخیره تغیرات</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 @section script{
     <script>
     document.getElementById('imageInput').addEventListener('change', function(event) {
@@ -733,6 +621,7 @@
             const optionsHTML = json12.map(option => `<option value="${option.id}">${option.title}</option>`).join('') ;
             var selected = $(e.target).val();
             var html = '';
+            const offerColorHTML = selected.map(option => `<option value="${option.split(",")[0]}">${option.split(",")[1]}</option>`).join('') ;
             selected.map(x => {
                 html += `
                             <div class="d-flex justify-content-between" style="gap: 25px">
@@ -765,6 +654,7 @@
 
             }
             document.getElementById("colorProduct").innerHTML = html;
+            document.getElementById("OfferColor").innerHTML = offerColorHTML;
             const selectElements = document.getElementsByClassName('Guarantees');
             Array.from(selectElements).forEach(element => {
                 element.innerHTML = optionsHTML;

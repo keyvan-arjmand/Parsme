@@ -1,8 +1,9 @@
 ﻿using Domain.Enums;
+using MediatR;
 
 namespace Application.Products.Commands;
 
-public class InsertProductCommand
+public class InsertProductCommand:IRequest
 {
     public string Title { get; set; } = string.Empty;
     public string PersianTitle { get; set; } = string.Empty;
@@ -21,12 +22,7 @@ public class InsertProductCommand
     public List<ProductColor> ProductColors { get; set; }= default!;
     public ProductStatus ProductStatus { get; set; }
     public bool IsActive { get; set; }
-    public bool IsOffer { get; set; }
-    public int Days { get; set; }
-    public int Hours { get; set; }
-    public int Minutes { get; set; }
-    public int Seconds { get; set; }
-    public double OfferAmount { get; set; }
+
 }
 public abstract class ProductDetail
 {
@@ -39,5 +35,10 @@ public abstract class ProductColor
     public int ColorId { get; set; }
     public int GuaranteeId { get; set; }
     public int Inventory { get; set; }
-
+    public bool IsOffer { get; set; }
+    public int Days { get; set; }
+    public int Hours { get; set; }
+    public int Minutes { get; set; }
+    public int Seconds { get; set; }
+    public double OfferAmount { get; set; }
 }

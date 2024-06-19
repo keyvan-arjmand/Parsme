@@ -27,11 +27,6 @@ public class Product : BaseEntity
 
     public ProductStatus ProductStatus { get; set; }
     public bool IsActive { get; set; }
-    //offer Product
-    public bool IsOffer { get; set; }
-    public int Days { get; set; }
-    public int Hours { get; set; }
-    public int Minutes { get; set; }
-    public double OfferAmount { get; set; }
+
     public DateTime InsertDate { get; set; }
 }
