@@ -387,13 +387,39 @@ public class AdminController : Controller
         }
     }
 
-
-    public async Task<ActionResult> InsertProduct(InsertProductCommand request)
+    public async Task<ActionResult> InsertProduct(Root request)
     {
- 
+        Upload up = new Upload(_webHostEnvironment);
+        string imageUri = string.Empty;
+        List<string> images = new List<string>();
+        if (!string.IsNullOrWhiteSpace(request.ImageUri))
+        {
+            imageUri = up.AddImage(request.ImageUri, "Images/ProductImage",
+                Guid.NewGuid().ToString().Substring(0, 6));
+        }
+
+        if (request.Images.Count > 0)
+        {
+            foreach (var i in request.Images)
+            {
+                images.Add(up.AddImage(i, "Images/ProductImage",
+                    Guid.NewGuid().ToString().Substring(0, 6)));
+            }
+        }
+
+        request.ImageUri = imageUri;
+        request.Images = images;
+        await _mediator.Send(new InsertProductCommand
+        {
+           Product = request
+        });
         return RedirectToAction("ProductManage");
     }
 
+    // string Title, string PersianTitle, string Detail, string MetaDesc,
+    // string MetaKeyword, string FullDesc, string[] ImageUri, string ProductGift, double DiscountAmount, int BrandId,
+    // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,
+    //     Offer Offer, ProductStatus ProductStatus, bool IsActive, bool IsOffer
     public async Task<List<CategoryDetail>> GetCategoryDetailBySubCatId(int subCatId)
     {
         return await _work.GenericRepository<CategoryDetail>()

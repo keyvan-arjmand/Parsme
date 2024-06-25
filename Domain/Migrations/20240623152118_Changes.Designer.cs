@@ -4,6 +4,7 @@ using Domain.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240623152118_Changes")]
+    partial class Changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,6 +386,10 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("GuaranteeId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductColors");
@@ -410,6 +417,8 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryDetailId");
 
                     b.HasIndex("ProductId");
 
@@ -746,11 +755,13 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Product.ImageGallery", b =>
                 {
-                    b.HasOne("Domain.Entity.Product.Product", null)
+                    b.HasOne("Domain.Entity.Product.Product", "Product")
                         .WithMany("ProductImages")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>
@@ -772,20 +783,48 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Product.ProductColor", b =>
                 {
-                    b.HasOne("Domain.Entity.Product.Product", null)
+                    b.HasOne("Domain.Entity.Product.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entity.Product.Guarantee", "Guarantee")
+                        .WithMany()
+                        .HasForeignKey("GuaranteeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entity.Product.Product", "Product")
                         .WithMany("ProductColors")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Color");
+
+                    b.Navigation("Guarantee");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ProductDetail", b =>
                 {
-                    b.HasOne("Domain.Entity.Product.Product", null)
+                    b.HasOne("Domain.Entity.Product.CategoryDetail", "CategoryDetail")
+                        .WithMany()
+                        .HasForeignKey("CategoryDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entity.Product.Product", "Product")
                         .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CategoryDetail");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.SubCategory", b =>

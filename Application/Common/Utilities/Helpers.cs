@@ -11,6 +11,7 @@ public static partial class Helpers
     {
         return MyRegex().IsMatch(value);
     }
+
     public static string GetConfirmCode()
     {
         var code = string.Empty;
@@ -20,5 +21,14 @@ public static partial class Helpers
         }
 
         return code;
+    }
+
+    public static int ToInt(this string? val)
+    {
+        return string.IsNullOrEmpty(val) ? 0 : Convert.ToInt32(val);
+    }
+    public static double ToDouble(this string? val)
+    {
+        return string.IsNullOrEmpty(val) ? 0 : Convert.ToDouble(val);
     }
 }

@@ -1,11 +1,14 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Utilities;
+using Application.Interfaces;
 using Domain.Entity.Product;
+using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Vit.Extensions.Json_Extensions;
 
 namespace Application.Products.Commands;
 
-public class InsertProductCommandHandler:IRequestHandler<InsertProductCommand>
+public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
 {
     private readonly IUnitOfWork _work;
 
@@ -17,52 +20,82 @@ public class InsertProductCommandHandler:IRequestHandler<InsertProductCommand>
     public async Task Handle(InsertProductCommand request, CancellationToken cancellationToken)
     {
         var brand = await _work.GenericRepository<Brand>().Table
-            .FirstOrDefaultAsync(x => x.Id == request.BrandId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Product.BrandId.ToInt(), cancellationToken);
         if (brand == null) throw new Exception();
         var subCat = await _work.GenericRepository<SubCategory>().Table
-            .FirstOrDefaultAsync(x => x.Id == request.SubCategoryId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Product.SubCategoryId.ToInt(), cancellationToken);
         if (subCat == null) throw new Exception();
         var product = new Product
         {
-            Code = request.Code,
-            Title = request.Title,
+            Code = string.Empty,
+            Title = request.Product.Title!,
             InsertDate = DateTime.Now,
-            IsActive = request.IsActive,
-            ProductStatus = request.ProductStatus,
+            IsActive = request.Product.IsActive,
+            ProductStatus = (ProductStatus)request.Product.ProductStatus.ToInt(),
             SubCategoryId = subCat.Id,
             BrandId = brand.Id,
-            Detail = request.Detail,
-            DiscountAmount = request.DiscountAmount,
-            FullDesc = request.FullDesc,
-            MetaKeyword = request.MetaKeyword,
-            PersianTitle = request.PersianTitle,
-            MetaDesc = request.MetaDesc,
-            ProductGift = request.ProductGift,
+            Detail = request.Product.Detail!,
+            DiscountAmount = request.Product.DiscountAmount.ToDouble(),
+            FullDesc = request.Product.FullDesc!,
+            MetaKeyword = request.Product.MetaKeyword!,
+            PersianTitle = request.Product.PersianTitle!,
+            MetaDesc = request.Product.MetaDesc!,
+            ProductGift = request.Product.ProductGift!,
+            ImageUri = request.Product.ImageUri,
+            IsOffer = request.Product.IsOffer,
         };
-        var productGallery = request.Images.Select(x => new ImageGallery
+        await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
+        var productGallery = request.Product.Images.Select(x => new ImageGallery
         {
             ProductId = product.Id,
             ImageUri = x
         }).ToList();
-        var prodDetail = request.ProductDetails.Select(x => new Domain.Entity.Product.ProductDetail
+        foreach (var i in productGallery)
+        {
+            await _work.GenericRepository<Domain.Entity.Product.ImageGallery>()
+                .AddAsync(i, CancellationToken.None); 
+        }
+     
+        var prodDetail = request.Product.ProductDetails.Select(x => new Domain.Entity.Product.ProductDetail
         {
             ProductId = product.Id,
-            Value = x.Value,
-            CategoryDetailId = x.CatDetailId
+            Value = x.DetailName!,
+            CategoryDetailId = x.DetailId.ToInt()
         });
-        var productColor = request.ProductColors.Select(x => new Domain.Entity.Product.ProductColor
+        foreach (var i in prodDetail)
+        {
+            await _work.GenericRepository<Domain.Entity.Product.ProductDetail>()
+                .AddAsync(i, CancellationToken.None); 
+        }
+     
+        var productColor = request.Product.ProductColors.Select(x => new Domain.Entity.Product.ProductColor
         {
             ProductId = product.Id,
             Priority = 1,
-            Days = x.Days,
-            OfferAmount = x.OfferAmount,
-            IsOffer = x.IsOffer,
-            GuaranteeId = x.GuaranteeId,
-            ColorId = x.ColorId,
-            Price = x.Price,
-            Minutes = x.Minutes,
-            Inventory = x.Inventory,
-            Hours = x.Hours,
+            GuaranteeId = x.Gu.ToInt(),
+            ColorId = x.ColorId.ToInt(),
+            Price = x.ColorPrice.ToDouble(),
+            Inventory = x.ColorInv.ToInt(),
         });
+        foreach (var i in productColor)
+        {
+            await _work.GenericRepository<Domain.Entity.Product.ProductColor>()
+                .AddAsync(i, CancellationToken.None); 
+        }
+   
+        if (request.Product.IsOffer)
+        {
+            var offer = new Domain.Entity.Product.Offer
+            {
+                Days = request.Product.Offer.Days.ToInt(),
+                ColorId = request.Product.Offer.ColorId.ToInt(),
+                Hours = request.Product.Offer.Hours.ToInt(),
+                Minutes = request.Product.Offer.Minutes.ToInt(),
+                OfferAmount = request.Product.Offer.OfferAmount.ToDouble(),
+            };
+            await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(offer, CancellationToken.None);
+            product.OfferId = offer.Id;
+            await _work.GenericRepository<Product>().UpdateAsync(product, CancellationToken.None);
+        }
     }
 }

@@ -284,6 +284,7 @@
                 <div class="input-group">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="ImageUri">
+                        <input type="text" id="Image64" hidden="hidden">
                         <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
                     </div>
                 </div>
@@ -541,6 +542,17 @@
     
 </script>
     <script>
+        document.getElementById('ImageUri').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64String = e.target.result.split(',')[1]; // Extract the base64 part
+                    $("#Image64").val(base64String);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
         var data =  [];
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const files = event.target.files;
@@ -587,9 +599,9 @@
                 // Push the values into the array as an object
                 collectedValues.push({
                     Gu: gu,
-                    colorInv: colorInv,
+                    ColorInv: colorInv,
                     ColorId: colorId,
-                    colorPrice: colorPrice
+                    ColorPrice: colorPrice
                 });
             } else {
                 alert('One or more elements not found in form:');
@@ -601,31 +613,49 @@
             const detailIdValue = formGroup.querySelector('input[name="DetailId"]').value;
             const detailNameValue = formGroup.querySelector('input[name="DetailVal"]').value;
             detailsArray.push({
-                detailId: detailIdValue,
-                detailName: detailNameValue
+                DetailId: detailIdValue,
+                DetailName: detailNameValue 
             });
         });
-        FormData = {
-            ProductColors: collectedValues,
-            ProductDetails: detailsArray,
+      
+        var request ={
             Title:$("#Title").val(),
             PersianTitle:$("#PersianTitle").val(),
+            ProductColors: collectedValues,
+            ProductDetails: detailsArray,
             Detail:$("#Detail").val(),
             MetaDesc:$("#MetaDesc").val(),
             MetaKeyword:$("#MetaKeyword").val(),
             FullDesc:document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
-            ImageUri:$("#ImageUri").val(),
+            ImageUri: $("#Image64").val(),
             ProductGift:$("#ProductGift").val(),
             DiscountAmount:$("#DiscountAmount").val(),
             BrandId:$("#BrandId").val(),
             SubCategoryId:$("#SubCatSelect").val(),
-            IsActive:$("#IsActive").val(),
+            ProductStatus:$("#ProductStatus").val(),
+            IsActive:document.getElementById('IsActive').checked,
             Images:data,
-            IsOffer:$("#IsOffer").val(),
-            IsOffer:$("#IsOffer").val(),
-            
-        }
-        console.dir(FormData)
+            IsOffer: document.getElementById('Offer').checked,
+            Offer:{
+                ColorId:$("#OfferColor").val(),
+                OfferAmount:$("#OfferAmount").val(),
+                Hours:$("#hours").val(),
+                Minutes:$("#minutes").val(),
+                Days:$("#days").val(),
+            }
+        };
+        console.dir(request)
+        $.ajax({
+            type: "Post",
+            data:{request} ,
+            url: "/Admin/InsertProduct",
+            success: function (data) {
+                alert("fdasfasfasfd");
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+            }
+        });
     }
 
     $(function () {
@@ -719,6 +749,7 @@
         });
     });
 
+    
     
     </script>
     <script>
