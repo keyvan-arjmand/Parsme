@@ -15,4 +15,5 @@ public class CategoryDetail : BaseEntity
     public string Option { get; set; } = string.Empty;
     public bool ShowInSearch { get; set; }
     public int Priority { get; set; }
+
 }

@@ -22,7 +22,7 @@ public class Product : BaseEntity
     public int? OfferId { get; set; }
     [ForeignKey(nameof(OfferId))] public Offer? Offer { get; set; }
     public int SubCategoryId { get; set; }
-
+    [ForeignKey(nameof(SubCategoryId))] public SubCategory SubCategory { get; set; } = default!;
     public ICollection<ImageGallery> ProductImages { get; set; } = default!;
     public ICollection<ProductDetail> ProductDetails { get; set; } = default!;
     public ICollection<ProductColor> ProductColors { get; set; } = default!;

@@ -63,7 +63,9 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.ToListAsync();
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                .ToListAsync();
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
 
             #endregion
 
@@ -75,17 +77,20 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrand(string title, string desc, IFormFile? logo)
+    public async Task<ActionResult> InsertBrand(string title, string desc, IFormFile? logo, int subCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
             Upload up = new Upload(_webHostEnvironment);
             var img = logo != null ? up.Uploadfile(logo, "Brand") : string.Empty;
+            var subCat = await _work.GenericRepository<SubCategory>().Table.FirstOrDefaultAsync(x => x.Id == subCatId);
+            if (subCat == null) throw new Exception();
             await _work.GenericRepository<Brand>().AddAsync(new Brand
             {
                 Desc = desc,
                 Title = title,
-                LogoUri = img
+                LogoUri = img,
+                SubCategoryId = subCat.Id
             }, CancellationToken.None);
             return RedirectToAction("Brand");
         }
@@ -411,7 +416,7 @@ public class AdminController : Controller
         request.Images = images;
         await _mediator.Send(new InsertProductCommand
         {
-           Product = request
+            Product = request
         });
         return RedirectToAction("ProductManage");
     }

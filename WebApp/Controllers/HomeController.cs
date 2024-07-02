@@ -19,20 +19,36 @@ public class HomeController : Controller
         _work = work;
     }
 
-    public async Task<IActionResult>Index()
+    public async Task<IActionResult> Index()
     {
-        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x=>x.ProductColors).ToListAsync();
+        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            .ToListAsync();
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
         return View();
     }
-    public async Task<IActionResult>ProductPage(int id)
+
+    public async Task<IActionResult> ProductPage(int id)
     {
-        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Where(x=>x.Id==id)
-            .Include(x=>x.Brand)
-            .Include(x=>x.ProductDetails)
-            .Include(x=>x.ProductImages)
-            .Include(x=>x.ProductColors).ToListAsync();
+        var product = await _work.GenericRepository<Product>().TableNoTracking
+            .Include(x => x.Brand)
+            .Include(x => x.Offer)
+            .Include(x => x.ProductDetails)
+            .Include(x => x.ProductImages)
+            .Include(x => x.SubCategory).ThenInclude(x => x.Category)
+            .Include(x => x.ProductColors).ThenInclude(x => x.Color).FirstOrDefaultAsync(x => x.Id == id);
+        foreach (var i in product.ProductDetails)
+        {
+            i.CategoryDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Id == i.CategoryDetailId);
+        }
+
+        ViewBag.Product = product;
         return View();
     }
+
     public IActionResult Privacy()
     {
         return View();

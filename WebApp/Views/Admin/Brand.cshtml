@@ -3,6 +3,7 @@
 @{
     Layout = "_LayoutAdmin";
     List<Brand> brands = ViewBag.Brands;
+    List<SubCategory> SubCats = ViewBag.SubCats;
 }
 
 <div class="content-header">
@@ -75,7 +76,25 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="form-group d-flex flex-column p-2">
+                                        <label for="exampleInputPassword1">نوع زیردسته</label>
+                                        <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example">
+                                            @{
+                                                int index= 0;
+                                                foreach (var i in SubCats)
+                                                {
+                                                    if (index == 0)
+                                                    {
+                                                        <option selected value="@i.Id">@i.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option  value="@i.Id">@i.Name</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
                                     <div class="d-flex flex-column align-content-center justify-content-center ">
                                             <div class="form-input">
                                                 <button type="submit" class="btn btn-primary">ثبت</button>
@@ -95,8 +114,9 @@
                                         <tr>
                                             <th class="text-center" style="width: 5%">id</th>
                                             <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 35%">توضیخات</th>
-                                            <th class="text-center" style="width: 30%">لوگو</th>
+                                            <th class="text-center" style="width: 25%">توضیخات</th>
+                                            <th class="text-center" style="width: 15%">زیر دسته</th>
+                                            <th class="text-center" style="width: 25%">لوگو</th>
                                             <th class="text-center" style="width: 10%">#</th>
                                         </tr>
                                         @{
@@ -119,6 +139,7 @@
                                                         <td class="text-center">@i.Id</td>
                                                         <td class="text-center">@i.Title</td>
                                                         <td class="text-center">@i.Desc</td>
+                                                        <td class="text-center">@i.SubCategory.Name</td>
                                                         <td class="text-center">
                                                             <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/>
                                                         </td>

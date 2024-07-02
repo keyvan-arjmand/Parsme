@@ -41,11 +41,16 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SubCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Brands");
                 });
@@ -349,6 +354,8 @@ namespace Domain.Migrations
 
                     b.HasIndex("OfferId");
 
+                    b.HasIndex("SubCategoryId");
+
                     b.ToTable("Products");
                 });
 
@@ -383,6 +390,10 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("GuaranteeId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductColors");
@@ -410,6 +421,8 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryDetailId");
 
                     b.HasIndex("ProductId");
 
@@ -725,6 +738,15 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
+                {
+                    b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
+                        .WithMany("Brands")
+                        .HasForeignKey("SubCategoryId");
+
+                    b.Navigation("SubCategory");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.CategoryDetail", b =>
                 {
                     b.HasOne("Domain.Entity.Product.Feature", "Feature")
@@ -765,27 +787,59 @@ namespace Domain.Migrations
                         .WithMany()
                         .HasForeignKey("OfferId");
 
+                    b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Brand");
 
                     b.Navigation("Offer");
+
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ProductColor", b =>
                 {
+                    b.HasOne("Domain.Entity.Product.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entity.Product.Guarantee", "Guarantee")
+                        .WithMany()
+                        .HasForeignKey("GuaranteeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entity.Product.Product", null)
                         .WithMany("ProductColors")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Color");
+
+                    b.Navigation("Guarantee");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ProductDetail", b =>
                 {
+                    b.HasOne("Domain.Entity.Product.CategoryDetail", "CategoryDetail")
+                        .WithMany()
+                        .HasForeignKey("CategoryDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entity.Product.Product", null)
                         .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CategoryDetail");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.SubCategory", b =>
@@ -886,6 +940,8 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Product.SubCategory", b =>
                 {
+                    b.Navigation("Brands");
+
                     b.Navigation("CategoryDetails");
                 });
 
