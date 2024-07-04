@@ -15,6 +15,8 @@ public class Product : BaseEntity
     public string FullDesc { get; set; } = string.Empty;
     public string ImageUri { get; set; } = string.Empty;
     public string ProductGift { get; set; } = string.Empty;
+    public string Strengths { get; set; } = string.Empty;
+    public string WeakPoints { get; set; } = string.Empty;
     public double DiscountAmount { get; set; }
 
     public int BrandId { get; set; }
@@ -30,6 +32,7 @@ public class Product : BaseEntity
     public ProductStatus ProductStatus { get; set; }
     public bool IsActive { get; set; }
     public bool IsOffer { get; set; }
+    public bool MomentaryOffer { get; set; }
 
 
     public DateTime InsertDate { get; set; }

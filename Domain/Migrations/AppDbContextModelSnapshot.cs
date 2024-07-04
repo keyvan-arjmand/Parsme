@@ -327,6 +327,9 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("MomentaryOffer")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("OfferId")
                         .HasColumnType("int");
 
@@ -341,10 +344,18 @@ namespace Domain.Migrations
                     b.Property<int>("ProductStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("Strengths")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeakPoints")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
