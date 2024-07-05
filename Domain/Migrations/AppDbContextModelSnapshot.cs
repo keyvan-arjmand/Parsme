@@ -272,9 +272,14 @@ namespace Domain.Migrations
                     b.Property<double>("OfferAmount")
                         .HasColumnType("float");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Offer");
+                    b.HasIndex("ColorId");
+
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>
@@ -784,6 +789,17 @@ namespace Domain.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.Offer", b =>
+                {
+                    b.HasOne("Domain.Entity.Product.Color", "Color")
+                        .WithMany()
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Color");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>

@@ -33,6 +33,9 @@
         max-width: 150px;
         height: auto;
     }
+    .is-invalid {
+        border: 2px solid red;
+    }
 </style>
 }
 
@@ -251,17 +254,17 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
             <div class="form-group w-50 p-3">
                 <label>عنوان</label>
-                <input id="Title" type="text" class="form-control">
+                <input id="Title" type="text" class="form-control" required="required">
             </div>
             <div class="form-group w-50 p-3">
                 <label>عنوان فارسی</label>
-                <input id="PersianTitle" type="text" class="form-control">
+                <input id="PersianTitle" type="text" class="form-control" required="required">
             </div>
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
                 <label>معرفی</label>
-                <textarea id="Detail" class="form-control"></textarea>
+                <textarea id="Detail" class="form-control" required="required"></textarea>
             </div>
             <div class="form-group w-50 p-3">
                 <label>توضیحات Meta</label>
@@ -271,11 +274,11 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
                 <label>تگ ها</label>
-                <input id="MetaKeyword" type="text" class="form-control">
+                <input id="MetaKeyword" type="text" class="form-control" required="required">
             </div>
             <div class="form-group w-50 p-3">
                 <label>هـدایا</label>
-                <input id="ProductGift" type="text" class="form-control">
+                <input id="ProductGift" type="text" class="form-control" required="required">
             </div>
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
@@ -289,30 +292,9 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group w-50 p-3 d-flex flex-column">
-                <label for="exampleInputPassword1">دسته بندی</label>
-                <select id="SubCatSelect" class="form-control select2" aria-label="Default select example">
-                    @{
-                        int index1 = 0;
-                        foreach (var i in subCategories)
-                        {
-                            if (index1 == 0)
-                            {
-                                <option selected value="@i.Id">@i.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Name</option>
-                            }
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">برند</label>
-                <select id="BrandId" class="form-control select2" aria-label="Default select example">
+                <select id="BrandId" class="form-control select2" aria-label="Default select example"  required="required">
                     @{
                         int index = 0;
                         foreach (var i in brands)
@@ -329,8 +311,28 @@
                     }
                 </select>
             </div>
-
-
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>نقاط قوت</label>
+                <textarea id="Strengths" class="form-control" required="required"></textarea>
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>نقاط ضعف</label>
+                <textarea id="WeakPoints" class="form-control" required="required"></textarea>
+            </div>
+        </div>
+        <div class="form-group w-50 p-3 d-flex flex-column">
+            <label for="exampleInputPassword1">دسته بندی</label>
+            <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
+                @{
+                    <option value="0">انتخاب</option>
+                foreach (var i in subCategories)
+                {
+                <option value="@i.Id">@i.Name</option>
+                }
+                }
+            </select>
         </div>
 
         <div>
@@ -371,7 +373,7 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">وضعیت کالا</label>
-                <select id="ProductStatus" class="form-control select2" aria-label="Default select example">
+                <select id="ProductStatus" class="form-control select2" aria-label="Default select example"  required="required">
                     <option selected value="0">موجود</option>
                     <option value="1">غیر موجود</option>
                     <option value="2">به زودی</option>
@@ -380,20 +382,28 @@
             </div>
             <div class="form-group w-50 p-3" id="">
                 <label>مبلغ تخفیف</label>
-                <input id="DiscountAmount" type="text" class="form-control">
+                <input id="DiscountAmount" type="text" class="form-control"  >
             </div>
 
         </div>
+    
         <div>
-            <div class="d-flex flex-column align-items-start p-3 m-3">
-                <label>پیشنهاد ویژه</label>
-                <input type="checkbox" class="form-check-input" id="Offer"/>
+            <div class="d-flex justify-content-start gap-5">
+                <div class="d-flex flex-column align-items-start p-3 m-3">
+                    <label>پیشنهاد لحظه ای</label>
+                    <input type="checkbox" class="form-check-input" id="MomentaryOffer" required="required"/>
+                </div>
+                <div class="d-flex flex-column align-items-start p-3 m-3">
+                    <label>پیشنهاد ویژه</label>
+                    <input type="checkbox" class="form-check-input" id="Offer" required="required"/>
+                </div>
             </div>
+          
             <div style="display: none !important" id="OfferForm">
                 <div class="d-flex justify-content-center p-3" style="gap: 20px">
                     <div class="form-group w-100  d-flex flex-column">
                         <label for="exampleInputPassword1">رنگ مورد نظر</label>
-                        <select id="OfferColor" class="form-control select2" aria-label="Default select example">
+                        <select id="OfferColor" class="form-control select2" aria-label="Default select example" required="required">
 
                         </select>
                     </div>
@@ -423,7 +433,7 @@
             <label>رنگ محصول</label>
             <div class="form-group w-100 p-3">
                 <select id="Colors" class="form-control select2 w-100" multiple="multiple"
-                        style="width: fit-content;min-width: 200px;text-align: right">
+                        style="width: fit-content;min-width: 200px;text-align: right" required="required">
                     @{
                         foreach (var i in colors)
                         {
@@ -509,7 +519,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="mb-3">
-                <textarea id="editor1" name="editor1" style="width: 100%">لطفا متن مورد نظر خودتان را وارد کنید</textarea>
+                <textarea id="editor1" name="editor1" style="width: 100%"></textarea>
             </div>
         </div>
     </div>
@@ -581,81 +591,101 @@
             }
         });
     function insertProduct() {
-        var forms = document.querySelectorAll('.color-opt');
-        var collectedValues = [];
-        forms.forEach(function(form) {
-            // Get the elements and check if they exist
-            var guElement = form.querySelector('select[name="Gu"]');
-            var colorInvElement = form.querySelector('input[name="colorInv"]');
-            var colorIdElement = form.querySelector('input[name="ColorId"]');
-            var colorPriceElement = form.querySelector('input[name="colorPrice"]');
+        const requiredFields = document.querySelectorAll('input[required], textarea[required], select[required]');
+        let allFilled = true;
 
-            if (guElement && colorInvElement && colorIdElement && colorPriceElement) {
-                var gu = guElement.value;
-                var colorInv = colorInvElement.value;
-                var colorId = colorIdElement.value;
-                var colorPrice = colorPriceElement.value;
-
-                // Push the values into the array as an object
-                collectedValues.push({
-                    Gu: gu,
-                    ColorInv: colorInv,
-                    ColorId: colorId,
-                    ColorPrice: colorPrice
-                });
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                allFilled = false;
+                field.classList.add('is-invalid'); // Add a class to highlight the empty field
             } else {
-                alert('One or more elements not found in form:');
+                field.classList.remove('is-invalid');
             }
         });
-        const detailGroups = document.querySelectorAll('.form-group.detail-form');
-        const detailsArray = [];
-        detailGroups.forEach(formGroup => {
-            const detailIdValue = formGroup.querySelector('input[name="DetailId"]').value;
-            const detailNameValue = formGroup.querySelector('input[name="DetailVal"]').value;
-            detailsArray.push({
-                DetailId: detailIdValue,
-                DetailName: detailNameValue 
+        if (!allFilled) {
+            alert('پر کردن تمامی فیلد های محصول اجباری میباشد');
+        }else{
+            var forms = document.querySelectorAll('.color-opt');
+            var collectedValues = [];
+            forms.forEach(function(form) {
+                // Get the elements and check if they exist
+                var guElement = form.querySelector('select[name="Gu"]');
+                var colorInvElement = form.querySelector('input[name="colorInv"]');
+                var colorIdElement = form.querySelector('input[name="ColorId"]');
+                var colorPriceElement = form.querySelector('input[name="colorPrice"]');
+
+                if (guElement && colorInvElement && colorIdElement && colorPriceElement) {
+                    var gu = guElement.value;
+                    var colorInv = colorInvElement.value;
+                    var colorId = colorIdElement.value;
+                    var colorPrice = colorPriceElement.value;
+
+                    // Push the values into the array as an object
+                    collectedValues.push({
+                        Gu: gu,
+                        ColorInv: colorInv,
+                        ColorId: colorId,
+                        ColorPrice: colorPrice
+                    });
+                } else {
+                    alert('One or more elements not found in form:');
+                }
             });
-        });
+            const detailGroups = document.querySelectorAll('.form-group.detail-form');
+            const detailsArray = [];
+            detailGroups.forEach(formGroup => {
+                const detailIdValue = formGroup.querySelector('input[name="DetailId"]').value;
+                const detailNameValue = formGroup.querySelector('input[name="DetailVal"]').value;
+                detailsArray.push({
+                    DetailId: detailIdValue,
+                    DetailName: detailNameValue
+                });
+            });
+
+            var request ={
+                Title:$("#Title").val(),
+                PersianTitle:$("#PersianTitle").val(),
+                ProductColors: collectedValues,
+                ProductDetails: detailsArray,
+                Detail:$("#Detail").val(),
+                MetaDesc:$("#MetaDesc").val(),
+                MetaKeyword:$("#MetaKeyword").val(),
+                FullDesc:document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
+                ImageUri: $("#Image64").val(),
+                ProductGift:$("#ProductGift").val(),
+                DiscountAmount:$("#DiscountAmount").val(),
+                BrandId:$("#BrandId").val(),
+                SubCategoryId:$("#SubCatSelect").val(),
+                ProductStatus:$("#ProductStatus").val(),
+                Strengths:$("#Strengths").val(),
+                WeakPoints:$("#WeakPoints").val(),
+                IsActive:document.getElementById('IsActive').checked,
+                Images:data,
+                IsOffer: document.getElementById('Offer').checked,
+                MomentaryOffer: document.getElementById('MomentaryOffer').checked,
+                Offer:{
+                    ColorId:$("#OfferColor").val(),
+                    OfferAmount:$("#OfferAmount").val(),
+                    Hours:$("#hours").val(),
+                    Minutes:$("#minutes").val(),
+                    Days:$("#days").val(),
+                }
+            };
+            console.dir(request)
+            $.ajax({
+                type: "Post",
+                data:{request} ,
+                url: "/Admin/InsertProduct",
+                success: function (data) {
+                    alert("عملیات موفقیت آمیز");
+                    window.href="/admin/productManage"
+                },
+                error: function (xhr) {
+                    alert("خطای داخلی در سرور");
+                }
+            });
+        }
       
-        var request ={
-            Title:$("#Title").val(),
-            PersianTitle:$("#PersianTitle").val(),
-            ProductColors: collectedValues,
-            ProductDetails: detailsArray,
-            Detail:$("#Detail").val(),
-            MetaDesc:$("#MetaDesc").val(),
-            MetaKeyword:$("#MetaKeyword").val(),
-            FullDesc:document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
-            ImageUri: $("#Image64").val(),
-            ProductGift:$("#ProductGift").val(),
-            DiscountAmount:$("#DiscountAmount").val(),
-            BrandId:$("#BrandId").val(),
-            SubCategoryId:$("#SubCatSelect").val(),
-            ProductStatus:$("#ProductStatus").val(),
-            IsActive:document.getElementById('IsActive').checked,
-            Images:data,
-            IsOffer: document.getElementById('Offer').checked,
-            Offer:{
-                ColorId:$("#OfferColor").val(),
-                OfferAmount:$("#OfferAmount").val(),
-                Hours:$("#hours").val(),
-                Minutes:$("#minutes").val(),
-                Days:$("#days").val(),
-            }
-        };
-        console.dir(request)
-        $.ajax({
-            type: "Post",
-            data:{request} ,
-            url: "/Admin/InsertProduct",
-            success: function (data) {
-                alert("fdasfasfasfd");
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
     }
 
     $(function () {

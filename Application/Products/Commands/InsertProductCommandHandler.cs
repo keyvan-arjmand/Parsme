@@ -43,6 +43,9 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
             ProductGift = request.Product.ProductGift!,
             ImageUri = request.Product.ImageUri,
             IsOffer = request.Product.IsOffer,
+            Strengths = request.Product.Strengths,
+            WeakPoints = request.Product.WeakPoints,
+            MomentaryOffer = request.Product.MomentaryOffer
         };
         await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
         var productGallery = request.Product.Images.Select(x => new ImageGallery
@@ -92,6 +95,7 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
                 Hours = request.Product.Offer.Hours.ToInt(),
                 Minutes = request.Product.Offer.Minutes.ToInt(),
                 OfferAmount = request.Product.Offer.OfferAmount.ToDouble(),
+                ProductId = product.Id
             };
             await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(offer, CancellationToken.None);
             product.OfferId = offer.Id;

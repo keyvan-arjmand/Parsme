@@ -77,7 +77,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrand(string title, string desc, IFormFile? logo, int subCatId)
+    public async Task<ActionResult> InsertBrand(string title, string? desc, IFormFile? logo, int subCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -87,8 +87,8 @@ public class AdminController : Controller
             if (subCat == null) throw new Exception();
             await _work.GenericRepository<Brand>().AddAsync(new Brand
             {
-                Desc = desc,
-                Title = title,
+                Desc = desc??string.Empty,
+                Title = title??string.Empty,
                 LogoUri = img,
                 SubCategoryId = subCat.Id
             }, CancellationToken.None);

@@ -6,7 +6,7 @@ namespace Domain.Entity.Product;
 public class ProductDetail : BaseEntity
 {
     public int CategoryDetailId { get; set; }
-    public CategoryDetail? CategoryDetail { get; set; } 
+    [ForeignKey(nameof(CategoryDetailId))] public CategoryDetail? CategoryDetail { get; set; }
     public int ProductId { get; set; }
     public string Value { get; set; } = string.Empty;
 }

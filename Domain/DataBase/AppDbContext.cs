@@ -37,6 +37,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<SubCategory> SubCategories { set; get; }
     public DbSet<State> States { set; get; }
     public DbSet<City> Cities { set; get; }
+    public DbSet<Offer> Offers { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

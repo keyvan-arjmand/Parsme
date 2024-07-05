@@ -20,6 +20,9 @@ public class Root
     public List<string> Images { get; set; }
     public bool IsOffer { get; set; }
     public Offer Offer { get; set; }
+    public string Strengths { get; set; } = string.Empty;
+    public string WeakPoints { get; set; } = string.Empty;
+    public bool MomentaryOffer { get; set; }
 }
 public class Offer
 {
