@@ -324,6 +324,9 @@ namespace Domain.Migrations
                     b.Property<bool>("IsOffer")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsShowIndex")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MetaDesc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

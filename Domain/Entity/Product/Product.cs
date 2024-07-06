@@ -32,6 +32,7 @@ public class Product : BaseEntity
     public ProductStatus ProductStatus { get; set; }
     public bool IsActive { get; set; }
     public bool IsOffer { get; set; }
+    public bool IsShowIndex { get; set; }
     public bool MomentaryOffer { get; set; }
 
 

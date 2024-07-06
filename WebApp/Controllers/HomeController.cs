@@ -21,6 +21,12 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+
+        ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            .Include(x => x.SubCategory).Where(x => x.IsShowIndex).Take(20).ToListAsync();
+        
+        ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            .Include(x => x.SubCategory).OrderBy(x=>x.InsertDate).Take(20).ToListAsync();
         ViewBag.OfferMoments =
             await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x=>x.ProductColors).ThenInclude(x=>x.Color)
