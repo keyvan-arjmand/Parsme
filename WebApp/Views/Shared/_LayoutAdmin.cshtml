@@ -181,7 +181,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
     <aside class="main-sidebar sidebar-dark-primary elevation-4" style="z-index: 999 !important;">
         <!-- Brand Logo -->
         <a href="" class="brand-link">
-            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="/Images/Banner/parsme-logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">پنل مدیریت</span>
         </a>
@@ -192,7 +192,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="@profile" class="img-circle elevation-2" alt="User Image">
+                        <img src="/assetsCli/images/man.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">@User.Identity.Name</a>
@@ -277,7 +277,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="@Url.Action("UserList", "Admin")" class="nav-link">
+                                    <a href="@Url.Action("ManageUser", "Admin")" class="nav-link">
                                         <i class="fa fa-users nav-icon"></i>
                                         <p>کاربران</p>
                                     </a>

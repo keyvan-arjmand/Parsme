@@ -41,14 +41,14 @@ Layout = null;
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
                                     <h4>ثبت نام در پارس می</h4>
-                                    <form action="#" class="form-account text-right">
+                                    <form  class="form-account text-right" asp-action="UserLogin" asp-controller="Home" method="post">
                                         <div class="form-account-title">
                                             <label for="phoneNumber">شماره موبایل</label>
-                                            <input type="text" class="number-email-input" id="phoneNumber" name="email-account">
+                                            <input type="text" class="number-email-input" id="phoneNumber" name="number">
                                         </div>
                                         <div class="form-account-title">
                                             <label for="password">رمز عبور</label>
-                                            <input type="password" id="password" class="password-input" name="password-account">
+                                            <input type="password" id="password" class="password-input" name="password">
                                         </div>
                                         <div class="form-auth-row">
                                             <label for="#" class="ui-checkbox mt-1">
@@ -58,7 +58,7 @@ Layout = null;
                                             <label for="remember" class="remember-me mr-0"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را مطالعه نموده و با کلیه موارد آن موافقم.</label>
                                         </div>
                                         <div class="form-row-account">
-                                            <button class="btn btn-primary btn-register" onclick="Register()">ثبت نام در پارس می</button>
+                                            <button class="btn btn-primary btn-register" type="submit">ثبت نام در پارس می</button>
                                         </div>
                                     </form>
                                 </div>
@@ -81,6 +81,19 @@ Layout = null;
 <!-- scroll_Progress------------------------->
 
 </body>
+
+<!-- file js---------------------------------------------------->
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="/assetsCli/js/vendor/wNumb.js"></script>
+<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 <script>
     function Register(){
         $.ajax({
@@ -96,16 +109,4 @@ Layout = null;
         });
     }
 </script>
-<!-- file js---------------------------------------------------->
-<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-<script src="/assetsCli/js/vendor/bootstrap.js"></script>
-<!-- plugin--/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-<script src="/assetsCli/js/vendor/wNumb.js"></script>
-<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-<!-- main js-/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
 </html>

@@ -3,6 +3,7 @@
 @{
     Layout = "_LayoutAdmin";
     List<Brand> brands = ViewBag.Brands;
+    List<Product> products = ViewBag.Products;
     List<SubCategory> subCategories = ViewBag.SubCats;
     List<Color> colors = ViewBag.Colors;
     List<Guarantee> Guarantees = ViewBag.Guarantee;
@@ -35,6 +36,14 @@
     }
     .is-invalid {
         border: 2px solid red;
+    }
+    .text-overflow-cat-card{
+        text-overflow: ellipsis;
+        width: auto;
+        overflow: hidden;
+        text-wrap: normal;
+        height: 60px;
+        direction: rtl;
     }
 </style>
 }
@@ -104,126 +113,36 @@
         </button>
     </div>
     <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap p-3">
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
+        @{
+            if (products.Count < 1)
+            {
+                <div>
+                    محصولی ثبت نشده
                 </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
-        <div class="card" style="width: 17rem;border-radius: 25px">
-            <img class="card-img-top"
-                 style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);"
-                 src="/Images/Product/مدال-ون-کیلیف-سنگ-سبز-AJ1627-5_2506-1024x1024.jpg"
-                 alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Title</h5>
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">Category</p>
-                    <p class="card-text">Colors</p>
-                </div>
-
-                <div class="d-flex justify-content-between ">
-                    <p class="card-text">موجودی:12</p>
-                    <a href="#" class="btn btn-primary">ویرایش</a>
-                </div>
-            </div>
-        </div>
+            }else{
+                foreach (var i in products)
+                {
+                    <div class="card" style="width: 13rem;border-radius: 25px">
+                        <img class="card-img-top"
+                             style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);width: 170px !important;"
+                             src="/Images/ProductImage/@i.ImageUri"
+                             alt="Card image cap" >
+                        <div class="card-body">
+                            <p class="text-overflow-cat-card">@i.PersianTitle</p>
+                            <div class="d-flex justify-content-between ">
+                                <p class="card-text">@i.Brand.Title</p>
+                                <p class="card-text">@i.SubCategory.Name</p>
+                            </div>
+                            <div class="d-flex justify-content-between ">
+                                <p class="card-text">موجودی:@i.ProductColors.Sum(x=>x.Inventory)</p>
+                                <a href="#" class="btn btn-primary">ویرایش</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+       
     </div>
 </div>
 <div class="tab-pane p-5" id="SubCategory">
@@ -396,6 +315,10 @@
                 <div class="d-flex flex-column align-items-start p-3 m-3">
                     <label>پیشنهاد ویژه</label>
                     <input type="checkbox" class="form-check-input" id="Offer" required="required"/>
+                </div>
+                <div class="d-flex flex-column align-items-start p-3 m-3">
+                    <label>نمایش در کالای پیشنهادی</label>
+                    <input type="checkbox" class="form-check-input" id="ShowIndex" required="required"/>
                 </div>
             </div>
           
@@ -660,6 +583,7 @@
                 Strengths:$("#Strengths").val(),
                 WeakPoints:$("#WeakPoints").val(),
                 IsActive:document.getElementById('IsActive').checked,
+                IsShowIndex:document.getElementById('ShowIndex').checked,
                 Images:data,
                 IsOffer: document.getElementById('Offer').checked,
                 MomentaryOffer: document.getElementById('MomentaryOffer').checked,

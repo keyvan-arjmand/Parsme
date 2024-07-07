@@ -137,7 +137,13 @@
                                                                 }
                                                             </td>
                                                             <td class="text-center">
-                                                                <span class="badge bg-warning text-muted">ویرایش</span>
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
+                                                                    <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
+                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive" hidden="hidden"/>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     }
@@ -237,7 +243,14 @@
                                                                 }
                                                             </td>
                                                             <td class="text-center">
-                                                                <span class="badge bg-warning text-muted">ویرایش</span>
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Name" hidden="hidden"/>
+                                                                    <input type="text" name="mDesc" class="mDesc" value="@i.CategoryId" hidden="hidden"/>
+                                                                    <input type="text" name="mLogo" class="mLogo" value="@i.IsActive" hidden="hidden"/>
+                                                                    <input type="text" name="mSubCategoryId" class="mSubCategoryId" value="@i." hidden="hidden"/>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     }

@@ -369,24 +369,24 @@ $(document).ready(function (e) {
         })
     });
     // add-to-cart
-    $('.btn-add-to-cart').on('click', function (event) {
-        event.preventDefault();
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 2000,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
-        Toast.fire({
-            icon: 'success',
-            title: 'به سبد خرید خود اضافه شد'
-        })
-    });
+    // $('.btn-add-to-cart').on('click', function (event) {
+    //     event.preventDefault();
+    //     const Toast = Swal.mixin({
+    //         toast: true,
+    //         position: 'top-end',
+    //         showConfirmButton: false,
+    //         timer: 2000,
+    //         didOpen: (toast) => {
+    //             toast.addEventListener('mouseenter', Swal.stopTimer)
+    //             toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //         }
+    //     })
+    //
+    //     Toast.fire({
+    //         icon: 'success',
+    //         title: 'به سبد خرید خود اضافه شد'
+    //     })
+    // });
     // compare
     $('.btn-compare').on('click', function (event) {
         event.preventDefault();

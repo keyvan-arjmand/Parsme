@@ -1,27 +1,14 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Product
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
     Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
+    ViewData["Title"] = "Home Page";
+    List<Product> products = ViewBag.Products;
     List<Product> basket = ViewBag.BasketProd;
-    Domain.Entity.User.User user = ViewBag.User;
+    List<Category> categories = ViewBag.Categories;
 }
 
-@section link
-{
-<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-<!-- plugin------------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-<!-- main-style--------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/main.css">
-<link rel="stylesheet" href="/assetsCli/css/responsive.css">
-}
+
 @section Header{
     <header class="header-main">
     <div class="d-block">
@@ -350,143 +337,345 @@
 
 }
 
+@section link
+{
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin-----------------"a-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style-------------"a-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+}
+
 <div class="container-main">
-    <div class="d-block">
-        <section class="profile-home">
-            <div class="col-lg">
-                <div class="post-item-profile order-1 d-block">
-                    <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                        <div class="sidebar-profile sidebar-navigation">
-                            <section class="profile-box">
-                                <header class="profile-box-header-inline">
-                                    <div class="profile-avatar user-avatar profile-img">
-                                        <img src="/assetsCli/images/man.png">
-                                    </div>
-                                </header>
-                                <footer class="profile-box-content-footer">
-                                    <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
-                                    <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
-                                    <div class="profile-box-tabs">
-                                        <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
-                                            <i
-                                                class="mdi mdi-logout-variant">
-                                            </i>خروج از حساب
-                                        </a>
-                                    </div>
-                                </footer>
-                            </section>
-                            <section class="profile-box">
-                                <ul class="profile-account-navs">
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("Profile")" class="active">
-                                            <i class="mdi mdi-account-outline"></i>
-                                            پروفایل
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserOrder")" class="">
-                                            <i class="mdi mdi-cart"></i>
-                                            همه سفارش ها
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserFav")" class="">
-                                            <i class="mdi mdi-heart"></i>
-                                            لیست علاقه مندی
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserAddress")" class="">
-                                            <i class="mdi mdi-map-outline"></i>
-                                            آدرس ها
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("ProfileDetail")" class="">
-                                            <i class="mdi mdi-tooltip-text-outline"></i>
-                                            اطلاعات حساب
-                                        </a>
-                                    </li>
-                                </ul>
-                            </section>
-                        </div>
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12 pl">
-                        <div class="profile-content">
-                            <div class="profile-stats">
-                                <table class="table table-profile">
-                                    <tbody>
-                                    <tr>
-                                        <td class="w-50">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </td>
-                                        <td>
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="profile">
-                                    <ul class="mb-0">
-                                        <li class="profile-item">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </li>
-                                    </ul>
+<div class="d-block">
+<div class="page-content page-row">
+<div class="main-row">
+<div id="breadcrumb">
+    <i class="mdi mdi-home"></i>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">خانه</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page"> محصولات</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- start sidebar--------------------->
+<div class="col-lg-3 col-md-3 col-xs-12 pr sticky-sidebar">
+    <div class="shop-archive-sidebar">
+        <div class="sidebar-archive mb-3">
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right" data-toggle="collapse"
+                                href="#headingOne" role="button" aria-expanded="false"
+                                aria-controls="headingOne">
+                            دسته بندی محصولات
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingOne">
+                            <div class="card-main mb-0">
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="rem ember" class="remember-me">همه</label>
                                 </div>
-                                <div class="profile-edit-action">
-                                    <a href="@Url.Action("ProfileDetail")" class="link-spoiler-edit btn btn-secondary">ویرایش اطلاعات</a>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">کالای دیجیتال</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">
+                                        آرایشی، بهداشتی و
+                                        سلامت
+                                    </label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">مد و پوشاک</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right" data-toggle="collapse"
+                                href="#headingTwo" role="button" aria-expanded="false"
+                                aria-controls="headingTwo">
+                            برند ها
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingTwo">
+                            <div class="card-main mb-0">
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">سامسونگ</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">اپل</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">نوکیا</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">هواوی</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">شیایومی</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">ال جی</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">سونی</label>
+                                </div>
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="1" name="login" id="remember">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">اچ تی سی</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right collapsed" data-toggle="collapse"
+                                href="#headingThree" role="button" aria-expanded="false"
+                                aria-controls="headingThree">
+                            محدوده قیمت
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingThree">
+                            <div class="card-main mb-0">
+                                <div class="box-data">
+                                    <form action="">
+                                        <div class="mt-5 mb-4">
+                                            <div id="slider-non-linear-step"></div>
+                                        </div>
+                                        <div class="filter-range mt-2 mb-2 pr">
+                                            <span>قیمت: </span>
+                                            <span class="example-val"
+                                                  id="slider-non-linear-step-value">
+                                            </span> تومان
+                                        </div>
+                                        <div class="mt-2 pl">
+                                            <button class="btn btn-range">
+                                                اعمال
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
+</div>
+<div class="col-lg-9 col-md-9 col-xs-12 pl">
+<div class="shop-archive-content mt-3 d-block">
+<div class="archive-header">
+    <h2 class="archive-header-title">آرشیو محصولات</h2>
+    <div class="sort-tabs mt-0 d-inline-block pr">
+        <h4>مرتب‌سازی بر اساس :</h4>
+    </div>
+    <div class="nav-sort-tabs-res">
+        <ul class="nav sort-tabs-options" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="Most-visited-tab" data-toggle="tab"
+                   href="#Most-visited" role="tab" aria-controls="Most-visited"
+                   aria-selected="true">
+                    پربازدیدترین
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Bestselling-tab" data-toggle="tab"
+                   href="#Bestselling" role="tab" aria-controls="Bestselling"
+                   aria-selected="false">
+                    پرفروش‌ترین‌
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Most-Popular-tab" data-toggle="tab"
+                   href="#Most-Popular" role="tab" aria-controls="Most-Popular"
+                   aria-selected="false">
+                    محبوب‌ترین
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="newest-tab" data-toggle="tab" href="#newest"
+                   role="tab" aria-controls="newest" aria-selected="false">
+                    جدیدترین
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="cheapest-tab" data-toggle="tab" href="#cheapest"
+                   role="tab" aria-controls="cheapest" aria-selected="false">
+                    ارزان‌ترین
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="most-expensive-tab" data-toggle="tab"
+                   href="#most-expensive" role="tab" aria-controls="most-expensive"
+                   aria-selected="false">
+                    گران‌ترین
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="product-items">
+<div class="tab-content" id="myTabContent">
+<div class="tab-pane fade show active" id="Most-visited" role="tabpanel"
+     aria-labelledby="Most-visited-tab">
+<div class="row">
+@{
+    if (products.Count > 0)
+    {
+        foreach (var i in products)
+        {
+            <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                <section class="product-box product product-type-simple">
+                    <div class="thumb">
+                        <a href="@Url.Action("ProductPage","Home",new {i.Id})" class="d-block">
+                            @if (i.IsOffer)
+                            {
+                                <div class="promotion-badge">فروش ویژه</div>
+
+                            }
+                            <div class="product-rate">
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                         
+                            <img src="/Images/ProductImage/@i.ImageUri">
+                        </a>
+                    </div>
+                    <div class="title">
+                        <a href="@Url.Action("ProductPage","Home",new {i.Id})">@i.PersianTitle</a>
+                    </div>
+                    <div class="price">
+                        <span class="amount">
+                     @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
+                            <span>تومان</span>
+                        </span>
+                    </div>
+                </section>
+            </div>
+
+        }
+    }
+    else
+    {
+        <div class="p-2 m-1 text-center">محصولی یافت نشد</div>
+    }
+}
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="pagination-product">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link active" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 @section script

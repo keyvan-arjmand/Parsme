@@ -3,11 +3,12 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
-    List<Product> basket = ViewBag.BasketProd;
-    Domain.Entity.User.User user = ViewBag.User;
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+Domain.Entity.User.User user = ViewBag.User;
 }
+
 
 @section link
 {
@@ -379,13 +380,13 @@
                             <section class="profile-box">
                                 <ul class="profile-account-navs">
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("Profile")" class="active">
+                                        <a href="@Url.Action("Profile")" class="">
                                             <i class="mdi mdi-account-outline"></i>
                                             پروفایل
                                         </a>
                                     </li>
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserOrder")" class="">
+                                        <a href="@Url.Action("UserOrder")" class="active">
                                             <i class="mdi mdi-cart"></i>
                                             همه سفارش ها
                                         </a>
@@ -415,70 +416,72 @@
                     <div class="col-lg-9 col-md-9 col-xs-12 pl">
                         <div class="profile-content">
                             <div class="profile-stats">
-                                <table class="table table-profile">
-                                    <tbody>
-                                    <tr>
-                                        <td class="w-50">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </td>
-                                        <td>
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="profile">
-                                    <ul class="mb-0">
-                                        <li class="profile-item">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="profile-edit-action">
-                                    <a href="@Url.Action("ProfileDetail")" class="link-spoiler-edit btn btn-secondary">ویرایش اطلاعات</a>
+                                <div class="table-orders">
+                                    <table class="table table-profile-orders">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">شماره سفارش</th>
+                                            <th scope="col">تاریخ ثبت سفارش</th>
+                                            <th scope="col">وضعیت</th>
+                                            <th scope="col">مجموع</th>
+                                            <th scope="col">جزئیات</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="order-code">DKC-57262900</td>
+                                            <td>سه شنبه 4 فروردین 99</td>
+                                            <td class="Waiting text-success">پرداخت شده</td>
+                                            <td class="totla">
+                                                <span class="amount">2,400,000
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                            <td class="detail"><a href="@Url.Action("OrderDetail")"
+                                                                  class="btn btn-secondary d-block">نمایش</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="profile-orders">
+                                        <div class="collapse">
+                                            <div class="profile-orders-item">
+                                                <div class="profile-orders-header">
+                                                    <a href="profile-order-2.html"
+                                                       class="profile-orders-header-details">
+                                                        <div class="profile-orders-header-summary">
+                                                            <div class="profile-orders-header-row">
+                                                                <span
+                                                                    class="profile-orders-header-id">DKC-79356178</span>
+                                                                <span
+                                                                    class="profile-orders-header-state text-success">پرداخت
+                                                                    شده</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <!-- <hr class="ui-separator"> -->
+                                                    <div class="profile-orders-header-data">
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-label">تاریخ ثبت سفارش</div>
+                                                            <div class="profile-info-value">سه شنبه 4 فروردین 99
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-label">مبلغ قابل پرداخت</div>
+                                                            <div class="profile-info-value">0</div>
+                                                        </div>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-label">مبلغ کل</div>
+                                                            <div class="profile-info-value">
+                                                                <span class="amount">2,400,000
+                                                                    <span>تومان</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -488,19 +491,18 @@
         </section>
     </div>
 </div>
-
 @section script
 {
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="/assetsCli/js/vendor/wNumb.js"></script>
+<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

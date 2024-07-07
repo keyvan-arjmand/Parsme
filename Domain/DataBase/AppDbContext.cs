@@ -38,6 +38,8 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<State> States { set; get; }
     public DbSet<City> Cities { set; get; }
     public DbSet<Offer> Offers { set; get; }
+    public DbSet<UserAddress> Addresses { set; get; }
+    public DbSet<UserFav> UserFavs { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

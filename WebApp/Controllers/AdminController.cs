@@ -87,8 +87,8 @@ public class AdminController : Controller
             if (subCat == null) throw new Exception();
             await _work.GenericRepository<Brand>().AddAsync(new Brand
             {
-                Desc = desc??string.Empty,
-                Title = title??string.Empty,
+                Desc = desc ?? string.Empty,
+                Title = title ?? string.Empty,
                 LogoUri = img,
                 SubCategoryId = subCat.Id
             }, CancellationToken.None);
@@ -280,6 +280,11 @@ public class AdminController : Controller
             #region ViewBag
 
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.ToListAsync();
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x=>x.Brand)
+                .Include(x=>x.SubCategory)
+                .Include(x=>x.ProductColors).ThenInclude(x=>x.Color)
+                .ToListAsync();
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
             ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.ToListAsync();
             ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
@@ -316,13 +321,13 @@ public class AdminController : Controller
     {
         var user = new Domain.Entity.User.User
         {
-            Family = "arj",
-            Name = "keyvan",
-            PhoneNumber = "09211129482",
-            Email = "keyvan.arjmnd@gmail.com",
+            Family = "الهی",
+            Name = "مهدی",
+            PhoneNumber = "09125955576",
+            Email = "",
             Password = "1111",
             InsertDate = DateTime.Now,
-            UserName = "09211129482",
+            UserName = "09125955576",
             SecurityStamp = string.Empty,
             CityId = 1
         };
@@ -392,6 +397,19 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> ManageUser(int page = 1)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Users = await _userManager.Users.ToListAsync();
+            return View();
+        }
+        else
+        {
+            return View("Index");
+        }
+    }
+
     public async Task<ActionResult> InsertProduct(Root request)
     {
         Upload up = new Upload(_webHostEnvironment);
@@ -438,38 +456,10 @@ public class AdminController : Controller
         if (User.Identity.IsAuthenticated)
         {
             ViewBag.productCount = _work.GenericRepository<Product>().TableNoTracking.Count();
+            ViewBag.Products = _work.GenericRepository<Product>().TableNoTracking.Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color).Count();
             ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.ToList();
-            // ViewBag.goldPrice = await _work.GenericRepository<GoldPrice>().TableNoTracking.FirstAsync();
-            // switch (string.IsNullOrWhiteSpace(search), catId <= 0)
-            // {
-            //     case (true, true):
-            //         ViewBag.products = await _work.GenericRepository<Product>().TableNoTracking
-            //             .Include(x => x.Category)
-            //             .Skip((page - 1) * 10).Take(10)
-            //             .ToListAsync();
-            //         break;
-            //     case (true, false):
-            //         ViewBag.products = await _work.GenericRepository<Product>().TableNoTracking
-            //             .Include(x => x.Category)
-            //             .Where(x => x.CategoryId == catId)
-            //             .Skip((page - 1) * 10).Take(10)
-            //             .ToListAsync();
-            //         break;
-            //     case (false, true):
-            //         ViewBag.products = await _work.GenericRepository<Product>().TableNoTracking
-            //             .Include(x => x.Category)
-            //             .Where(x => x.Name.Contains(search) || x.Brand.Contains(search))
-            //             .Skip((page - 1) * 10).Take(10)
-            //             .ToListAsync();
-            //         break;
-            //     case (false, false):
-            //         ViewBag.products = await _work.GenericRepository<Product>().TableNoTracking
-            //             .Include(x => x.Category)
-            //             .Where(x => x.Name.Contains(search) || x.Brand.Contains(search) && x.CategoryId == catId)
-            //             .Skip((page - 1) * 10).Take(10)
-            //             .ToListAsync();
-            //         break;
-            // }
+
 
             ViewBag.productsPage = page;
 

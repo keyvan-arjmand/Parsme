@@ -41,15 +41,15 @@
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
                                     <h4>ثبت نام در پارس می</h4>
-                                    <form action="#" class="form-account text-right">
+                                    <form class="form-account text-right" asp-action="UserLogin" asp-controller="Home" method="post">
                                         <div class="form-account-title">
                                             <label for="phoneNumber">شماره موبایل</label>
-                                            <input type="text" class="number-email-input" id="phoneNumber" name="email-account">
+                                            <input type="text" class="number-email-input" id="phoneNumber" name="phoneNumber">
                                         </div>
                                         <div class="form-account-title">
                                             <label for="password">رمز عبور</label>
                                             <a href="" class="account-link-password">رمز خود را فراموش کرده ام</a>
-                                            <input id="password" type="password" class="password-input" name="password-account">
+                                            <input id="password" type="password" class="password-input" name="password" >
                                         </div>
                                         <div class="form-auth-row">
                                             <label for="#" class="ui-checkbox mt-1">
@@ -59,7 +59,7 @@
                                             <label for="remember" class="remember-me mr-0">مرا به خاطر بسپار</label>
                                         </div>
                                         <div class="form-row-account">
-                                            <button class="btn btn-primary btn-register" onclick="Login()">ورود به حساب</button>
+                                            <button class="btn btn-primary btn-register" type="submit">ورود به حساب</button>
                                         </div>
                                     </form>
                                 </div>
@@ -82,21 +82,7 @@
 <!-- scroll_Progress------------------------->
 
 </body>
-<script>
-    function Login(){
-        $.ajax({
-            type: "Post",
-            data: {password: $('#password').val(),number:$('#phoneNumber').val()},
-            url: "/Home/UserLogin/",
-            success: function (data) {
-                window.location.href= "/home/Profile";
-            },
-            error: function (xhr) {
-                alert("نام کاربری یا رمز عبور معتبر نمیباشد");
-            }
-        });
-    }
-</script>
+
 <!-- file js---------------------------------------------------->
 <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
 <script src="/assetsCli/js/vendor/bootstrap.js"></script>
@@ -109,4 +95,20 @@
 <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
+<script>
+    function Login(){
+
+        $.ajax({
+            type: "Post",
+            data: {password: $('#password').val(),phoneNumber:$('#phoneNumber').val()},
+            url: "/Home/UserLogin",
+            success: function (data) {
+                window.location.href= "/admin/index";
+            },
+            error: function (xhr) {
+                alert("نام کاربری یا رمز عبور معتبر نمیباشد");
+            }
+        });
+    }
+</script>
 </html>

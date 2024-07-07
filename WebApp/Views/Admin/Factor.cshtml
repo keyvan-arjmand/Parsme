@@ -1,6 +1,5 @@
 ﻿@{
-    Layout = "_LayoutAdmin";
-    int productsPage = ViewBag.factorsPage;
+Layout = "_LayoutAdmin";
 }
 <div class="content-header">
     <div class="container-fluid">
@@ -21,65 +20,129 @@
 </div>
 
 <section class="content">
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-7">
-            <div class="card">
-                <div class="card-header no-border">
-                    <h3 class="card-title">بررسی اجمالی روزانه فروشگاه</h3>
-                    <div class="card-tools">
-                        <a href="#" class="btn btn-sm btn-tool">
-                            <i class="fa fa-download"></i>
-                        </a>
-                        <a href="#" class="btn btn-sm btn-tool">
-                            <i class="fa fa-bars"></i>
-                        </a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-7">
+                <div class="card">
+                    <div class="card-header no-border">
+                        <h3 class="card-title">بررسی اجمالی روزانه فروشگاه</h3>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fa fa-download"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-tool">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                        <p class="text-success text-xl">
-                            <i class="ion ion-ios-refresh-empty"></i>
-                        </p>
-                        <p class="d-flex flex-column text-left">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-xl">
+                                <i class="ion ion-ios-refresh-empty"></i>
+                            </p>
+                            <p class="d-flex flex-column text-left">
                             <span class="font-weight-bold">
                                 <i class="ion ion-android-arrow-up text-success"></i> 133
                             </span>
-                            <span class="text-muted">تعداد سفارش</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-                    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                        <p class="text-warning text-xl">
-                            <i class="ion ion-ios-cart-outline"></i>
-                        </p>
-                        <p class="d-flex flex-column text-left">
+                                <span class="text-muted">تعداد سفارش</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-warning text-xl">
+                                <i class="ion ion-ios-cart-outline"></i>
+                            </p>
+                            <p class="d-flex flex-column text-left">
                             <span class="font-weight-bold">
                                 <i class="ion ion-android-arrow-up text-warning"></i> 1,803,420,093,000
                             </span>
-                            <span class="text-muted">مبلغ فروش</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-                    <div class="d-flex justify-content-between align-items-center mb-0">
-                        <p class="text-danger text-xl">
-                            <i class="ion ion-ios-people-outline"></i>
-                        </p>
-                        <p class="d-flex flex-column text-left">
+                                <span class="text-muted">مبلغ فروش</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
+                        <div class="d-flex justify-content-between align-items-center mb-0">
+                            <p class="text-danger text-xl">
+                                <i class="ion ion-ios-people-outline"></i>
+                            </p>
+                            <p class="d-flex flex-column text-left">
                             <span class="font-weight-bold">
                                 <i class="ion ion-android-arrow-down text-danger"></i> 12
                             </span>
-                            <span class="text-muted">سفارش در انتظار</span>
-                        </p>
+                                <span class="text-muted">سفارش در انتظار</span>
+                            </p>
+                        </div>
+                        <!-- /.d-flex -->
                     </div>
-                    <!-- /.d-flex -->
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">نمودار دستبندی فروش</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="chart-responsive">
+                                    <canvas id="pieChart" height="213" width="284" style="width: 211px; height: 158px;"></canvas>
+                                </div>
+                                <!-- ./chart-responsive -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <ul class="chart-legend clearfix">
+                                    <li><i class="fa fa-circle-o text-danger"></i> لپتاپ</li>
+                                    <li><i class="fa fa-circle-o text-success"></i> موبایل</li>
+                                    <li><i class="fa fa-circle-o text-warning"></i> تبلت</li>
+                                </ul>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer bg-white p-0">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    انگشتر
+                                    <span class="float-left text-danger">
+                                    <i class="fa fa-arrow-down text-sm"></i>
+                                    ۱۲%
+                                </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    نیم ست
+                                    <span class="float-left text-success">
+                                    <i class="fa fa-arrow-up text-sm"></i> ۴%
+                                </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- /.footer -->
                 </div>
             </div>
         </div>
-        <div class="col-5">
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">نمودار دستبندی فروش</h3>
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">سفارشات</h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-widget="collapse">
@@ -91,190 +154,126 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="chart-responsive">
-                                <canvas id="pieChart" height="213" width="284" style="width: 211px; height: 158px;"></canvas>
-                            </div>
-                            <!-- ./chart-responsive -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <ul class="chart-legend clearfix">
-                                <li><i class="fa fa-circle-o text-danger"></i> دستبند</li>
-                                <li><i class="fa fa-circle-o text-success"></i> گردنبد</li>
-                                <li><i class="fa fa-circle-o text-warning"></i> نیم ست</li>
-                            </ul>
-                        </div>
-                        <!-- /.col -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                            <tr>
+                                <th>شماره فاکتور</th>
+                                <th>نام محصول</th>
+                                <th>نام و نام خانوادگی</th>
+                                <th>وضعیت</th>
+                                <th>#</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="pages/examples/invoice.html">80032</a>
+                                </td>
+                                <td>Iphone 13 pro</td>
+                                <td>
+                                    <p>
+                                        باقر احمدی
+
+                                    </p>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">ارسال شده</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-secondary">ویرایش</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="pages/examples/invoice.html">80032</a>
+                                </td>
+                                <td>Iphone 13 pro</td>
+                                <td>
+                                    <p>
+                                        باقر احمدی
+
+                                    </p>
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning">در حال پردازش</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-secondary">ویرایش</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="pages/examples/invoice.html">80032</a>
+                                </td>
+                                <td>Iphone 13 pro</td>
+                                <td>
+                                    <p>
+                                        باقر احمدی
+
+                                    </p>
+                                </td>
+                                <td>
+                                    <span class="badge badge-danger">تحویل داده شده</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-secondary">ویرایش</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="pages/examples/invoice.html">80032</a>
+                                </td>
+                                <td>Iphone 13 pro</td>
+                                <td>
+                                    <p>
+                                        باقر احمدی
+
+                                    </p>
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">در انتظار</span>
+                                </td>
+                                <td>
+                                    <a data-bs-toggle="modal" data-bs-target=".exampleModal" class="badge badge-secondary">ویرایش</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- /.row -->
+                    <!-- /.table-responsive -->
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer bg-white p-0">
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                انگشتر
-                                <span class="float-left text-danger">
-                                    <i class="fa fa-arrow-down text-sm"></i>
-                                    ۱۲%
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                نیم ست
-                                <span class="float-left text-success">
-                                    <i class="fa fa-arrow-up text-sm"></i> ۴%
-                                </span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-                <!-- /.footer -->
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title">سفارشات</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-widget="remove">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <thead>
-                        <tr>
-                            <th>شماره فاکتور</th>
-                            <th>نام محصول</th>
-                            <th>نام و نام خانوادگی</th>
-                            <th>وضعیت</th>
-                            <th>#</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <a href="pages/examples/invoice.html">80032</a>
-                            </td>
-                            <td>نیم ست طرح جدید</td>
-                            <td>
-                                <p>
-                                    باقر احمدی
-
-                                </p>
-                            </td>
-                            <td>
-                                <span class="badge badge-success">ارسال شده</span>
-                            </td>
-                            <td>
-                                <span class="badge badge-secondary">ویرایش</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="pages/examples/invoice.html">80032</a>
-                            </td>
-                            <td>نیم ست طرح جدید</td>
-                            <td>
-                                <p>
-                                    باقر احمدی
-
-                                </p>
-                            </td>
-                            <td>
-                                <span class="badge badge-warning">در حال پردازش</span>
-                            </td>
-                            <td>
-                                <span class="badge badge-secondary">ویرایش</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="pages/examples/invoice.html">80032</a>
-                            </td>
-                            <td>نیم ست طرح جدید</td>
-                            <td>
-                                <p>
-                                    باقر احمدی
-
-                                </p>
-                            </td>
-                            <td>
-                                <span class="badge badge-danger">تحویل داده شده</span>
-                            </td>
-                            <td>
-                                <span class="badge badge-secondary">ویرایش</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="pages/examples/invoice.html">80032</a>
-                            </td>
-                            <td>نیم ست طرح جدید</td>
-                            <td>
-                                <p>
-                                    باقر احمدی
-
-                                </p>
-                            </td>
-                            <td>
-                                <span class="badge badge-info">در انتظار</span>
-                            </td>
-                            <td>
-                                <a data-bs-toggle="modal" data-bs-target=".exampleModal" class="badge badge-secondary">ویرایش</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.table-responsive -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer clearfix">
-                <div class="d-flex justify-content-center">
-                    <nav aria-label="Page navigation example w-100">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage - 1 })" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            @for (var i = productsPage; i <= productsPage + 2; i++)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @i })">@i</a>
-                                </li>
-                            }
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage + 1 })" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                <div class="card-footer clearfix">
+                    <div class="d-flex justify-content-center">
+                        <nav aria-label="Page navigation example w-100">
+                            <ul class="pagination">
+                                @* <li class="page-item"> *@
+                                @*     <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage - 1 })" aria-label="Previous"> *@
+                                @*         <span aria-hidden="true">&laquo;</span> *@
+                                @*         <span class="sr-only">Previous</span> *@
+                                @*     </a> *@
+                                @* </li> *@
+                                @* @for (var i = productsPage; i <= productsPage + 2; i++) *@
+                                @* { *@
+                                @* <li class="page-item"> *@
+                                @*     <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @i })">@i</a> *@
+                                @* </li> *@
+                                @* } *@
+                                @* <li class="page-item"> *@
+                                @*     <a class="page-link" href="@Url.Action("Product", "Admin", new { page = @productsPage + 1 })" aria-label="Next"> *@
+                                @*         <span aria-hidden="true">&raquo;</span> *@
+                                @*         <span class="sr-only">Next</span> *@
+                                @*     </a> *@
+                                @* </li> *@
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </section>
 <!-- Modal -->
 <div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -304,9 +303,9 @@
                                 </tr>
                                 <tr>
                                     <td>1809</td>
-                                    <td>دستبند طرح جدید</td>
+                                    <td>Iphone 13 pro</td>
                                     <td>
-                                        دستبند
+                                      موبایل
                                     </td>
                                     <td>
                                         <span class="badge bg-primary">1</span>
@@ -314,9 +313,9 @@
                                 </tr>
                                 <tr>
                                     <td>1809</td>
-                                    <td>دستبند طرح جدید</td>
+                                    <td>Iphone 13 pro</td>
                                     <td>
-                                        دستبند
+                                      موبایل
                                     </td>
                                     <td>
                                         <span class="badge bg-primary">1</span>
@@ -324,9 +323,9 @@
                                 </tr>
                                 <tr>
                                     <td>1809</td>
-                                    <td>دستبند طرح جدید</td>
+                                    <td>Iphone 13 pro</td>
                                     <td>
-                                        دستبند
+                                      موبایل
                                     </td>
                                     <td>
                                         <span class="badge bg-primary">1</span>
@@ -334,9 +333,9 @@
                                 </tr>
                                 <tr>
                                     <td>1809</td>
-                                    <td>دستبند طرح جدید</td>
+                                    <td>Iphone 13 pro</td>
                                     <td>
-                                        دستبند
+                                      موبایل
                                     </td>
                                     <td>
                                         <span class="badge bg-primary">1</span>
@@ -344,9 +343,9 @@
                                 </tr>
                                 <tr>
                                     <td>1809</td>
-                                    <td>دستبند طرح جدید</td>
+                                    <td>Iphone 13 pro</td>
                                     <td>
-                                        دستبند
+                                      موبایل
                                     </td>
                                     <td>
                                         <span class="badge bg-primary">1</span>
@@ -360,7 +359,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">قیمت طلا</span>
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">قیمت </span>
                         <input type="text" id="Weight" style="border-radius: 5px 0px 0px 5px;" name="Weight" class="form-control weightP" required="required">
                     </div>
                     <div class="input-group p-3  m-2">
@@ -387,10 +386,10 @@
                     <div class="input-group p-3  m-2">
                         <select class="form-select catIdP" id="CategoryIdProd" name="CategoryId" required="required" style="max-height: 40px;">
                             @{
-                                <option selected="selected" value="1">در حال پردازش</option>
-                                <option value="2">ارسال شده</option>
-                                <option value="3">برگشت از فروش</option>
-                                <option value="3">پرداخت ناموفق</option>
+                            <option selected="selected" value="1">در حال پردازش</option>
+                            <option value="2">ارسال شده</option>
+                            <option value="3">برگشت از فروش</option>
+                            <option value="3">پرداخت ناموفق</option>
                             }
                         </select>
                     </div>

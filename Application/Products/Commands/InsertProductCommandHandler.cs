@@ -45,7 +45,8 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
             IsOffer = request.Product.IsOffer,
             Strengths = request.Product.Strengths,
             WeakPoints = request.Product.WeakPoints,
-            MomentaryOffer = request.Product.MomentaryOffer
+            MomentaryOffer = request.Product.MomentaryOffer,
+            IsShowIndex = request.Product.IsShowIndex
         };
         await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
         var productGallery = request.Product.Images.Select(x => new ImageGallery

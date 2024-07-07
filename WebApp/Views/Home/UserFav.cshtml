@@ -3,10 +3,11 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
-    List<Product> basket = ViewBag.BasketProd;
-    Domain.Entity.User.User user = ViewBag.User;
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+List<UserFav> favs = ViewBag.Fav;
+Domain.Entity.User.User user = ViewBag.User;
 }
 
 @section link
@@ -350,6 +351,7 @@
 
 }
 
+
 <div class="container-main">
     <div class="d-block">
         <section class="profile-home">
@@ -379,7 +381,7 @@
                             <section class="profile-box">
                                 <ul class="profile-account-navs">
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("Profile")" class="active">
+                                        <a href="@Url.Action("Profile")" class="">
                                             <i class="mdi mdi-account-outline"></i>
                                             پروفایل
                                         </a>
@@ -391,7 +393,7 @@
                                         </a>
                                     </li>
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserFav")" class="">
+                                        <a href="@Url.Action("UserFav")" class="active">
                                             <i class="mdi mdi-heart"></i>
                                             لیست علاقه مندی
                                         </a>
@@ -415,70 +417,66 @@
                     <div class="col-lg-9 col-md-9 col-xs-12 pl">
                         <div class="profile-content">
                             <div class="profile-stats">
-                                <table class="table table-profile">
-                                    <tbody>
-                                    <tr>
-                                        <td class="w-50">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </td>
-                                        <td>
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="profile">
-                                    <ul class="mb-0">
-                                        <li class="profile-item">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="profile-edit-action">
-                                    <a href="@Url.Action("ProfileDetail")" class="link-spoiler-edit btn btn-secondary">ویرایش اطلاعات</a>
+                                <div class="table-favorites">
+                                    <table class="table ns-table table-profile-favorites">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" width="50"> </th>
+                                            <th scope="col">نام محصول</th>
+                                            <th scope="col">قیمت</th>
+                                            <th class="actions-th"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @{
+                                        if (favs.Count > 0)
+                                        {
+                                            foreach (var i in favs)
+                                            {
+                                                <tr>
+
+                                                    <th scope="row">
+                                                        <div class="favorites-product-img">
+                                                            <img src="/Images/ProductImage/@i.Product.ImageUri">
+                                                            <div class="product-rate">
+                                                                <i class="fa fa-star active"></i>
+                                                                <i class="fa fa-star active"></i>
+                                                                <i class="fa fa-star active"></i>
+                                                                <i class="fa fa-star active"></i>
+                                                                <i class="fa fa-star active"></i>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        <a href="#">@i.Product.PersianTitle</a>
+                                                    </td>
+                                                    <td>
+                                                        <span class="amount">   @i.Product.ProductColors.FirstOrDefault().Price.DiscountProduct(i.Product.IsOffer ? i.Product.Offer.OfferAmount : i.Product.DiscountAmount)
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-left actions">
+                                                        <a href="#" class="remove-product">
+                                                            <i
+                                                                class="mdi mdi-close"></i></a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        <tr class="spacer"></tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <th>یافت نشد</th>
+                                            </tr>
+                                        }
+                                        }
+                              
+                                 
+                                        </tbody>
+                                    </table>
+                            
                                 </div>
                             </div>
                         </div>
@@ -488,7 +486,6 @@
         </section>
     </div>
 </div>
-
 @section script
 {
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>

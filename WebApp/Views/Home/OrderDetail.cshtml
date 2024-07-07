@@ -1,15 +1,27 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Product
-@using Domain.Entity.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_Layout";
-    List<Product> basket = ViewBag.BasketProd;
     List<Category> categories = ViewBag.Categories;
-    List<UserAddress> userAddresses = ViewBag.Address;
+    List<Product> basket = ViewBag.BasketProd;
+    Domain.Entity.User.User user = ViewBag.User;
 }
 
+@section link
+{
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+}
 @section Header{
 <header class="header-main">
     <div class="d-block">
@@ -338,249 +350,172 @@
 
 }
 
-@section link
-{
-    <!-- font---------------------------------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin------------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style--------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/main.css">
-    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
-}
-
-@if (basket.Count < 1)
-{
-    <div class="container-main">
-        <div class="d-block">
-            <div class="main-row">
-                <section class="cart-home">
-                    <div class="post-item-cart d-block order-2">
-                        <div class="content-page">
-                            <div class="cart-form">
-                                <div class="cart-empty text-center d-block">
-                                    <div class="cart-empty-img mb-4 mt-4">
-                                        <img src="/assetsCli/images/shopping-cart.png">
+<div class="container-main">
+    <div class="d-block">
+        <section class="profile-home">
+            <div class="col-lg">
+                <div class="post-item-profile order-1 d-block">
+                    <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                        <div class="sidebar-profile sidebar-navigation">
+                            <section class="profile-box">
+                                <header class="profile-box-header-inline">
+                                    <div class="profile-avatar user-avatar profile-img">
+                                        <img src="/assetsCli/images/man.png">
                                     </div>
-                                    <p class="cart-empty-title">سبد خرید شما در حال حاضر خالی است.</p>
-                                    <a href="@Url.Action("Profile", "Home")" class="btn account-btn btn-primary">ورود به حساب کاربری</a>
-                                    <div class="return-to-shop">
-                                        <a href="@Url.Action("Index", "Home")" class="backward btn btn-secondary">بازگشت به صفحه اصلی</a>
+                                </header>
+                                <footer class="profile-box-content-footer">
+                                    <span class="profile-box-nameuser">@user.Name @user.Family</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
+                                    <div class="profile-box-tabs">
+                                        <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
+                                            <i
+                                                class="mdi mdi-logout-variant">
+                                            </i>خروج از حساب
+                                        </a>
                                     </div>
-                                </div>
-                            </div>
+                                </footer>
+                            </section>
+                            <section class="profile-box">
+                                <ul class="profile-account-navs">
+                                    <li class="profile-account-nav-item navigation-link-dashboard">
+                                        <a href="@Url.Action("Profile")" class="">
+                                            <i class="mdi mdi-account-outline"></i>
+                                            پروفایل
+                                        </a>
+                                    </li>
+                                    <li class="profile-account-nav-item navigation-link-dashboard">
+                                        <a href="@Url.Action("UserOrder")" class="active">
+                                            <i class="mdi mdi-cart"></i>
+                                            همه سفارش ها
+                                        </a>
+                                    </li>
+                                    <li class="profile-account-nav-item navigation-link-dashboard">
+                                        <a href="@Url.Action("UserFav")" class="">
+                                            <i class="mdi mdi-heart"></i>
+                                            لیست علاقه مندی
+                                        </a>
+                                    </li>
+                                    <li class="profile-account-nav-item navigation-link-dashboard">
+                                        <a href="@Url.Action("UserAddress")" class="">
+                                            <i class="mdi mdi-map-outline"></i>
+                                            آدرس ها
+                                        </a>
+                                    </li>
+                                    <li class="profile-account-nav-item navigation-link-dashboard">
+                                        <a href="@Url.Action("ProfileDetail")" class="">
+                                            <i class="mdi mdi-tooltip-text-outline"></i>
+                                            اطلاعات حساب
+                                        </a>
+                                    </li>
+                                </ul>
+                            </section>
                         </div>
                     </div>
-                </section>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="container-main">
-        <div class="d-block">
-            <div class="main-row">
-                <div id="breadcrumb">
-                    <i class="mdi mdi-home"></i>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="@Url.Action("Index", "Home")">خانه</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">سبد خرید</li>
-                        </ol>
-                    </nav>
-                </div>
-                <section class="cart-home">
-                    <div class="post-item-cart d-block order-2">
-                        <div class="content-page">
-                            <div class="cart-form">
-                                <form action="#" class="c-form">
-                                    <table class="table-cart cart table table-borderless">
+                    <div class="col-lg-9 col-md-9 col-xs-12 pl">
+                        <div class="profile-content">
+                            <div class="profile-stats">
+                                <div class="table-order-view">
+                                    <h2 class="order-view-title mt-4 mb-3">جزییات سفارش </h2>
+                                    <table class="table table-borderless">
                                         <thead>
                                         <tr>
-                                            <th scope="col" class="product-cart-name">نام محصول</th>
-                                            <th scope="col" class="product-cart-price">قیمت</th>
-                                            <th scope="col" class="product-cart-quantity">تعداد </th>
-                                            <th scope="col" class="product-cart-Total">مجموع</th>
+                                            <th scope="col">نام محصول</th>
+                                            <th scope="col">مجموع</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @{
-                                            foreach (var i in basket)
-                                            {
-                                                <tr>
-                                                    <th scope="row" class="product-cart-name">
-                                                        <div class="product-thumbnail-img">
-                                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                                                <img src="/Images/ProductImage/@i.ImageUri">
-                                                            </a>
-                                                            <div class="product-remove">
-                                                                <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="remove">
-                                                                    <i class="mdi mdi-close"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-title">
-                                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                                                @i.PersianTitle
-                                                            </a>
-                                                            <div class="variation">
-                                                                <div class="variant-color">
-                                                                    <span class="variant-color-title">@i.ProductColors.FirstOrDefault().Color.Title</span>
-                                                                    <div style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode" class="variant-shape"></div>
-                                                                </div>
-                                                                <div class="variant-guarantee">
-                                                                    <i class="mdi mdi-check"></i>
-                                                                    @i.ProductColors.FirstOrDefault().Guarantee.Title
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </th>
-                                               
-                                                    <td class="product-cart-price">
-                                                        <span class="amount">
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </td>
-                                                    <td class="product-cart-quantity">
-                                                        <div class="required-number before">
-                                                            <div class="quantity">
-                                                                <input type="number" min="1" max="100" step="1" value="1">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-cart-Total">
-                                                        <span class="amount">
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-
+                                        <tr>
+                                            <td class="product-name">گوشی موبایل اپل مدل iPhone 13 CH دو سیم‌ کارت ظرفیت 256 گیگابایت و رم 4 گیگابایت - نات اکتیو</td>
+                                            <td class="product-total">
+                                                <span class="amount">
+                                                    <span>تومان</span>
+                                                    40,000,000
+                                                </span>
+                                            </td>
+                                        </tr>
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th scope="row">مجموع:</th>
+                                            <td>
+                                                <span class="amount">
+                                                    <span>تومان</span>
+                                                    40,000,000
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">حمل و نقل:</th>
+                                            <td>حمل و نقل رایگان</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">روش پرداخت:</th>
+                                            <td>انتقال مستقیم بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">تعداد</th>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">قیمت نهایی:</th>
+                                            <td>
+                                                <span class="amount">
+                                                    <span>تومان</span>
+                                                   40,000,000
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
                                     </table>
-                                </form>
-                                <div class="cart-collaterals">
-                                    <div class="totals d-block">
-                                        <h3 class="Total-cart-total">مجموع کل سبد خرید</h3>
-                                        <div class="checkout-summary">
-                                            <ul class="checkout-summary-summary">
-                                                <li class="cart-subtotal">
-                                                    <span class="amount">قیمت کل</span>
-                                                    <span> @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0") تومان</span>
-                                                </li>
-                                                <li class="shipping-totals">
-                                                    <span class="amount">حمل و نقل</span>
-                                                    <div class="shipping-totals-item">
-                                                        <div class="shipping-totals-outline">
-                                                            <label for="#" class="outline-radio">
-                                                                <input type="radio" name="payment_method"
-                                                                       id="payment-option-online" checked="checked">
-                                                                <span class="outline-radio-check"></span>
-                                                            </label>
-                                                            <label for="#" class="shipping-totals-title-row">
-                                                                <div class="shipping-totals-title">
-                                                                    حمل و نقل رایگان
-                                                                </div>
-                                                            </label>
+                                    <br>
+                                    <br>
+                                    <div class="order-view-customer">
+                                        <div class="box-header">
+                                            <span class="box-title">نشانی ما</span>
+                                        </div>
+                                        <div class="profile-address-item">
+                                            <div class="profile-address-content">
+                                                <ul class="profile-address-info">
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <span class="title-address">آدرس : </span>
+                                                            خراسان شمالی، بجنورد
                                                         </div>
-                                                        <div class="shipping-totals-outline">
-                                                            <label for="#" class="outline-radio">
-                                                                <input type="radio" name="payment_method"
-                                                                       id="payment-option-online">
-                                                                <span class="outline-radio-check"></span>
-                                                            </label>
-                                                            <label for="#" class="shipping-totals-title-row">
-                                                                <div class="shipping-totals-title">
-                                                                    حمل و نقل معمولی:
-                                                                    20,000 تومان
-                                                                </div>
-                                                            </label>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <span class="title-address">ایمیل : </span>
+                                                            info@digismart.com
                                                         </div>
-                                                        @{
-                                                            if (userAddresses.Count < 0)
-                                                            {
-                                                                <span class="shipping-destination">
-                                                                 ادرس ثبت شده یافت شند
-                                                                </span>
-                                                            }
-                                                            else
-                                                            {
-                                                                foreach (var a in userAddresses)
-                                                                {
-                                                                    <div class="shipping-totals-outline">
-                                                                        <label for="#" class="outline-radio">
-                                                                            <input type="radio" name="payment_method1"
-                                                                                   id="payment-option-online">
-                                                                            <span class="outline-radio-check"></span>
-                                                                        </label>
-                                                                        <label for="#" class="shipping-totals-title-row">
-                                                                            <div class="shipping-totals-title">
-                                                                               @a.Address
-                                                                            </div>
-                                                                        </label>
-                                                                    </div>
-                                                                }
-                                                              
-                                                            }
-                                                        }
-                                                  
-                                                    </div>
-                                                </li>
-                                                <li class="order-total">
-                                                    <span class="amount"> مجموع</span>
-                                                    <span> @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0") تومان</span>
-                                                </li>
-                                                <li class="discount-code">
-                                                    <div class=" align-items-center">
-                                                        <div class="col-md-7 pr mt-5">
-                                                            <div class="coupon">
-                                                                <form action="#">
-                                                                    <input type="text" name="input-coupon"
-                                                                           class="input-coupon-code"
-                                                                           placeholder="كد تخفیف:">
-                                                                    <button class="btn btn-coupon"
-                                                                            type="submit">
-                                                                        اعمال
-                                                                    </button>
-                                                                </form>
-                                                            </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <span class="title-address">شماره تلفن : </span>
+                                                            0991*******
                                                         </div>
-                                                        <div class="col-md-2 pl mt-5">
-                                                            <div class="proceed-to-checkout">
-                                                                <a href="#" class="checkout-button d-block">
-                                                                    تسویه
-                                                                    حساب
-                                                                </a>
-                                                            </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <span class="title-address">کد پستی : </span>
+                                                            945789651235
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
-}
-
+</div>
 @section script
 {
-    <!-- file js---------------------------------------------------->
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="/assetsCli/js/vendor/bootstrap.js"></script>
     <!-- plugin--/assetsCli--------------------------------------------->

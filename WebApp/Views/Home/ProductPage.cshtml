@@ -55,7 +55,7 @@
                                         foreach (var i in categories)
                                         {
                                             <li>
-                                                <a href="#">
+                                                <a href="">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     @i.
                                                     <button class="btn btn-light btn-continue-search" type="submit">
@@ -100,7 +100,7 @@
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             <li class="account-item">
-                                                <a href="#" class="account-link">خروج</a>
+                                                <a href="@Url.Action("Logout")" class="account-link">خروج</a>
                                             </li>
                                         }
 
@@ -137,7 +137,7 @@
                                                 @foreach (var b in q.Brands)
                                                 {
                                                     <li class="menu-mega-item-three">
-                                                        <a href="#">
+                                                        <a href="@Url.Action("GetByBrand","Home",new {b.Id})">
                                                             @b.Title
                                                         </a>
                                                     </li>
@@ -154,7 +154,7 @@
                     }
                     <li class="divider-space-card">
                         <div class="header-cart-basket">
-                            <a href="@Url.Action("Basket","Home")" class="cart-basket-box">
+                            <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
                                 <span class="icon-cart">
                                     <i class="mdi mdi-shopping"></i>
                                 </span>
@@ -165,78 +165,78 @@
                                 </span>
                                 <span class="count-cart">@basket.Count</span>
                             </a>
-                            @if (basket.Count >0)
+                            @if (basket.Count > 0)
                             {
-                                     <div class="widget-shopping-cart">
-                                <div class="widget-shopping-cart-content">
-                                    <div class="wrapper">
-                                        <div class="scrollbar" id="style-1">
-                                            <div class="force-overflow">
-                                                <ul class="product-list-widget">
-                                                    @{
-                                                    if (basket.Count > 0)
-                                                    {
-                                                    @foreach (var i in basket)
-                                                    {
-                                                    <li class="mini-cart-item">
-                                                        <div class="mini-cart-item-content">
-                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
-                                                                <i class="mdi mdi-close"></i>
-                                                            </a>
-                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
-                                                                <img src="/Images/ProductImage/@i.ImageUri">
-                                                            </a>
-                                                            <span class="product-name-card">
-                                                                            @i.PersianTitle
-                                                                        </span>
-                                                            <div class="header-basket-list-item-color-badge">
-                                                                رنگ:
-                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
-                                                            </div>
-                                                            <div class="quantity">
-                                                                            <span class="quantity-Price-amount">
-                                                                                @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
-                                                                                <span>تومان</span>
+                                <div class="widget-shopping-cart">
+                                    <div class="widget-shopping-cart-content">
+                                        <div class="wrapper">
+                                            <div class="scrollbar" id="style-1">
+                                                <div class="force-overflow">
+                                                    <ul class="product-list-widget">
+                                                        @{
+                                                            if (basket.Count > 0)
+                                                            {
+                                                                @foreach (var i in basket)
+                                                                {
+                                                                    <li class="mini-cart-item">
+                                                                        <div class="mini-cart-item-content">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
+                                                                                <i class="mdi mdi-close"></i>
+                                                                            </a>
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                                <img src="/Images/ProductImage/@i.ImageUri">
+                                                                            </a>
+                                                                            <span class="product-name-card">
+                                                                                @i.PersianTitle
                                                                             </span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <li class="mini-cart-item">
-                                                        <div class="mini-cart-item-content">
-                                                                    <span class="product-name-card">
-                                                                        سبد خالی
-                                                                    </span>
+                                                                            <div class="header-basket-list-item-color-badge">
+                                                                                رنگ:
+                                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
+                                                                            </div>
+                                                                            <div class="quantity">
+                                                                                <span class="quantity-Price-amount">
+                                                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
+                                                                                    <span>تومان</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="mini-cart-item">
+                                                                    <div class="mini-cart-item-content">
+                                                                        <span class="product-name-card">
+                                                                            سبد خالی
+                                                                        </span>
 
-                                                        </div>
-                                                    </li>
-                                                    }
-                                                    }
+                                                                    </div>
+                                                                </li>
+                                                            }
+                                                        }
 
 
-                                                </ul>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="mini-card-total">
-                                        <strong>قیمت کل : </strong>
-                                        <span class="price-total">
-                                            @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
-                                            <span>تومان</span>
-                                        </span>
-                                    </div>
-                                    <div class="mini-card-button">
-                                        <a href="@Url.Action("Basket","Home")" class="view-card">مشاهده سبد خرید</a>
+                                        <div class="mini-card-total">
+                                            <strong>قیمت کل : </strong>
+                                            <span class="price-total">
+                                                @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                                <span>تومان</span>
+                                            </span>
+                                        </div>
+                                        <div class="mini-card-button">
+                                            <a href="@Url.Action("Basket", "Home")" class="view-card">مشاهده سبد خرید</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
-                       
+
                         </div>
-                     
+
                     </li>
                 </ul>
             </div>
@@ -248,7 +248,7 @@
             <div class="header-cover"></div>
             <div class="logo-wrap">
                 <a class="logo-icon" href="#">
-                    <img alt="logo-icon" src="/assetsCli/images/logo.png" width="40">
+                    <img alt="logo-icon" src="/Images/Banner/parsme-logo.png" width="40">
                 </a>
             </div>
         </div>
@@ -272,7 +272,7 @@
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="#" class="category-level-3">@b.Title</a>
+                                                    <a href="@Url.Action("GetByBrand","Home",new {b.Id})" class="category-level-3">@b.Title</a>
                                                 </li>
                                             }
 
@@ -382,7 +382,7 @@
                 <div>
                     <ul class="gallery-actions">
                         <li>
-                            <a href="#" class="btn-option add-product-wishes">
+                            <a href="@Url.Action("AddToFav","Home",new {prod.Id})" class="btn-option ">
                                 <i class="mdi mdi-heart-outline"></i>
                                 <span>محبوب</span>
                             </a>
@@ -417,13 +417,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="Three-dimensional">
-                            <a href=""
-                               class="btn-option btn-compare">
-                                <i class="mdi mdi-compare"></i>
-                                <span>مقایسه</span>
-                            </a>
-                        </li>
+                   
                     </ul>
                 </div>
             </div>
@@ -598,21 +592,14 @@
                                         </div>
                                     }
 
-                                    <div class="product-seller-row guarantee">
-                                        <span class="title mt-3"> تعداد:</span>
-                                        <div class="quantity pl">
-                                            <input type="number" min="1" max="100" step="1" value="1">
-                                            <div class="quantity-nav">
-                                                <div class="quantity-button quantity-up">+</div>
-                                                <div class="quantity-button quantity-down">-</div>
+                                    <a href="@Url.Action("AddToBasket", "Home", new { id = i.Id })">
+                                        <div class="product-seller-row">
+                                            <div class="btn-add-to-cart btn btn-primary">
+                                                <span class="">افزودن به سبد خرید</span>
+
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="product-seller-row add-to-cart">
-                                        <a href="@Url.Action("AddToBasket", "Home", new { id = i.Id })" class="btn-add-to-cart btn btn-primary">
-                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
-                                        </a>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -662,11 +649,14 @@
                                         </div>
                                     }
 
-                                    <div class="product-seller-row add-to-cart">
-                                        <a href="@Url.Action("AddToBasket", "Home", new { id = i.Id })" class="btn-add-to-cart btn btn-primary">
-                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
-                                        </a>
-                                    </div>
+                                    <a href="@Url.Action("AddToBasket", "Home", new { id = i.Id })">
+                                        <div class="product-seller-row">
+                                            <div class="btn-add-to-cart btn btn-primary">
+                                                <span class="">افزودن به سبد خرید</span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

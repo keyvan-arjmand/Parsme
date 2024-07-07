@@ -1,12 +1,15 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Product
+@using Domain.Entity.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
-    List<Product> basket = ViewBag.BasketProd;
-    Domain.Entity.User.User user = ViewBag.User;
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+List<UserAddress> addresses = ViewBag.Address;
+List<City> cities = ViewBag.City;
+Domain.Entity.User.User user = ViewBag.User;
 }
 
 @section link
@@ -22,6 +25,8 @@
 <link rel="stylesheet" href="/assetsCli/css/main.css">
 <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
+
+
 @section Header{
     <header class="header-main">
     <div class="d-block">
@@ -379,7 +384,7 @@
                             <section class="profile-box">
                                 <ul class="profile-account-navs">
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("Profile")" class="active">
+                                        <a href="@Url.Action("Profile")" class="">
                                             <i class="mdi mdi-account-outline"></i>
                                             پروفایل
                                         </a>
@@ -397,7 +402,7 @@
                                         </a>
                                     </li>
                                     <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserAddress")" class="">
+                                        <a href="@Url.Action("UserAddress")" class="active">
                                             <i class="mdi mdi-map-outline"></i>
                                             آدرس ها
                                         </a>
@@ -415,70 +420,55 @@
                     <div class="col-lg-9 col-md-9 col-xs-12 pl">
                         <div class="profile-content">
                             <div class="profile-stats">
-                                <table class="table table-profile">
-                                    <tbody>
-                                    <tr>
-                                        <td class="w-50">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </td>
-                                        <td>
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </td>
-                                        <td>
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="profile">
-                                    <ul class="mb-0">
-                                        <li class="profile-item">
-                                            <div class="title">نام و نام خانوادگی:</div>
-                                            <div class="value">@user.Name @user.Family</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">پست الکترونیک :</div>
-                                            <div class="value">@user.Email</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">شماره تلفن همراه:</div>
-                                            <div class="value">*******@user.PhoneNumber.Substring(0, 4)</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
-                                        </li>
-                                        <li class="profile-item">
-                                            <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="profile-edit-action">
-                                    <a href="@Url.Action("ProfileDetail")" class="link-spoiler-edit btn btn-secondary">ویرایش اطلاعات</a>
+                                <div class="profile-address">
+                                    <div class="middle-container">
+                                        <form   asp-action="InsertUserAddress" asp-controller="Home" method="post"  class="form-checkout">
+                                            <div class="form-checkout-row">
+                                                <label for="name">نام تحویل گیرنده <abbr class="required"
+                                                                                         title="ضروری" style="color:red;">*</abbr></label>
+                                                <input type="text" id="name"
+                                                       class="input-name-checkout form-control" name="Name">
+                                                <label for="phone-number">شماره موبایل <abbr class="required"
+                                                                                             title="ضروری" style="color:red;">*</abbr></label>
+                                                <input type="text" id="phone-number"
+                                                       class="input-name-checkout form-control text-left" name="Number">
+
+                                                <div class="form-checkout-valid-row">
+                                                    <label for="city">شهر
+                                                        <abbr class="required" title="ضروری"
+                                                              style="color:red;">*</abbr></label>
+                                                    <select name="CityId" id="city" class="form-control">
+                                                        <option value="0" selected="selected">شهر مورد نظر
+                                                            خود را انتخاب کنید</option>
+                                                        @foreach (var i in cities)
+                                                        {
+                                                            <option value="@i.Id">@i.Name</option>
+
+                                                        }
+                                                    </select>
+                                                  
+                                                </div>
+
+                                                <label for="post-code">کد پستی<abbr class="required" title="ضروری"
+                                                                                    style="color:red;">*</abbr></label>
+                                                <input type="text" id="post-code"
+                                                       class="input-name-checkout form-control" name="PostCode"
+                                                       placeholder="کد پستی را بدون خط تیره بنویسید">
+
+                                                <label for="address">آدرس
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">*</abbr></label>
+                                                <textarea rows="5" cols="30" id="address" name="Address"
+                                                          class="textarea-name-checkout form-control"></textarea>
+
+                                                <div class="AR-CR">
+                                                    <button type="submit" class="btn-registrar"> ثبت آدرس</button>
+                                                    <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal"
+                                                       aria-label="Close">بازگشت</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -491,16 +481,16 @@
 
 @section script
 {
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="/assetsCli/js/vendor/wNumb.js"></script>
+<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

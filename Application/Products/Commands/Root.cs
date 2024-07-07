@@ -17,6 +17,7 @@ public class Root
     public string SubCategoryId { get; set; }
     public string ProductStatus { get; set; }
     public bool IsActive { get; set; }
+    public bool IsShowIndex { get; set; }
     public List<string> Images { get; set; }
     public bool IsOffer { get; set; }
     public Offer Offer { get; set; }
