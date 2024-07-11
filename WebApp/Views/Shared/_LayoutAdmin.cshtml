@@ -229,7 +229,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                             <a class="nav-link " style="cursor: pointer">
                                                 <i class="fa fa-barcode nav-icon"></i>
                                                 <p>
-                                                    مدیریت محصـولات
+                                                    اطلاعات پایه
                                                     <i class="right fa fa-angle-left"></i>
                                                 </p>
 
@@ -260,9 +260,15 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("ProductManage", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("Color", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>محصول</p>
+                                                        <p>گارانتی</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("Color", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>روش های ارسال</p>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -271,15 +277,27 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                     </ul>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="@Url.Action("ProductManage", "Admin")" class="nav-link ">
+                                        <i class="fa fa-product-hunt nav-icon"></i>
+                                        <p>محصولات</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="@Url.Action("Factor", "Admin")" class="nav-link">
                                         <i class="fa fa-inbox nav-icon"></i>
-                                        <p>سفارشات</p>
+                                        <p>سفارش‌ها</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("ManageUser", "Admin")" class="nav-link">
                                         <i class="fa fa-users nav-icon"></i>
                                         <p>کاربران</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ManageBanner", "Admin")" class="nav-link">
+                                        <i class="fa fa-wpforms nav-icon"></i>
+                                        <p>مدیریت بنرها</p>
                                     </a>
                                 </li>
                             </ul>

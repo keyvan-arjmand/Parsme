@@ -1,4 +1,5 @@
-﻿using Domain.Entity.Product;
+﻿using Domain.Entity.IndexPage;
+using Domain.Entity.Product;
 using Domain.Entity.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Offer> Offers { set; get; }
     public DbSet<UserAddress> Addresses { set; get; }
     public DbSet<UserFav> UserFavs { set; get; }
+    public DbSet<Banner> Banners { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
