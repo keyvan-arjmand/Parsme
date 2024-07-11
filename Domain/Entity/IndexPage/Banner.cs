@@ -24,4 +24,18 @@ public class Banner:BaseEntity
     public string BigBannerMiddle1Href { get; set; } = string.Empty;
     public string BigBannerMiddle2 { get; set; } = string.Empty;
     public string BigBannerMiddle2Href { get; set; } = string.Empty;
+    
+    public string SliderTitle { get; set; } = string.Empty;
+    public string SliderImage { get; set; } = string.Empty;
+    public string SliderHref { get; set; } = string.Empty;
+    
+    public string SliderTitle1 { get; set; } = string.Empty;
+    public string SliderImage1 { get; set; } = string.Empty;
+    public string SliderHref1 { get; set; } = string.Empty;
+
+    public string SliderTitle2 { get; set; } = string.Empty;
+    public string SliderImage2 { get; set; } = string.Empty;
+    public string SliderHref2 { get; set; } = string.Empty;
+
+    
 }

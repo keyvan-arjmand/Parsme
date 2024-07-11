@@ -1,4 +1,5 @@
 ﻿@using Application.Common.Utilities
+@using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @{
     Layout = "_Layout";
@@ -9,6 +10,7 @@
     List<Product> newProd = ViewBag.NewProd;
     List<Product> basket = ViewBag.BasketProd;
     List<Category> categories = ViewBag.Categories;
+    Banner banners = ViewBag.Banners;
 }
 
 
@@ -447,14 +449,14 @@
                 </div>
                 <!-- adplacement------------------------------->
                 <div class="adplacement-container-row adplacement-sidebar">
-                    <a href="#" class="adplacement-item">
+                    <a href="@banners.LargeSideBannerHref" class="adplacement-item">
                         <div class="adplacement-sponsored_box">
-                            <img src="/assetsCli/images/adplacement/a-3.jpg">
+                            <img src="/Images/Banner/@banners.LargeSideBanner">
                         </div>
                     </a>
-                    <a href="#" class="adplacement-item">
+                    <a href="@banners.SmallSideBannerHref" class="adplacement-item">
                         <div class="adplacement-sponsored_box">
-                            <img src="/assetsCli/images/adplacement/a-10.jpg">
+                            <img src="/Images/Banner/@banners.SmallSideBanner">
                         </div>
                     </a>
                 </div>
@@ -709,44 +711,44 @@
 <!-- adplacement--------------------------->
 <div class="adplacement-container-row">
     <div class="col-6 col-lg-3 pr">
-        <a href="#" class="adplacement-item mb-4">
+        <a href="@banners.SmallBannerMiddle1Href" class="adplacement-item mb-4">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-5.jpg">
+                <img src="/Images/Banner/@banners.SmallBannerMiddle1">
             </div>
         </a>
     </div>
     <div class="col-6 col-lg-3 pr">
-        <a href="#" class="adplacement-item">
+        <a href="@banners.SmallBannerMiddle2Href" class="adplacement-item">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-6.jpg">
+                <img src="/Images/Banner/@banners.SmallBannerMiddle2">
             </div>
         </a>
     </div>
     <div class="col-6 col-lg-3 pr">
-        <a href="#" class="adplacement-item">
+        <a href="@banners.SmallBannerMiddle3Href" class="adplacement-item">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-7.jpg">
+                <img src="/Images/Banner/@banners.SmallBannerMiddle3">
             </div>
         </a>
     </div>
     <div class="col-6 col-lg-3 pr">
-        <a href="#" class="adplacement-item">
+        <a href="@banners.SmallBannerMiddle4Href" class="adplacement-item">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-4.jpg">
+                <img src="/Images/Banner/@banners.SmallBannerMiddle4">
             </div>
         </a>
     </div>
     <div class="col-6 col-lg-6 pr">
-        <a href="#" class="adplacement-item">
+        <a href="@banners.BigBannerMiddle1Href" class="adplacement-item">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-9.jpg">
+                <img src="/Images/Banner/@banners.BigBannerMiddle1">
             </div>
         </a>
     </div>
     <div class="col-6 col-lg-6 pr">
-        <a href="#" class="adplacement-item">
+        <a href="@banners.BigBannerMiddle2Href" class="adplacement-item">
             <div class="adplacement-sponsored_box">
-                <img src="/assetsCli/images/adplacement/a-11.jpg">
+                <img src="/Images/Banner/@banners.BigBannerMiddle2">
             </div>
         </a>
     </div>

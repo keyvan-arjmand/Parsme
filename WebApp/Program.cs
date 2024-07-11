@@ -39,10 +39,10 @@ builder.Services.AddCors(options =>
 });
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.AccessDeniedPath = "/Admin/AccessDenied";
     options.Cookie.Name = "WebAppIdentityCooclie";
     options.ExpireTimeSpan = TimeSpan.FromHours(2);
-    options.LoginPath = "/Account/SignUp";
+    options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });
 var app = builder.Build();

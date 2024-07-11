@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Application.Interfaces;
+using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Microsoft.AspNetCore.Identity;
@@ -57,6 +58,7 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Take(20).ToListAsync();
 
+        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync()??new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -595,7 +597,7 @@ public class HomeController : Controller
     {
         return View();
     }
-
+  
     public async Task<ActionResult> Register()
     {
         return View();

@@ -1,16 +1,20 @@
 ﻿@using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebApp.Models.BannerDto
 @{
-Layout = "_LayoutAdmin";
-Banner banner = ViewBag.Banner;
+    Layout = "_LayoutAdmin";
+    Banner banner = ViewBag.Banner;
 }
 
 @section link
 {
-<style>
+    <style>
     .modal{
         top: 80px;
+    }
+    img{
+        max-width: 650px;
     }
 </style>
 }
@@ -48,43 +52,146 @@ Banner banner = ViewBag.Banner;
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
-                                      asp-action="InsertBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">عنوان برند</label>
-                                        <input name="title" class="form-control" id="exampleInputPassword1">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">توضیحات</label>
-                                        <textarea name="desc" style="height: 0"  class="form-control"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">لوگو</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
+                                      asp-action="UpdateBanner" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <input asp-for="Id" value="@banner.Id">
+                                    <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">بنر بزرگ کناری 493 * 330</label>
+                                                    <input type="file" asp-for="LargeSideBanner" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لینک</label>
+                                                    <input asp-for="LargeSideBannerHref" value="@banner.LargeSideBannerHref" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Banner/@banner.LargeSideBanner" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">بنر کوچک کناری 248 * 330</label>
+                                                    <input type="file" asp-for="SmallSideBanner" title="test" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لینک</label>
+                                                    <input asp-for="SmallSideBannerHref" value="@banner.SmallSideBannerHref" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Banner/@banner.SmallSideBanner" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group d-flex flex-column p-2">
-                                        <label for="exampleInputPassword1">نوع زیردسته</label>
-                                      
-                                    </div>
-                                    <div class="d-flex flex-column align-content-center justify-content-center ">
-                                        <div class="form-input">
-                                            <button type="submit" class="btn btn-primary">ثبت</button>
+                                    <div style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر اول کوچک وسط 174 * 233</label>
+                                                        <input type="file" asp-for="SmallBannerMiddle1" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SmallBannerMiddle1Href" value="@banner.SmallBannerMiddle1Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر دوم کوچک وسط 174 * 233</label>
+                                                        <input type="file" asp-for="SmallBannerMiddle2" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SmallBannerMiddle2Href" value="@banner.SmallBannerMiddle2Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="d-flex justify-content-between w-100">
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر سوم کوچک وسط 174 * 233</label>
+                                                        <input type="file" asp-for="SmallBannerMiddle3" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SmallBannerMiddle3Href" value="@banner.SmallBannerMiddle3Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle3" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر چهارم کوچک وسط 174 * 233</label>
+                                                        <input type="file" asp-for="SmallBannerMiddle4" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SmallBannerMiddle4Href" value="@banner.SmallBannerMiddle4Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle4" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر اول بزرگ وسط 181 * 495</label>
+                                                        <input type="file" asp-for="BigBannerMiddle1" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="BigBannerMiddle1Href" value="@banner.BigBannerMiddle1Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر دوم بزرگ وسط 181 * 495</label>
+                                                        <input type="file" asp-for="BigBannerMiddle2" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="BigBannerMiddle2Href" value="@banner.BigBannerMiddle2Href" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle2" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="w-100">
+                                        <button class="btn btn-success" type="submit"> ثبت</button>
                                     </div>
                                 </form>
 
-                            </div>
-                            <div class="card mt-3">
-                                <div class="input-group p-3  m-2">
-                                    <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                    <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                </div>
-                                <!-- /.card-body -->
                             </div>
                         </div>
                     </div><!-- /.card-body -->
@@ -119,13 +226,13 @@ Banner banner = ViewBag.Banner;
                     </div>
                 </div>
                 <div class="input-group p-3  m-2 w-50">
-               
+
                 </div>
                 <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
                     <input type="file" id="Image" name="Image" title="test" class="form-control">
                     <div class="input-group  p-1" style="justify-content: space-between;">
                         <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
-                        <input type="text"   name="Logo" class="mImageThreeP" hidden="hidden"/>
+                        <input type="text" name="Logo" class="mImageThreeP" hidden="hidden"/>
                     </div>
                 </div>
 
@@ -141,7 +248,7 @@ Banner banner = ViewBag.Banner;
 
 @section script{
 
-<script>
+    <script>
 
     $(document).ready(function () {
 
@@ -156,7 +263,7 @@ Banner banner = ViewBag.Banner;
         });
     });
 </script>
-<script>
+    <script>
 
     function UpdateProduct(){
         var product = new FormData();
