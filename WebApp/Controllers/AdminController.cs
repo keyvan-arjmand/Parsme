@@ -394,6 +394,7 @@ public class AdminController : Controller
             banners.SliderImage2 = request.SliderImage2 != null
                 ? up.Uploadfile(request.SliderImage2, "Banner")
                 : banners.SliderImage2;
+            
             banners.SliderTitle = request.SliderTitle;
             banners.SliderTitle1 = request.SliderTitle1;
             banners.SliderTitle2 = request.SliderTitle2;
