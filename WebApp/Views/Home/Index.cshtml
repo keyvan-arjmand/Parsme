@@ -14,7 +14,6 @@
 }
 
 
-
 @section Header{
     <header class="header-main">
     <div class="d-block">
@@ -143,7 +142,7 @@
                                                 @foreach (var b in q.Brands)
                                                 {
                                                     <li class="menu-mega-item-three">
-                                                        <a href="@Url.Action("GetByBrand","Home",new {b.Id})">
+                                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
                                                             @b.Title
                                                         </a>
                                                     </li>
@@ -278,7 +277,7 @@
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="@Url.Action("GetByBrand","Home",new {b.Id})" class="category-level-3">@b.Title</a>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
                                                 </li>
                                             }
 
@@ -385,7 +384,7 @@
                                                             @foreach (var b in i.Brands)
                                                             {
                                                                 <li class="menu-category-item-there">
-                                                                    <a href="@Url.Action("GetByBrand","Home",new {b.Id})">
+                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
                                                                         @b.Title
                                                                     </a>
                                                                 </li>
@@ -487,10 +486,10 @@
             <a href="@banners.SliderHref" class="carousel-item active">
                 <img src="/Images/Banner/@banners.SliderImage" class="d-block w-100" alt="...">
             </a>
-            <a href="@banners.SliderHref1"  class="carousel-item">
+            <a href="@banners.SliderHref1" class="carousel-item">
                 <img src="/Images/Banner/@banners.SliderImage1" class="d-block w-100" alt="...">
             </a>
-            <a href="@banners.SliderHref2"  class="carousel-item">
+            <a href="@banners.SliderHref2" class="carousel-item">
                 <img src="/Images/Banner/@banners.SliderImage2" class="d-block w-100" alt="...">
             </a>
         </div>
@@ -605,8 +604,7 @@
                                         <div class="carousel-content">
                                             <div class="discount">
                                                 <span class="discount-percent">
-                                                    @i.Offer.OfferAmount
-                                                    <i class="fa fa-percent"></i>
+                                                    @i.Offer.OfferAmount.ToString("N0")
                                                 </span>
                                             </div>
                                             <h2 class="product-title">
@@ -640,6 +638,24 @@
                                                      data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                 </div>
                                             </div>
+                                            @{
+                                                var proTime = i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes);
+                                                var currentTime = DateTime.Now;
+                                                if (proTime < currentTime)
+                                                {
+                                                    <div class="text-center">
+                                                        <del>
+                                                            <span class="p-3 text-muted">
+                                                                فروش ویژه
+                                                            </span>
+                                                        </del>
+                                                        <span >
+                                                            تمام شد
+                                                        </span>
+                                                    </div>
+                                                }
+                                            }
+
                                         </div>
                                     </div>
                                 </div>
@@ -659,8 +675,7 @@
                                         <div class="carousel-content">
                                             <div class="discount">
                                                 <span class="discount-percent">
-                                                    @i.Offer.OfferAmount
-                                                    <i class="fa fa-percent"></i>
+                                                    @i.Offer.OfferAmount.ToString("N0")
                                                 </span>
                                             </div>
                                             <h2 class="product-title">
@@ -694,6 +709,23 @@
                                                      data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                 </div>
                                             </div>
+                                            @{
+                                                var proTime = i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes);
+                                                var currentTime = DateTime.Now;
+                                                if (proTime < currentTime)
+                                                {
+                                                    <div class="text-center">
+                                                        <del>
+                                                            <span class="p-3 text-muted">
+                                                                فروش ویژه
+                                                            </span>
+                                                        </del>
+                                                        <span >
+                                                            تمام شد
+                                                        </span>
+                                                    </div>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -781,17 +813,12 @@
                                 @{
                                     foreach (var i in prodCatalog)
                                     {
-                                        <div class="owl-item active tab-item"
+                                        <div class="owl-item active tab-item "
                                              style="width: 309.083px; margin-left: 10px;">
                                             <div class="item">
                                                 <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
                                                     <img src="/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
-                                                    <span class="icon-view">
-                                                        <strong>
-                                                            <i class="fa fa-eye"></i>
-                                                        </strong>
-                                                    </span>
                                                 </a>
                                                 <h2 class="post-title">
                                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
@@ -827,11 +854,10 @@
                                                             <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
                                                                 <div class="btn btn-light ">
                                                                     <i class="fa fa-heart-o"></i>
-                                                                </div> 
+                                                                </div>
                                                             </a>
-                                                        
+
                                                         </li>
-                                                     
                                                     </ul>
                                                 </div>
                                             </div>
@@ -852,77 +878,73 @@
 
 <!-- slider-product------------------------>
 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
-<div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-    <header class="card-header">
-        <span class="title-one">محصولات جدید</span>
-        <h3 class="card-title"></h3>
-    </header>
-    <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-        <div class="owl-stage-outer">
-            <div class="owl-stage"
-                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1534px;">
-                @{
-                    foreach (var i in newProd)
-                    {
-                        <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
-                            <div class="item">
-                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link" >
-                                    <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-                                    <span class="icon-view">
-                                        <strong>
-                                            <i class="fa fa-eye"></i>
-                                        </strong>
-                                    </span>
-                                </a>
-                                <h2 class="post-title">
-                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                        @i.PersianTitle
+    <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
+        <header class="card-header">
+            <span class="title-one">محصولات جدید</span>
+            <h3 class="card-title"></h3>
+        </header>
+        <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+            <div class="owl-stage-outer">
+                <div class="owl-stage"
+                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1534px;">
+                    @{
+                        foreach (var i in newProd)
+                        {
+                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+
                                     </a>
-                                </h2>
-                                <div class="price">
-                                    @if (i.DiscountAmount > 0)
-                                    {
-                                        <del>
-                                            <span>
-                                                @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                            </span>
-                                        </del>
-                                        <ins>
-                                            <span>
-                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                            </span>
-                                        </ins>
-                                    }
-                                    else
-                                    {
-                                        <ins>
-                                            <span>
-                                                @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                            </span>
-                                        </ins>
-                                    }
-                                </div>
-                                <div class="actions">
-                                    <ul>
-                                        <li class="action-item like">
-                                            <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
-                                                <div class="btn btn-light ">
-                                                    <i class="fa fa-heart-o"></i>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <h2 class="post-title">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                            @i.PersianTitle
+                                        </a>
+                                    </h2>
+                                    <div class="price">
+                                        @if (i.DiscountAmount > 0)
+                                        {
+                                            <del>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </del>
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </ins>
+                                        }
+                                        else
+                                        {
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </ins>
+                                        }
+                                    </div>
+                                    <div class="actions">
+                                        <ul>
+                                            <li class="action-item like">
+                                                <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                    <div class="btn btn-light ">
+                                                        <i class="fa fa-heart-o"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     }
-                }
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- slider-product------------------------>
+    <!-- slider-product------------------------>
 </div>
 </aside>
 </div>

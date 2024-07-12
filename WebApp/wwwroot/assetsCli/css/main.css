@@ -2211,12 +2211,12 @@ header.header-main {
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .discount:before {
     content: "\f0a3";
     font-family: FontAwesome;
-    font-size: 70px;
+    font-size: 90px;
     position: relative;
-    color: #651fff;
+    color: #651ffd;
     transform: translate(50%);
     right: 0;
-    top: 40px;
+    top: 25px;
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .discount .discount-percent {
@@ -2671,7 +2671,7 @@ header.header-main {
     font-size: 33px;
     border-radius: 0;
     text-align: center;
-    background-color: rgb(255 255 255 / 90%);
+    /*background-color: rgb(255 255 255 / 90%);*/
     position: relative;
 }
 

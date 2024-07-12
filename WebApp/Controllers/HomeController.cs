@@ -530,11 +530,14 @@ public class HomeController : Controller
         if (HttpContext.Session.GetString("basket") != null)
         {
             basketlist = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            basketlist.Add(id);
+            HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
         }
-
-        basketlist.Add(id);
-        HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
-
+        else
+        {
+            basketlist.Add(id);
+            HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
+        }
         return RedirectToAction("Index", "Home");
     }
 

@@ -30,7 +30,6 @@
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index", "Admin")">خانه</a>
                     </li>
-                    <li class="breadcrumb-item active">بنر</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -54,13 +53,13 @@
                             <div class="tab-pane active show" id="activity">
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
                                       asp-action="UpdateBanner" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <input asp-for="Id" value="@banner.Id">
+                                    <input asp-for="Id" value="@banner.Id" hidden="hidden">
                                     <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
                                         <div class=" m-2  p-3 w-50">
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">بنر بزرگ کناری 493 * 330</label>
-                                                    <input type="file" asp-for="LargeSideBanner" class="form-control">
+                                                    <input type="file" asp-for="LargeSideBanner" id="LargeSideBannerin" class="form-control">
                                                 </div>
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">لینک</label>
@@ -68,14 +67,14 @@
                                                 </div>
                                             </div>
                                             <div class="input-group p-3 " style="justify-content: center;">
-                                                <img src="/Images/Banner/@banner.LargeSideBanner" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                <img src="/Images/Banner/@banner.LargeSideBanner"  id="LargeSideBanner" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                             </div>
                                         </div>
                                         <div class=" m-2  p-3 w-50">
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">بنر کوچک کناری 248 * 330</label>
-                                                    <input type="file" asp-for="SmallSideBanner" title="test" class="form-control">
+                                                    <input type="file" asp-for="SmallSideBanner" id="SmallSideBannerin" title="test" class="form-control">
                                                 </div>
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">لینک</label>
@@ -83,7 +82,7 @@
                                                 </div>
                                             </div>
                                             <div class="input-group p-3 " style="justify-content: center;">
-                                                <img src="/Images/Banner/@banner.SmallSideBanner" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                <img src="/Images/Banner/@banner.SmallSideBanner" id="SmallSideBanner" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +92,7 @@
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر اول کوچک وسط 174 * 233</label>
-                                                        <input type="file" asp-for="SmallBannerMiddle1" class="form-control">
+                                                        <input type="file" id="SmallBannerMiddle1in" asp-for="SmallBannerMiddle1" class="form-control">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
@@ -101,14 +100,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle1" id="SmallBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                             <div class=" m-2  p-3 w-50">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر دوم کوچک وسط 174 * 233</label>
-                                                        <input type="file" asp-for="SmallBannerMiddle2" class="form-control">
+                                                        <input type="file" id="SmallBannerMiddle2in" asp-for="SmallBannerMiddle2" class="form-control">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
@@ -116,7 +115,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle2" id="SmallBannerMiddle2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -125,7 +124,7 @@
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر سوم کوچک وسط 174 * 233</label>
-                                                        <input type="file" asp-for="SmallBannerMiddle3" class="form-control">
+                                                        <input type="file" asp-for="SmallBannerMiddle3" id="SmallBannerMiddle3in" class="form-control">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
@@ -133,22 +132,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle3" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle3" id="SmallBannerMiddle3" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                             <div class=" m-2  p-3 w-50">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر چهارم کوچک وسط 174 * 233</label>
-                                                        <input type="file" asp-for="SmallBannerMiddle4" class="form-control">
+                                                        <input type="file" asp-for="SmallBannerMiddle4" class="form-control" id="SmallBannerMiddle4in">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
-                                                        <input asp-for="SmallBannerMiddle4Href" value="@banner.SmallBannerMiddle4Href" class="form-control" id="exampleInputPassword1">
+                                                        <input asp-for="SmallBannerMiddle4Href" value="@banner.SmallBannerMiddle4Href" class="form-control" >
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle4" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SmallBannerMiddle4" id="SmallBannerMiddle4" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,15 +156,15 @@
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر اول بزرگ وسط 181 * 495</label>
-                                                        <input type="file" asp-for="BigBannerMiddle1" class="form-control">
+                                                        <input type="file" asp-for="BigBannerMiddle1" class="form-control" id="BigBannerMiddle1in">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
-                                                        <input asp-for="BigBannerMiddle1Href" value="@banner.BigBannerMiddle1Href" class="form-control" id="exampleInputPassword1">
+                                                        <input asp-for="BigBannerMiddle1Href" value="@banner.BigBannerMiddle1Href" class="form-control" >
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.BigBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle1" id="BigBannerMiddle1" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                             <div class=" m-2  p-3 w-50">
@@ -176,62 +175,78 @@
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
-                                                        <input asp-for="BigBannerMiddle2Href" value="@banner.BigBannerMiddle2Href" class="form-control" id="exampleInputPassword1">
+                                                        <input asp-for="BigBannerMiddle2Href" value="@banner.BigBannerMiddle2Href" class="form-control" id="BigBannerMiddle2in">
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.BigBannerMiddle2" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle2" id="BigBannerMiddle2" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                                                 </div>
                                             </div>
 
                                         </div>
                                         <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                            <div class=" m-2  p-3 w-50">
+                                            <div class=" m-2  p-3 w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر اول اسلایدر</label>
-                                                        <input type="file" asp-for="SliderImage" class="form-control">
+                                                        <input type="file" asp-for="SliderImage" class="form-control" id="SliderImagein">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
                                                         <input asp-for="SliderHref" value="@banner.SliderHref" class="form-control" id="exampleInputPassword1">
                                                     </div>
-                                                </div>
-                                                <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SliderImage" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
-                                                </div>
-                                            </div>
-                                            <div class=" m-2  p-3 w-50">
-                                                <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">بنر دوم اسلایدر</label>
-                                                        <input type="file" asp-for="SliderImage1" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input asp-for="SliderImage1" value="@banner.SliderImage1" class="form-control" id="exampleInputPassword1">
+                                                        <label for="exampleInputPassword1">عنوان</label>
+                                                        <input asp-for="SliderTitle" value="@banner.SliderTitle" class="form-control" >
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SliderImage1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SliderImage" id="SliderImage" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
+                                            
 
                                         </div>
                                         <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                            <div class=" m-2  p-3 w-50">
+                                            <div class=" m-2  p-3 w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">بنر سوم اسلایدر</label>
-                                                        <input type="file" asp-for="SliderImage2" class="form-control">
+                                                        <label for="exampleInputPassword1">بنر دوم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage1" class="form-control" id="SliderImage1in">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
-                                                        <input asp-for="SliderImage2" value="@banner.SliderImage2" class="form-control" id="exampleInputPassword1">
+                                                        <input asp-for="SliderHref1" value="@banner.SliderHref1" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان</label>
+                                                        <input asp-for="SliderTitle1" value="@banner.SliderTitle1"  class="form-control" >
                                                     </div>
                                                 </div>
                                                 <div class="input-group p-3 " style="justify-content: center;">
-                                                    <img src="/Images/Banner/@banner.SliderImage2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                    <img src="/Images/Banner/@banner.SliderImage1" id="SliderImage1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                            <div class=" m-2  p-3 w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر سوم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage2" class="form-control" id="SliderImage2in">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderHref2" value="@banner.SliderHref2" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان</label>
+                                                        <input asp-for="SliderTitle2" value="@banner.SliderTitle2" class="form-control" >
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage2" id="SliderImage2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,101 +265,109 @@
     </div><!-- /.container-fluid -->
 </section>
 
-
-<!-- Modal -->
-<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
-                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان برند</span>
-                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Name">
-                    </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">توضیحات</span>
-                        <input type="text" id="DescEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Brand">
-                    </div>
-                </div>
-                <div class="input-group p-3  m-2 w-50">
-
-                </div>
-                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="Image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: space-between;">
-                        <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
-                        <input type="text" name="Logo" class="mImageThreeP" hidden="hidden"/>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="button" class="btn btn-danger" onclick="">حذف محصول</button>
-                <button type="submit" class="btn btn-primary " onclick="">ذخیره تغیرات</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 @section script{
 
     <script>
 
-    $(document).ready(function () {
-
-        $(".modalProduct").click(function () {
-            var currentrow = $(this).closest("form");
-
-            $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
-            $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
-            $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
-            $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
-            $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
-        });
-    });
-</script>
-    <script>
-
-    function UpdateProduct(){
-        var product = new FormData();
-        product.append("Id",$("#id").val());
-        product.append("Name",$("#Name").val());
-        product.append("Brand",$("#Brand").val());
-        product.append("ImageBanner",$("#ImageBanner")[0].files[0]);
-        product.append("ImageBannerName",$("#ImageBannerName").val());
-        product.append("ImageThumb",$("#ImageThumb")[0].files[0]);
-        product.append("ImageThumbName",$("#ImageThumbName").val());
-        product.append("Image",$("#Image")[0].files[0]);
-        product.append("ImageName",$("#ImageName").val());
-        product.append("Weight",$("#Weight").val());
-        product.append("Wages",$("#Wages").val());
-        product.append("Inventory",$("#Inventory").val());
-        product.append("CategoryId",$("#CategoryIdProd").val());
-        $.ajax({
-            type: "Put",
-            data: product,
-            url: "/Admin/UpdateProduct",
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                window.location.href= "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
+        $('#SliderImage2in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SliderImage2').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         });
-    };
-    function softDeleteProduct(){
-        window.location.href= "/admin/SoftDeleteProduct?id="+$("#id").val();
-    }
+        $('#SliderImage1in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SliderImage1').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SliderImagein').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SliderImage').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#BigBannerMiddle2in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBannerMiddle2').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#BigBannerMiddle1in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBannerMiddle1').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBannerMiddle3in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBannerMiddle3').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBannerMiddle2in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBannerMiddle2').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBannerMiddle1in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBannerMiddle1').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallSideBannerin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallSideBanner').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#LargeSideBannerin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#LargeSideBanner').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
 </script>
 }

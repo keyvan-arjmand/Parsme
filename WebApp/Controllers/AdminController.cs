@@ -42,7 +42,7 @@ public class AdminController : Controller
         _work = work;
     }
 
-      
+
     public async Task<ActionResult> Index()
     {
         if (User.Identity.IsAuthenticated)
@@ -59,7 +59,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> Brand()
     {
         if (User.Identity.IsAuthenticated)
@@ -80,7 +80,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertBrand(string title, string? desc, IFormFile? logo, int subCatId)
     {
         if (User.Identity.IsAuthenticated)
@@ -104,7 +104,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> ManageCatDetail()
     {
         if (User.Identity.IsAuthenticated)
@@ -128,7 +128,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertDetailCat(string title, bool isActive, string? option, DataType dataType,
         int subCatId, int featureId)
     {
@@ -156,7 +156,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertFeature(string title, int priority)
     {
         if (User.Identity.IsAuthenticated)
@@ -174,7 +174,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> ManageCategorey()
     {
         if (User.Identity.IsAuthenticated)
@@ -195,7 +195,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertCat(string title, bool isActive, IFormFile? logo)
     {
         if (User.Identity.IsAuthenticated)
@@ -216,7 +216,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertSubCat(string title, bool isActive, int? catId)
     {
         if (User.Identity.IsAuthenticated)
@@ -247,7 +247,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> Color()
     {
         if (User.Identity.IsAuthenticated)
@@ -266,7 +266,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertColor(string title, string code)
     {
         if (User.Identity.IsAuthenticated)
@@ -284,7 +284,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> ProductManage()
     {
         if (User.Identity.IsAuthenticated)
@@ -311,14 +311,14 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<IActionResult> ManageBanner()
     {
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         return View();
     }
 
-      
+
     public async Task<IActionResult> UpdateBanner(BannerDto request)
     {
         if (request.Id <= 0)
@@ -349,14 +349,30 @@ public class AdminController : Controller
         {
             Upload up = new Upload(_webHostEnvironment);
             var banners = await _work.GenericRepository<Banner>().GetByIdAsync(CancellationToken.None, request.Id);
-            banners.SmallBannerMiddle1 = up.Uploadfile(request.SmallBannerMiddle1, "Images/Banner");
-            banners.BigBannerMiddle1 = up.Uploadfile(request.BigBannerMiddle1, "Images/Banner");
-            banners.BigBannerMiddle2 = up.Uploadfile(request.BigBannerMiddle2, "Images/Banner");
-            banners.LargeSideBanner = up.Uploadfile(request.LargeSideBanner, "Images/Banner");
-            banners.SmallBannerMiddle2 = up.Uploadfile(request.SmallBannerMiddle2, "Images/Banner");
-            banners.SmallBannerMiddle3 = up.Uploadfile(request.SmallBannerMiddle3, "Images/Banner");
-            banners.SmallBannerMiddle4 = up.Uploadfile(request.SmallBannerMiddle4, "Images/Banner");
-            banners.SmallSideBanner = up.Uploadfile(request.SmallSideBanner, "Images/Banner");
+            banners.SmallBannerMiddle1 = request.SmallBannerMiddle1 != null
+                ? up.Uploadfile(request.SmallBannerMiddle1, "Banner")
+                : banners.SmallBannerMiddle1;
+            banners.BigBannerMiddle1 = request.BigBannerMiddle1 != null
+                ? up.Uploadfile(request.BigBannerMiddle1, "Banner")
+                : banners.BigBannerMiddle1;
+            banners.BigBannerMiddle2 = request.BigBannerMiddle2 != null
+                ? up.Uploadfile(request.BigBannerMiddle2, "Banner")
+                : banners.BigBannerMiddle2;
+            banners.LargeSideBanner = request.LargeSideBanner != null
+                ? up.Uploadfile(request.LargeSideBanner, "Banner")
+                : banners.LargeSideBanner;
+            banners.SmallBannerMiddle2 = request.SmallBannerMiddle2 != null
+                ? up.Uploadfile(request.SmallBannerMiddle2, "Banner")
+                : banners.SmallBannerMiddle2;
+            banners.SmallBannerMiddle3 = request.SmallBannerMiddle3 != null
+                ? up.Uploadfile(request.SmallBannerMiddle3, "Banner")
+                : banners.SmallBannerMiddle3;
+            banners.SmallBannerMiddle4 = request.SmallBannerMiddle4 != null
+                ? up.Uploadfile(request.SmallBannerMiddle4, "Banner")
+                : banners.SmallBannerMiddle4;
+            banners.SmallSideBanner = request.SmallSideBanner != null
+                ? up.Uploadfile(request.SmallSideBanner, "Banner")
+                : banners.SmallSideBanner;
             banners.BigBannerMiddle1Href = request.BigBannerMiddle1Href;
             banners.BigBannerMiddle2Href = request.BigBannerMiddle2Href;
             banners.LargeSideBannerHref = request.LargeSideBannerHref;
@@ -365,15 +381,33 @@ public class AdminController : Controller
             banners.SmallBannerMiddle3Href = request.SmallBannerMiddle3Href;
             banners.SmallBannerMiddle4Href = request.SmallBannerMiddle4Href;
             banners.SmallSideBannerHref = request.SmallSideBannerHref;
+            
+            banners.SliderHref = request.SliderHref;
+            banners.SliderHref1 = request.SliderHref1;
+            banners.SliderHref2 = request.SliderHref2;
+            banners.SliderImage = request.SliderImage != null
+                ? up.Uploadfile(request.SliderImage, "Banner")
+                : banners.SliderImage;
+            banners.SliderImage1 = request.SliderImage1 != null
+                ? up.Uploadfile(request.SliderImage1, "Banner")
+                : banners.SliderImage1;
+            banners.SliderImage2 = request.SliderImage2 != null
+                ? up.Uploadfile(request.SliderImage2, "Banner")
+                : banners.SliderImage2;
+            banners.SliderTitle = request.SliderTitle;
+            banners.SliderTitle1 = request.SliderTitle1;
+            banners.SliderTitle2 = request.SliderTitle2;
             await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
         }
 
         return RedirectToAction("ManageBanner");
     }
+
     public async Task<ActionResult> Login()
     {
         return View();
     }
+
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
         ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
@@ -459,7 +493,7 @@ public class AdminController : Controller
         return Ok();
     }
 
-      
+
     public async Task<ActionResult> Factor(int page = 1)
     {
         if (User.Identity.IsAuthenticated)
@@ -472,7 +506,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> ManageUser(int page = 1)
     {
         if (User.Identity.IsAuthenticated)
@@ -486,7 +520,7 @@ public class AdminController : Controller
         }
     }
 
-      
+
     public async Task<ActionResult> InsertProduct(Root request)
     {
         Upload up = new Upload(_webHostEnvironment);
@@ -520,7 +554,7 @@ public class AdminController : Controller
     // string MetaKeyword, string FullDesc, string[] ImageUri, string ProductGift, double DiscountAmount, int BrandId,
     // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,
     //     Offer Offer, ProductStatus ProductStatus, bool IsActive, bool IsOffer
-      
+
     public async Task<List<CategoryDetail>> GetCategoryDetailBySubCatId(int subCatId)
     {
         return await _work.GenericRepository<CategoryDetail>()
@@ -529,7 +563,7 @@ public class AdminController : Controller
             .Where(x => x.SubCategoryId == subCatId).ToListAsync();
     }
 
-      
+
     public async Task<ActionResult> Product(string search, int catId, int page = 1)
     {
         if (User.Identity.IsAuthenticated)
