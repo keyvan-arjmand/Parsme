@@ -185,7 +185,56 @@
                                             </div>
 
                                         </div>
+                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر اول اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderHref" value="@banner.SliderHref" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر دوم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage1" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderImage1" value="@banner.SliderImage1" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر سوم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage2" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderImage2" value="@banner.SliderImage2" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="w-100">
                                         <button class="btn btn-success" type="submit"> ثبت</button>

@@ -474,25 +474,25 @@
         <ol class="carousel-indicators carousel-indicators-ul">
             <li class="carousel-indicators-item active" data-target="#carouselExampleIndicators"
                 data-slide-to="0" class="active">
-                <span>موبایل</span>
+                <span>@banners.SliderTitle</span>
             </li>
             <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="1">
-                <span>لباس مردانه</span>
+                <span>@banners.SliderTitle1</span>
             </li>
             <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="2">
-                <span>پاور پانک</span>
+                <span>@banners.SliderTitle2</span>
             </li>
         </ol>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="assetsCli/images/slider-main/sm-1.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assetsCli/images/slider-main/sm-4.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="assetsCli/images/slider-main/sm-5.jpg" class="d-block w-100" alt="...">
-            </div>
+            <a href="@banners.SliderHref" class="carousel-item active">
+                <img src="/Images/Banner/@banners.SliderImage" class="d-block w-100" alt="...">
+            </a>
+            <a href="@banners.SliderHref1"  class="carousel-item">
+                <img src="/Images/Banner/@banners.SliderImage1" class="d-block w-100" alt="...">
+            </a>
+            <a href="@banners.SliderHref2"  class="carousel-item">
+                <img src="/Images/Banner/@banners.SliderImage2" class="d-block w-100" alt="...">
+            </a>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="fa fa-angle-left" aria-hidden="true"></span>

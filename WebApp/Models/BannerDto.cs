@@ -22,4 +22,16 @@ public class BannerDto
     public string BigBannerMiddle1Href { get; set; } = string.Empty;
     public IFormFile BigBannerMiddle2 { get; set; }
     public string BigBannerMiddle2Href { get; set; } = string.Empty;
+    
+    public string SliderTitle { get; set; } = string.Empty;
+    public IFormFile SliderImage { get; set; }
+    public string SliderHref { get; set; } = string.Empty;
+    
+    public string SliderTitle1 { get; set; } = string.Empty;
+    public IFormFile SliderImage1 { get; set; } 
+    public string SliderHref1 { get; set; } = string.Empty;
+
+    public string SliderTitle2 { get; set; } = string.Empty;
+    public IFormFile SliderImage2 { get; set; }
+    public string SliderHref2 { get; set; } = string.Empty;
 }
