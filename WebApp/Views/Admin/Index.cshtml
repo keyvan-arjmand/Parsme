@@ -1,7 +1,11 @@
 ﻿@using Application.Dtos.Factor
 @using Application.Dtos.User
+@using Domain.Entity.Product
+@using Domain.Entity.User
 @{
     Layout = "_LayoutAdmin";
+    List<User> users = ViewBag.Users;
+    List<Product> products = ViewBag.Products;
 }
 
 @section link
@@ -39,7 +43,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3></h3>
+                <h3>1</h3>
 
                 <p>سفارشات جدید</p>
             </div>
@@ -54,7 +58,7 @@
         <!-- small box -->
         <div class="small-box bg-success">
             <div class="inner">
-                <h3> .orderCountToday</h3>
+                <h3> 12</h3>
 
                 <p>سفارشات امروز</p>
             </div>
@@ -69,14 +73,14 @@
         <!-- small box -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3> .newUsers</h3>
+                <h3> @users.Count</h3>
 
                 <p>کاربران جدید</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+            <a href="@Url.Action("ManageUser")#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -84,14 +88,14 @@
         <!-- small box -->
         <div class="small-box bg-danger">
             <div class="inner">
-                <h3> .allUsers</h3>
+                <h3> @users.Count</h3>
 
                 <p>کاربران کل</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+            <a href="@Url.Action("ManageUser")" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -135,7 +139,7 @@
 
                         <div class="progress-group">
                             موجودی کالا
-                            <span class="float-left"><b> .ProductInventory.Fit</b>/ .ProductInventory.All</span>
+                            <span class="float-left"><b> 123</b>/ 3</span>
                             <div class="progress progress-sm">
                                 <div class="progress-bar bg-primary" style="width: 80%"></div>
                             </div>
@@ -144,7 +148,7 @@
 
                         <div class="progress-group">
                             خرید های موفق
-                            <span class="float-left"><b> .OrderStatus.Fit</b>/ .OrderStatus.All</span>
+                            <span class="float-left"><b> 1</b>/ 22</span>
                             <div class="progress progress-sm">
                                 <div class="progress-bar bg-success" style="width: 75%"></div>
                             </div>
@@ -224,13 +228,23 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
                 <ul class="users-list clearfix">
-                  
+                    @{
+                        foreach (var i in users)
+                        {
+                            <li>
+                                <img src="/dist/img/user1-128x128.jpg" alt="User Image">
+                                <a class="users-list-name mt-2" href="#">@i.Name @i.Family</a>
+                                <span class="users-list-date">امروز</span>
+                            </li>
+                        }
+                    }
+
                 </ul>
                 <!-- /.users-list -->
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-center">
-                <a href="#">مشاهده همه کاربران</a>
+                <a href="@Url.Action("ManageUser")">مشاهده همه کاربران</a>
             </div>
             <!-- /.card-footer -->
         </div>
@@ -253,7 +267,30 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
-                 
+                    @{
+                        foreach (var i in products)
+                        {
+                            <li class="item">
+                                <div class="product-img">
+                                    <img src="/Images/ProductImage/@i.ImageUri" alt="Product Image" class="img-size-50">
+                                </div>
+                                <div class="product-info">
+                                    <a href="@Url.Action("ProductManage")" class="product-title">
+                                        @i.SubCategory.Name
+                                        <span class="badge badge-warning float-left">@i.Brand.Title</span>
+                                    </a>
+                                    <span class="product-description" style=" display: -webkit-box; /* Uses a flexible box model */
+            -webkit-box-orient: vertical; /* Vertical orientation */
+            -webkit-line-clamp: 3; /* Number of lines before truncation */
+            overflow: hidden; /* Hides the overflow text */
+            width: 200px; ">
+                                        @i.PersianTitle
+                                    </span>
+                                </div>
+                            </li>
+                        }
+                    }
+
                 </ul>
             </div>
             <!-- /.card-body -->

@@ -22,7 +22,7 @@
             <div class="header-right">
                 <div class="col-lg-3 pr">
                     <div class="header-logo row text-right">
-                        <a href="#">
+                        <a href="@Url.Action("Index")">
                             <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
                         </a>
                     </div>
@@ -30,28 +30,13 @@
                 <div class="col-lg-8 pr">
                     <div class="header-search row text-right">
                         <div class="header-search-box">
-                            <form action="#" class="form-search">
-                                <input type="search" class="header-search-input" name="search-input"
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
                                         <img src="/assetsCli/images/search.png" alt="search">
                                     </button>
-                                    <div class="search-filter">
-                                        <div class="form-ui">
-                                            <div class="custom-select-ui">
-                                                <select class="right">
-                                                    <option>همه دسته ها</option>
-                                                    @{
-                                                        foreach (var i in categories)
-                                                        {
-                                                            <option>@i.Name</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </form>
                             <div class="search-result">
@@ -596,6 +581,11 @@
                                 <div class="row m-0">
                                     <div class="right-col col-5 d-flex align-items-center">
                                         <a class="w-100 text-center img-link-amazing" href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                            @if (i.IsOffer)
+                                            {
+                                            <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                            }
                                             <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
                                         </a>
                                     </div>
@@ -667,6 +657,11 @@
                                 <div class="row m-0">
                                     <div class="right-col col-5 d-flex align-items-center">
                                         <a class="w-100 text-center img-link-amazing" href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                            @if (i.IsOffer)
+                                            {
+                                            <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                            }
                                             <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
                                         </a>
                                     </div>
@@ -817,6 +812,11 @@
                                              style="width: 309.083px; margin-left: 10px;">
                                             <div class="item">
                                                 <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                                    @if (i.IsOffer)
+                                                    {
+                                                    <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                                    }
                                                     <img src="/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
@@ -893,6 +893,11 @@
                             <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
                                 <div class="item">
                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                        @if (i.IsOffer)
+                                        {
+                                        <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                        }
                                         <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
 
                                     </a>
@@ -946,6 +951,154 @@
     </div>
     <!-- slider-product------------------------>
 </div>
+<div class="slider-widget-products slider-content-tabs pr-0 pl-0">
+    <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
+        <header class="card-header">
+            <span class="title-one">محصولات پرفروش</span>
+            <h3 class="card-title"></h3>
+        </header>
+        <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+            <div class="owl-stage-outer">
+                <div class="owl-stage"
+                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1534px;">
+                    @{
+                        foreach (var i in newProd)
+                        {
+                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                        @if (i.IsOffer)
+                                        {
+                                        <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                        }
+                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                    </a>
+                                    <h2 class="post-title">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                            @i.PersianTitle
+                                        </a>
+                                    </h2>
+                                    <div class="price">
+                                        @if (i.DiscountAmount > 0)
+                                        {
+                                            <del>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </del>
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </ins>
+                                        }
+                                        else
+                                        {
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </ins>
+                                        }
+                                    </div>
+                                    <div class="actions">
+                                        <ul>
+                                            <li class="action-item like">
+                                                <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                    <div class="btn btn-light ">
+                                                        <i class="fa fa-heart-o"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider-product------------------------>
+</div>
+    <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
+        <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
+            <header class="card-header">
+                <span class="title-one">دیگر محصولات پارس می</span>
+                <h3 class="card-title"></h3>
+            </header>
+            <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1534px;">
+                        @{
+                        foreach (var i in newProd)
+                        {
+                        <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                            <div class="item">
+                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                    @if (i.IsOffer)
+                                    {
+                                    <div class="promotion-badge p-2">فروش ویژه</div>
+
+                                    }
+                                    
+                                    <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+
+                                </a>
+                                <h2 class="post-title">
+                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                        @i.PersianTitle
+                                    </a>
+                                </h2>
+                                <div class="price">
+                                    @if (i.DiscountAmount > 0)
+                                    {
+                                    <del>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                    </del>
+                                    <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                </span>
+                                    </ins>
+                                    }
+                                    else
+                                    {
+                                    <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                </span>
+                                    </ins>
+                                    }
+                                </div>
+                                <div class="actions">
+                                    <ul>
+                                        <li class="action-item like">
+                                            <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                <div class="btn btn-light ">
+                                                    <i class="fa fa-heart-o"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- slider-product------------------------>
+    </div>
 </aside>
 </div>
 

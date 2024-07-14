@@ -447,7 +447,7 @@ $(document).ready(function (e) {
                 'min': [0],
                 '10%': [500, 500],
                 '50%': [40000, 1000],
-                'max': [10000000]
+                'max': [100000000]
             }
         });
         var nonLinearStepSliderValueElement = document.getElementById('slider-non-linear-step-value');

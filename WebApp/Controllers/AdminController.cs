@@ -49,6 +49,11 @@ public class AdminController : Controller
         {
             #region ViewBag
 
+            ViewBag.Users = await _userManager.Users.ToListAsync();
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x=>x.SubCategory)
+                .Include(x=>x.Brand)
+                .ToListAsync();
             #endregion
 
             return View();
@@ -60,14 +65,24 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> Brand()
+    public async Task<ActionResult> Brand(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
-                .ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                    .Where(x => x.Title.Contains(search) || x.Desc.Contains(search) ||
+                                x.SubCategory.Name.Contains(search)).ToListAsync();
+            }
+            else
+            {
+                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                    .ToListAsync();
+            }
+
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
 
             #endregion
@@ -80,6 +95,26 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateBrand(int id, string title, string desc, IFormFile image, int subCategoryId)
+    {
+        if (User.Identity.IsAuthenticated && id > 0 && subCategoryId > 0)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var brand = await _work.GenericRepository<Brand>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            brand.Title = title;
+            brand.Desc = desc;
+            brand.LogoUri = image != null
+                ? up.Uploadfile(image, "Brand")
+                : brand.LogoUri;
+            brand.SubCategoryId = subCategoryId;
+            await _work.GenericRepository<Brand>().UpdateAsync(brand, CancellationToken.None);
+            return RedirectToAction("Brand");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
 
     public async Task<ActionResult> InsertBrand(string title, string? desc, IFormFile? logo, int subCatId)
     {
@@ -104,6 +139,25 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateCat(int id, string title, IFormFile imageCat, bool isActiveCat)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var cat = await _work.GenericRepository<Category>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            cat.Name = title;
+            cat.IsActive = isActiveCat;
+            cat.LogoUri = imageCat != null
+                ? up.Uploadfile(imageCat, "Category")
+                : cat.LogoUri;
+            await _work.GenericRepository<Category>().UpdateAsync(cat, CancellationToken.None);
+            return RedirectToAction("ManageCategory");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
 
     public async Task<ActionResult> ManageCatDetail()
     {
@@ -156,6 +210,22 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateSubCat(int id, string title, int catId, bool isActiveSubCat)
+    {
+        if (User.Identity.IsAuthenticated && id > 0 && catId > 0)
+        {
+            var subCat = await _work.GenericRepository<SubCategory>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            subCat.Name = title;
+            subCat.IsActive = isActiveSubCat;
+            subCat.CategoryId = catId;
+            await _work.GenericRepository<SubCategory>().UpdateAsync(subCat, CancellationToken.None);
+            return RedirectToAction("ManageCategory");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
 
     public async Task<ActionResult> InsertFeature(string title, int priority)
     {
@@ -174,8 +244,27 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateCategoryDetail(int id, string title, int featureId, bool isSearchCatDetail,
+        string option, int dataType)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var catDetail = await _work.GenericRepository<CategoryDetail>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            catDetail.DataType = (DataType)dataType;
+            catDetail.Title = title;
+            catDetail.Option = option ?? string.Empty;
+            catDetail.FeatureId = featureId;
+            catDetail.ShowInSearch = isSearchCatDetail;
+            await _work.GenericRepository<CategoryDetail>().UpdateAsync(catDetail, CancellationToken.None);
+            return RedirectToAction("ManageCatDetail");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
 
-    public async Task<ActionResult> ManageCategorey()
+    public async Task<ActionResult> ManageCategory()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -208,7 +297,7 @@ public class AdminController : Controller
                 LogoUri = img,
                 IsActive = isActive,
             }, CancellationToken.None);
-            return RedirectToAction("ManageCategorey");
+            return RedirectToAction("ManageCategory");
         }
         else
         {
@@ -230,7 +319,7 @@ public class AdminController : Controller
                     StatusCode = ApiResultStatusCode.NotFound,
                     IsError = true
                 };
-                return RedirectToAction("ManageCategorey");
+                return RedirectToAction("ManageCategory");
             }
 
             await _work.GenericRepository<SubCategory>().AddAsync(new SubCategory
@@ -239,7 +328,7 @@ public class AdminController : Controller
                 IsActive = isActive,
                 CategoryId = cat.Id
             }, CancellationToken.None);
-            return RedirectToAction("ManageCategorey");
+            return RedirectToAction("ManageCategory");
         }
         else
         {
@@ -381,7 +470,7 @@ public class AdminController : Controller
             banners.SmallBannerMiddle3Href = request.SmallBannerMiddle3Href;
             banners.SmallBannerMiddle4Href = request.SmallBannerMiddle4Href;
             banners.SmallSideBannerHref = request.SmallSideBannerHref;
-            
+
             banners.SliderHref = request.SliderHref;
             banners.SliderHref1 = request.SliderHref1;
             banners.SliderHref2 = request.SliderHref2;
@@ -394,7 +483,7 @@ public class AdminController : Controller
             banners.SliderImage2 = request.SliderImage2 != null
                 ? up.Uploadfile(request.SliderImage2, "Banner")
                 : banners.SliderImage2;
-            
+
             banners.SliderTitle = request.SliderTitle;
             banners.SliderTitle1 = request.SliderTitle1;
             banners.SliderTitle2 = request.SliderTitle2;
@@ -582,6 +671,69 @@ public class AdminController : Controller
         else
         {
             return View("Index");
+        }
+    }
+
+    public async Task<ActionResult> ManageGuarantee()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> InsertGuarantee(string title)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<Guarantee>().AddAsync(new Guarantee
+            {
+                Title = title
+            }, CancellationToken.None);
+
+            return RedirectToAction("ManageGuarantee");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> ManagePostMethod()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.ToListAsync();
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> InsertPostMethod(string title, double price)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<PostMethod>().AddAsync(new PostMethod()
+            {
+                Title = title,
+                Price = price
+            }, CancellationToken.None);
+
+            return RedirectToAction("ManagePostMethod");
+        }
+        else
+        {
+            return RedirectToAction("Index");
         }
     }
 }

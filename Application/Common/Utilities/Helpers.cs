@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using Domain.Enums;
 
 namespace Application.Common.Utilities;
 
@@ -30,5 +32,39 @@ public static partial class Helpers
     public static double ToDouble(this string? val)
     {
         return string.IsNullOrEmpty(val) ? 0 : Convert.ToDouble(val);
+    }
+    public static int GetDataTypeId(this DataType type)
+    {
+        var id = 0;
+        switch (type)
+        {
+            case DataType.AreaBox:
+                id= 2;
+                break;
+            case DataType.CheckBox:
+                id= 3;
+                break;
+            case DataType.SelectBox:
+                id = 1;
+                break;
+            case DataType.TextBox:
+                id= 0;
+                break;
+        }
+
+        return id;
+    }
+    public static string ToPersianTime(this DateTime calendar)
+    {
+        try
+        {
+            PersianCalendar pc = new PersianCalendar();
+            return string.Format("{0}/{1}/{2}", pc.GetYear(calendar), pc.GetMonth(calendar),
+                pc.GetDayOfMonth(calendar));
+        }
+        catch (Exception e)
+        {
+            return string.Empty;
+        }
     }
 }

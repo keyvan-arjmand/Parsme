@@ -138,11 +138,11 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <form>
-                                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <a class="badge bg-warning text-muted modalCat" data-toggle="modal" data-target="#CatModal">ویرایش</a>
                                                                     <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                     <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
                                                                     <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
-                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive" hidden="hidden"/>
+                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden" />
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -160,7 +160,7 @@
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertSubCat" asp-controller="Admin" method="post">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان زیر دسته</label>
-                                        <input name="title" type="text" class="form-control" id="exampleInputPassword1">
+                                        <input name="titleSub" type="text" class="form-control" id="exampleInputPassword1">
                                     </div>
                                     <div class="form-group d-flex flex-column">
                                         <label for="exampleInputPassword1">نوع دسته بندی</label>
@@ -244,12 +244,11 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <form>
-                                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <a class="badge bg-warning text-muted modalSubCat" data-toggle="modal" data-target="#SubCatModal">ویرایش</a>
                                                                     <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                     <input type="text" name="mTitle" class="mTitle" value="@i.Name" hidden="hidden"/>
-                                                                    <input type="text" name="mDesc" class="mDesc" value="@i.CategoryId" hidden="hidden"/>
-                                                                    <input type="text" name="mLogo" class="mLogo" value="@i.IsActive" hidden="hidden"/>
-                                                                    <input type="text" name="mSubCategoryId" class="mSubCategoryId" value="@i." hidden="hidden"/>
+                                                                    <input type="text" name="mCatId" class="mCatId" value="@i.CategoryId" hidden="hidden"/>
+                                                                    <input type="text" name="mIsActiveSub" class="mIsActiveSub" value="@i.IsActive.ToString()" hidden="hidden"/>
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -274,95 +273,79 @@
 
 
 <!-- Modal -->
-<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade exampleModal" id="CatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content">
+        <form class="modal-content" asp-action="UpdateCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
-                <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
                 <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">نام محصول</span>
-                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Name">
+                    <div class="input-group p-3  m-2 w-50">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان</span>
+                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
                     </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">برند</span>
-                        <input type="text" id="Brand" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Brand">
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">وزن</span>
-                        <input type="text" id="Weight" style="border-radius: 5px 0px 0px 5px;" name="Weight" class="form-control weightP" required="required">
-                    </div>
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">اجرت</span>
-                        <input type="text" id="Wages" style="border-radius: 5px 0px 0px 5px;" name="Wages" class="form-control wagesP" required="required">
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">موجودی محصول</span>
-                        <input type="text" id="Inventory" style="border-radius: 5px 0px 0px 5px;" name="Inventory" class="form-control inventoryP" required="required">
-                    </div>
-                    <div class="input-group p-3  m-2">
-                        <select class="form-select catIdP" id="CategoryIdProd" name="CategoryId" required="required">
-                            @* @{ *@
-                            @* int Index = 0; *@
-                            @* foreach (Category i in ViewBag.categories) *@
-                            @* { *@
-                            @* if (Index == 0) *@
-                            @* { *@
-                            @* <option selected="selected" value="@i.Id">@i.Name</option> *@
-                            @* } *@
-                            @* else *@
-                            @* { *@
-                            @* <option value="@i.Id">@i.Name</option> *@
-                            @* } *@
-                            @* *@
-                            @* Index++; *@
-                            @* } *@
-                            @* } *@
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between" style="background-color:	rgb(220,220,220,0.4)">
-                    <div class=" m-2  p-3">
-                        <input type="file" id="ImageBanner" name="ImageBanner" title="test" class="form-control">
-                        <div class="input-group p-1 " style="justify-content: space-between;">
-                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس اول</span>
-                            <img src="./main_image.jpg" style="object-fit: cover" class="imageOneP" width="150"/>
-                            <input type="text" id="ImageBannerName" name="ImageBannerName" class="mImageOneP" hidden="hidden"/>
+                        <div class="form-check w-50 mt-4">
+                            @Html.CheckBox("isActiveCat",new { @name = "isActiveCat" })
+                            <label class="form-check-label">وضعیت فعال</label>
                         </div>
-                    </div>
-
-                    <div class=" m-2  p-3">
-                        <input type="file" id="ImageThumb" name="ImageThumb" title="test" class="form-control">
-                        <div class="input-group  p-1" style="justify-content: space-between;">
-                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس دوم</span>
-                            <img src="./main_image.jpg" style="object-fit: cover" class="imageTwoP" width="150"/>
-                            <input type="text" id="ImageThumbName" name="ImageThumbName" class="mImageTwoP" hidden="hidden"/>
-                        </div>
+                </div>
+              
+                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
+                    <input type="file" id="ImageCat" name="ImageCat" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: center;">
+                        <img id="LogoCat" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
                     </div>
                 </div>
 
-                <div class=" m-2  p-3" style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="Image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: space-between;">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="basic-addon2">عکس سوم</span>
-                        <img src="./main_image.jpg" style="object-fit: cover" class="imageThreeP" width="150"/>
-                        <input type="text" id="ImageName" name="ImageName" class="mImageThreeP" hidden="hidden"/>
-                    </div>
-                </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="button" class="btn btn-danger" onclick="softDeleteProduct()">حذف محصول</button>
-                <button type="submit" class="btn btn-primary " onclick="UpdateProduct()">ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade exampleModal" id="SubCatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateSubCat" asp-controller="Admin" method="post" >
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idPSub" id="idPSub" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان </span>
+                        <input type="text" id="nameSubP" style="border-radius: 5px 0px 0px 5px;" class="form-control nameSubP" required="required" name="title">
+                    </div>
+                    <div class="input-group p-3  m-2 w-50">
+                        <select class="form-select catIdP" id="catIdP" name="catId" required="required">
+                            @{
+                            foreach (var i in categories)
+                            {
+                            <option value="@i.Id">@i.Name</option>
+                            }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-check w-50 mt-4">
+                    @Html.CheckBox("isActiveSubCat",new { @name = "isActiveSubCat" })
+                    <label class="form-check-label">وضعیت فعال</label>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -371,80 +354,45 @@
 @section script{
 
     <script>
-    function ApiPrice(){
-        $("#Admin").removeClass("checked");
-        $("#Api").addClass("checked");
-    }
-    function AdminPrice(){
-        $("#Api").removeClass("checked");
-        $("#Admin").addClass("checked");
-    }
     $(document).ready(function () {
 
-        $(".modalProduct").click(function () {
+        $(".modalCat").click(function () {
             var currentrow = $(this).closest("form");
 
             $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
             $(".nameP").val(currentrow.find($("input.mName[type=text]")).val());
-            $(".brandP").val(currentrow.find($("input.mBrand[type=text]")).val());
-            $('.imageOneP').attr("src", '/images/product/'+(currentrow.find($("input.mImageBanner[type=text]")).val()));
-            $('.imageTwoP').attr("src", '/images/product/'+(currentrow.find($("input.mImageThumb[type=text]")).val()));
-            $('.imageThreeP').attr("src", '/images/product/'+(currentrow.find($("input.mImage[type=text]")).val()));
-            $('.mImageOneP').val(currentrow.find($("input.mImageBanner[type=text]")).val());
-            $('.mImageTwoP').val(currentrow.find($("input.mImageThumb[type=text]")).val());
-            $('.mImageThreeP').val(currentrow.find($("input.mImage[type=text]")).val());
-            $(".weightP").val(currentrow.find($("input.mWeight[type=text]")).val());
-            $(".wagesP").val(currentrow.find($("input.mWages[type=text]")).val());
-            $(".inventoryP").val(currentrow.find($("input.mInventory[type=text]")).val());
-            $(".catIdP ").val(currentrow.find($("input.mCategoryId[type=text]")).val()).change();
+            var isActiveValue = currentrow.find("input.mIsActive[type=text]").val();
+            if (isActiveValue === "True") {
+                $('#isActiveCat').prop('checked', true);
+            } else {
+                $('#isActiveCat').prop('checked', false);
+            }
+            $('.LogoCat').attr("src", '/images/category/'+(currentrow.find($("input.mLogoUri[type=text]")).val()));
+        });
+        $('#ImageCat').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#LogoCat').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $(".modalSubCat").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $(".idPSub").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#nameSubP").val(currentrow.find($("input.mTitle[type=text]")).val());
+            $('#catIdP').val(currentrow.find($("input.mCatId[type=text]")).val());
+            var isActiveValue = currentrow.find("input.mIsActiveSub[type=text]").val();
+            if (isActiveValue === "True") {
+                $('#isActiveSubCat').prop('checked', true);
+            } else {
+                $('#isActiveSubCat').prop('checked', false);
+            }
         });
     });
 </script>
-    <script>
-    function SetGoldPrice(){
-        $.ajax({
-            type: "Post",
-            data: {price: $('#goldPriced').val()},
-            url: "/Admin/SetManualGoldPrice",
-            success: function (data) {
-                window.location.href= "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    }
-    function UpdateProduct(){
-        var product = new FormData();
-        product.append("Id",$("#id").val());
-        product.append("Name",$("#Name").val());
-        product.append("Brand",$("#Brand").val());
-        product.append("ImageBanner",$("#ImageBanner")[0].files[0]);
-        product.append("ImageBannerName",$("#ImageBannerName").val());
-        product.append("ImageThumb",$("#ImageThumb")[0].files[0]);
-        product.append("ImageThumbName",$("#ImageThumbName").val());
-        product.append("Image",$("#Image")[0].files[0]);
-        product.append("ImageName",$("#ImageName").val());
-        product.append("Weight",$("#Weight").val());
-        product.append("Wages",$("#Wages").val());
-        product.append("Inventory",$("#Inventory").val());
-        product.append("CategoryId",$("#CategoryIdProd").val());
-        $.ajax({
-            type: "Put",
-            data: product,
-            url: "/Admin/UpdateProduct",
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                window.location.href= "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    };
-    function softDeleteProduct(){
-        window.location.href= "/admin/SoftDeleteProduct?id="+$("#id").val();
-    }
-</script>
+
 }

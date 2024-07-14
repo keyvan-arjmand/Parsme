@@ -32,6 +32,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+        var cats = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Categories = cats;
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -57,8 +62,21 @@ public class HomeController : Controller
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Take(20).ToListAsync();
+        var otherProd = new List<Product>();
+        foreach (var i in cats.Select(x => x.Id).ToList())
+        {
+            otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Take(4).ToListAsync());
+        }
 
-        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync()??new Banner();
+        ViewBag.OtherParsme = otherProd;
+        ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .Take(10).ToListAsync();
+        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -82,10 +100,7 @@ public class HomeController : Controller
         // }
 
         ViewBag.Offer = offer;
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
-            .ToListAsync();
+
         return View();
     }
 
@@ -523,6 +538,141 @@ public class HomeController : Controller
         return View("ProductByBrand");
     }
 
+    public async Task<IActionResult> Search(string search, List<int> catId, List<int> brandId, double min, double max)
+    {
+        switch (catId.Any(), brandId.Any(), max > 0)
+        {
+            case (true, true, true):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).Where(x=> catId.Contains(x.SubCategoryId) &&
+                                   brandId.Contains(x.BrandId) && x.ProductColors.Select(y => y.Price).Max() <= max &&
+                                   x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
+                break;
+            case (false, true, true):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search) && brandId.Contains(x.BrandId) &&
+                                x.ProductColors.Select(y => y.Price).Max() <= max &&
+                                x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
+                break;
+            case (true, false, false):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).Where(x=>catId.Contains(x.SubCategoryId)).ToListAsync();
+                break;
+            case (false, false, false):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).ToListAsync();
+                break;
+            case (false, false, true):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).Where(x=> x.ProductColors.Select(y => y.Price).Max() <= max &&
+                                                                     x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
+                break;
+            case (true, true, false):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search))
+                    .Where(x => catId.Contains(x.SubCategoryId) && brandId.Contains(x.BrandId)).ToListAsync();
+                break;
+            case (true, false, true):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).Where(x=>x.ProductColors.Select(y => y.Price).Max() <= max &&
+                                                                    x.ProductColors.Select(y => y.Price).Min() >= min && catId.Contains(x.SubCategoryId))
+                    .ToListAsync();
+                break;
+            case (false, true, false):
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
+                                x.Brand.Title.Contains(search) ||
+                                x.Detail.Contains(search)).Where(x =>
+                        x.ProductColors.Select(y => y.Price).Max() <= max &&
+                        x.ProductColors.Select(y => y.Price).Min() >= min && brandId.Contains(x.BrandId))
+                    .ToListAsync();
+                break;
+        }
+
+        ViewBag.Search = search;
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+
     public async Task<IActionResult> AddToBasket(int id)
     {
         var basketlist = new List<int>();
@@ -538,11 +688,107 @@ public class HomeController : Controller
             basketlist.Add(id);
             HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
         }
+
         return RedirectToAction("Index", "Home");
     }
 
     public IActionResult Privacy()
     {
+        return View();
+    }
+
+    public async Task<IActionResult> ComparisonProduct(int id)
+    {
+        var comparison = new List<int>();
+
+        if (HttpContext.Session.GetString("comparison") != null)
+        {
+            comparison = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("comparison")).ToList();
+            if (id > 0)
+            {
+                if (comparison.Count() > 0)
+                {
+                    var pp = await _work.GenericRepository<Product>().TableNoTracking
+                        .FirstOrDefaultAsync(x => x.Id == comparison.First());
+                    var a = await _work.GenericRepository<Product>().TableNoTracking
+                        .FirstOrDefaultAsync(x => x.Id == id);
+                    if (a.SubCategoryId == pp.SubCategoryId)
+                    {
+                        comparison.Add(id);
+                        HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                    }
+                }
+                else
+                {
+                    comparison.Add(id);
+                    HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                }
+            }
+        }
+        else
+        {
+            if (id > 0)
+            {
+                comparison.Add(id);
+                HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+            }
+        }
+
+
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        var prods = new List<Product>();
+        var ProdBySubCat = new List<Product>();
+        var CatDetails = new List<CategoryDetail>();
+        if (comparison.Count() > 0)
+        {
+            prods = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.Brand)
+                .Include(x => x.Offer)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                .Include(x => x.ProductImages)
+                .Include(x => x.SubCategory).ThenInclude(x => x.Category)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .Where(x => comparison.Contains(x.Id)).ToListAsync();
+
+
+            CatDetails = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                .Where(x => x.SubCategoryId == prods.FirstOrDefault().SubCategoryId).ToListAsync();
+            ProdBySubCat = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.Offer)
+                .Where(x => x.SubCategoryId == prods.FirstOrDefault().SubCategoryId).Take(10).ToListAsync();
+        }
+
+        ViewBag.Prods = prods;
+        ViewBag.ProdBySubCat = ProdBySubCat;
+        ViewBag.CatDetails = CatDetails;
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.BasketProd = basketProducts;
+
         return View();
     }
 
@@ -555,7 +801,7 @@ public class HomeController : Controller
             foreach (var i in basketList)
             {
                 var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
-                    .Include(x=>x.Guarantee)
+                    .Include(x => x.Guarantee)
                     .FirstOrDefaultAsync(x => x.Id == i);
 
                 var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
@@ -567,6 +813,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking
             .ToListAsync();
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -581,6 +828,19 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public IActionResult RemoveInComparison(int id)
+    {
+        var basketlist = new List<int>();
+        if (HttpContext.Session.GetString("comparison") != null)
+        {
+            basketlist = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("comparison")).ToList();
+            basketlist.Remove(id);
+            HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(basketlist));
+        }
+
+        return RedirectToAction("ComparisonProduct", "Home", new { id = 0 });
     }
 
     public IActionResult RemoveInBasket(int id)
@@ -600,7 +860,7 @@ public class HomeController : Controller
     {
         return View();
     }
-  
+
     public async Task<ActionResult> Register()
     {
         return View();

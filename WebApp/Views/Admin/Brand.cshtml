@@ -43,10 +43,10 @@
                         <p class="text-muted text-center">خلاصه وضعیت</p>
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>تعداد برند</b> <a class="float-left"> ViewBag.productCount</a>
+                                <b>تعداد برند</b> <a class="float-left"> @brands.Count()</a>
                             </li>
                             <li class="list-group-item">
-                                <b>برند فعال</b> <a class="float-left"> ViewBag.inventory</a>
+                                <b>زیردسته های برند</b> <a class="float-left"> @brands.GroupBy(x=>x.SubCategoryId).Count()</a>
                             </li>
                         </ul>
                     </div>
@@ -85,7 +85,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group d-flex flex-column p-2">
+                                    <div class="form-group d-flex flex-column ">
                                         <label for="exampleInputPassword1">نوع زیردسته</label>
                                         <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example">
                                             @{
@@ -113,10 +113,13 @@
 
                             </div>
                             <div class="card mt-3">
-                                <div class="input-group p-3  m-2">
-                                    <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                    <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                </div>
+                                <form asp-action="Brand" asp-controller="Admin" method="post">
+                                    <div class="input-group p-3  m-2 w-50">
+                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                    </div>
+                                </form>
+
                                 <div class="card-body p-0">
                                     <table class="table table-condensed">
                                         <tbody>
@@ -184,7 +187,7 @@
 <div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content">
+        <form class="modal-content" asp-action="UpdateBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
                 <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
@@ -192,40 +195,38 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان برند</span>
-                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Name">
+                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
                     </div>
                     <div class="input-group p-3 m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">توضیحات</span>
-                        <input type="text" id="DescEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Brand">
+                        <input type="text" id="DescEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="desc">
                     </div>
                 </div>
                 <div class="input-group p-3  m-2 w-50">
-                    <select class="form-select catIdP" id="SubCatIdEdit" name="=SubCategoryId" required="required">
+                    <select class="form-select catIdP" id="SubCatIdEdit" name="subCategoryId" required="required">
                         @{
-                        foreach (var i in SubCats)
-                        {
-                        <option selected value="@i.Id">@i.Name</option>
-                        }
+                            foreach (var i in SubCats)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
                         }
                     </select>
                 </div>
                 <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="Image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: space-between;">
+                    <input type="file" id="Image" name="image" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: center;">
                         <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
-                        <input type="text"   name="Logo" class="mImageThreeP" hidden="hidden"/>
                     </div>
                 </div>
-            
+
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="button" class="btn btn-danger" onclick="">حذف محصول</button>
-                <button type="submit" class="btn btn-primary " onclick="">ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -246,41 +247,18 @@
             $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
             $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
         });
+       
+    });
+    $('#Image').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#LogoEdit').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     });
 </script>
-    <script>
- 
-    function UpdateProduct(){
-        var product = new FormData();
-        product.append("Id",$("#id").val());
-        product.append("Name",$("#Name").val());
-        product.append("Brand",$("#Brand").val());
-        product.append("ImageBanner",$("#ImageBanner")[0].files[0]);
-        product.append("ImageBannerName",$("#ImageBannerName").val());
-        product.append("ImageThumb",$("#ImageThumb")[0].files[0]);
-        product.append("ImageThumbName",$("#ImageThumbName").val());
-        product.append("Image",$("#Image")[0].files[0]);
-        product.append("ImageName",$("#ImageName").val());
-        product.append("Weight",$("#Weight").val());
-        product.append("Wages",$("#Wages").val());
-        product.append("Inventory",$("#Inventory").val());
-        product.append("CategoryId",$("#CategoryIdProd").val());
-        $.ajax({
-            type: "Put",
-            data: product,
-            url: "/Admin/UpdateProduct",
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                window.location.href= "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    };
-    function softDeleteProduct(){
-        window.location.href= "/admin/SoftDeleteProduct?id="+$("#id").val();
-    }
-</script>
+  
 }

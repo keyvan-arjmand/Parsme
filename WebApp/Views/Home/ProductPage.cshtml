@@ -137,7 +137,7 @@
                                                 @foreach (var b in q.Brands)
                                                 {
                                                     <li class="menu-mega-item-three">
-                                                        <a href="@Url.Action("GetByBrand","Home",new {b.Id})">
+                                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
                                                             @b.Title
                                                         </a>
                                                     </li>
@@ -272,7 +272,7 @@
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="@Url.Action("GetByBrand","Home",new {b.Id})" class="category-level-3">@b.Title</a>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
                                                 </li>
                                             }
 
@@ -378,21 +378,100 @@
     <div class="col-lg-5 col-xs-12 pr d-block" style="padding: 0;">
         <section class="product-gallery">
         <div class="gallery">
+
             <div class="gallery-item">
                 <div>
                     <ul class="gallery-actions">
-                        <li>
-                            <a href="@Url.Action("AddToFav","Home",new {prod.Id})" class="btn-option ">
-                                <i class="mdi mdi-heart-outline"></i>
-                                <span>محبوب</span>
-                            </a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a href="@Url.Action("AddToFav", "Home", new { prod.Id })" class="btn-option ">
+                                    <i class="mdi mdi-heart-outline"></i>
+                                    <span>محبوب</span>
+                                </a>
+                            </li>
+                            <li class="option-alarm">
+                                <a href="#" class="btn-option btn-option-alarm"
+                                   data-toggle="modal" data-target="#btn-option-alarm">
+                                    <i class="mdi mdi-bell-outline"></i>
+                                    <span>اطلاع‌رسانی</span>
+                                </a>
+                                <!-- Modal-option-alarm -->
+                                <div class="modal fade" id="btn-option-alarm" tabindex="-1"
+                                     role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered"
+                                         role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"
+                                                    id="exampleModalCenterTitle">
+                                                    به من اطلاع بده
+                                                </h5>
+                                                <button type="button" class="close"
+                                                        data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-notification-title">
+                                                    از طریق:
+                                                </div>
+                                                <div class="form-auth-row">
+                                                    <label for="#" class="ui-checkbox mt-1">
+                                                        <input type="checkbox" value="1"
+                                                               name="login" id="remember">
+                                                        <span class="ui-checkbox-check"></span>
+                                                    </label>
+                                                    <label for="remember"
+                                                           class="remember-me mr-0">
+                                                        ایمیل به
+                                                        info@digismart.com
+                                                    </label>
+                                                </div>
+                                                <div class="form-auth-row">
+                                                    <label for="#" class="ui-checkbox mt-1">
+                                                        <input type="checkbox" value="1"
+                                                               name="login" id="remember">
+                                                        <span class="ui-checkbox-check"></span>
+                                                    </label>
+                                                    <label for="remember"
+                                                           class="remember-me mr-0">
+                                                        پیامک به
+                                                        *******0991
+                                                    </label>
+                                                </div>
+                                                <div class="form-auth-row">
+                                                    <label for="#" class="ui-checkbox mt-1">
+                                                        <input type="checkbox" value="1"
+                                                               name="login" id="remember">
+                                                        <span class="ui-checkbox-check"></span>
+                                                    </label>
+                                                    <label for="remember"
+                                                           class="remember-me mr-0">
+                                                        سیستم پیام شخصی
+                                                        کالامارکت
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button"
+                                                        class="btn btn-primary ml-2">
+                                                    ثبت
+                                                </button>
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">
+                                                    بازگشت
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
                         <li class="Three-dimensional">
-                            <a href="#" class="btn-option btn-Three-dimensional"
-                               data-toggle="modal" data-target="#more-product">
-                                <i class="mdi mdi-more"></i>
-                                <span>نمایش بیشتر</span>
-                            </a>
+
                             <div class="modal fade" id="more-product" tabindex="-1"
                                  role="dialog" aria-labelledby="exampleModalCenterTitle"
                                  aria-hidden="true">
@@ -410,6 +489,12 @@
                                                                 src="/Images/ProductImage/@i.ImageUri" width="145px" style="max-height: 150px"/>
                                                         </a>
                                                     }
+
+                                                    <a
+                                                        href="/Images/ProductImage/@prod.ImageUri">
+                                                        <img
+                                                            src="/Images/ProductImage/@prod.ImageUri" width="145px" style="max-height: 150px"/>
+                                                    </a>
                                                 }
                                             </div>
                                         </div>
@@ -417,16 +502,21 @@
                                 </div>
                             </div>
                         </li>
-                   
+                        <li class="Three-dimensional">
+                            <a href="@Url.Action("ComparisonProduct", "Home", new { @prod.Id })"
+                               class="btn-option ">
+                                <i class="mdi mdi-compare"></i>
+                                <span>مقایسه</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="gallery-item">
                 <div class="gallery-img">
-                    <a href="#">
-                        <img class="zoom-img" id="img-product-zoom"
+                    <a href="#" data-toggle="modal" data-target="#more-product">
+                        <img id="img-product-zoom"
                              src="/Images/ProductImage/@prod.ImageUri"
-                             data-zoom-image="/Images/ProductImage/@prod.ImageUri"
                              width="411"/>
                         <div id="gallery_01f" style="width:420px;float:right;">
                     </a>
@@ -436,13 +526,20 @@
                             {
                                 <li class="item">
                                     <a href="#" class="elevatezoom-gallery active" data-update=""
-                                       data-image="/Images/ProductImage/@i.ImageUri"
-                                       data-zoom-image="/Images/ProductImage/@i.ImageUri">
+                                       data-image="/Images/ProductImage/@i.ImageUri">
                                         <img src="/Images/ProductImage/@i.ImageUri"
                                              width="145px" style="max-height: 150px"/>
                                     </a>
                                 </li>
                             }
+
+                            <li class="item">
+                                <a href="#" class="elevatezoom-gallery active" data-update=""
+                                   data-image="/Images/ProductImage/@prod.ImageUri">
+                                    <img src="/Images/ProductImage/@prod.ImageUri"
+                                         width="145px" style="max-height: 150px"/>
+                                </a>
+                            </li>
                         }
 
                     </ul>
@@ -547,7 +644,7 @@
                 var index = 0;
                 foreach (var i in prod.ProductColors)
                 {
-                    if (index == 0)
+                    if (index == prod.ProductColors.Count)
                     {
                         <div class="col=lg-6 col-md-6 col-xs-12 pr color-panel" id="@i.ColorId">
                             <div class="product-seller-info">
@@ -576,7 +673,7 @@
                                             <span class="title"> تخفیف:</span>
                                             <a href="#" class="product-name">
                                                 <span class="amount">
-                                                    @prod.IsOffer.Pass(offer, prod.DiscountAmount)
+                                                    @prod.IsOffer.Pass(offer, prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
                                             </a>
@@ -585,7 +682,7 @@
                                             <span class="title"> قیمت نهایی:</span>
                                             <a href="#" class="product-name">
                                                 <span class="amount">
-                                                    @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount)
+                                                    @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
                                             </a>
@@ -621,7 +718,7 @@
                                         <span class="title"> قیمت:</span>
                                         <a href="#" class="product-name">
                                             <span class="amount">
-                                                @i.Price
+                                                @i.Price.ToString("N0")
                                                 <span>تومان</span>
                                             </span>
                                         </a>
@@ -633,7 +730,7 @@
                                             <span class="title"> تخفیف:</span>
                                             <a href="#" class="product-name">
                                                 <span class="amount">
-                                                    @prod.IsOffer.Pass(offer, prod.DiscountAmount)
+                                                    @prod.IsOffer.Pass(offer, prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
                                             </a>
@@ -642,7 +739,7 @@
                                             <span class="title"> قیمت نهایی:</span>
                                             <a href="#" class="product-name">
                                                 <span class="amount">
-                                                    @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount)
+                                                    @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
                                             </a>
@@ -653,7 +750,7 @@
                                         <div class="product-seller-row">
                                             <div class="btn-add-to-cart btn btn-primary">
                                                 <span class="">افزودن به سبد خرید</span>
-                                                
+
                                             </div>
                                         </div>
                                     </a>
@@ -846,7 +943,29 @@
 
 @section script{
     <script>
-     
+        document.addEventListener("DOMContentLoaded", function() {
+            // Select all the list items within the ul with the class 'js-product-variants'
+            const variantItems = document.querySelectorAll('.js-product-variants .ui-variant');
+
+            // Loop through each item
+            variantItems.forEach(function(item) {
+                // Find the radio input element within the current item
+                const radioInput = item.querySelector('.js-variant-selector');
+
+                // Check if the radio input is checked and get its value
+                if (radioInput.checked) {
+                    // Hide all elements with the class 'color-panel'
+                    document.querySelectorAll('.color-panel').forEach(element => {
+                        element.classList.add('d-none');
+                    });
+
+                    // Show the selected element
+                    // Assuming `id` is the ID of the element to show
+                    const id = radioInput.value; // Assuming the value of the radio button corresponds to the ID
+                    document.getElementById(id).classList.remove('d-none');
+                }
+            });
+        });
         function showElement(id) {
             // Hide all elements
             document.querySelectorAll('.color-panel').forEach(element => {

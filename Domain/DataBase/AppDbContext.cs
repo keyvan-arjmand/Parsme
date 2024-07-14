@@ -42,6 +42,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<UserAddress> Addresses { set; get; }
     public DbSet<UserFav> UserFavs { set; get; }
     public DbSet<Banner> Banners { set; get; }
+    public DbSet<PostMethod> PostMethods { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

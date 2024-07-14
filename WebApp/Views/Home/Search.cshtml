@@ -137,7 +137,7 @@
                                                 @foreach (var b in q.Brands)
                                                 {
                                                     <li class="menu-mega-item-three">
-                                                        <a href="@Url.Action("GetByBrand","Home",new {b.Id})">
+                                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
                                                             @b.Title
                                                         </a>
                                                     </li>
@@ -272,7 +272,7 @@
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="@Url.Action("GetByBrand","Home",new {b.Id})" class="category-level-3">@b.Title</a>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
                                                 </li>
                                             }
 
@@ -352,7 +352,7 @@
 }
 
 <div class="container-main">
-<div class="d-block">
+    <div class="d-block">
 <div class="page-content page-row">
 <div class="main-row">
 <div id="breadcrumb">
@@ -362,121 +362,120 @@
             <li class="breadcrumb-item">
                 <a href="#">خانه</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page"> محصولات</li>
+            <li class="breadcrumb-item active" aria-current="page">نتیجه جستجو</li>
         </ol>
     </nav>
 </div>
 
 <!-- start sidebar--------------------->
-    <div class="col-lg-3 col-md-3 col-xs-12 pr sticky-sidebar">
-        <div class="shop-archive-sidebar">
-            <div class="sidebar-archive mb-3">
-                <section class="widget-product-categories">
-                    <header class="cat-header">
-                        <h2 class="mb-0">
-                            <button class="btn btn-block text-right" data-toggle="collapse"
-                                    href="#headingOne" role="button" aria-expanded="false"
-                                    aria-controls="headingOne">
-                                دسته بندی محصولات
-                                <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                        </h2>
-                    </header>
-                    
-                    <div class="product-filter">
-                        <div class="card">
-                            <div class="collapse show" id="headingOne">
-                                <div class="card-main mb-0">
-                                    @{
+<div class="col-lg-3 col-md-3 col-xs-12 pr sticky-sidebar">
+    <div class="shop-archive-sidebar">
+        <div class="sidebar-archive mb-3">
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right" data-toggle="collapse"
+                                href="#headingOne" role="button" aria-expanded="false"
+                                aria-controls="headingOne">
+                            دسته بندی محصولات
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingOne">
+                            <div class="card-main mb-0">
+                                @{
                                     foreach (var i in categories.Select(x => x.SubCategories.ToList()).FirstOrDefault())
                                     {
-                                    <div class="form-auth-row SubCat">
-                                        <label for="#" class="ui-checkbox">
-                                            <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
-                                            <span class="ui-checkbox-check"></span>
-                                        </label>
-                                        <label for="rem ember" class="remember-me">@i.Name</label>
-                                    </div>
+                                        <div class="form-auth-row SubCat">
+                                            <label for="#" class="ui-checkbox">
+                                                <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
+                                                <span class="ui-checkbox-check"></span>
+                                            </label>
+                                            <label for="rem ember" class="remember-me">@i.Name</label>
+                                        </div>
                                     }
-                                    }
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
-                </section>
-                <section class="widget-product-categories">
-                    <header class="cat-header">
-                        <h2 class="mb-0">
-                            <button class="btn btn-block text-right" data-toggle="collapse"
-                                    href="#headingTwo" role="button" aria-expanded="false"
-                                    aria-controls="headingTwo">
-                                برند ها
-                                <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                        </h2>
-                    </header>
-                    <div class="product-filter">
-                        <div class="card">
-                            <div class="collapse show" id="headingTwo">
-                                <div class="card-main mb-0">
-                                    @{
+                </div>
+            </section>
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right" data-toggle="collapse"
+                                href="#headingTwo" role="button" aria-expanded="false"
+                                aria-controls="headingTwo">
+                            برند ها
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingTwo">
+                            <div class="card-main mb-0">
+                                @{
                                     foreach (var i in categories.Select(x => x.SubCategories.Select(x => x.Brands).FirstOrDefault()).FirstOrDefault())
                                     {
-                                    <div class="form-auth-row Brand">
-                                        <label for="#" class="ui-checkbox">
-                                            <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
-                                            <span class="ui-checkbox-check"></span>
-                                        </label>
-                                        <label for="remember" class="remember-me">@i.Title</label>
-                                    </div>
+                                        <div class="form-auth-row Brand">
+                                            <label for="#" class="ui-checkbox">
+                                                <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
+                                                <span class="ui-checkbox-check"></span>
+                                            </label>
+                                            <label for="remember" class="remember-me">@i.Title</label>
+                                        </div>
                                     }
-                                    }
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
-                </section>
-                <section class="widget-product-categories">
-                    <header class="cat-header">
-                        <h2 class="mb-0">
-                            <button class="btn btn-block text-right collapsed" data-toggle="collapse"
-                                    href="#headingThree" role="button" aria-expanded="false"
-                                    aria-controls="headingThree">
-                                محدوده قیمت
-                                <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                        </h2>
-                    </header>
-                    <div class="product-filter">
-                        <div class="card">
-                            <div class="collapse show" id="headingThree">
-                                <div class="card-main mb-0">
-                                    <div class="">
-                                        <form >
-                                            <div class="mt-5 mb-4">
-                                                <div id="slider-non-linear-step"></div>
-                                            </div>
-                                            <div class="filter-range mt-2 mb-2 pr">
-                                                <span>قیمت: </span>
-                                                <span class="example-val"
-                                                      id="slider-non-linear-step-value">
+                </div>
+            </section>
+            <section class="widget-product-categories">
+                <header class="cat-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-right collapsed" data-toggle="collapse"
+                                href="#headingThree" role="button" aria-expanded="false"
+                                aria-controls="headingThree">
+                            محدوده قیمت
+                            <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                    </h2>
+                </header>
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingThree">
+                            <div class="card-main mb-0">
+                                <div class="">
+                                    <form >
+                                        <div class="mt-5 mb-4">
+                                            <div id="slider-non-linear-step"></div>
+                                        </div>
+                                        <div class="filter-range mt-2 mb-2 pr">
+                                            <span>قیمت: </span>
+                                            <span class="example-val"
+                                                  id="slider-non-linear-step-value">
                                             </span> تومان
-                                            </div>
-                                            <div class="mt-2 pl">
-                                                <button class="btn btn-range" type="button" onclick="Search()">
-                                                    اعمال
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <div class="mt-2 pl">
+                                            <button class="btn btn-range" type="button" onclick="Search()">
+                                                اعمال
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
     </div>
+</div>
 <div class="col-lg-9 col-md-9 col-xs-12 pl">
     <div class="shop-archive-content mt-3 d-block">
         <div class="archive-header">
@@ -489,30 +488,42 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="Most-visited-tab" data-toggle="tab"
                            href="#Most-visited" role="tab" aria-controls="Most-visited"
-                           aria-selected="true">پربازدیدترین</a>
+                           aria-selected="true">
+                            پربازدیدترین
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="Bestselling-tab" data-toggle="tab"
                            href="#Bestselling" role="tab" aria-controls="Bestselling"
-                           aria-selected="false">پرفروش‌ترین‌</a>
+                           aria-selected="false">
+                            پرفروش‌ترین‌
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="Most-Popular-tab" data-toggle="tab"
                            href="#Most-Popular" role="tab" aria-controls="Most-Popular"
-                           aria-selected="false">محبوب‌ترین</a>
+                           aria-selected="false">
+                            محبوب‌ترین
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="newest-tab" data-toggle="tab" href="#newest"
-                           role="tab" aria-controls="newest" aria-selected="false">جدیدترین</a>
+                           role="tab" aria-controls="newest" aria-selected="false">
+                            جدیدترین
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="cheapest-tab" data-toggle="tab" href="#cheapest"
-                           role="tab" aria-controls="cheapest" aria-selected="false">ارزان‌ترین</a>
+                           role="tab" aria-controls="cheapest" aria-selected="false">
+                            ارزان‌ترین
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="most-expensive-tab" data-toggle="tab"
                            href="#most-expensive" role="tab" aria-controls="most-expensive"
-                           aria-selected="false">گران‌ترین</a>
+                           aria-selected="false">
+                            گران‌ترین
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -534,7 +545,6 @@
                                                     @if (i.IsOffer)
                                                     {
                                                         <div class="promotion-badge">فروش ویژه</div>
-
                                                     }
                                                     <div class="product-rate">
                                                         <i class="fa fa-star active"></i>
@@ -558,7 +568,6 @@
                                             </div>
                                         </section>
                                     </div>
-
                                 }
                             }
                             else
@@ -606,6 +615,57 @@
 
 @section script
 {
+    <script>
+        function Search(){
+        
+            var search ='@Html.Raw(ViewBag.Search)'
+            //brand
+            const checkboxes = document.querySelectorAll('.form-auth-row.Brand input[type="checkbox"][name="login"]');
+            const checkedValues = [];
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checkedValues.push(checkbox.value);
+                }
+            });
+            //cat 
+            const checkboxesCat = document.querySelectorAll('.form-auth-row.SubCat input[type="checkbox"][name="login"]');
+            const checkedValuesCat = [];
+            checkboxesCat.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checkedValuesCat.push(checkbox.value);
+                }
+            });
+            //price
+            const spanElement = document.getElementById('slider-non-linear-step-value');
+            // Get the text content of the span
+            const spanText = spanElement.textContent;
+
+            // Split the text to get the individual numbers
+            const values = spanText.split(' - ');
+            var min = values[0].replace(/,/g, '');
+            var max = values[1].replace(/,/g, '');
+            let currentUrl = window.location.href;
+            // Parse the URL
+            let url = new URL(currentUrl);
+            // Change a segment of the URL (e.g., change the path)
+            // Assuming you want to change the last part of the path
+            let segments = url.pathname.split('/');
+            
+            if (search.trim() !== "")
+            {
+                segments[segments.length - 1] = 'Search?search=' +search+ '&catId=' + checkedValuesCat.join(',') + '&brandId=' + checkedValues.join(',') ;//+'&min='+min+'&max='+max;
+            }else{
+                segments[segments.length - 1] = 'Search?catId='+ checkedValuesCat.join(',') + '&brandId=' + checkedValues.join(','); //+'&min='+min+'&max='+max;
+             }
+            // Construct the new URL
+            let newUrl = url.origin + segments.join('/') + url.search + url.hash;
+            
+     
+            // Remove commas from the values
+            // Redirect to the new URL
+           window.location.href = newUrl;
+        }
+    </script>
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="/assetsCli/js/vendor/bootstrap.js"></script>
     <!-- plugin--/assetsCli--------------------------------------------->

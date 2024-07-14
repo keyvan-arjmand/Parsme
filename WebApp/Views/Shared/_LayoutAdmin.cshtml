@@ -49,6 +49,10 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
         textarea {
             min-height: 40px;
         }
+
+        .modal {
+            z-index: 1041;
+        }
     </style>
     <title>پـنل ادمین</title>
 </head>
@@ -181,7 +185,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
     <aside class="main-sidebar sidebar-dark-primary elevation-4" style="z-index: 999 !important;">
         <!-- Brand Logo -->
         <a href="" class="brand-link">
-            <img src="/Images/Banner/parsme-logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">پنل مدیریت</span>
         </a>
@@ -242,7 +246,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("ManageCategorey", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("ManageCategory", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>دسته بندی</p>
                                                     </a>
@@ -260,17 +264,51 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("Color", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("ManageGuarantee", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>گارانتی</p>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("Color", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("ManagePostMethod", "Admin")"
+                                                       class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>روش های ارسال</p>
                                                     </a>
                                                 </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                        data-accordion="false">
+                                        <!-- Add icons to the links using the .nav-icon class
+                                        with font-awesome or any other icon font library -->
+                                        <li class="nav-item has-treeview">
+                                            <a class="nav-link " style="cursor: pointer">
+                                                <i class="fa fa-money nav-icon"></i>
+                                                <p>
+                                                    مالی
+                                                    <i class="right fa fa-angle-left"></i>
+                                                </p>
+
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>فاکتور فروش</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>گزارش درآمد</p>
+                                                    </a>
+                                                </li>
+                                                
                                             </ul>
                                         </li>
 

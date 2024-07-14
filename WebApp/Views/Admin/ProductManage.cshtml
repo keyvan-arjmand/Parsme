@@ -1,4 +1,6 @@
-﻿@using Domain.Entity.Product
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Product
+@using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
@@ -68,7 +70,7 @@
 <div class="container-fluid">
 <div class="row">
 
-    <!-- Profile Image -->
+<!-- Profile Image -->
 
 <!-- /.col -->
 <div class="col-md-12">
@@ -93,13 +95,13 @@
                     <div class="w-50">
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>تعداد محصول</b> <a class="float-left"> ViewBag.productCount</a>
+                                <b>تعداد محصول</b> <a class="float-left"> @products.Count</a>
                             </li>
                             <li class="list-group-item">
-                                <b>موجودی</b> <a class="float-left"> ViewBag.inventory</a>
+                                <b>موجودی</b> <a class="float-left"> @products.Count(x => x.ProductColors.Select(x => x.Inventory).Count() > 0)</a>
                             </li>
                             <li class="list-group-item">
-                                <b>محصول جدید</b> <a class="float-left"> ViewBag.inventory</a>
+                                <b>محصول جدید</b> <a class="float-left"> @products.Count(x => x.InsertDate <= DateTime.Now.AddDays(-15))</a>
                             </li>
 
                         </ul>
@@ -107,65 +109,92 @@
                     <div class="w-50">
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b> محصولات ویژه</b> <a class="float-left"> ViewBag.productCount</a>
+                                <b> محصولات ویژه</b> <a class="float-left"> @products.Count(x => x.IsOffer)</a>
                             </li>
                             <li class="list-group-item">
-                                <b>محصولات لحظه ای</b> <a class="float-left"> ViewBag.inventory</a>
+                                <b>محصولات لحظه ای</b> <a class="float-left"> @products.Count(x => x.MomentaryOffer)</a>
                             </li>
                             <li class="list-group-item">
-                                <b>اتمام موجودی</b> <a class="float-left"> ViewBag.inventory</a>
+                                <b>اتمام موجودی</b> <a class="float-left"> @products.Count(x => x.ProductColors.Select(x => x.Inventory).Count() < 1)</a>
                             </li>
 
                         </ul>
                     </div>
                 </div>
-                <div class="input-group p-3 m-2 w-25 ">
-                    <input type="text" class="form-control " name="search"
-                           style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                    <button class="input-group-text" type="submit"
-                            style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">
-                        جستجو
-                    </button>
-                </div>
+                
             </div>
             <!-- /.card-body -->
         </div>
 
     </div>
-    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap p-3">
-        @{
-            if (products.Count < 1)
-            {
-                <div>
-                    محصولی ثبت نشده
-                </div>
-            }
-            else
-            {
-                foreach (var i in products)
-                {
-                    <div class="card" style="width: 13rem;border-radius: 25px">
-                        <img class="card-img-top"
-                             style="border-top-left-radius: calc(1.25rem - 1px);border-top-right-radius: calc(1.25rem - -1px);width: 170px !important;"
-                             src="/Images/ProductImage/@i.ImageUri"
-                             alt="Card image cap">
-                        <div class="card-body">
-                            <p class="text-overflow-cat-card">@i.PersianTitle</p>
-                            <div class="d-flex justify-content-between ">
-                                <p class="card-text">@i.Brand.Title</p>
-                                <p class="card-text">@i.SubCategory.Name</p>
-                            </div>
-                            <div class="d-flex justify-content-between ">
-                                <p class="card-text">موجودی:@i.ProductColors.Sum(x => x.Inventory)</p>
-                                <a href="#" class="btn btn-primary">ویرایش</a>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">محصولات</h3>
+
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control float-right" placeholder="جستجو">
+
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>
-                }
-            }
-        }
-
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <th>نام</th>
+                            <th>عکس</th>
+                            <th>تاریخ</th>
+                            <th>برند</th>
+                            <th>زیردسته</th>
+                            <th>تعداد رنگ</th>
+                            <th>وضعیت</th>
+                        </tr>
+                        @{
+                        if (products.Count < 1)
+                        {
+                        <div>
+                            محصولی ثبت نشده
+                        </div>
+                        }
+                        else
+                        {
+                        foreach (var i in products)
+                        {
+                            <tr>
+                                <td>@i.Id</td>
+                                <td style="overflow: hidden">@i.PersianTitle</td>
+                                <td><img src="/Images/ProductImage/@i.ImageUri" width="60"/></td>
+                                <td>@i.InsertDate.ToPersianTime()</td>
+                                <td>@i.Brand.Title</td>
+                                <td>@i.SubCategory.Name</td>
+                                <td>@i.ProductColors.Count()</td>
+                                
+                                @if (@i.ProductStatus == ProductStatus.Available)
+                                {
+                                    <td><span class="badge badge-success">@i.ProductStatus.ToDisplay()</span></td>
+                                }
+                                else
+                                {
+                                    <td><span class="badge badge-danger">@i.ProductStatus.ToDisplay()</span></td>
+                                }
+                            </tr>
+                        }
+                        }
+                        }
+                       
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
     </div>
+   
 </div>
 <div class="tab-pane p-5" id="SubCategory">
 <div class="card card-info card-outline mt-4">
@@ -235,7 +264,7 @@
             </div>
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">برند</label>
-                <select id="BrandId" class="form-control select2" aria-label="Default select example"  required="required">
+                <select id="BrandId" class="form-control select2" aria-label="Default select example" required="required">
                     @{
                         int index = 0;
                         foreach (var i in brands)
@@ -268,10 +297,10 @@
             <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
                 @{
                     <option value="0">انتخاب</option>
-                foreach (var i in subCategories)
-                {
-                <option value="@i.Id">@i.Name</option>
-                }
+                    foreach (var i in subCategories)
+                    {
+                        <option value="@i.Id">@i.Name</option>
+                    }
                 }
             </select>
         </div>
@@ -314,7 +343,7 @@
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3  d-flex flex-column">
                 <label for="exampleInputPassword1">وضعیت کالا</label>
-                <select id="ProductStatus" class="form-control select2" aria-label="Default select example"  required="required">
+                <select id="ProductStatus" class="form-control select2" aria-label="Default select example" required="required">
                     <option selected value="0">موجود</option>
                     <option value="1">غیر موجود</option>
                     <option value="2">به زودی</option>
@@ -323,11 +352,11 @@
             </div>
             <div class="form-group w-50 p-3" id="">
                 <label>مبلغ تخفیف</label>
-                <input id="DiscountAmount" type="text" class="form-control"  >
+                <input id="DiscountAmount" type="text" class="form-control">
             </div>
 
         </div>
-    
+
         <div>
             <div class="d-flex justify-content-start gap-5">
                 <div class="d-flex flex-column align-items-start p-3 m-3">
@@ -343,7 +372,7 @@
                     <input type="checkbox" class="form-check-input" id="ShowIndex" required="required"/>
                 </div>
             </div>
-          
+
             <div style="display: none !important" id="OfferForm">
                 <div class="d-flex justify-content-center p-3" style="gap: 20px">
                     <div class="form-group w-100  d-flex flex-column">
@@ -479,7 +508,7 @@
     <div class="form-group w-25">
         <div class="form-check">
             <input type="checkbox" id="IsActive" class="form-check-input"/>
-            <label class="form-check-label" >وضعیت فعال</label>
+            <label class="form-check-label">وضعیت فعال</label>
         </div>
     </div>
 </div>
