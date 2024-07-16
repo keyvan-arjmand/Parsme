@@ -41,7 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Admin/AccessDenied";
     options.Cookie.Name = "WebAppIdentityCooclie";
-    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    options.ExpireTimeSpan = TimeSpan.FromHours(2); 
     options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });
