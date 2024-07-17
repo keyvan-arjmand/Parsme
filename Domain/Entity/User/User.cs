@@ -13,9 +13,9 @@ public class User : IdentityUser<int>
     [ForeignKey("CityId")] public City City { get; set; } = default!;
     public string ConfirmCode { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string NationalCode { get; set; } = string.Empty;
+    public string Sheba { get; set; } = string.Empty;
     public DateTime InsertDate { get; set; } = DateTime.Now;
     public DateTime ConfirmCodeExpireTime { get; set; }
-    public string Address { get; set; } = string.Empty;
-
     
 }

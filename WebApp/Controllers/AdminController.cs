@@ -51,9 +51,10 @@ public class AdminController : Controller
 
             ViewBag.Users = await _userManager.Users.ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x=>x.SubCategory)
-                .Include(x=>x.Brand)
+                .Include(x => x.SubCategory)
+                .Include(x => x.Brand)
                 .ToListAsync();
+
             #endregion
 
             return View();
@@ -152,7 +153,6 @@ public class AdminController : Controller
                 : cat.LogoUri;
             await _work.GenericRepository<Category>().UpdateAsync(cat, CancellationToken.None);
             return RedirectToAction("ManageCategory");
-            
         }
         else
         {
@@ -515,6 +515,63 @@ public class AdminController : Controller
         return View("ConfirmCode");
     }
 
+    public async Task InsertAdmin(InsertUser request)
+    {
+        var user = new Domain.Entity.User.User
+        {
+            Family = request.Family,
+            Name = request.Name,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            Password = request.Password,
+            InsertDate = DateTime.Now,
+            UserName = request.PhoneNumber,
+            SecurityStamp = string.Empty,
+            CityId = request.CityId,
+            Sheba = request.Sheba,
+            NationalCode = request.NationalCode,
+        };
+        if (!await _roleManager.RoleExistsAsync("user"))
+        {
+            await _roleManager.CreateAsync(new Role
+            {
+                Name = "user"
+            });
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Role))
+        {
+            await _userManager.AddToRoleAsync(user, request.Role);
+        }
+
+        await _userManager.CreateAsync(user, request.Password);
+        await _userManager.AddToRoleAsync(user, "user");
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task UpdateAdmin(UpdateUser request)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(x =>
+            x.UserName == request.PhoneNumber && x.PhoneNumber == request.PhoneNumber);
+        Upload up = new Upload(_webHostEnvironment);
+        user.Name = request.Name;
+        user.Family = request.Family;
+        user.ImageName = request.Image != null
+            ? up.Uploadfile(request.Image, "Brand")
+            : user.ImageName;
+
+        user.Sheba = request.Sheba;
+        user.CityId = request.CityId;
+        user.Email = request.Email;
+        user.NationalCode = request.NationalCode;
+        if (request.Password != user.Password)
+        {
+            await _userManager.ChangePasswordAsync(user, user.Password, request.Password);
+            user.Password = request.Password;
+        }
+        await _userManager.AddToRoleAsync(user, request.Role);
+        await _userManager.UpdateAsync(user);
+    }
 
     public async Task initAdmin()
     {

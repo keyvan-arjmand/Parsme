@@ -315,17 +315,45 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                     </ul>
                                 </li>
                                 <li class="nav-item">
+                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                        data-accordion="false">
+                                        <!-- Add icons to the links using the .nav-icon class
+                                        with font-awesome or any other icon font library -->
+                                        <li class="nav-item has-treeview">
+                                            <a class="nav-link " style="cursor: pointer">
+                                                <i class="fa fa-first-order nav-icon"></i>
+                                                <p>
+                                                    سفارشات
+                                                    <i class="right fa fa-angle-left"></i>
+                                                </p>
+
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>سفارش محصول</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>برگشت از فروش</p>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
                                     <a href="@Url.Action("ProductManage", "Admin")" class="nav-link ">
                                         <i class="fa fa-product-hunt nav-icon"></i>
                                         <p>محصولات</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Factor", "Admin")" class="nav-link">
-                                        <i class="fa fa-inbox nav-icon"></i>
-                                        <p>سفارش‌ها</p>
-                                    </a>
-                                </li>
+                          
                                 <li class="nav-item">
                                     <a href="@Url.Action("ManageUser", "Admin")" class="nav-link">
                                         <i class="fa fa-users nav-icon"></i>
