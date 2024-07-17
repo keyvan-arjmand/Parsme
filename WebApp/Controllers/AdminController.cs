@@ -152,6 +152,7 @@ public class AdminController : Controller
                 : cat.LogoUri;
             await _work.GenericRepository<Category>().UpdateAsync(cat, CancellationToken.None);
             return RedirectToAction("ManageCategory");
+            
         }
         else
         {
