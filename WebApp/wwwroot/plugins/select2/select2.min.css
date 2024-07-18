@@ -218,6 +218,7 @@
 }
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    min-width: 40PX;
     border-color: transparent transparent #888 transparent;
     border-width: 0 4px 5px 4px;
 }
@@ -252,8 +253,8 @@
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #e4e4e4;
-    border: 1px solid #aaa;
+    background-color: #007bff;
+    border: 1px solid #006fe6;
     border-radius: 4px;
     cursor: default;
     float: left;

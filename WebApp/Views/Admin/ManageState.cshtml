@@ -1,0 +1,349 @@
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Product
+@using Domain.Entity.User
+@using Domain.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutAdmin";
+    List<State> state = ViewBag.States;
+    List<City> cities = ViewBag.Cities;
+}
+
+@section link
+{
+    <style>
+    .select2 {
+        min-width: 180px;
+    }
+</style>
+
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت شهر و استان</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- /.col -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">استان</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#SubCategory" data-toggle="tab">شهر</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start gap-3 p-4 m-2"
+                                      asp-action="InsertState" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان استان</label>
+                                        <input name="title" class="form-control" id="">
+                                    </div>
+                                    <div class="form-input mt-4 ">
+                                        <button type="submit" class="btn btn-primary mt-2">ثبت</button>
+                                    </div>
+                                </form>
+
+                                <div class="card mt-3">
+
+                                    <form asp-action="ManageState" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="0" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو محصول</button>
+                                        </div>
+                                    </form>
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">استان</th>
+                                                <th class="text-center" style="width: 20%">تعداد شهر</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (state.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            یافت نشد
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in state)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Title</td>
+                                                            <td class="text-center">@i.Cities.Count</td>
+                                                            <td class="text-center">
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalState" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+                            </div>
+                            <div class="tab-pane" id="SubCategory">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start p-2 gap-3" asp-action="InsertCity" asp-controller="Admin" method="post">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان شهر</label>
+                                        <input name="title" type="text" class="form-control" id="exampleInputPassword1" placeholder="عنوان شهر را وارد کنید">
+                                    </div>
+                                    <div class="form-group d-flex flex-column">
+                                        <label for="exampleInputPassword1">استان</label>
+                                        <select name="stateId" class="form-select select2 w-100 p-3" aria-label="Default select example">
+                                            @{
+                                                int index = 0;
+                                                foreach (var i in state)
+                                                {
+                                                    if (index == 0)
+                                                    {
+                                                        <option selected value="@i.Id">@i.Title</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@i.Id">@i.Title</option>
+                                                    }
+
+                                                    index++;
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="d-flex flex-column align-items-center justify-content-end">
+                                        <div class="form-group">
+                                            <div class="form-input">
+                                                <button type="submit" class="btn btn-primary">ثبت</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                                <div class="card mt-3">
+                                    <form asp-action="ManageState" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="1" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو محصول</button>
+                                        </div>
+                                    </form>
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 20%">استان</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (cities.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            یافت نشد
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in cities)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Name</td>
+                                                            <td class="text-center">@i.State.Title</td>
+                                                            <td class="text-center">
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalCity" data-toggle="modal" data-target="#exampleModal1">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Name" hidden="hidden"/>
+                                                                    <input type="text" name="mStateId" class="mStateId" value="@i.StateId" hidden="hidden"/>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade exampleModal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateCategoryDetail" asp-controller="Admin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش استان</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
+                <div class="input-group p-3  m-2 w-50">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان</span>
+                    <input type="text" id="Title" style="border-radius: 5px 0px 0px 5px;" class="form-control TitleCatDetail " required="required" name="title">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade exampleModal1 " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateCategoryDetail" asp-controller="Admin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش شهر</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2 w-50">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان</span>
+                        <input type="text" id="TitleCatDetail" style="border-radius: 5px 0px 0px 5px;" class="form-control TitleCatDetail " required="required" name="title">
+                    </div>
+                    <div class="form-group  d-flex flex-column w-50">
+                        <label for="exampleInputPassword1 " class="mb-0">استان </label>
+                        <select style="min-width: 200px;" name="subCatId" id="SubCatId" class="form-select SubCatId" aria-label="Default select example">
+                            @{
+                                foreach (var i in state)
+                                {
+                                    <option value="@i.Id">@i.Title</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+
+    <script>
+    $(document).ready(function () {
+
+        $('#DataType').on('change', function() {
+            var dataType = $(this).val();
+            if (dataType==1){
+                $("#OpDiv").css("display","block");
+                $("#Option").css("display","block");
+            }else{
+                $("#Option").css("display","none");
+                $("#OpDiv").css("display","none");
+            }
+        });
+        $('#DataTypeInp').on('change', function() {
+            if ($(this).val() == '1') {
+                $('#OptionInp').show();
+                $('#FlexDataType').addClass("justify-content-between");
+                $('#FlexDataType').removeClass("justify-content-start gap-4");
+            } else {
+                $('#OptionInp').hide();
+                $('#FlexDataType').addClass("justify-content-start gap-4");
+                $('#FlexDataType').removeClass("justify-content-between");
+            }
+        });
+
+        // Initial check to set the correct visibility based on the default selected value
+        if ($('#DataTypeInp').val() == '1') {
+            $('#OptionInp').show();
+            $('#FlexDataType').addClass("justify-content-between");
+            $('#FlexDataType').removeClass("justify-content-start gap-4");
+        } else {
+            $('#OptionInp').hide();
+            $('#FlexDataType').addClass("justify-content-start gap-4");
+            $('#FlexDataType').removeClass("justify-content-between");
+        }
+        $(".catDetail").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#TitleCatDetail").val(currentrow.find($("input.mTitleCatDetail[type=text]")).val());
+            $("#SubCatId").val(currentrow.find($("input.mSubCatId[type=text]")).val());
+            $('#FeatureId').val(currentrow.find($("input.mFeatureId[type=text]")).val());
+            $("#isSearchCatDetail").val(currentrow.find($("input.misSearchCatDetail[type=text]")).val());
+
+            $("#DataType").val(currentrow.find($("input.mDataType[type=text]")).val());
+            var dataType=currentrow.find($("input.mDataType[type=text]")).val();
+            if (dataType==1){
+                $("#OpDiv").css("display","block");
+                $("#Option").css("display","block");
+                $("#Option").val(currentrow.find($("input.mOption[type=text]")).val()).change();
+            }else{
+                $("#Option").css("display","none");
+                $("#OpDiv").css("display","none");
+            }
+        });
+    });
+</script>
+}

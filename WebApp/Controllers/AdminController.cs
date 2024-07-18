@@ -18,7 +18,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyTested.AspNetCore.Mvc.Utilities.Extensions;
 using WebApp.Models;
+using UserDto = WebApp.Models.UserDto;
 
 namespace WebApp.Controllers;
 
@@ -515,7 +517,7 @@ public class AdminController : Controller
         return View("ConfirmCode");
     }
 
-    public async Task InsertAdmin(InsertUser request)
+    public async Task<IActionResult> InsertAdmin(InsertUser request)
     {
         var user = new Domain.Entity.User.User
         {
@@ -539,27 +541,24 @@ public class AdminController : Controller
             });
         }
 
-        if (!string.IsNullOrWhiteSpace(request.Role))
+        await _userManager.CreateAsync(user, request.Password);
+        foreach (var r in request.Role)
         {
-            await _userManager.AddToRoleAsync(user, request.Role);
+            await _userManager.AddToRoleAsync(user, r);
         }
 
-        await _userManager.CreateAsync(user, request.Password);
         await _userManager.AddToRoleAsync(user, "user");
         await _userManager.UpdateAsync(user);
+        return RedirectToAction("ManageUser");
     }
 
-    public async Task UpdateAdmin(UpdateUser request)
+    public async Task<IActionResult> UpdateAdmin(UpdateUser request)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(x =>
             x.UserName == request.PhoneNumber && x.PhoneNumber == request.PhoneNumber);
         Upload up = new Upload(_webHostEnvironment);
         user.Name = request.Name;
         user.Family = request.Family;
-        user.ImageName = request.Image != null
-            ? up.Uploadfile(request.Image, "Brand")
-            : user.ImageName;
-
         user.Sheba = request.Sheba;
         user.CityId = request.CityId;
         user.Email = request.Email;
@@ -569,8 +568,14 @@ public class AdminController : Controller
             await _userManager.ChangePasswordAsync(user, user.Password, request.Password);
             user.Password = request.Password;
         }
-        await _userManager.AddToRoleAsync(user, request.Role);
+
+        foreach (var r in request.Role)
+        {
+            await _userManager.AddToRoleAsync(user, r);
+        }
+
         await _userManager.UpdateAsync(user);
+        return RedirectToAction("ManageUser");
     }
 
     public async Task initAdmin()
@@ -630,7 +635,7 @@ public class AdminController : Controller
         {
             PhoneNumber = phoneNumber
         });
-        return View("Login");
+        return Ok();
     }
 
     public async Task<ActionResult> ConfirmCode(string code, string phoneNumber)
@@ -654,12 +659,139 @@ public class AdminController : Controller
         }
     }
 
-
-    public async Task<ActionResult> ManageUser(int page = 1)
+    public async Task<ActionResult> ManageState(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Users = await _userManager.Users.ToListAsync();
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.States =
+                    await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).ToListAsync();
+                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
+                    .ToListAsync();
+                return View();
+            }
+            else
+            {
+                if (index == 0)
+                {
+                    ViewBag.States =
+                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities)
+                            .Where(x => x.Title.Contains(search)).ToListAsync();
+                    ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
+                        .ToListAsync();
+                }
+
+                if (index == 1)
+                {
+                    ViewBag.States =
+                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).ToListAsync();
+                    ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
+                        .Where(x => x.Name.Contains(search) || x.State.Title.Contains(search)).ToListAsync();
+                }
+
+                return View();
+            }
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> InsertState(string title)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<State>().AddAsync(new State
+            {
+                Title = title
+            }, CancellationToken.None);
+            return RedirectToAction("ManageState");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+    public async Task<ActionResult> InsertCity(string title,int stateId)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<City>().AddAsync(new City
+            {
+                Name = title,
+                StateId = stateId
+            }, CancellationToken.None);
+            return RedirectToAction("ManageState");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+    public async Task<ActionResult> ManageUser(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                var user = await _userManager.Users.ToListAsync();
+                var users = new List<UserDto>();
+                foreach (var i in user)
+                {
+                    var a = await _userManager.GetRolesAsync(i);
+                    users.Add(new UserDto
+                    {
+                        City = i.City,
+                        Family = i.Family,
+                        Name = i.Name,
+                        Password = i.Password,
+                        InsertDate = i.InsertDate,
+                        NationalCode = i.NationalCode,
+                        Sheba = i.Sheba,
+                        PhoneNumber = i.PhoneNumber,
+                        Email = i.Email ?? string.Empty,
+                        CityId = i.CityId,
+                        Roles = a.ToList()
+                    });
+                }
+
+                ViewBag.Users = users;
+                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
+                ViewBag.Roles = await _roleManager.Roles.ToListAsync();
+            }
+            else
+            {
+                var user = await _userManager.Users.Include(x => x.City).Where(x =>
+                    x.UserName.Contains(search) || x.Name.Contains(search) || x.Family.Contains(search) ||
+                    x.Sheba.Contains(search) || x.NationalCode.Contains(search) || x.Email.Contains(search) ||
+                    x.PhoneNumber.Contains(search) || x.City.Name.Contains(search)).ToListAsync();
+                var users = new List<UserDto>();
+                foreach (var i in user)
+                {
+                    var a = await _userManager.GetRolesAsync(i);
+                    users.Add(new UserDto
+                    {
+                        City = i.City,
+                        Family = i.Family,
+                        Name = i.Name,
+                        Password = i.Password,
+                        InsertDate = i.InsertDate,
+                        NationalCode = i.NationalCode,
+                        Sheba = i.Sheba,
+                        PhoneNumber = i.PhoneNumber,
+                        Email = i.Email ?? string.Empty,
+                        CityId = i.CityId,
+                        Roles = a.ToList()
+                    });
+                }
+
+                ViewBag.Users = users;
+                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
+                ViewBag.Roles = await _roleManager.Roles.ToListAsync();
+            }
+
             return View();
         }
         else

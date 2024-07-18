@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entity.Product;
-using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entity.User;
 
-namespace Domain.Entity.User;
+namespace WebApp.Models;
 
-public class User : IdentityUser<int>
+public class UserDto
 {
     public string Name { get; set; } = string.Empty;
     public string Family { get; set; } = string.Empty;
     public string ImageName { get; set; } = string.Empty;
     public int CityId { get; set; }
-    [ForeignKey("CityId")] public City City { get; set; } = default!;
+    public City City { get; set; } = default!;
     public string ConfirmCode { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public string NationalCode { get; set; } = string.Empty;
     public string Sheba { get; set; } = string.Empty;
     public DateTime InsertDate { get; set; } = DateTime.Now;
     public DateTime ConfirmCodeExpireTime { get; set; }
-
+    public List<string> Roles { get; set; } = default!;
 }

@@ -90,9 +90,11 @@
                       data: {phoneNumber: $('#phoneNumber').val()},
                       url: "/Admin/LoginPassword",
                       success: function (data) {
+                        console.dir(data)
                        window.location.href= "/admin/LoginPassword?phoneNumber=" + $('#phoneNumber').val();
                       },
                       error: function (xhr) {
+                        console.dir(xhr)
                          alert("شماره همراه وارد شده معتبر نمیباشد");
                       }
                   });

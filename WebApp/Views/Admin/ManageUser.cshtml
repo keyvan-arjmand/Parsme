@@ -1,6 +1,20 @@
-﻿@{
-Layout = "_LayoutAdmin";
-List<Domain.Entity.User.User> users = ViewBag.Users;
+﻿@using Application.Common.Utilities
+@using Domain.Entity.User
+@using WebApp.Models
+@{
+    Layout = "_LayoutAdmin";
+    List<UserDto> users = ViewBag.Users;
+    List<City> cities = ViewBag.Cities;
+    List<Role> roles = ViewBag.Roles ;
+}
+@section link
+{
+    <style>
+        .select2-selection--multiple {
+            min-width: 300px;
+        }
+    </style>
+
 }
 <div class="content-header">
     <div class="container-fluid">
@@ -13,7 +27,6 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
                     <li class="breadcrumb-item">
                         <a href="#">خانه</a>
                     </li>
-                    <li class="breadcrumb-item active">کاربران</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -25,27 +38,22 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">لیست کاربران سایت</h3>
+                        <h3 class="card-title">لیست کاربران </h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="example1_length">
-                                        <label>
-                                            فیلتر استان
-                                            <select name="example1_length" aria-controls="example1" class="form-control form-control-sm">
-                                                <option value="10">تهران</option><option value="25">کرج</option><option value="50">مشهد</option><option value="100">اصفهان</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-sm-12 col-md-9">
+                                        <form asp-action="ManageUser" asp-controller="Admin" method="post">
                                     <div class="input-group p-3  m-2">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو محصول</button>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو محصول</button>
                                     </div>
+                                        </form>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <button type="button" class="btn btn-block btn-success btn-square mt-4 w-50" data-toggle="modal" data-target="#exampleModal1">افزودن</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -66,7 +74,10 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
                                                 شماره تماس
                                             </th>
                                             <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="امتیاز: activate to sort column ascending" style="width: 20%">
-                                                تعداد خرید
+                                                role
+                                            </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="امتیاز: activate to sort column ascending" style="width: 20%">
+                                                #
                                             </th>
                                         </tr>
                                         </thead>
@@ -79,7 +90,29 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
                                                     <td>@i.Family</td>
                                                     <td>تهران</td>
                                                     <td>@i.PhoneNumber</td>
-                                                    <td>11</td>
+                                                    <td>
+                                                        @{
+                                                            foreach (var q in i.Roles)
+                                                            {
+                                                                <span class="badge badge-info">@q</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <form>
+                                                            <a class="badge bg-warning text-muted modalUser" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                            <input type="text" name="mId" class="mId" value="0" hidden="hidden"/>
+                                                            <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
+                                                            <input type="text" name="mFamily" class="mFamily" value="@i.Family" hidden="hidden"/>
+                                                            <input type="text" name="mPhoneNumber" class="mPhoneNumber" value="@i.PhoneNumber" hidden="hidden"/>
+                                                            <input type="text" name="mSheba" class="mSheba" value="@i.Sheba" hidden="hidden"/>
+                                                            <input type="text" name="mNationalCode" class="mNationalCode" value="@i.NationalCode" hidden="hidden"/>
+                                                            <input type="text" name="mEmail" class="mEmail" value="@i.Email" hidden="hidden"/>
+                                                            <input type="text" name="mCityId" class="mCityId" value="@i.CityId" hidden="hidden"/>
+                                                            <input type="text" name="mRoles" class="mRoles" value="@i.Roles.ToStringList()" hidden="hidden"/>
+                                                            <input type="text" name="mPassword" class="mPassword" value="@i.Password" hidden="hidden"/>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             }
                                         }
@@ -94,7 +127,7 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
                                     <div class="d-flex justify-content-center">
                                         <nav aria-label="Page navigation example w-100">
                                             <ul class="pagination">
-                                          
+
                                             </ul>
                                         </nav>
                                     </div>
@@ -109,3 +142,188 @@ List<Domain.Entity.User.User> users = ViewBag.Users;
         </div>
     </div>
 </section>
+<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateAdmin" asp-controller="Admin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش کاربر</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام</span>
+                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">فامیل</span>
+                        <input type="text" id="Family" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره</span>
+                        <input type="text" id="PhoneNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" disabled="disabled" name="PhoneNumber">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">رمزعبور</span>
+                        <input type="text" id="Password" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Password">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شبا</span>
+                        <input type="text" id="Sheba" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Sheba">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدملی</span>
+                        <input type="text" id="CodeMeli" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="NationalCode">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">ایمیل</span>
+                        <input type="text" id="Email" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Email">
+                    </div>
+                    <div class="input-group p-3  ">
+                        <select class="form-select catIdP " id="CityId" name="CityId" required="required">
+                            @{
+                                foreach (var i in cities)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group p-3  m-2 w-50">
+                    <label>Role</label>
+                    <div class="form-group w-100 p-3">
+                        <select  id="Roles" class="form-control select2 w-100" multiple="multiple" name="Role"
+                                style="width: fit-content;min-width: 200px;text-align: right" required="required">
+                            @{
+                                foreach (var i in roles)
+                                {
+                                    <option value="@i.Name">@i.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade exampleModal1" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="InsertAdmin" asp-controller="Admin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">افزودن کاربر</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام</span>
+                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">فامیل</span>
+                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره</span>
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="PhoneNumber">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">رمزعبور</span>
+                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Password">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شبا</span>
+                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Sheba">
+                    </div>
+                    <div class="input-group p-3 m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدملی</span>
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="NationalCode">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">ایمیل</span>
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Email">
+                    </div>
+                    <div class="input-group p-3  ">
+                        <select class="form-select catIdP " name="CityId" required="required">
+                            @{
+                            foreach (var i in cities)
+                            {
+                            <option value="@i.Id">@i.Name</option>
+                            }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-column  p-3">
+                    <label>Role</label>
+                    <div class="form-group w-100 p-3">
+                        <select   class="form-control select2 w-100" multiple="multiple" name="Role"
+                                 style="width: fit-content;min-width: 200px;text-align: right" required="required">
+                            @{
+                            foreach (var i in roles)
+                            {
+                            <option value="@i.Name">@i.Name</option>
+                            }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary ">ثبت </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+
+    <script>
+ 
+    $(document).ready(function () {
+
+        $(".modalUser").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#Name").val(currentrow.find($("input.mName[type=text]")).val());
+            $("#Family").val(currentrow.find($("input.mFamily[type=text]")).val());
+            $("#PhoneNumber").val(currentrow.find($("input.mPhoneNumber[type=text]")).val());
+            $("#Password").val(currentrow.find($("input.mPassword[type=text]")).val());
+            $("#Sheba").val(currentrow.find($("input.mSheba[type=text]")).val());
+            $("#CodeMeli").val(currentrow.find($("input.mNationalCode[type=text]")).val());
+            $("#Email").val(currentrow.find($("input.mEmail[type=text]")).val());
+            $("#CityId").val(currentrow.find($("input.mCityId[type=text]")).val());
+            $('#Roles').val(currentrow.find($("input.mRoles[type=text]")).val().split(",")).trigger('change');
+        });
+       
+    });
+   
+</script>
+
+}

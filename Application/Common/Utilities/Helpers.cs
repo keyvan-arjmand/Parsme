@@ -29,31 +29,34 @@ public static partial class Helpers
     {
         return string.IsNullOrEmpty(val) ? 0 : Convert.ToInt32(val);
     }
+
     public static double ToDouble(this string? val)
     {
         return string.IsNullOrEmpty(val) ? 0 : Convert.ToDouble(val);
     }
+
     public static int GetDataTypeId(this DataType type)
     {
         var id = 0;
         switch (type)
         {
             case DataType.AreaBox:
-                id= 2;
+                id = 2;
                 break;
             case DataType.CheckBox:
-                id= 3;
+                id = 3;
                 break;
             case DataType.SelectBox:
                 id = 1;
                 break;
             case DataType.TextBox:
-                id= 0;
+                id = 0;
                 break;
         }
 
         return id;
     }
+
     public static string ToPersianTime(this DateTime calendar)
     {
         try
@@ -66,5 +69,28 @@ public static partial class Helpers
         {
             return string.Empty;
         }
+    }
+
+    public static string ToStringList(this List<string> o)
+    {
+        string word = string.Empty;
+        int index = 0;
+        foreach (var i in o)
+        {
+            if (index != o.Count)
+            {
+                word += i + ",";
+
+            }
+            else
+            {
+                word += i ;
+
+            }
+
+            index++;
+        }
+
+        return word;
     }
 }
