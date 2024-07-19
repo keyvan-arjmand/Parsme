@@ -13,6 +13,7 @@ using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;
+using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -78,15 +79,16 @@ public class AdminController : Controller
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
                     .Where(x => x.Title.Contains(search) || x.Desc.Contains(search) ||
-                                x.SubCategory.Name.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
+                                x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
             }
             else
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
-                    .OrderBy(x=>x.Id) .ToListAsync();
+                    .OrderByDescending(x => x.Id).ToListAsync();
             }
 
-            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
 
             #endregion
 
@@ -95,6 +97,55 @@ public class AdminController : Controller
         else
         {
             return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> UpdateGuarantee(int id, string title)
+    {
+        if (User.Identity.IsAuthenticated && id > 0)
+        {
+            var guarantee = await _work.GenericRepository<Guarantee>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            guarantee.Title = title;
+            await _work.GenericRepository<Guarantee>().UpdateAsync(guarantee, CancellationToken.None);
+            return RedirectToAction("ManageGuarantee");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> UpdateColor(int id, string title, string colorCode)
+    {
+        if (User.Identity.IsAuthenticated && id > 0)
+        {
+            var color = await _work.GenericRepository<Color>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            color.Title = title;
+            color.ColorCode = colorCode;
+
+            await _work.GenericRepository<Color>().UpdateAsync(color, CancellationToken.None);
+            return RedirectToAction("Color");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<ActionResult> UpdatePostMethod(int id, string title, double price)
+    {
+        if (User.Identity.IsAuthenticated && id > 0)
+        {
+            var postMethod = await _work.GenericRepository<PostMethod>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            postMethod.Title = title;
+            postMethod.Price = price;
+
+            await _work.GenericRepository<PostMethod>().UpdateAsync(postMethod, CancellationToken.None);
+            return RedirectToAction("ManagePostMethod");
+        }
+        else
+        {
+            return RedirectToAction("Index");
         }
     }
 
@@ -162,18 +213,76 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageCatDetail()
+    public async Task<ActionResult> ManageCatDetail(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
-            ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                .Include(x => x.SubCategory)
-                .Include(x => x.Feature)
-                .OrderBy(x=>x.Id) .ToListAsync();
-            ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
-            ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                if (index == 0)
+                {
+                    int dataType = 1111;
+                    if (search.Contains("متن کوتاه"))
+                    {
+                        dataType = 0;
+                    }
+
+                    if (search.Contains("چند گزینه ای"))
+                    {
+                        dataType = 1;
+                    }
+
+                    if (search.Contains("متن بلند"))
+                    {
+                        dataType = 2;
+                    }
+
+                    if (search.Contains("CheckBox"))
+                    {
+                        dataType = 3;
+                    }
+
+                    ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                        .Include(x => x.SubCategory)
+                        .Include(x => x.Feature)
+                        .Where(x => x.Title.Contains(search) || x.DataType == (DataType)dataType)
+                        .OrderByDescending(x => x.Id).ToListAsync();
+                    ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
+                        .OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                    ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking
+                        .OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                }
+                else if (index == 1)
+                {
+                    ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                        .Include(x => x.SubCategory)
+                        .Include(x => x.Feature)
+                        .OrderByDescending(x => x.Id).ToListAsync();
+                    ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
+                        .OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                    ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking
+                        .Where(x => x.Title.Contains(search))
+                        .OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                }
+            }
+            else
+            {
+                ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.Feature)
+                    .OrderByDescending(x => x.Id).ToListAsync();
+                ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync();
+                ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking.OrderByDescending(x => x.Id)
+                    .ToListAsync();
+            }
 
             #endregion
 
@@ -267,15 +376,41 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageCategory()
+    public async Task<ActionResult> ManageCategory(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
-            ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
-            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.Include(x => x.Category)
-                .OrderBy(x=>x.Id) .ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                if (index == 0)
+                {
+                    ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking
+                        .Where(x => x.Name.Contains(search)).OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                    ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
+                        .Include(x => x.Category)
+                        .OrderByDescending(x => x.Id).ToListAsync();
+                }
+                else
+                {
+                    ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking
+                        .OrderByDescending(x => x.Id)
+                        .ToListAsync();
+                    ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
+                        .Include(x => x.Category)
+                        .Where(x => x.Name.Contains(search))
+                        .OrderByDescending(x => x.Id).ToListAsync();
+                }
+            }
+            else
+            {
+                ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking.OrderByDescending(x => x.Id)
+                    .ToListAsync();
+                ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.Include(x => x.Category)
+                    .OrderByDescending(x => x.Id).ToListAsync();
+            }
 
             #endregion
 
@@ -370,13 +505,23 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> Color()
+    public async Task<ActionResult> Color(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
-            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking
+                    .Where(x => x.ColorCode.Contains(search) || x.Title.Contains(search)).OrderByDescending(x => x.Id)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
+                    .ToListAsync();
+            }
 
             #endregion
 
@@ -413,15 +558,19 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .OrderBy(x=>x.Id).ToListAsync();
-            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
-            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
-            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+                .OrderByDescending(x => x.Id).ToListAsync();
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
 
             #endregion
 
@@ -748,9 +897,10 @@ public class AdminController : Controller
             if (string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.States =
-                    await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).OrderBy(x=>x.Id).ToListAsync();
+                    await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities)
+                        .OrderByDescending(x => x.Id).ToListAsync();
                 ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                    .OrderBy(x=>x.Id).ToListAsync();
+                    .OrderByDescending(x => x.Id).ToListAsync();
                 return View();
             }
             else
@@ -759,17 +909,19 @@ public class AdminController : Controller
                 {
                     ViewBag.States =
                         await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities)
-                            .Where(x => x.Title.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
+                            .Where(x => x.Title.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
                     ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                        .OrderBy(x=>x.Id).ToListAsync();
+                        .OrderByDescending(x => x.Id).ToListAsync();
                 }
 
                 if (index == 1)
                 {
                     ViewBag.States =
-                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).OrderBy(x=>x.Id).ToListAsync();
+                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities)
+                            .OrderByDescending(x => x.Id).ToListAsync();
                     ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                        .Where(x => x.Name.Contains(search) || x.State.Title.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
+                        .Where(x => x.Name.Contains(search) || x.State.Title.Contains(search))
+                        .OrderByDescending(x => x.Id).ToListAsync();
                 }
 
                 return View();
@@ -820,7 +972,7 @@ public class AdminController : Controller
         {
             if (string.IsNullOrEmpty(search))
             {
-                var user = await _userManager.Users.OrderBy(x=>x.Id).ToListAsync();
+                var user = await _userManager.Users.OrderByDescending(x => x.Id).ToListAsync();
                 var users = new List<UserDto>();
                 foreach (var i in user)
                 {
@@ -848,9 +1000,10 @@ public class AdminController : Controller
             else
             {
                 var user = await _userManager.Users.Include(x => x.City).Where(x =>
-                    x.UserName.Contains(search) || x.Name.Contains(search) || x.Family.Contains(search) ||
-                    x.Sheba.Contains(search) || x.NationalCode.Contains(search) || x.Email.Contains(search) ||
-                    x.PhoneNumber.Contains(search) || x.City.Name.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
+                        x.UserName.Contains(search) || x.Name.Contains(search) || x.Family.Contains(search) ||
+                        x.Sheba.Contains(search) || x.NationalCode.Contains(search) || x.Email.Contains(search) ||
+                        x.PhoneNumber.Contains(search) || x.City.Name.Contains(search)).OrderByDescending(x => x.Id)
+                    .ToListAsync();
                 var users = new List<UserDto>();
                 foreach (var i in user)
                 {
@@ -872,8 +1025,9 @@ public class AdminController : Controller
                 }
 
                 ViewBag.Users = users;
-                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
-                ViewBag.Roles = await _roleManager.Roles.OrderBy(x=>x.Id).ToListAsync();
+                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.OrderByDescending(x => x.Id)
+                    .ToListAsync();
+                ViewBag.Roles = await _roleManager.Roles.OrderByDescending(x => x.Id).ToListAsync();
             }
 
             return View();
@@ -924,7 +1078,7 @@ public class AdminController : Controller
         return await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
             .Include(x => x.Feature)
-            .Where(x => x.SubCategoryId == subCatId).OrderBy(x=>x.Id).ToListAsync();
+            .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
     }
 
 
@@ -935,7 +1089,8 @@ public class AdminController : Controller
             ViewBag.productCount = _work.GenericRepository<Product>().TableNoTracking.Count();
             ViewBag.Products = _work.GenericRepository<Product>().TableNoTracking.Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color).Count();
-            ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.OrderBy(x=>x.Id).ToList();
+            ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToList();
 
 
             ViewBag.productsPage = page;
@@ -948,11 +1103,23 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageGuarantee()
+    public async Task<ActionResult> ManageGuarantee(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking
+                    .Where(x => x.Title.Contains(search)).OrderByDescending(x => x.Id)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking
+                    .OrderByDescending(x => x.Id)
+                    .ToListAsync();
+            }
+
 
             return View();
         }
@@ -979,11 +1146,20 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManagePostMethod()
+    public async Task<ActionResult> ManagePostMethod(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
+                    .Where(x => x.Title.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+            }
+            else
+            {
+                ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
+                    .OrderByDescending(x => x.Id).ToListAsync();
+            }
 
             return View();
         }

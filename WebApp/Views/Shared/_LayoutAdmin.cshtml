@@ -266,7 +266,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                 <li class="nav-item">
                                                     <a href="@Url.Action("ManageState", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>شهرواستان</p>
+                                                        <p>شهر و استان</p>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
@@ -282,72 +282,6 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                         <p>روش های ارسال</p>
                                                     </a>
                                                 </li>
-                                            </ul>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                                        data-accordion="false">
-                                        <!-- Add icons to the links using the .nav-icon class
-                                        with font-awesome or any other icon font library -->
-                                        <li class="nav-item has-treeview">
-                                            <a class="nav-link " style="cursor: pointer">
-                                                <i class="fa fa-money nav-icon"></i>
-                                                <p>
-                                                    مالی
-                                                    <i class="right fa fa-angle-left"></i>
-                                                </p>
-
-                                            </a>
-                                            <ul class="nav nav-treeview">
-                                                <li class="nav-item">
-                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
-                                                        <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>فاکتور فروش</p>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
-                                                        <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>گزارش درآمد</p>
-                                                    </a>
-                                                </li>
-                                                
-                                            </ul>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                                        data-accordion="false">
-                                        <!-- Add icons to the links using the .nav-icon class
-                                        with font-awesome or any other icon font library -->
-                                        <li class="nav-item has-treeview">
-                                            <a class="nav-link " style="cursor: pointer">
-                                                <i class="fa fa-wpforms nav-icon"></i>
-                                                <p>
-                                                    مدیریت محتوا
-                                                    <i class="right fa fa-angle-left"></i>
-                                                </p>
-
-                                            </a>
-                                            <ul class="nav nav-treeview">
-                                                <li class="nav-item">
-                                                    <a href="@Url.Action("ManageBanner", "Admin")" class="nav-link ">
-                                                        <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>بنر</p>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="@Url.Action("SaleServices", "Admin")" class="nav-link ">
-                                                        <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>خدمات فروش</p>
-                                                    </a>
-                                                </li>
-
                                             </ul>
                                         </li>
 
@@ -386,6 +320,75 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
 
                                     </ul>
                                 </li>
+                                <li class="nav-item">
+                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                        data-accordion="false">
+                                        <!-- Add icons to the links using the .nav-icon class
+                                        with font-awesome or any other icon font library -->
+                                        
+                                        <li class="nav-item has-treeview">
+                                            <a class="nav-link " style="cursor: pointer">
+                                                <i class="fa fa-money nav-icon"></i>
+                                                <p>
+                                                    مالی
+                                                    <i class="right fa fa-angle-left"></i>
+                                                </p>
+
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>فاکتور فروش</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>گزارش درآمد</p>
+                                                    </a>
+                                                </li>
+                                                
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                              
+                                <li class="nav-item">
+                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                        data-accordion="false">
+                                        <!-- Add icons to the links using the .nav-icon class
+                                        with font-awesome or any other icon font library -->
+                                        <li class="nav-item has-treeview">
+                                            <a class="nav-link " style="cursor: pointer">
+                                                <i class="fa fa-wpforms nav-icon"></i>
+                                                <p>
+                                                    مدیریت محتوا
+                                                    <i class="right fa fa-angle-left"></i>
+                                                </p>
+
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ManageBanner", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>بنر</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("SaleServices", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>خدمات فروش</p>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                
                                 <li class="nav-item">
                                     <a href="@Url.Action("ProductManage", "Admin")" class="nav-link ">
                                         <i class="fa fa-product-hunt nav-icon"></i>

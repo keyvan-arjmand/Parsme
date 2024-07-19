@@ -35,33 +35,21 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
 
-                <!-- Profile Image -->
-                <div class="card card-primary card-outline">
-                    <div class="card-body box-profile">
-                        <p class="text-muted text-center">خلاصه وضعیت</p>
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                                <b>تعداد برند</b> <a class="float-left"> @brands.Count()</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>زیردسته های برند</b> <a class="float-left"> @brands.GroupBy(x=>x.SubCategoryId).Count()</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-            </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header p-2">
+                    <div class="card-header p-2 d-flex justify-content-start">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <a class="nav-link active show" href="#activity" data-toggle="tab">برندها</a>
                             </li>
                         </ul>
+                        <div class="list-group list-group-unbordered mb-3 d-flex flex-row justify-content-center gap-5 m-3">
+                            <div>
+                                <b class="p-3">تعداد برند</b> <a class="float-left"> @brands.Count()</a>
+                            </div>
+                        </div>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">

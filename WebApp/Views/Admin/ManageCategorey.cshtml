@@ -25,26 +25,8 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
-
-                <!-- Profile Image -->
-                <div class="card card-primary card-outline">
-                    <div class="card-body box-profile">
-                        <p class="text-muted text-center">خلاصه وضعیت</p>
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                                <b>تعداد دسته بندی</b> <a class="float-left"> @categories.Count</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>تعداد زیر دسته</b> <a class="float-left"> @subCategories.Count</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-            </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
@@ -59,6 +41,10 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
+                                <div class="d-flex justify-content-start gap-3">
+                                    <b>تعداد دسته بندی:</b> <a class=""> @categories.Count</a>  
+                                </div>
+                   
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان دسته بندی</label>
@@ -93,10 +79,13 @@
                                 </form>
 
                                 <div class="card mt-3">
-                                    <div class="input-group p-3 w-25  m-2">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                    </div>
+                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="0" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                        </div>
+                                    </form>
                                     <div class="card-body p-0">
                                         <table class="table table-condensed">
                                             <tbody>
@@ -142,7 +131,7 @@
                                                                     <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                     <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
                                                                     <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
-                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden" />
+                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -157,6 +146,10 @@
 
                             </div>
                             <div class="tab-pane" id="SubCategory">
+                                <div class="d-flex justify-content-start gap-3">
+                                    <b>تعداد زیر دسته:</b> <a > @subCategories.Count</a>
+                                </div>
+
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertSubCat" asp-controller="Admin" method="post">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان زیر دسته</label>
@@ -201,10 +194,13 @@
 
 
                                 <div class="card mt-3">
-                                    <div class="input-group p-3  w-25 m-2">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                    </div>
+                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="1" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                        </div>
+                                    </form>
                                     <div class="card-body p-0">
                                         <table class="table table-condensed">
                                             <tbody>
@@ -290,12 +286,12 @@
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان</span>
                         <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
                     </div>
-                        <div class="form-check w-50 mt-4">
-                            @Html.CheckBox("isActiveCat",new { @name = "isActiveCat" })
-                            <label class="form-check-label">وضعیت فعال</label>
-                        </div>
+                    <div class="form-check w-50 mt-4">
+                        @Html.CheckBox("isActiveCat", new { @name = "isActiveCat" })
+                        <label class="form-check-label">وضعیت فعال</label>
+                    </div>
                 </div>
-              
+
                 <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
                     <input type="file" id="ImageCat" name="ImageCat" title="test" class="form-control">
                     <div class="input-group  p-1" style="justify-content: center;">
@@ -306,7 +302,7 @@
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -314,7 +310,7 @@
 <div class="modal fade exampleModal" id="SubCatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content" asp-action="UpdateSubCat" asp-controller="Admin" method="post" >
+        <form class="modal-content" asp-action="UpdateSubCat" asp-controller="Admin" method="post">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
                 <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
@@ -331,21 +327,21 @@
                     <div class="input-group p-3  m-2 w-50">
                         <select class="form-select catIdP" id="catIdP" name="catId" required="required">
                             @{
-                            foreach (var i in categories)
-                            {
-                            <option value="@i.Id">@i.Name</option>
-                            }
+                                foreach (var i in categories)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
                             }
                         </select>
                     </div>
                 </div>
                 <div class="form-check w-50 mt-4">
-                    @Html.CheckBox("isActiveSubCat",new { @name = "isActiveSubCat" })
+                    @Html.CheckBox("isActiveSubCat", new { @name = "isActiveSubCat" })
                     <label class="form-check-label">وضعیت فعال</label>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
     </div>

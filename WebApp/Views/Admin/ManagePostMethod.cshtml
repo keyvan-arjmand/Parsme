@@ -48,7 +48,7 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start gap-4 p-2"
                                       asp-action="InsertPostMethod" asp-controller="Admin" method="post">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان</label>
@@ -67,10 +67,13 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
 
                             </div>
                             <div class="card mt-3">
-                                <div class="input-group p-3  m-2">
-                                    <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                    <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                </div>
+                                <form asp-action="ManagePostMethod" asp-controller="Admin" method="post">
+                                    <div class="input-group p-3 w-25   m-2">
+                                        <input type="text" value="1" name="index" hidden="hidden"/>
+                                        <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                    </div>
+                                </form>
                                 <div class="card-body p-0">
                                     <table class="table table-condensed">
                                         <tbody>
@@ -111,6 +114,7 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
                                                     <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
                                                     <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                     <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                    <input type="text" name="mTitle" class="mPrice" value="@i.Price" hidden="hidden"/>
                                                 </form>
                                             </td>
                                         </tr>
@@ -135,7 +139,7 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
 <div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content">
+        <form class="modal-content" asp-action="UpdatePostMethod" asp-controller="Admin" method="post">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
                 <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
@@ -143,31 +147,20 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
                 </button>
             </div>
             <div class="modal-body">
-                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <input type="text" class="idP" id="Id" required="required" name="Id" hidden="hidden">
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان برند</span>
-                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Name">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان </span>
+                        <input type="text" id="Title" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
                     </div>
                     <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">توضیحات</span>
-                        <input type="text" id="DescEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Brand">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">هزینه</span>
+                        <input type="text" id="Price" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="price">
                     </div>
                 </div>
-
-                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="Image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: space-between;">
-                        <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
-                        <input type="text"   name="Logo" class="mImageThreeP" hidden="hidden"/>
-                    </div>
-                </div>
-
-
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="button" class="btn btn-danger" onclick="">حذف محصول</button>
-                <button type="submit" class="btn btn-primary " onclick="">ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -182,11 +175,9 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
         $(".modalProduct").click(function () {
             var currentrow = $(this).closest("form");
 
-            $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
-            $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
-            $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
-            $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
-            $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
+            $("#Id").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#Title").val(currentrow.find($("input.mTitle[type=text]")).val());
+            $("#Price").val(currentrow.find($("input.mPrice[type=text]")).val());
         });
     });
 </script>

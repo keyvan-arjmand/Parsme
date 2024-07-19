@@ -124,10 +124,13 @@
                                 </form>
 
                                 <div class="card mt-3">
-                                    <div class="input-group p-3 w-25  m-2">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                    </div>
+                                    <form asp-action="ManageCatDetail" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="0" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                        </div>
+                                    </form>
                                     <div class="card-body p-0">
                                         <table class="table table-condensed">
                                             <tbody>
@@ -200,10 +203,13 @@
 
 
                                 <div class="card mt-3">
-                                    <div class="input-group p-3  w-25 m-2">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
-                                    </div>
+                                    <form asp-action="ManageCatDetail" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="1" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                        </div>
+                                    </form>
                                     <div class="card-body p-0">
                                         <table class="table table-condensed">
                                             <tbody>
