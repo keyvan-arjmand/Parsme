@@ -499,6 +499,8 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
+        ViewBag.SaleService = await _work.GenericRepository<SaleServices>().TableNoTracking.FirstOrDefaultAsync() ??
+                              new SaleServices();
         return View();
     }
 
@@ -551,9 +553,12 @@ public class HomeController : Controller
                     .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                                 x.Brand.Title.Contains(search) ||
-                                x.Detail.Contains(search)).Where(x=> catId.Contains(x.SubCategoryId) &&
-                                   brandId.Contains(x.BrandId) && x.ProductColors.Select(y => y.Price).Max() <= max &&
-                                   x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
+                                x.Detail.Contains(search)).Where(x => catId.Contains(x.SubCategoryId) &&
+                                                                      brandId.Contains(x.BrandId) &&
+                                                                      x.ProductColors.Select(y => y.Price).Max() <=
+                                                                      max &&
+                                                                      x.ProductColors.Select(y => y.Price).Min() >= min)
+                    .ToListAsync();
                 break;
             case (false, true, true):
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
@@ -577,7 +582,7 @@ public class HomeController : Controller
                     .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                                 x.Brand.Title.Contains(search) ||
-                                x.Detail.Contains(search)).Where(x=>catId.Contains(x.SubCategoryId)).ToListAsync();
+                                x.Detail.Contains(search)).Where(x => catId.Contains(x.SubCategoryId)).ToListAsync();
                 break;
             case (false, false, false):
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
@@ -599,8 +604,9 @@ public class HomeController : Controller
                     .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                                 x.Brand.Title.Contains(search) ||
-                                x.Detail.Contains(search)).Where(x=> x.ProductColors.Select(y => y.Price).Max() <= max &&
-                                                                     x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
+                                x.Detail.Contains(search)).Where(x =>
+                        x.ProductColors.Select(y => y.Price).Max() <= max &&
+                        x.ProductColors.Select(y => y.Price).Min() >= min).ToListAsync();
                 break;
             case (true, true, false):
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
@@ -623,8 +629,9 @@ public class HomeController : Controller
                     .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                                 x.Brand.Title.Contains(search) ||
-                                x.Detail.Contains(search)).Where(x=>x.ProductColors.Select(y => y.Price).Max() <= max &&
-                                                                    x.ProductColors.Select(y => y.Price).Min() >= min && catId.Contains(x.SubCategoryId))
+                                x.Detail.Contains(search)).Where(x =>
+                        x.ProductColors.Select(y => y.Price).Max() <= max &&
+                        x.ProductColors.Select(y => y.Price).Min() >= min && catId.Contains(x.SubCategoryId))
                     .ToListAsync();
                 break;
             case (false, true, false):

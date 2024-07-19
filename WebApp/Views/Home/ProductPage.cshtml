@@ -1,10 +1,12 @@
 ﻿@page
 @using Application.Common.Utilities
+@using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @model WebApp.Views.Home.ProductPage
 @{
     Layout = "_Layout";
     Product prod = ViewBag.Product;
+    SaleServices services = ViewBag.SaleService ;
     List<Product> basket = ViewBag.BasketProd;
     List<Category> categories = ViewBag.Categories;
 }
@@ -767,44 +769,40 @@
 </div>
 <div class="product-usp">
     <div class="product-feature">
-        <div class="product-feature-col">
-            <a href="#" class="product-feature-item">
-                <img src="/assetsCli/images/page-single-product/delivery.svg">
-                امکان تحویل
-                <br>
-                اکسپرس
-            </a>
-        </div>
-        <div class="product-feature-col">
-            <a href="#" class="product-feature-item">
-                <img src="/assetsCli/images/page-single-product/contact-us.svg">
-                ۷ روز هفته
-                <br>
-                ۲۴ ساعته
-            </a>
-        </div>
-        <div class="product-feature-col">
-            <a href="#" class="product-feature-item">
-                <img src="/assetsCli/images/page-single-product/payment-terms.svg">
-                امکان
-                <br>
-                پرداخت در محل
-            </a>
-        </div>
-        <div class="product-feature-col">
-            <a href="#" class="product-feature-item">
-                <img src="/assetsCli/images/page-single-product/return-policy.svg">
-                هفت روز ضمانت بازگشت کالا
-            </a>
-        </div>
-        <div class="product-feature-col">
-            <a href="#" class="product-feature-item">
-                <img src="/assetsCli/images/page-single-product/origin-guarantee.svg">
-                ضمانت
-                <br>
-                اصل بودن کالا
-            </a>
-        </div>
+        @{
+            <div class="product-feature-col">
+                <a href="#" class="product-feature-item">
+                    <img src="/Images/Logo/@services.Desc1Logo">
+                    @services.Desc1
+                </a>
+            </div>
+            <div class="product-feature-col">
+                <a href="#" class="product-feature-item">
+                    <img src="/Images/Logo/@services.Desc5Logo">
+                    @services.Desc5
+                </a>
+            </div>
+            <div class="product-feature-col">
+                <a href="#" class="product-feature-item">
+                    <img src="/Images/Logo/@services.Desc4Logo">
+                    @services.Desc4
+                </a>
+            </div>
+            <div class="product-feature-col">
+                <a href="#" class="product-feature-item">
+                    <img src="/Images/Logo/@services.Desc3Logo">
+                    @services.Desc3
+                </a>
+            </div>
+            <div class="product-feature-col">
+                <a href="#" class="product-feature-item">
+                    <img src="/Images/Logo/@services.Desc2Logo">
+                    @services.Desc2
+                </a>
+            </div>
+        }
+
+
     </div>
 </div>
 </div>

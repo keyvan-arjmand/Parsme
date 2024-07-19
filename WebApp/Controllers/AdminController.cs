@@ -78,15 +78,15 @@ public class AdminController : Controller
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
                     .Where(x => x.Title.Contains(search) || x.Desc.Contains(search) ||
-                                x.SubCategory.Name.Contains(search)).ToListAsync();
+                                x.SubCategory.Name.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
             }
             else
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
-                    .ToListAsync();
+                    .OrderBy(x=>x.Id) .ToListAsync();
             }
 
-            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             #endregion
 
@@ -171,9 +171,9 @@ public class AdminController : Controller
             ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
                 .Include(x => x.SubCategory)
                 .Include(x => x.Feature)
-                .ToListAsync();
-            ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
-            ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking.ToListAsync();
+                .OrderBy(x=>x.Id) .ToListAsync();
+            ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.Feature = await _work.GenericRepository<Feature>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             #endregion
 
@@ -273,13 +273,13 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking.ToListAsync();
+            ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.Include(x => x.Category)
-                .ToListAsync();
+                .OrderBy(x=>x.Id) .ToListAsync();
 
             #endregion
 
-            return View();
+            return View("ManageCategorey");
         }
         else
         {
@@ -287,6 +287,36 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateState(string title, int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var state = await _work.GenericRepository<State>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            state.Title = title;
+            await _work.GenericRepository<State>().UpdateAsync(state, CancellationToken.None);
+            return RedirectToAction("ManageState");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> UpdateCity(string title, int id, int stateId)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var state = await _work.GenericRepository<City>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            state.Name = title;
+            state.StateId = stateId;
+            await _work.GenericRepository<City>().UpdateAsync(state, CancellationToken.None);
+            return RedirectToAction("ManageState");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
 
     public async Task<ActionResult> InsertCat(string title, bool isActive, IFormFile? logo)
     {
@@ -346,7 +376,7 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.ToListAsync();
+            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             #endregion
 
@@ -383,15 +413,15 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.ToListAsync();
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .ToListAsync();
-            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
-            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.ToListAsync();
-            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
+                .OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             #endregion
 
@@ -434,7 +464,20 @@ public class AdminController : Controller
                 SmallBannerMiddle2Href = request.SmallBannerMiddle2Href,
                 SmallBannerMiddle3Href = request.SmallBannerMiddle3Href,
                 SmallBannerMiddle4Href = request.SmallBannerMiddle4Href,
-                SmallSideBannerHref = request.SmallSideBannerHref
+                SmallSideBannerHref = request.SmallSideBannerHref,
+                BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner"),
+                BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner"),
+                BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref,
+                BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref,
+                SliderImage = up.Uploadfile(request.SliderImage, "Banner"),
+                SliderImage1 = up.Uploadfile(request.SliderImage1, "Banner"),
+                SliderImage2 = up.Uploadfile(request.SliderImage2, "Banner"),
+                SliderHref = request.SliderHref,
+                SliderHref1 = request.SliderHref1,
+                SliderHref2 = request.SliderHref2,
+                SliderTitle = request.SliderTitle,
+                SliderTitle1 = request.SliderTitle1,
+                SliderTitle2 = request.SliderTitle2,
             }, CancellationToken.None);
         }
         else
@@ -490,6 +533,10 @@ public class AdminController : Controller
             banners.SliderTitle = request.SliderTitle;
             banners.SliderTitle1 = request.SliderTitle1;
             banners.SliderTitle2 = request.SliderTitle2;
+            banners.BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner");
+            banners.BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner");
+            banners.BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref;
+            banners.BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref;
             await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
         }
 
@@ -510,6 +557,41 @@ public class AdminController : Controller
     public async Task<ActionResult> GoToLoginWithPassword()
     {
         return View("LoginPassword");
+    }
+
+    public async Task<ActionResult> InsertSaleServices(SaleService request)
+    {
+        Upload up = new Upload(_webHostEnvironment);
+        var service = await _work.GenericRepository<SaleServices>().TableNoTracking.FirstOrDefaultAsync();
+        service.Desc1 = request.Desc1;
+        service.Desc1Logo = request.Desc1Logo != null
+            ? up.Uploadfile(request.Desc1Logo, "Logo")
+            : service.Desc1Logo;
+        service.Desc2 = request.Desc2;
+        service.Desc2Logo = request.Desc2Logo != null
+            ? up.Uploadfile(request.Desc2Logo, "Logo")
+            : service.Desc2Logo;
+        service.Desc3 = request.Desc3;
+        service.Desc3Logo = request.Desc3Logo != null
+            ? up.Uploadfile(request.Desc3Logo, "Logo")
+            : service.Desc3Logo;
+        service.Desc4 = request.Desc4;
+        service.Desc4Logo = request.Desc4Logo != null
+            ? up.Uploadfile(request.Desc4Logo, "Logo")
+            : service.Desc4Logo;
+        service.Desc5 = request.Desc5;
+        service.Desc5Logo = request.Desc5Logo != null
+            ? up.Uploadfile(request.Desc5Logo, "Logo")
+            : service.Desc5Logo;
+        await _work.GenericRepository<SaleServices>().UpdateAsync(service, CancellationToken.None);
+        return RedirectToAction("SaleServices");
+    }
+
+    public async Task<ActionResult> SaleServices()
+    {
+        ViewBag.SaleServices = await _work.GenericRepository<SaleServices>().TableNoTracking.FirstOrDefaultAsync() ??
+                               new SaleServices();
+        return View();
     }
 
     public async Task<ActionResult> GoToLoginWithCode()
@@ -666,9 +748,9 @@ public class AdminController : Controller
             if (string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.States =
-                    await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).ToListAsync();
+                    await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).OrderBy(x=>x.Id).ToListAsync();
                 ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                    .ToListAsync();
+                    .OrderBy(x=>x.Id).ToListAsync();
                 return View();
             }
             else
@@ -677,17 +759,17 @@ public class AdminController : Controller
                 {
                     ViewBag.States =
                         await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities)
-                            .Where(x => x.Title.Contains(search)).ToListAsync();
+                            .Where(x => x.Title.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
                     ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                        .ToListAsync();
+                        .OrderBy(x=>x.Id).ToListAsync();
                 }
 
                 if (index == 1)
                 {
                     ViewBag.States =
-                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).ToListAsync();
+                        await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).OrderBy(x=>x.Id).ToListAsync();
                     ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.Include(x => x.State)
-                        .Where(x => x.Name.Contains(search) || x.State.Title.Contains(search)).ToListAsync();
+                        .Where(x => x.Name.Contains(search) || x.State.Title.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
                 }
 
                 return View();
@@ -714,7 +796,8 @@ public class AdminController : Controller
             return RedirectToAction("Index");
         }
     }
-    public async Task<ActionResult> InsertCity(string title,int stateId)
+
+    public async Task<ActionResult> InsertCity(string title, int stateId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -730,13 +813,14 @@ public class AdminController : Controller
             return RedirectToAction("Index");
         }
     }
+
     public async Task<ActionResult> ManageUser(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
             if (string.IsNullOrEmpty(search))
             {
-                var user = await _userManager.Users.ToListAsync();
+                var user = await _userManager.Users.OrderBy(x=>x.Id).ToListAsync();
                 var users = new List<UserDto>();
                 foreach (var i in user)
                 {
@@ -766,7 +850,7 @@ public class AdminController : Controller
                 var user = await _userManager.Users.Include(x => x.City).Where(x =>
                     x.UserName.Contains(search) || x.Name.Contains(search) || x.Family.Contains(search) ||
                     x.Sheba.Contains(search) || x.NationalCode.Contains(search) || x.Email.Contains(search) ||
-                    x.PhoneNumber.Contains(search) || x.City.Name.Contains(search)).ToListAsync();
+                    x.PhoneNumber.Contains(search) || x.City.Name.Contains(search)).OrderBy(x=>x.Id).ToListAsync();
                 var users = new List<UserDto>();
                 foreach (var i in user)
                 {
@@ -788,8 +872,8 @@ public class AdminController : Controller
                 }
 
                 ViewBag.Users = users;
-                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
-                ViewBag.Roles = await _roleManager.Roles.ToListAsync();
+                ViewBag.Cities = await _work.GenericRepository<City>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
+                ViewBag.Roles = await _roleManager.Roles.OrderBy(x=>x.Id).ToListAsync();
             }
 
             return View();
@@ -840,7 +924,7 @@ public class AdminController : Controller
         return await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
             .Include(x => x.Feature)
-            .Where(x => x.SubCategoryId == subCatId).ToListAsync();
+            .Where(x => x.SubCategoryId == subCatId).OrderBy(x=>x.Id).ToListAsync();
     }
 
 
@@ -851,7 +935,7 @@ public class AdminController : Controller
             ViewBag.productCount = _work.GenericRepository<Product>().TableNoTracking.Count();
             ViewBag.Products = _work.GenericRepository<Product>().TableNoTracking.Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color).Count();
-            ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.ToList();
+            ViewBag.categories = _work.GenericRepository<Category>().TableNoTracking.OrderBy(x=>x.Id).ToList();
 
 
             ViewBag.productsPage = page;
@@ -868,7 +952,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             return View();
         }
@@ -899,7 +983,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.ToListAsync();
+            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.OrderBy(x=>x.Id).ToListAsync();
 
             return View();
         }

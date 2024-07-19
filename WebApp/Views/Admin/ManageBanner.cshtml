@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div style="background-color:	rgb(220,220,220,0.4)">
-                                        <div class="d-flex justify-content-between w-100">
+                                        <div class="d-flex justify-content-between w-100 p-2">
                                             <div class=" m-2  p-3 w-50">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -119,7 +119,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between w-100">
+                                        <div class="d-flex justify-content-between w-100 p-2">
                                             <div class=" m-2  p-3 w-50">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -151,7 +151,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class="d-flex justify-content-between w-100 p-2" >
                                             <div class=" m-2  p-3 w-50">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -184,7 +184,40 @@
                                             </div>
 
                                         </div>
-                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class="d-flex justify-content-between w-100 p-2" >
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر اول بزرگ ردیف دوم 181 * 495</label>
+                                                        <input type="file" asp-for="BigBannerMiddle1Col" class="form-control" id="BigBannerMiddle1Colin">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="BigBannerMiddle1ColHref" value="@banner.BigBannerMiddle1ColHref" class="form-control" >
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle1Col" id="BigBannerMiddle1Col" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                            <div class=" m-2  p-3 w-50">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر دوم بزرگ ردیف دوم 181 * 495</label>
+                                                        <input type="file" asp-for="BigBannerMiddle2Col" class="form-control"  id="BigBannerMiddle2Colin">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="BigBannerMiddle2ColHref" value="@banner.BigBannerMiddle2ColHref" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.BigBannerMiddle2Col" id="BigBannerMiddle2Col" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="d-flex justify-content-between w-100 p-2" >
                                             <div class=" m-2  p-3 w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -207,7 +240,7 @@
                                             
 
                                         </div>
-                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class="d-flex justify-content-between w-100 p-2" >
                                             <div class=" m-2  p-3 w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -228,8 +261,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
-                                        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class="d-flex justify-content-between w-100 p-2" >
                                             <div class=" m-2  p-3 w-100">
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
@@ -365,6 +397,26 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#LargeSideBanner').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#BigBannerMiddle1Colin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBannerMiddle1Col').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#BigBannerMiddle2Colin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBannerMiddle2Col').attr('src', e.target.result).show();
                 }
                 reader.readAsDataURL(input.files[0]);
             }

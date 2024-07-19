@@ -25,6 +25,10 @@ public class Banner:BaseEntity
     public string BigBannerMiddle2 { get; set; } = string.Empty;
     public string BigBannerMiddle2Href { get; set; } = string.Empty;
     
+    public string BigBannerMiddle1Col { get; set; } = string.Empty;
+    public string BigBannerMiddle1ColHref { get; set; } = string.Empty;
+    public string BigBannerMiddle2Col { get; set; } = string.Empty;
+    public string BigBannerMiddle2ColHref { get; set; } = string.Empty;
     public string SliderTitle { get; set; } = string.Empty;
     public string SliderImage { get; set; } = string.Empty;
     public string SliderHref { get; set; } = string.Empty;
