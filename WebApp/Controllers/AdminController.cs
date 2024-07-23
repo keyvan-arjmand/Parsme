@@ -554,16 +554,24 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated&&id>0)
         {
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+            ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
                 .Include(x => x.ProductDetails).ThenInclude(x=>x.CategoryDetail)
                 .Include(x=>x.ProductImages)
-                .Include(x=>x.Offer).ThenInclude(x=>x.Color)
-                .Where(x => x.Id==id)
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .Include(x=>x.Offer).ThenInclude(q=>q.Color)
+                .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id==id);
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
             return View();
         }
         else
@@ -1111,7 +1119,34 @@ public class AdminController : Controller
         });
         return RedirectToAction("ProductManage");
     }
+    public async Task<ActionResult> UpdateProduct(Root request)
+    {
+        Upload up = new Upload(_webHostEnvironment);
+        string imageUri = string.Empty;
+        List<string> images = new List<string>();
+        if (!string.IsNullOrWhiteSpace(request.ImageUri))
+        {
+            imageUri = up.AddImage(request.ImageUri, "Images/ProductImage",
+                Guid.NewGuid().ToString().Substring(0, 6));
+        }
 
+        if (request.Images.Count > 0)
+        {
+            foreach (var i in request.Images)
+            {
+                images.Add(up.AddImage(i, "Images/ProductImage",
+                    Guid.NewGuid().ToString().Substring(0, 6)));
+            }
+        }
+
+        request.ImageUri = imageUri;
+        request.Images = images;
+        await _mediator.Send(new InsertProductCommand
+        {
+            Product = request
+        });
+        return RedirectToAction("ProductManage");
+    }
     // string Title, string PersianTitle, string Detail, string MetaDesc,
     // string MetaKeyword, string FullDesc, string[] ImageUri, string ProductGift, double DiscountAmount, int BrandId,
     // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,

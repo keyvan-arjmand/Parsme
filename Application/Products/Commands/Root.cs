@@ -4,6 +4,7 @@ namespace Application.Products.Commands;
 
 public class Root
 {
+    public int Id { get; set; }
     public string Title { get; set; }
     public string PersianTitle { get; set; }
     public List<ProductColor> ProductColors { get; set; } = new List<ProductColor>();

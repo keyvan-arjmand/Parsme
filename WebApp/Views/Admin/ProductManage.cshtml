@@ -197,8 +197,10 @@
                                             <span class="badge badge-danger">@i.ProductStatus.ToDisplay()</span>
                                         </td>
                                     }
-                                    <a class="badge bg-warning text-muted " href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
-
+                                    <td class="text-center">
+                                        <a class="badge bg-warning text-muted " href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
+                                        
+                                    </td>
                                 </tr>
                             }
                         }
@@ -677,7 +679,8 @@
                 url: "/Admin/InsertProduct",
                 success: function (data) {
                     alert("عملیات موفقیت آمیز");
-                    window.href="/admin/productManage"
+                    var currentUrl = window.location.origin;
+                    window.open(currentUrl+"Admin/ProductManage/");
                 },
                 error: function (xhr) {
                     alert("خطای داخلی در سرور");
@@ -891,5 +894,23 @@
     $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
     });
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .then(function (editor) {
+                // The editor instance
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+
+        // bootstrap WYSIHTML5 - text editor
+
+        $('.textarea').wysihtml5({
+            toolbar: {fa: true}
+        })
+    })
 </script>
 }

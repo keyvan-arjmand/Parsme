@@ -2,10 +2,11 @@
 @using Domain.Entity.Product
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @{
 Layout = "_LayoutAdmin";
 List<Brand> brands = ViewBag.Brands;
-List<Product> products = ViewBag.Products;
+Product products = ViewBag.Product;
 List<SubCategory> subCategories = ViewBag.SubCats;
 List<Color> colors = ViewBag.Colors;
 List<Guarantee> Guarantees = ViewBag.Guarantee;
@@ -21,25 +22,31 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
 
     .select2-selection--multiple {
         min-width: 300px;
+        max-width: 300px;
+        float: right;
     }
 
     .ck-content {
         min-height: 200px;
         height: fit-content;
     }
+
     .image-container {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
     }
+
     .image-container img {
         max-width: 150px;
         height: auto;
     }
+
     .is-invalid {
         border: 2px solid red;
     }
-    .text-overflow-cat-card{
+
+    .text-overflow-cat-card {
         text-overflow: ellipsis;
         width: auto;
         overflow: hidden;
@@ -47,7 +54,8 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
         height: 60px;
         direction: rtl;
     }
-    .select2-container--default .select2-selection--single{
+
+    .select2-container--default .select2-selection--single {
         height: 40px;
     }
 </style>
@@ -86,7 +94,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="tab-content">
-                        <div class="tab-pane p-5 active show" id="SubCategory">
+                        <form class="tab-pane p-5 active show" id="SubCategory">
                             <div class="card card-info card-outline mt-4">
                                 <div class="card-header">
                                     <h3 class="card-title">
@@ -111,63 +119,81 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+                                    <input id="Id" value="@products.Id" hidden="hidden"/>
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
                                         <div class="form-group w-50 p-3">
                                             <label>عنوان</label>
-                                            <input id="Title" type="text" class="form-control" required="required">
+                                            <input id="Title" type="text" value="@products.Title" class="form-control"
+                                                   required="required">
                                         </div>
                                         <div class="form-group w-50 p-3">
                                             <label>عنوان فارسی</label>
-                                            <input id="PersianTitle" type="text" class="form-control" required="required">
+                                            <input id="PersianTitle" value="@products.PersianTitle" type="text"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                                         <div class="form-group w-50 p-3">
                                             <label>معرفی</label>
-                                            <textarea id="Detail" class="form-control" required="required"></textarea>
+                                            <textarea id="Detail" class="form-control"
+                                                      required="required">@products.Detail</textarea>
                                         </div>
                                         <div class="form-group w-50 p-3">
                                             <label>توضیحات Meta</label>
-                                            <input id="MetaDesc" type="text" class="form-control">
+                                            <input id="MetaDesc" value="@products.MetaDesc" type="text"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                                         <div class="form-group w-50 p-3">
                                             <label>تگ ها</label>
-                                            <input id="MetaKeyword" type="text" class="form-control" required="required">
+                                            <input id="MetaKeyword" value="@products.MetaKeyword" type="text"
+                                                   class="form-control" required="required">
                                         </div>
                                         <div class="form-group w-50 p-3">
                                             <label>هـدایا</label>
-                                            <input id="ProductGift" type="text" class="form-control" required="required">
+                                            <input id="ProductGift" value="@products.ProductGift" type="text"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                                         <div class="form-group w-50 p-3">
                                             <label>نقاط قوت</label>
-                                            <textarea id="Strengths" class="form-control" required="required"></textarea>
+                                            <textarea id="Strengths" class="form-control"
+                                                      required="required">@products.Strengths</textarea>
                                         </div>
                                         <div class="form-group w-50 p-3">
                                             <label>نقاط ضعف</label>
-                                            <textarea id="WeakPoints" class="form-control" required="required"></textarea>
+                                            <textarea id="WeakPoints" class="form-control"
+                                                      required="required">@products.WeakPoints</textarea>
                                         </div>
                                     </div>
 
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                                         <div class="form-group w-50 p-3 d-flex flex-column">
                                             <label for="exampleInputPassword1">دسته بندی</label>
-                                            <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
+                                            <select id="SubCatSelect" class="form-control select2"
+                                                    aria-label="Default select example" required="required">
                                                 @{
-                                                <option value="0">انتخاب</option>
-                                                foreach (var i in subCategories)
-                                                {
-                                                <option value="@i.Id">@i.Name</option>
-                                                }
+                                                    <option value="0">انتخاب</option>
+                                                    foreach (var i in subCategories)
+                                                    {
+                                                        if (products.SubCategoryId == i.Id)
+                                                        {
+                                                            <option value="@i.Id" selected="selected">@i.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">@i.Name</option>
+                                                        }
+                                                    }
                                                 }
                                             </select>
                                         </div>
                                         <div class="form-group w-50 p-3  d-flex flex-column">
                                             <label for="exampleInputPassword1">برند</label>
-                                            <select id="BrandId" class="form-control " aria-label="Default select example" required="required">
+                                            <select id="BrandId" class="form-control "
+                                                    aria-label="Default select example" required="required">
                                             </select>
                                         </div>
                                     </div>
@@ -176,7 +202,8 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                         <label id="labelDetail" style="display: none">ویژگی های محصول</label>
 
                                         <div id="DetailProduct"
-                                             class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap" style="gap: 30px">
+                                             class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
+                                             style="gap: 30px">
 
                                         </div>
                                     </div>
@@ -210,16 +237,51 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                     <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                                         <div class="form-group w-50 p-3  d-flex flex-column">
                                             <label for="exampleInputPassword1">وضعیت کالا</label>
-                                            <select id="ProductStatus" class="form-control select2" aria-label="Default select example" required="required">
-                                                <option selected value="0">موجود</option>
+                                            <select id="ProductStatus" class="form-control select2"
+                                                    aria-label="Default select example" required="required">
+                                                @{
+                                                if ((int)products.ProductStatus == 0)
+                                                {
+                                                <option value="0" selected="selected">موجود</option>
+                                                }
+                                                else
+                                                {
+                                                <option value="0">موجود</option>
+                                                }
+
+                                                if ((int)products.ProductStatus == 1)
+                                                {
+                                                <option value="1" selected="selected">غیر موجود</option>
+                                                }
+                                                else
+                                                {
                                                 <option value="1">غیر موجود</option>
+                                                }
+
+                                                if ((int)products.ProductStatus == 2)
+                                                {
+                                                <option value="2" selected="selected">به زودی</option>
+                                                }
+                                                else
+                                                {
                                                 <option value="2">به زودی</option>
+                                                }
+
+                                                if ((int)products.ProductStatus == 3)
+                                                {
+                                                <option value="3" selected="selected">از رده خارج</option>
+                                                }
+                                                else
+                                                {
                                                 <option value="3">از رده خارج</option>
+                                                }
+                                                }
                                             </select>
                                         </div>
                                         <div class="form-group w-50 p-3" id="">
                                             <label>مبلغ تخفیف</label>
-                                            <input id="DiscountAmount" type="text" class="form-control">
+                                            <input id="DiscountAmount" value="@products.DiscountAmount" type="text"
+                                                   class="form-control">
                                         </div>
 
                                     </div>
@@ -228,23 +290,121 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                         <div class="d-flex justify-content-start gap-5">
                                             <div class="d-flex flex-column align-items-start p-3 m-3">
                                                 <label>پیشنهاد لحظه ای</label>
-                                                <input type="checkbox" class="form-check-input" id="MomentaryOffer" required="required"/>
+                                                @{
+                                                if (products.MomentaryOffer)
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="MomentaryOffer"
+                                                       required="required" checked="checked"/>
+                                                }
+                                                else
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="MomentaryOffer"
+                                                       required="required"/>
+                                                }
+                                                }
                                             </div>
                                             <div class="d-flex flex-column align-items-start p-3 m-3">
                                                 <label>پیشنهاد ویژه</label>
-                                                <input type="checkbox" class="form-check-input" id="Offer" required="required"/>
+                                                @{
+                                                if (products.IsOffer)
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="Offer"
+                                                       checked="checked" required="required"/>
+                                                }
+                                                else
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="Offer"
+                                                       required="required"/>
+                                                }
+                                                }
                                             </div>
                                             <div class="d-flex flex-column align-items-start p-3 m-3">
                                                 <label>نمایش در کالای پیشنهادی</label>
-                                                <input type="checkbox" class="form-check-input" id="ShowIndex" required="required"/>
+                                                @{
+                                                if (products.IsShowIndex)
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="ShowIndex"
+                                                       checked="checked" required="required"/>
+                                                }
+                                                else
+                                                {
+                                                <input type="checkbox" class="form-check-input" id="ShowIndex"
+                                                       required="required"/>
+                                                }
+                                                }
                                             </div>
                                         </div>
+                                        @{
+                                        if (products.IsOffer)
+                                        {
+                                        <div id="OfferForm">
+                                            <div class="d-flex justify-content-center p-3" style="gap: 20px">
+                                                <div class="form-group w-50  d-flex flex-column">
+                                                    <label for="exampleInputPassword1">رنگ مورد نظر</label>
+                                                    <select id="OfferColor" class="form-control "
+                                                            aria-label="Default select example" required="required">
+                                                        @foreach (var i in products.ProductColors)
+                                                        {
+                                                        if (products.Offer.ColorId == i.ColorId)
+                                                        {
+                                                        <option value="@i.Color.Id"
+                                                                selected="selected">@i.Color.Title</option>
+                                                        }
+                                                        else
+                                                        {
+                                                        <option value="@i.Color.Id">@i.Color.Title</option>
+                                                        }
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex flex-column w-25">
+                                                    <label>مبلغ</label>
+                                                    <input id="OfferAmount" value="@products.Offer.OfferAmount"
+                                                           type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group align-items-center w-50">
+                                                    <label>از تاریخ</label>
+                                                    <div class="input-group date" style="border-radius: 7px"
+                                                         data-provide="datepicker">
+                                                        <input id="datePicker" value="@products.Offer.StartDate"
+                                                               type="text" class="form-control">
+                                                        <div class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-th"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
+                                                <div class="d-flex justify-content-between w-75" style="gap: 10px">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="days">روز</label>
+                                                        <input type="number" id="days" name="days" min="0" max="30"
+                                                               value="@products.Offer.Days"
+                                                               class="form-control"><br><br>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="hours">ساعت</label>
+                                                        <input type="number" id="hours" name="hours" min="0" max="24"
+                                                               value="@products.Offer.Hours"
+                                                               class="form-control"><br><br>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="minutes">دقیقه</label>
+                                                        <input type="number" id="minutes" name="minutes" min="0"
+                                                               max="60" value="@products.Offer.Minutes"
+                                                               class="form-control"><br><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        else
+                                        {
                                         <div style="display: none !important" id="OfferForm">
                                             <div class="d-flex justify-content-center p-3" style="gap: 20px">
                                                 <div class="form-group w-50  d-flex flex-column">
                                                     <label for="exampleInputPassword1">رنگ مورد نظر</label>
-                                                    <select id="OfferColor" class="form-control " aria-label="Default select example" required="required">
+                                                    <select id="OfferColor" class="form-control "
+                                                            aria-label="Default select example" required="required">
 
                                                     </select>
                                                 </div>
@@ -254,7 +414,8 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                                 </div>
                                                 <div class="form-group align-items-center w-50">
                                                     <label>از تاریخ</label>
-                                                    <div class="input-group date" style="border-radius: 7px" data-provide="datepicker">
+                                                    <div class="input-group date" style="border-radius: 7px"
+                                                         data-provide="datepicker">
                                                         <input id="datePicker" type="text" class="form-control">
                                                         <div class="input-group-addon">
                                                             <span class="glyphicon glyphicon-th"></span>
@@ -265,30 +426,43 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                                 <div class="d-flex justify-content-between w-75" style="gap: 10px">
                                                     <div class="d-flex flex-column">
                                                         <label for="days">روز</label>
-                                                        <input type="number" id="days" name="days" min="0" max="30" value="0" class="form-control"><br><br>
+                                                        <input type="number" id="days" name="days" min="0" max="30"
+                                                               value="0" class="form-control"><br><br>
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="hours">ساعت</label>
-                                                        <input type="number" id="hours" name="hours" min="0" max="24" value="0" class="form-control"><br><br>
+                                                        <input type="number" id="hours" name="hours" min="0" max="24"
+                                                               value="0" class="form-control"><br><br>
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="minutes">دقیقه</label>
-                                                        <input type="number" id="minutes" name="minutes" min="0" max="60" value="0" class="form-control"><br><br>
+                                                        <input type="number" id="minutes" name="minutes" min="0"
+                                                               max="60" value="0" class="form-control"><br><br>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        }
+                                        }
 
                                     </div>
                                     <div class="d-flex flex-column  p-3">
                                         <label>رنگ محصول</label>
                                         <div class="form-group w-100 p-3">
                                             <select id="Colors" class="form-control select2 w-100" multiple="multiple"
-                                                    style="width: fit-content;min-width: 200px;text-align: right" required="required">
+                                                    style="width: fit-content;min-width: 200px;text-align: right"
+                                                    required="required">
                                                 @{
                                                 foreach (var i in colors)
                                                 {
+                                                if (products.ProductColors.Select(x => x.ColorId).ToList().Contains(i.Id))
+                                                {
+                                                <option value="@i.Id,@i.Title" selected="selected">@i.Title</option>
+                                                }
+                                                else
+                                                {
                                                 <option value="@i.Id,@i.Title">@i.Title</option>
+                                                }
                                                 }
                                                 }
                                             </select>
@@ -297,6 +471,54 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                             <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
                                             <div id="colorProduct"
                                                  class="form-group w-100 p-3 d-flex flex-column justify-content-between align-content-center gap-4 flex-wrap">
+                                                @{
+                                                foreach (var i in products.ProductColors)
+                                                {
+                                                <div class="d-flex justify-content-between color-opt" style="gap: 25px">
+
+                                                    <div class="form-group d-flex w-100 colors-form"
+                                                         style="max-width: 250px;max-height: 50px">
+                                                        <div class="input-group-prepend">
+                                                            <span style="border-radius: 0 5px 5px 0;"
+                                                                  class="input-group-text">@i.Color.Title</span>
+                                                        </div>
+                                                        <input name="colorPrice`@i.Color.Id`" value="@i.Price"
+                                                               style="border-radius: 5px 0 0 5px;" type="text"
+                                                               class="form-control">
+                                                        <input name="ColorId`@i.Color.Id`" value="@i.Color.Id"
+                                                               hidden="hidden">
+                                                    </div>
+                                                    <div class="form-group d-flex w-100 colors-form"
+                                                         style="max-width: 250px;max-height: 50px">
+                                                        <div class="input-group-prepend">
+                                                            <span style="border-radius: 0 5px 5px 0;"
+                                                                  class="input-group-text">موجودی</span>
+                                                        </div>
+                                                        <input name="colorInv`@i.Color.Id`" value="@i.Inventory"
+                                                               style="border-radius: 5px 0 0 5px;" type="text"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group w-100 d-flex flex-column">
+                                                        <select name="Gu`@i.Color.Id`"
+                                                                class="form-control select2 Guarantees">
+                                                            @{
+                                                            foreach (var g in Guarantees)
+                                                            {
+                                                            if (g.Id == i.GuaranteeId)
+                                                            {
+                                                            <option value="@g.Id" selected="selected">@g.Title</option>
+                                                            }
+                                                            else
+                                                            {
+                                                            <option value="@g.Id">@g.Title</option>
+                                                            }
+                                                            }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                }
+                                                }
 
                                             </div>
                                         </div>
@@ -336,21 +558,32 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="ImageUri">
                                                     <input type="text" id="Image64" hidden="hidden">
-                                                    <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                                    <label class="custom-file-label" for="exampleInputFile">انتخاب
+                                                        فایل</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="input-group w-50  p-1" style="justify-content: center;">
-                                            <img id="ProdImage" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
+                                            <img id="ProdImage" src="/Images/ProductImage/@products.ImageUri"
+                                                 style="object-fit: cover;text-align: center" class="imageThreeP"
+                                                 width="130"/>
                                         </div>
                                     </div>
 
-                                    <div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
+                                    <div class="p-2 mt-3"
+                                         style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
                                         <div class="p-3 m-2">
                                             <div class="form-group w-100 p-3">
                                                 <input type="file" id="imageInput" accept="image/*" multiple>
                                                 <br><br>
-                                                <div id="imageContainer" class="image-container"></div>
+                                                <div id="imageContainer" class="image-container">
+                                                    @{
+                                                    foreach (var i in products.ProductImages)
+                                                    {
+                                                    <img src="/Images/ProductImage/@i.ImageUri"/>
+                                                    }
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
 
@@ -386,7 +619,8 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                     <!-- /.card-header -->
                                     <div class="card-body">
                                         <div class="mb-3">
-                                            <textarea id="editor1" name="editor1" style="width: 100%"></textarea>
+                <textarea id="editor1" name="editor1" style="width: 100%">
+                </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -400,13 +634,23 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                                 </div>
                                 <div class="form-group w-25">
                                     <div class="form-check">
+                                        @{
+                                        if (products.IsActive)
+                                        {
+                                        <input type="checkbox" id="IsActive" checked="checked"
+                                               class="form-check-input"/>
+                                        }
+                                        else
+                                        {
                                         <input type="checkbox" id="IsActive" class="form-check-input"/>
+                                        }
+                                        }
                                         <label class="form-check-label">وضعیت فعال</label>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                        </form>
                     </div>
                 </div><!-- /.card-body -->
             </div>
@@ -416,20 +660,40 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
 
 @section script{
 
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
-    document.getElementById('ImageUri').addEventListener('change', function(event) {
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .then(function (editor) {
+                const htmlString = '@Html.Raw(products.FullDesc)';
+                editor.setData(htmlString);
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+
+        // bootstrap WYSIHTML5 - text editor
+
+        $('.textarea').wysihtml5({
+            toolbar: {fa: true}
+        })
+    })
+    document.getElementById('ImageUri').addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const base64String = e.target.result.split(',')[1]; // Extract the base64 part
                 $("#Image64").val(base64String);
             };
             reader.readAsDataURL(file);
         }
     });
-    var data =  [];
-    document.getElementById('imageInput').addEventListener('change', function(event) {
+    var data = [];
+    document.getElementById('imageInput').addEventListener('change', function (event) {
         const files = event.target.files;
         const imageContainer = document.getElementById('imageContainer');
         imageContainer.innerHTML = ''; // Clear previous images
@@ -437,7 +701,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
             const file = files[i];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     // Display the image
                     const img = document.createElement('img');
                     img.src = e.target.result;
@@ -455,6 +719,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
             }
         }
     });
+
     function insertProduct() {
         const requiredFields = document.querySelectorAll('input[required], textarea[required], select[required]');
         let allFilled = true;
@@ -469,7 +734,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
         });
         if (!allFilled) {
             alert('پر کردن تمامی فیلد های محصول اجباری میباشد');
-        }else{
+        } else {
             const inputContainer = document.getElementById('colorProduct');
             const formData = Array.from(inputContainer.children).map(div => {
                 const colorId = div.querySelector(`input[name^="ColorId"]`).value;
@@ -513,45 +778,47 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
             var datePicker = $("#datePicker").val();
 
             console.log(datePicker)
-            var request ={
-                Title:$("#Title").val(),
-                PersianTitle:$("#PersianTitle").val(),
+            var request = {
+                Id: $("#Id").val(),
+                Title: $("#Title").val(),
+                PersianTitle: $("#PersianTitle").val(),
                 ProductColors: formData,
                 ProductDetails: detailsArray,
-                Detail:$("#Detail").val(),
-                MetaDesc:$("#MetaDesc").val(),
-                MetaKeyword:$("#MetaKeyword").val(),
-                FullDesc:document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
+                Detail: $("#Detail").val(),
+                MetaDesc: $("#MetaDesc").val(),
+                MetaKeyword: $("#MetaKeyword").val(),
+                FullDesc: document.querySelector('.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline').innerHTML,
                 ImageUri: $("#Image64").val(),
-                ProductGift:$("#ProductGift").val(),
-                DiscountAmount:$("#DiscountAmount").val(),
-                BrandId:$("#BrandId").val(),
-                SubCategoryId:$("#SubCatSelect").val(),
-                ProductStatus:$("#ProductStatus").val(),
-                Strengths:$("#Strengths").val(),
-                WeakPoints:$("#WeakPoints").val(),
-                IsActive:document.getElementById('IsActive').checked,
-                IsShowIndex:document.getElementById('ShowIndex').checked,
-                Images:data,
+                ProductGift: $("#ProductGift").val(),
+                DiscountAmount: $("#DiscountAmount").val(),
+                BrandId: $("#BrandId").val(),
+                SubCategoryId: $("#SubCatSelect").val(),
+                ProductStatus: $("#ProductStatus").val(),
+                Strengths: $("#Strengths").val(),
+                WeakPoints: $("#WeakPoints").val(),
+                IsActive: document.getElementById('IsActive').checked,
+                IsShowIndex: document.getElementById('ShowIndex').checked,
+                Images: data,
                 IsOffer: document.getElementById('Offer').checked,
                 MomentaryOffer: document.getElementById('MomentaryOffer').checked,
-                Offer:{
-                    ColorId:$("#OfferColor").val(),
-                    OfferAmount:$("#OfferAmount").val(),
-                    Hours:$("#hours").val(),
-                    Minutes:$("#minutes").val(),
-                    Days:$("#days").val(),
-                    Time:datePicker
+                Offer: {
+                    ColorId: $("#OfferColor").val(),
+                    OfferAmount: $("#OfferAmount").val(),
+                    Hours: $("#hours").val(),
+                    Minutes: $("#minutes").val(),
+                    Days: $("#days").val(),
+                    Time: datePicker
                 }
             };
             console.dir(request)
             $.ajax({
                 type: "Post",
-                data:{request} ,
-                url: "/Admin/InsertProduct",
+                data: {request},
+                url: "/Admin/UpdateProduct",
                 success: function (data) {
                     alert("عملیات موفقیت آمیز");
-                    window.href="/admin/productManage"
+                    var currentUrl = window.location.origin;
+                    window.open(currentUrl + "Admin/ProductManage/");
                 },
                 error: function (xhr) {
                     alert("خطای داخلی در سرور");
@@ -564,11 +831,11 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
     $(function () {
 
         $('#Colors').change(function (e) {
-            let json12 =@Json.Serialize(Guarantees);
-            const optionsHTML = json12.map(option => `<option value="${option.id}">${option.title}</option>`).join('') ;
+            let json12 = @Json.Serialize(Guarantees);
+            const optionsHTML = json12.map(option => `<option value="${option.id}">${option.title}</option>`).join('');
             var selected = $(e.target).val();
             var html = '';
-            const offerColorHTML = selected.map(option => `<option value="${option.split(",")[0]}">${option.split(",")[1]}</option>`).join('') ;
+            const offerColorHTML = selected.map(option => `<option value="${option.split(",")[0]}">${option.split(",")[1]}</option>`).join('');
             const inputContainer = document.getElementById('colorProduct');
             const existingInputs = {};
             inputContainer.querySelectorAll('input, select').forEach(input => {
@@ -654,14 +921,15 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
         });
     });
 
+
 </script>
 <script>
 
-    $('#ImageUri').on('change', function(event) {
+    $('#ImageUri').on('change', function (event) {
         var input = event.target;
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#ProdImage').attr('src', e.target.result).show();
             }
             reader.readAsDataURL(input.files[0]);
@@ -678,8 +946,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                 let html = ``;
                 data.map(x => {
 
-                    if (x.dataType==1)
-                    {
+                    if (x.dataType == 1) {
                         html += `
                              <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
                              <div class="input-group-prepend">
@@ -695,8 +962,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                              `;
                     }
 
-                    if (x.dataType==3)
-                    {
+                    if (x.dataType == 3) {
                         html += `
                              <div class=" d-flex  gap-3 w-100 form-group detail-form" style="max-width: 190px;">
                               <span class="">${x.title}</i></span>
@@ -705,8 +971,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                              </div>
                              `;
                     }
-                    if (x.dataType!=1 && x.dataType !=3)
-                    {
+                    if (x.dataType != 1 && x.dataType != 3) {
                         html += `
                              <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
                              <div class="input-group-prepend">
@@ -728,15 +993,16 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
             }
         });
     });
+
     function addOption(catId) {
 
-        if (catId ==0){
+        if (catId == 0) {
             var selectElement = document.getElementById("BrandId");
             var option = document.createElement("option");
-            option.value ='انتخاب دسته بندی';
+            option.value = 'انتخاب دسته بندی';
             option.textContent = 'انتخاب دسته بندی';
             selectElement.replaceChildren(option);
-        }else{
+        } else {
             $.ajax({
                 type: "Get",
                 data: {subCatId: catId},
@@ -748,8 +1014,10 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
                     data.forEach(x => {
                         if (x.title) { // Optional: add validation to check if `title` exists
                             var option = document.createElement("option");
+                            var subCategoryIdFromServer = @Html.Raw(Json.Serialize(products.BrandId));
                             option.value = x.id;
                             option.textContent = x.title;
+                            option.selected = (x.id === subCategoryIdFromServer);
                             selectElement.appendChild(option);
 
                         }
@@ -761,6 +1029,9 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
             });
         }
     }
+
+    addOption(@Html.Raw(products.SubCategoryId))
+
     //   $('.normal-example').persianDatepicker();
     $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
