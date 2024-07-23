@@ -35,6 +35,10 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
     <link rel="stylesheet" href="/dist/css/custom-style.css">
     <link rel="stylesheet" href="/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/plugins/select2/select2.min.css">
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Persian Data Picker -->
+    <link rel="stylesheet" href="/dist/css/persian-datepicker.min.css">
 
     @await RenderSectionAsync("link", false)
     <style>
@@ -474,8 +478,14 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
 <script src="/plugins/chartjs-old/Chart.min.js"></script>
 <script src="/dist/js/pages/dashboard2.js"></script>
 <script src="/dist/js/pages/dashboard3.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script src="/plugins/select2/select2.full.min.js"></script>
+<script src="/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="/plugins/ckeditor/ckeditor.js"></script>
+<script src="/dist/js/persian-date.min.js"></script>
+<script src="/dist/js/persian-datepicker.min.js"></script>
 <script>
     $('.select2').select2()
     $('.my-colorpicker1').colorpicker()

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Input Fields</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <form id="dynamic-form">
+        <label for="multi-select">Choose options:</label>
+        <select id="multi-select" multiple>
+            <option value="1,Color1">Color 1</option>
+            <option value="2,Color2">Color 2</option>
+            <option value="3,Color3">Color 3</option>
+            <option value="4,Color4">Color 4</option>
+        </select>
+        <div id="input-container"></div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const multiSelect = document.getElementById('multi-select');
+            const inputContainer = document.getElementById('input-container');
+
+            multiSelect.addEventListener('change', function() {
+                const selectedValues = Array.from(multiSelect.selectedOptions).map(option => option.value);
+                updateInputFields(selectedValues);
+            });
+
+            function updateInputFields(selectedValues) {
+                const existingInputs = {};
+                inputContainer.querySelectorAll('input, select').forEach(input => {
+                    existingInputs[input.name] = input.value;
+                });
+
+                inputContainer.innerHTML = '';
+
+                selectedValues.forEach(value => {
+                    const [id, colorName] = value.split(',');
+
+                    const div = document.createElement('div');
+                    div.className = 'd-flex justify-content-between color-opt';
+                    div.style.gap = '25px';
+                    div.id = id;
+
+                    div.innerHTML = `
+                        <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
+                            <div class="input-group-prepend">
+                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${colorName}</span>
+                            </div>
+                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                            <input name="ColorId${id}" value="${id}" hidden="hidden">
+                        </div>
+                        <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
+                            <div class="input-group-prepend">
+                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</span>
+                            </div>
+                            <input name="colorInv${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                        </div>
+                        <div class="form-group w-100 d-flex flex-column">
+                            <select name="Gu${id}" class="form-control select2 Guarantees"></select>
+                        </div>
+                    `;
+
+                    inputContainer.appendChild(div);
+
+                    // Restore existing values if any
+                    if (existingInputs[`colorPrice${id}`]) {
+                        div.querySelector(`input[name="colorPrice${id}"]`).value = existingInputs[`colorPrice${id}`];
+                    }
+                    if (existingInputs[`colorInv${id}`]) {
+                        div.querySelector(`input[name="colorInv${id}"]`).value = existingInputs[`colorInv${id}`];
+                    }
+                    if (existingInputs[`Gu${id}`]) {
+                        div.querySelector(`select[name="Gu${id}"]`).value = existingInputs[`Gu${id}`];
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

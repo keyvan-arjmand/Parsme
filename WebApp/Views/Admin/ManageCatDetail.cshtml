@@ -29,7 +29,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-          
+
             <!-- /.col -->
             <div class="col-md-12">
                 <div class="card">
@@ -56,18 +56,18 @@
                                             <label for="exampleInputPassword1">نوع ویژگی</label>
                                             <select style="min-width: 200px;" name="featureId" class="form-select select2" aria-label="Default select example">
                                                 @{
-                                                int index = 0;
-                                                foreach (var i in features)
-                                                {
-                                                if (index == 0)
-                                                {
-                                                <option value="@i.Id" selected>@i.Title</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="@i.Id">@i.Title</option>
-                                                }
-                                                }
+                                                    int index = 0;
+                                                    foreach (var i in features)
+                                                    {
+                                                        if (index == 0)
+                                                        {
+                                                            <option value="@i.Id" selected>@i.Title</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">@i.Title</option>
+                                                        }
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -75,18 +75,18 @@
                                             <label for="exampleInputPassword1">نوع زیر دسته </label>
                                             <select style="min-width: 200px;" name="subCatId" class="form-select select2" aria-label="Default select example">
                                                 @{
-                                                int index1 = 0;
-                                                foreach (var i in subCategories)
-                                                {
-                                                if (index1 == 0)
-                                                {
-                                                <option value="@i.Id" selected>@i.Name</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="@i.Id">@i.Name</option>
-                                                }
-                                                }
+                                                    int index1 = 0;
+                                                    foreach (var i in subCategories)
+                                                    {
+                                                        if (index1 == 0)
+                                                        {
+                                                            <option value="@i.Id" selected>@i.Name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">@i.Name</option>
+                                                        }
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -101,8 +101,9 @@
                                         </div>
                                         <div id="OptionInp" class="form-group p-2">
                                             <label for="exampleInputPassword1">قابلیت ها</label>
-                                            <input name="option" type="text" class="form-control" id="exampleInputPassword1" placeholder="قابلیت های مورد نظر را وارد کنید">
+                                            <textarea name="option" type="text" class="form-control" id="exampleInputPassword1" style="height: 45px" placeholder="قابلیت ها"></textarea>
                                         </div>
+
                                         <div class="d-flex flex-column gap2">
                                             <div class="form-group">
                                                 <div class="form-check">
@@ -119,7 +120,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 
+
 
                                 </form>
 
@@ -318,9 +319,9 @@
                             <option value="3">CheckBox</option>
                         </select>
                     </div>
-                    <div class="input-group p-3  m-2 w-50">
+                    <div class="input-group m-3 p-3  w-50">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="OpDiv">قابلیت ها</span>
-                        <input type="text" id="Option" style="border-radius: 5px 0px 0px 5px;" class="form-control Option" name="Option">
+                        <textarea type="text" id="Option" style="border-radius: 5px 0px 0px 5px;height: 35px" class="form-control Option"  name="Option"></textarea>
                     </div>
                 </div>
             </div>
@@ -347,7 +348,7 @@
             }
         });
         $('#DataTypeInp').on('change', function() {
-            if ($(this).val() == '1') {
+            if ($(this).val() == '1' || $('#DataTypeInp').val() == '3') {
                 $('#OptionInp').show();
                 $('#FlexDataType').addClass("justify-content-between");
                 $('#FlexDataType').removeClass("justify-content-start gap-4");
@@ -359,7 +360,7 @@
         });
 
         // Initial check to set the correct visibility based on the default selected value
-        if ($('#DataTypeInp').val() == '1') {
+        if ($('#DataTypeInp').val() == '1' || $('#DataTypeInp').val() == '3') {
             $('#OptionInp').show();
             $('#FlexDataType').addClass("justify-content-between");
             $('#FlexDataType').removeClass("justify-content-start gap-4");
@@ -379,7 +380,7 @@
             
             $("#DataType").val(currentrow.find($("input.mDataType[type=text]")).val());
             var dataType=currentrow.find($("input.mDataType[type=text]")).val();
-            if (dataType==1){
+            if (dataType == 1 || dataType == 3){
                 $("#OpDiv").css("display","block");
                 $("#Option").css("display","block");
                 $("#Option").val(currentrow.find($("input.mOption[type=text]")).val()).change();

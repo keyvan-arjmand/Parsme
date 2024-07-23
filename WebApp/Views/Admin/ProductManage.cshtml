@@ -47,7 +47,10 @@
         height: 60px;
         direction: rtl;
     }
-</style>
+    .select2-container--default .select2-selection--single{
+        height: 40px;
+    }
+    </style>
 }
 
 <div class="content-header">
@@ -121,80 +124,93 @@
                         </ul>
                     </div>
                 </div>
-                
+
             </div>
             <!-- /.card-body -->
         </div>
 
     </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">محصولات</h3>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">محصولات</h3>
 
-                    <div class="card-tools">
+                <div class="card-tools">
+
+                    <form asp-action="ProductManage" asp-controller="Admin" method="post">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="جستجو">
-
+                            <input type="text" name="search" class="form-control float-right" placeholder="جستجو">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Id</th>
-                            <th>نام</th>
-                            <th>عکس</th>
-                            <th>تاریخ</th>
-                            <th>برند</th>
-                            <th>زیردسته</th>
-                            <th>تعداد رنگ</th>
-                            <th>وضعیت</th>
-                        </tr>
-                        @{
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Id</th>
+                        <th>نام</th>
+                        <th>عکس</th>
+                        <th>تاریخ</th>
+                        <th>برند</th>
+                        <th>زیردسته</th>
+                        <th>تعداد رنگ</th>
+                        <th>وضعیت</th>
+                        <th class="text-center" style="width: 10%">#</th>
+                    </tr>
+                    @{
                         if (products.Count < 1)
                         {
-                        <div>
-                            محصولی ثبت نشده
-                        </div>
+                            <div>
+                                محصولی ثبت نشده
+                            </div>
                         }
                         else
                         {
-                        foreach (var i in products)
-                        {
-                            <tr>
-                                <td>@i.Id</td>
-                                <td style="overflow: hidden">@i.PersianTitle</td>
-                                <td><img src="/Images/ProductImage/@i.ImageUri" width="60"/></td>
-                                <td>@i.InsertDate.ToPersianTime()</td>
-                                <td>@i.Brand.Title</td>
-                                <td>@i.SubCategory.Name</td>
-                                <td>@i.ProductColors.Count()</td>
-                                
-                                @if (@i.ProductStatus == ProductStatus.Available)
-                                {
-                                    <td><span class="badge badge-success">@i.ProductStatus.ToDisplay()</span></td>
-                                }
-                                else
-                                {
-                                    <td><span class="badge badge-danger">@i.ProductStatus.ToDisplay()</span></td>
-                                }
-                            </tr>
+                            foreach (var i in products)
+                            {
+                                <tr>
+                                    <td>@i.Id</td>
+                                    <td style="overflow: hidden">@i.PersianTitle</td>
+                                    <td>
+                                        <img src="/Images/ProductImage/@i.ImageUri" width="60"/>
+                                    </td>
+                                    <td>@i.InsertDate.ToPersianTime()</td>
+                                    <td>@i.Brand.Title</td>
+                                    <td>@i.SubCategory.Name</td>
+                                    <td>@i.ProductColors.Count()</td>
+
+                                    @if (@i.ProductStatus == ProductStatus.Available)
+                                    {
+                                        <td>
+                                            <span class="badge badge-success">@i.ProductStatus.ToDisplay()</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span class="badge badge-danger">@i.ProductStatus.ToDisplay()</span>
+                                        </td>
+                                    }
+                                    <a class="badge bg-warning text-muted " href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
+
+                                </tr>
+                            }
                         }
-                        }
-                        }
-                       
-                    </table>
-                </div>
-                <!-- /.card-body -->
+                    }
+
+                </table>
             </div>
-            <!-- /.card -->
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
     </div>
-   
+
 </div>
 <div class="tab-pane p-5" id="SubCategory">
 <div class="card card-info card-outline mt-4">
@@ -253,37 +269,6 @@
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
-                <label for="exampleInputFile">تصویر کالا</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="ImageUri">
-                        <input type="text" id="Image64" hidden="hidden">
-                        <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group w-50 p-3  d-flex flex-column">
-                <label for="exampleInputPassword1">برند</label>
-                <select id="BrandId" class="form-control select2" aria-label="Default select example" required="required">
-                    @{
-                        int index = 0;
-                        foreach (var i in brands)
-                        {
-                            if (index == 0)
-                            {
-                                <option selected value="@i.Id">@i.Title</option>
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Title</option>
-                            }
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-            <div class="form-group w-50 p-3">
                 <label>نقاط قوت</label>
                 <textarea id="Strengths" class="form-control" required="required"></textarea>
             </div>
@@ -292,17 +277,25 @@
                 <textarea id="WeakPoints" class="form-control" required="required"></textarea>
             </div>
         </div>
-        <div class="form-group w-50 p-3 d-flex flex-column">
-            <label for="exampleInputPassword1">دسته بندی</label>
-            <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
-                @{
-                    <option value="0">انتخاب</option>
-                    foreach (var i in subCategories)
-                    {
-                        <option value="@i.Id">@i.Name</option>
+
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3 d-flex flex-column">
+                <label for="exampleInputPassword1">دسته بندی</label>
+                <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
+                    @{
+                        <option value="0">انتخاب</option>
+                        foreach (var i in subCategories)
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
                     }
-                }
-            </select>
+                </select>
+            </div>
+            <div class="form-group w-50 p-3  d-flex flex-column">
+                <label for="exampleInputPassword1">برند</label>
+                <select id="BrandId" class="form-control " aria-label="Default select example" required="required">
+                </select>
+            </div>
         </div>
 
         <div>
@@ -375,17 +368,27 @@
 
             <div style="display: none !important" id="OfferForm">
                 <div class="d-flex justify-content-center p-3" style="gap: 20px">
-                    <div class="form-group w-100  d-flex flex-column">
+                    <div class="form-group w-50  d-flex flex-column">
                         <label for="exampleInputPassword1">رنگ مورد نظر</label>
-                        <select id="OfferColor" class="form-control select2" aria-label="Default select example" required="required">
+                        <select id="OfferColor" class="form-control " aria-label="Default select example" required="required">
 
                         </select>
                     </div>
-                    <div class="d-flex flex-column w-50">
+                    <div class="d-flex flex-column w-25">
                         <label>مبلغ</label>
                         <input id="OfferAmount" type="text" class="form-control">
                     </div>
-                    <div class="d-flex justify-content-between w-50" style="gap: 10px">
+                    <div class="form-group align-items-center w-50">
+                        <label>از تاریخ</label>
+                        <div class="input-group date" style="border-radius: 7px" data-provide="datepicker">
+                            <input id="datePicker" type="text" class="form-control">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between w-75" style="gap: 10px">
                         <div class="d-flex flex-column">
                             <label for="days">روز</label>
                             <input type="number" id="days" name="days" min="0" max="30" value="0" class="form-control"><br><br>
@@ -452,6 +455,22 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div class="form-group w-50 p-3">
+                <label for="exampleInputFile">تصویر کالا</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="ImageUri">
+                        <input type="text" id="Image64" hidden="hidden">
+                        <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group w-50  p-1" style="justify-content: center;">
+                <img id="ProdImage" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
+            </div>
+        </div>
+
         <div class="p-2 mt-3" style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
             <div class="p-3 m-2">
                 <div class="form-group w-100 p-3">
@@ -522,9 +541,7 @@
 </section>
 
 @section script{
-    <script>
-    
-</script>
+
     <script>
         document.getElementById('ImageUri').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -579,47 +596,53 @@
         if (!allFilled) {
             alert('پر کردن تمامی فیلد های محصول اجباری میباشد');
         }else{
-            var forms = document.querySelectorAll('.color-opt');
-            var collectedValues = [];
-            forms.forEach(function(form) {
-                // Get the elements and check if they exist
-                var guElement = form.querySelector('select[name="Gu"]');
-                var colorInvElement = form.querySelector('input[name="colorInv"]');
-                var colorIdElement = form.querySelector('input[name="ColorId"]');
-                var colorPriceElement = form.querySelector('input[name="colorPrice"]');
+            const inputContainer = document.getElementById('colorProduct');
+            const formData = Array.from(inputContainer.children).map(div => {
+                const colorId = div.querySelector(`input[name^="ColorId"]`).value;
+                const colorPrice = div.querySelector(`input[name^="colorPrice"]`).value;
+                const colorInv = div.querySelector(`input[name^="colorInv"]`).value;
+                const gu = div.querySelector(`select[name^="Gu"]`).value;
 
-                if (guElement && colorInvElement && colorIdElement && colorPriceElement) {
-                    var gu = guElement.value;
-                    var colorInv = colorInvElement.value;
-                    var colorId = colorIdElement.value;
-                    var colorPrice = colorPriceElement.value;
-
-                    // Push the values into the array as an object
-                    collectedValues.push({
-                        Gu: gu,
-                        ColorInv: colorInv,
-                        ColorId: colorId,
-                        ColorPrice: colorPrice
-                    });
-                } else {
-                    alert('One or more elements not found in form:');
-                }
+                return {
+                    ColorId: colorId,
+                    ColorPrice: colorPrice,
+                    ColorInv: colorInv,
+                    Gu: gu
+                };
             });
             const detailGroups = document.querySelectorAll('.form-group.detail-form');
             const detailsArray = [];
             detailGroups.forEach(formGroup => {
                 const detailIdValue = formGroup.querySelector('input[name="DetailId"]').value;
-                const detailNameValue = formGroup.querySelector('input[name="DetailVal"]').value;
+                let inputElement = formGroup.querySelector('input[name="DetailVal"]');
+                let selectElement = formGroup.querySelector('select[name="DetailVal"]');
+                let detailNameValue;
+
+                if (inputElement) {
+                    if (inputElement.type === 'checkbox' || inputElement.type === 'radio') {
+                        detailNameValue = inputElement.checked;
+                    } else {
+                        detailNameValue = inputElement.value;
+                    }
+                } else if (selectElement) {
+                    detailNameValue = selectElement.value;
+                } else {
+                    // Handle the case where the input element is not found
+                    console.error('Input element not found');
+                }
+
                 detailsArray.push({
                     DetailId: detailIdValue,
                     DetailName: detailNameValue
                 });
             });
-
+            var datePicker = $("#datePicker").val();
+      
+                 console.log(datePicker)
             var request ={
                 Title:$("#Title").val(),
                 PersianTitle:$("#PersianTitle").val(),
-                ProductColors: collectedValues,
+                ProductColors: formData,
                 ProductDetails: detailsArray,
                 Detail:$("#Detail").val(),
                 MetaDesc:$("#MetaDesc").val(),
@@ -644,6 +667,7 @@
                     Hours:$("#hours").val(),
                     Minutes:$("#minutes").val(),
                     Days:$("#days").val(),
+                    Time:datePicker
                 }
             };
             console.dir(request)
@@ -671,73 +695,75 @@
             var selected = $(e.target).val();
             var html = '';
             const offerColorHTML = selected.map(option => `<option value="${option.split(",")[0]}">${option.split(",")[1]}</option>`).join('') ;
-            selected.map(x => {
-                html += `
-                            <div class="d-flex justify-content-between color-opt" style="gap: 25px">
-                           <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
-                               <div class="input-group-prepend">
-                                   <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.split(",")[1]}</i></span>
-                               </div>
-                               <input name="colorPrice" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                               <input name="ColorId" value="${x.split(",")[0]}" hidden="hidden">
-                           </div>
-                             <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
-                               <div class="input-group-prepend">
-                                   <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</i></span>
-                               </div>
-                               <input name="colorInv" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                           </div>
-                            <div class="form-group w-100  d-flex flex-column">
-                               <select name="Gu" class="form-control select2 Guarantees" >
-                               </select>
-                           </div>
+            const inputContainer = document.getElementById('colorProduct');
+            const existingInputs = {};
+            inputContainer.querySelectorAll('input, select').forEach(input => {
+                existingInputs[input.name] = input.value;
+            });
+
+            inputContainer.innerHTML = '';
+
+            selected.forEach(value => {
+                const [id, colorName] = value.split(',');
+
+                const div = document.createElement('div');
+                div.className = 'd-flex justify-content-between color-opt';
+                div.style.gap = '25px';
+                div.id = id;
+
+                div.innerHTML = `
+                        <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
+                            <div class="input-group-prepend">
+                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${colorName}</span>
+                            </div>
+                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                            <input name="ColorId${id}" value="${id}" hidden="hidden">
                         </div>
-                             `;
-            })
-            if (selected.length < 1) {
-                $("#labelColor").css("display", "none");
+                        <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
+                            <div class="input-group-prepend">
+                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</span>
+                            </div>
+                            <input name="colorInv${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                        </div>
+                        <div class="form-group w-100 d-flex flex-column">
+                            <select name="Gu${id}" class="form-control select2 Guarantees"></select>
+                        </div>
+                    `;
 
-            } else {
-                $("#labelColor").css("display", "block");
+                inputContainer.appendChild(div);
 
-            }
-            document.getElementById("colorProduct").innerHTML = html;
-            document.getElementById("OfferColor").innerHTML = offerColorHTML;
-            const selectElements = document.getElementsByClassName('Guarantees');
-            Array.from(selectElements).forEach(element => {
-                element.innerHTML = optionsHTML;
-            });
-
-        });
-        $('#SubCatSelect').change(function (e) {
-            var selected = $(e.target).val();
-            $.ajax({
-                type: "Get",
-                data: {subCatId: selected},
-                url: "/Admin/GetCategoryDetailBySubCatId/",
-                success: function (data) {
-                    let html = ``;
-                    data.map(x => {
-                        html += `
-                             <div class="form-group d-flex w-100 detail-form" style="max-width: 250px;">
-                             <div class="input-group-prepend">
-                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
-                              </div>
-                              <input name="DetailVal" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                              <input name="DetailId" value="${x.id}" hidden="hidden">
-                             </div>
-                             `;
-                    })
-                    $("#labelDetail").css("display", "block");
-                    document.getElementById("DetailProduct").innerHTML = html;
-
-                },
-                error: function (xhr) {
-                    alert("خطای داخلی در سرور");
+                // Restore existing values if any
+                if (existingInputs[`colorPrice${id}`]) {
+                    div.querySelector(`input[name="colorPrice${id}"]`).value = existingInputs[`colorPrice${id}`];
                 }
+                if (existingInputs[`colorInv${id}`]) {
+                    div.querySelector(`input[name="colorInv${id}"]`).value = existingInputs[`colorInv${id}`];
+                }
+                if (existingInputs[`Gu${id}`]) {
+                    div.querySelector(`select[name="Gu${id}"]`).value = existingInputs[`Gu${id}`];
+                }
+
+                if (selected.length < 1) {
+                    $("#labelColor").css("display", "none");
+
+                } else {
+                    $("#labelColor").css("display", "block");
+
+                }
+                document.getElementById("OfferColor").innerHTML = offerColorHTML;
+                const selectElements = document.getElementsByClassName('Guarantees');
+                Array.from(selectElements).forEach(element => {
+                    element.innerHTML = optionsHTML;
+                });
             });
-        });
+            
+     
     });
+
+        // Function to create and append a new option
+     
+        });
+        // Add new options
     document.addEventListener('DOMContentLoaded', (event) => {
         const checkbox = document.getElementById('Offer');
         checkbox.addEventListener('change', () => {
@@ -753,89 +779,117 @@
             }
         });
     });
-
-    
     
     </script>
     <script>
-    function ApiPrice() {
-        $("#Admin").removeClass("checked");
-        $("#Api").addClass("checked");
-    }
+ 
+    $('#ImageUri').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#ProdImage').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#SubCatSelect').change(function (e) {
+        var selected = $(e.target).val();
+        $.ajax({
+            type: "Get",
+            data: {subCatId: selected},
+            url: "/Admin/GetCategoryDetailBySubCatId",
+            success: function (data) {
+                addOption(selected)
+                let html = ``;
+                data.map(x => {
 
-    function AdminPrice() {
-        $("#Api").removeClass("checked");
-        $("#Admin").addClass("checked");
-    }
+                    if (x.dataType==1)
+                    {
+                        html += `
+                             <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                             <div class="input-group-prepend">
+                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
+                              </div>
+                              <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
+                                  ${x.option.split(",").map(y => {
+                            return `<option value="${y}">${y}</option>`;
+                        }).join('')}
+                               </select>
+                              <input name="DetailId" value="${x.id}" hidden="hidden">
+                             </div>
+                             `;
+                    }
 
-    $(document).ready(function () {
+                    if (x.dataType==3)
+                    {
+                        html += `
+                             <div class=" d-flex  gap-3 w-100 form-group detail-form" style="max-width: 190px;">
+                              <span class="">${x.title}</i></span>
+                             <input type="checkbox"  name="DetailVal"  class="form-check-input"/>
+                              <input name="DetailId" value="${x.id}" hidden="hidden">
+                             </div>
+                             `;
+                    }
+                    if (x.dataType!=1 && x.dataType !=3)
+                    {
+                        html += `
+                             <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                             <div class="input-group-prepend">
+                              <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
+                              </div>
+                              <input name="DetailVal" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                              <input name="DetailId" value="${x.id}" hidden="hidden">
+                             </div>
+                             `;
+                    }
 
-        $(".modalProduct").click(function () {
-            var currentrow = $(this).closest("form");
-
-            $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
-            $(".nameP").val(currentrow.find($("input.mName[type=text]")).val());
-            $(".brandP").val(currentrow.find($("input.mBrand[type=text]")).val());
-            $('.imageOneP').attr("src", '/images/product/' + (currentrow.find($("input.mImageBanner[type=text]")).val()));
-            $('.imageTwoP').attr("src", '/images/product/' + (currentrow.find($("input.mImageThumb[type=text]")).val()));
-            $('.imageThreeP').attr("src", '/images/product/' + (currentrow.find($("input.mImage[type=text]")).val()));
-            $('.mImageOneP').val(currentrow.find($("input.mImageBanner[type=text]")).val());
-            $('.mImageTwoP').val(currentrow.find($("input.mImageThumb[type=text]")).val());
-            $('.mImageThreeP').val(currentrow.find($("input.mImage[type=text]")).val());
-            $(".weightP").val(currentrow.find($("input.mWeight[type=text]")).val());
-            $(".wagesP").val(currentrow.find($("input.mWages[type=text]")).val());
-            $(".inventoryP").val(currentrow.find($("input.mInventory[type=text]")).val());
-            $(".catIdP ").val(currentrow.find($("input.mCategoryId[type=text]")).val()).change();
+                })
+                $("#labelDetail").css("display", "block");
+                document.getElementById("DetailProduct").innerHTML = html;
+            },
+            error: function (xhr) {
+                alert("خطای داخلی در سرور");
+                console.dir(xhr)
+            }
         });
     });
-</script>
-    <script>
-    function SetGoldPrice() {
-        $.ajax({
-            type: "Post",
-            data: {price: $('#goldPriced').val()},
-            url: "/Admin/SetManualGoldPrice",
-            success: function (data) {
-                window.location.href = "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    }
+    function addOption(catId) {
 
-    function UpdateProduct() {
-        var product = new FormData();
-        product.append("Id", $("#id").val());
-        product.append("Name", $("#Name").val());
-        product.append("Brand", $("#Brand").val());
-        product.append("ImageBanner", $("#ImageBanner")[0].files[0]);
-        product.append("ImageBannerName", $("#ImageBannerName").val());
-        product.append("ImageThumb", $("#ImageThumb")[0].files[0]);
-        product.append("ImageThumbName", $("#ImageThumbName").val());
-        product.append("Image", $("#Image")[0].files[0]);
-        product.append("ImageName", $("#ImageName").val());
-        product.append("Weight", $("#Weight").val());
-        product.append("Wages", $("#Wages").val());
-        product.append("Inventory", $("#Inventory").val());
-        product.append("CategoryId", $("#CategoryIdProd").val());
-        $.ajax({
-            type: "Put",
-            data: product,
-            url: "/Admin/UpdateProduct",
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                window.location.href = "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    };
+        if (catId ==0){
+            var selectElement = document.getElementById("BrandId");
+            var option = document.createElement("option");
+            option.value ='انتخاب دسته بندی';
+            option.textContent = 'انتخاب دسته بندی';
+            selectElement.replaceChildren(option);
+        }else{
+            $.ajax({
+                type: "Get",
+                data: {subCatId: catId},
+                url: "/Admin/GetBrandBySubCat",
+                success: function (data) {
+                    console.dir(data)
+                    var selectElement = document.getElementById("BrandId");
+                    selectElement.replaceChildren();
+                    data.forEach(x => {
+                        if (x.title) { // Optional: add validation to check if `title` exists
+                            var option = document.createElement("option");
+                            option.value = x.id;
+                            option.textContent = x.title;
+                            selectElement.appendChild(option);
 
-    function softDeleteProduct() {
-        window.location.href = "/admin/SoftDeleteProduct?id=" + $("#id").val();
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    alert("خطای داخلی در سرور");
+                }
+            });
+        }
     }
+ //   $('.normal-example').persianDatepicker();
+    $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+    });
 </script>
 }

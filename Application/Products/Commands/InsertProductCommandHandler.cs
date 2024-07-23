@@ -96,7 +96,8 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
                 Hours = request.Product.Offer.Hours.ToInt(),
                 Minutes = request.Product.Offer.Minutes.ToInt(),
                 OfferAmount = request.Product.Offer.OfferAmount.ToDouble(),
-                ProductId = product.Id
+                ProductId = product.Id,
+                StartDate = request.Product.Offer.Time
             };
             await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(offer, CancellationToken.None);
             product.OfferId = offer.Id;

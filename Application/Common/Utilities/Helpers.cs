@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Application.Dtos;
 using Domain.Enums;
 
 namespace Application.Common.Utilities;
@@ -69,6 +70,12 @@ public static partial class Helpers
         {
             return string.Empty;
         }
+    }  
+    public static DateTime ToGregorianDate (this DateTimeUtil time)
+    {
+            PersianCalendar persianCalendar = new PersianCalendar();
+            DateTime gregorianDate = persianCalendar.ToDateTime(time.Years, time.Month, time.Days, time.Hours, time.Minute, time.Seconds, 0);
+            return gregorianDate;
     }
 
     public static string ToStringList(this List<string> o)

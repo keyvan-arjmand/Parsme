@@ -550,21 +550,65 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+    public async Task<ActionResult> EditProduct(int id)
+    {
+        if (User.Identity.IsAuthenticated&&id>0)
+        {
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.Brand)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .Include(x => x.ProductDetails).ThenInclude(x=>x.CategoryDetail)
+                .Include(x=>x.ProductImages)
+                .Include(x=>x.Offer).ThenInclude(x=>x.Color)
+                .Where(x => x.Id==id)
+                .OrderByDescending(x => x.Id).ToListAsync();
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
 
 
-    public async Task<ActionResult> ProductManage()
+    public async Task<ActionResult> ProductManage(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.Brand)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.ProductDetails)
+                    .Where(x => x.SubCategory.Name.Contains(search) || x.Brand.Title.Contains(search) ||
+                                x.Code.Contains(search) || x.Detail.Contains(search) || x.Strengths.Contains(search) ||
+                                x.FullDesc.Contains(search) || x.MetaDesc.Contains(search) ||
+                                x.MetaKeyword.Contains(search) || x.FullDesc.Contains(search) ||
+                                x.PersianTitle.Contains(search) || x.WeakPoints.Contains(search) ||
+                                x.ProductGift.Contains(search) ||
+                                x.ProductColors.Select(t => t.Color).FirstOrDefault().ColorCode.Contains(search) ||
+                                x.ProductColors.Select(t => t.Color).FirstOrDefault().Title.Contains(search) ||
+                                x.ProductDetails.Select(q => q).FirstOrDefault().Value.Contains(search))
+                    .OrderByDescending(x => x.Id).ToListAsync();
+            }
+            else
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.Brand)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .OrderByDescending(x => x.Id).ToListAsync();
+            }
+
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x => x.Brand)
-                .Include(x => x.SubCategory)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .OrderByDescending(x => x.Id).ToListAsync();
+
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
             ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
@@ -1081,6 +1125,13 @@ public class AdminController : Controller
             .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
     }
 
+    public async Task<List<Brand>> GetBrandBySubCat(int subCatId)
+    {
+        var a = await _work.GenericRepository<Brand>()
+            .TableNoTracking
+            .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
+        return a;
+    }
 
     public async Task<ActionResult> Product(string search, int catId, int page = 1)
     {
