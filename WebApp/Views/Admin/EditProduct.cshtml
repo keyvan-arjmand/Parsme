@@ -4,17 +4,17 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Newtonsoft.Json
 @{
-Layout = "_LayoutAdmin";
-List<Brand> brands = ViewBag.Brands;
-Product products = ViewBag.Product;
-List<SubCategory> subCategories = ViewBag.SubCats;
-List<Color> colors = ViewBag.Colors;
-List<Guarantee> Guarantees = ViewBag.Guarantee;
+    Layout = "_LayoutAdmin";
+    List<Brand> brands = ViewBag.Brands;
+    Product products = ViewBag.Product;
+    List<SubCategory> subCategories = ViewBag.SubCats;
+    List<Color> colors = ViewBag.Colors;
+    List<Guarantee> Guarantees = ViewBag.Guarantee;
 }
 
 @section link
 {
-<style>
+    <style>
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
         background-color: #007bff !important;
         color: #fff;
@@ -78,590 +78,656 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
     </div><!-- /.container-fluid -->
 </div>
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
+<div class="container-fluid">
+<div class="row">
 
-            <!-- Profile Image -->
+<!-- Profile Image -->
 
-            <!-- /.col -->
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header p-2">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
-                            </li>
-                        </ul>
-                    </div><!-- /.card-header -->
-                    <div class="tab-content">
-                        <form class="tab-pane p-5 active show" id="SubCategory">
-                            <div class="card card-info card-outline mt-4">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <small class="h4">مشخصات کلی</small>
-                                    </h3>
-                                    <!-- tools box -->
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="collapse"
-                                                data-toggle="tooltip"
-                                                title="Collapse">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="remove"
-                                                data-toggle="tooltip"
-                                                title="Remove">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /. tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
-                                    <input id="Id" value="@products.Id" hidden="hidden"/>
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
-                                        <div class="form-group w-50 p-3">
-                                            <label>عنوان</label>
-                                            <input id="Title" type="text" value="@products.Title" class="form-control"
-                                                   required="required">
-                                        </div>
-                                        <div class="form-group w-50 p-3">
-                                            <label>عنوان فارسی</label>
-                                            <input id="PersianTitle" value="@products.PersianTitle" type="text"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                                        <div class="form-group w-50 p-3">
-                                            <label>معرفی</label>
-                                            <textarea id="Detail" class="form-control"
+<!-- /.col -->
+<div class="col-md-12">
+<div class="card">
+<div class="card-header p-2">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+<div class="tab-content">
+<form class="tab-pane p-5 active show" id="SubCategory">
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">مشخصات کلی</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <input id="Id" value="@products.Id" hidden="hidden"/>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
+            <div class="form-group w-50 p-3">
+                <label>عنوان</label>
+                <input id="Title" type="text" value="@products.Title" class="form-control"
+                       required="required">
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>عنوان فارسی</label>
+                <input id="PersianTitle" value="@products.PersianTitle" type="text"
+                       class="form-control" required="required">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>معرفی</label>
+                <textarea id="Detail" class="form-control"
                                                       required="required">@products.Detail</textarea>
-                                        </div>
-                                        <div class="form-group w-50 p-3">
-                                            <label>توضیحات Meta</label>
-                                            <input id="MetaDesc" value="@products.MetaDesc" type="text"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                                        <div class="form-group w-50 p-3">
-                                            <label>تگ ها</label>
-                                            <input id="MetaKeyword" value="@products.MetaKeyword" type="text"
-                                                   class="form-control" required="required">
-                                        </div>
-                                        <div class="form-group w-50 p-3">
-                                            <label>هـدایا</label>
-                                            <input id="ProductGift" value="@products.ProductGift" type="text"
-                                                   class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                                        <div class="form-group w-50 p-3">
-                                            <label>نقاط قوت</label>
-                                            <textarea id="Strengths" class="form-control"
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>توضیحات Meta</label>
+                <input id="MetaDesc" value="@products.MetaDesc" type="text"
+                       class="form-control">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>تگ ها</label>
+                <input id="MetaKeyword" value="@products.MetaKeyword" type="text"
+                       class="form-control" required="required">
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>هـدایا</label>
+                <input id="ProductGift" value="@products.ProductGift" type="text"
+                       class="form-control" required="required">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>نقاط قوت</label>
+                <textarea id="Strengths" class="form-control"
                                                       required="required">@products.Strengths</textarea>
-                                        </div>
-                                        <div class="form-group w-50 p-3">
-                                            <label>نقاط ضعف</label>
-                                            <textarea id="WeakPoints" class="form-control"
+            </div>
+            <div class="form-group w-50 p-3">
+                <label>نقاط ضعف</label>
+                <textarea id="WeakPoints" class="form-control"
                                                       required="required">@products.WeakPoints</textarea>
-                                        </div>
-                                    </div>
+            </div>
+        </div>
 
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                                        <div class="form-group w-50 p-3 d-flex flex-column">
-                                            <label for="exampleInputPassword1">دسته بندی</label>
-                                            <select id="SubCatSelect" class="form-control select2"
-                                                    aria-label="Default select example" required="required">
-                                                @{
-                                                    <option value="0">انتخاب</option>
-                                                    foreach (var i in subCategories)
-                                                    {
-                                                        if (products.SubCategoryId == i.Id)
-                                                        {
-                                                            <option value="@i.Id" selected="selected">@i.Name</option>
-                                                        }
-                                                        else
-                                                        {
-                                                            <option value="@i.Id">@i.Name</option>
-                                                        }
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group w-50 p-3  d-flex flex-column">
-                                            <label for="exampleInputPassword1">برند</label>
-                                            <select id="BrandId" class="form-control "
-                                                    aria-label="Default select example" required="required">
-                                            </select>
-                                        </div>
-                                    </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3 d-flex flex-column">
+                <label for="exampleInputPassword1">دسته بندی</label>
+                <select id="SubCatSelect" class="form-control select2"
+                        aria-label="Default select example" required="required">
+                    @{
+                        <option value="0">انتخاب</option>
+                        foreach (var i in subCategories)
+                        {
+                            if (products.SubCategoryId == i.Id)
+                            {
+                                <option value="@i.Id" selected="selected">@i.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group w-50 p-3  d-flex flex-column">
+                <label for="exampleInputPassword1">برند</label>
+                <select id="BrandId" class="form-control "
+                        aria-label="Default select example" required="required">
+                </select>
+            </div>
+        </div>
 
-                                    <div>
-                                        <label id="labelDetail" style="display: none">ویژگی های محصول</label>
+        <div>
+            <label id="labelDetail" style="display: none">ویژگی های محصول</label>
 
-                                        <div id="DetailProduct"
-                                             class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
-                                             style="gap: 30px">
-
-                                        </div>
-                                    </div>
+            <div id="DetailProduct"
+                 class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
+                 style="gap: 30px">
+                @{
+                    @foreach (var x in products.ProductDetails)
+                    {
+                        if (x.CategoryDetail.DataType == DataType.SelectBox)
+                        {
+                            <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                                <div class="input-group-prepend">
+                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
                                 </div>
-                            </div>
-
-                            <div class="card card-info card-outline mt-4">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <small class="h4">قیمت و موجودی</small>
-                                    </h3>
-                                    <!-- tools box -->
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="collapse"
-                                                data-toggle="tooltip"
-                                                title="Collapse">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="remove"
-                                                data-toggle="tooltip"
-                                                title="Remove">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /. tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
-                                    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                                        <div class="form-group w-50 p-3  d-flex flex-column">
-                                            <label for="exampleInputPassword1">وضعیت کالا</label>
-                                            <select id="ProductStatus" class="form-control select2"
-                                                    aria-label="Default select example" required="required">
-                                                @{
-                                                if ((int)products.ProductStatus == 0)
-                                                {
-                                                <option value="0" selected="selected">موجود</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="0">موجود</option>
-                                                }
-
-                                                if ((int)products.ProductStatus == 1)
-                                                {
-                                                <option value="1" selected="selected">غیر موجود</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="1">غیر موجود</option>
-                                                }
-
-                                                if ((int)products.ProductStatus == 2)
-                                                {
-                                                <option value="2" selected="selected">به زودی</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="2">به زودی</option>
-                                                }
-
-                                                if ((int)products.ProductStatus == 3)
-                                                {
-                                                <option value="3" selected="selected">از رده خارج</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="3">از رده خارج</option>
-                                                }
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group w-50 p-3" id="">
-                                            <label>مبلغ تخفیف</label>
-                                            <input id="DiscountAmount" value="@products.DiscountAmount" type="text"
-                                                   class="form-control">
-                                        </div>
-
-                                    </div>
-
-                                    <div>
-                                        <div class="d-flex justify-content-start gap-5">
-                                            <div class="d-flex flex-column align-items-start p-3 m-3">
-                                                <label>پیشنهاد لحظه ای</label>
-                                                @{
-                                                if (products.MomentaryOffer)
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                                                       required="required" checked="checked"/>
-                                                }
-                                                else
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                                                       required="required"/>
-                                                }
-                                                }
-                                            </div>
-                                            <div class="d-flex flex-column align-items-start p-3 m-3">
-                                                <label>پیشنهاد ویژه</label>
-                                                @{
-                                                if (products.IsOffer)
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="Offer"
-                                                       checked="checked" required="required"/>
-                                                }
-                                                else
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="Offer"
-                                                       required="required"/>
-                                                }
-                                                }
-                                            </div>
-                                            <div class="d-flex flex-column align-items-start p-3 m-3">
-                                                <label>نمایش در کالای پیشنهادی</label>
-                                                @{
-                                                if (products.IsShowIndex)
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="ShowIndex"
-                                                       checked="checked" required="required"/>
-                                                }
-                                                else
-                                                {
-                                                <input type="checkbox" class="form-check-input" id="ShowIndex"
-                                                       required="required"/>
-                                                }
-                                                }
-                                            </div>
-                                        </div>
-                                        @{
-                                        if (products.IsOffer)
+                                <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
+                                    @foreach (var i in x.CategoryDetail.Option.Split(","))
+                                    {
+                                        if (i == x.Value)
                                         {
-                                        <div id="OfferForm">
-                                            <div class="d-flex justify-content-center p-3" style="gap: 20px">
-                                                <div class="form-group w-50  d-flex flex-column">
-                                                    <label for="exampleInputPassword1">رنگ مورد نظر</label>
-                                                    <select id="OfferColor" class="form-control "
-                                                            aria-label="Default select example" required="required">
-                                                        @foreach (var i in products.ProductColors)
-                                                        {
-                                                        if (products.Offer.ColorId == i.ColorId)
-                                                        {
-                                                        <option value="@i.Color.Id"
-                                                                selected="selected">@i.Color.Title</option>
-                                                        }
-                                                        else
-                                                        {
-                                                        <option value="@i.Color.Id">@i.Color.Title</option>
-                                                        }
-                                                        }
-                                                    </select>
-                                                </div>
-                                                <div class="d-flex flex-column w-25">
-                                                    <label>مبلغ</label>
-                                                    <input id="OfferAmount" value="@products.Offer.OfferAmount"
-                                                           type="text" class="form-control">
-                                                </div>
-                                                <div class="form-group align-items-center w-50">
-                                                    <label>از تاریخ</label>
-                                                    <div class="input-group date" style="border-radius: 7px"
-                                                         data-provide="datepicker">
-                                                        <input id="datePicker" value="@products.Offer.StartDate"
-                                                               type="text" class="form-control">
-                                                        <div class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-th"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex justify-content-between w-75" style="gap: 10px">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="days">روز</label>
-                                                        <input type="number" id="days" name="days" min="0" max="30"
-                                                               value="@products.Offer.Days"
-                                                               class="form-control"><br><br>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="hours">ساعت</label>
-                                                        <input type="number" id="hours" name="hours" min="0" max="24"
-                                                               value="@products.Offer.Hours"
-                                                               class="form-control"><br><br>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="minutes">دقیقه</label>
-                                                        <input type="number" id="minutes" name="minutes" min="0"
-                                                               max="60" value="@products.Offer.Minutes"
-                                                               class="form-control"><br><br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <option value="@i">@i</option>
+                                            ;
                                         }
                                         else
                                         {
-                                        <div style="display: none !important" id="OfferForm">
-                                            <div class="d-flex justify-content-center p-3" style="gap: 20px">
-                                                <div class="form-group w-50  d-flex flex-column">
-                                                    <label for="exampleInputPassword1">رنگ مورد نظر</label>
-                                                    <select id="OfferColor" class="form-control "
-                                                            aria-label="Default select example" required="required">
-
-                                                    </select>
-                                                </div>
-                                                <div class="d-flex flex-column w-25">
-                                                    <label>مبلغ</label>
-                                                    <input id="OfferAmount" type="text" class="form-control">
-                                                </div>
-                                                <div class="form-group align-items-center w-50">
-                                                    <label>از تاریخ</label>
-                                                    <div class="input-group date" style="border-radius: 7px"
-                                                         data-provide="datepicker">
-                                                        <input id="datePicker" type="text" class="form-control">
-                                                        <div class="input-group-addon">
-                                                            <span class="glyphicon glyphicon-th"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex justify-content-between w-75" style="gap: 10px">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="days">روز</label>
-                                                        <input type="number" id="days" name="days" min="0" max="30"
-                                                               value="0" class="form-control"><br><br>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="hours">ساعت</label>
-                                                        <input type="number" id="hours" name="hours" min="0" max="24"
-                                                               value="0" class="form-control"><br><br>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="minutes">دقیقه</label>
-                                                        <input type="number" id="minutes" name="minutes" min="0"
-                                                               max="60" value="0" class="form-control"><br><br>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <option value="@i">@i</option>
+                                            ;
                                         }
-                                        }
+                                    }
 
-                                    </div>
-                                    <div class="d-flex flex-column  p-3">
-                                        <label>رنگ محصول</label>
-                                        <div class="form-group w-100 p-3">
-                                            <select id="Colors" class="form-control select2 w-100" multiple="multiple"
-                                                    style="width: fit-content;min-width: 200px;text-align: right"
-                                                    required="required">
-                                                @{
-                                                foreach (var i in colors)
-                                                {
-                                                if (products.ProductColors.Select(x => x.ColorId).ToList().Contains(i.Id))
-                                                {
-                                                <option value="@i.Id,@i.Title" selected="selected">@i.Title</option>
-                                                }
-                                                else
-                                                {
-                                                <option value="@i.Id,@i.Title">@i.Title</option>
-                                                }
-                                                }
-                                                }
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
-                                            <div id="colorProduct"
-                                                 class="form-group w-100 p-3 d-flex flex-column justify-content-between align-content-center gap-4 flex-wrap">
-                                                @{
-                                                foreach (var i in products.ProductColors)
-                                                {
-                                                <div class="d-flex justify-content-between color-opt" style="gap: 25px">
-
-                                                    <div class="form-group d-flex w-100 colors-form"
-                                                         style="max-width: 250px;max-height: 50px">
-                                                        <div class="input-group-prepend">
-                                                            <span style="border-radius: 0 5px 5px 0;"
-                                                                  class="input-group-text">@i.Color.Title</span>
-                                                        </div>
-                                                        <input name="colorPrice`@i.Color.Id`" value="@i.Price"
-                                                               style="border-radius: 5px 0 0 5px;" type="text"
-                                                               class="form-control">
-                                                        <input name="ColorId`@i.Color.Id`" value="@i.Color.Id"
-                                                               hidden="hidden">
-                                                    </div>
-                                                    <div class="form-group d-flex w-100 colors-form"
-                                                         style="max-width: 250px;max-height: 50px">
-                                                        <div class="input-group-prepend">
-                                                            <span style="border-radius: 0 5px 5px 0;"
-                                                                  class="input-group-text">موجودی</span>
-                                                        </div>
-                                                        <input name="colorInv`@i.Color.Id`" value="@i.Inventory"
-                                                               style="border-radius: 5px 0 0 5px;" type="text"
-                                                               class="form-control">
-                                                    </div>
-                                                    <div class="form-group w-100 d-flex flex-column">
-                                                        <select name="Gu`@i.Color.Id`"
-                                                                class="form-control select2 Guarantees">
-                                                            @{
-                                                            foreach (var g in Guarantees)
-                                                            {
-                                                            if (g.Id == i.GuaranteeId)
-                                                            {
-                                                            <option value="@g.Id" selected="selected">@g.Title</option>
-                                                            }
-                                                            else
-                                                            {
-                                                            <option value="@g.Id">@g.Title</option>
-                                                            }
-                                                            }
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                }
-                                                }
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
+                                </select>
+                                <input name="DetailId" value="${x.id}" hidden="hidden">
                             </div>
-                            <div class="card card-info card-outline mt-4">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <small class="h4">گالری عکس</small>
-                                    </h3>
-                                    <!-- tools box -->
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="collapse"
-                                                data-toggle="tooltip"
-                                                title="Collapse">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool btn-sm"
-                                                data-widget="remove"
-                                                data-toggle="tooltip"
-                                                title="Remove">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /. tools -->
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="form-group w-50 p-3">
-                                            <label for="exampleInputFile">تصویر کالا</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="ImageUri">
-                                                    <input type="text" id="Image64" hidden="hidden">
-                                                    <label class="custom-file-label" for="exampleInputFile">انتخاب
-                                                        فایل</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group w-50  p-1" style="justify-content: center;">
-                                            <img id="ProdImage" src="/Images/ProductImage/@products.ImageUri"
-                                                 style="object-fit: cover;text-align: center" class="imageThreeP"
-                                                 width="130"/>
-                                        </div>
-                                    </div>
+                        }
 
-                                    <div class="p-2 mt-3"
-                                         style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
-                                        <div class="p-3 m-2">
-                                            <div class="form-group w-100 p-3">
-                                                <input type="file" id="imageInput" accept="image/*" multiple>
-                                                <br><br>
-                                                <div id="imageContainer" class="image-container">
-                                                    @{
-                                                    foreach (var i in products.ProductImages)
-                                                    {
-                                                    <img src="/Images/ProductImage/@i.ImageUri"/>
-                                                    }
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
+                        if (x.CategoryDetail.DataType == DataType.CheckBox)
+                        {
+                            <div class=" d-flex  gap-3 w-100 form-group detail-form" style="max-width: 190px;">
+                                <span class="">@x.CategoryDetail.Title</span>
+                                @if (x.Value.Contains("true"))
+                                {
+                                    <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
 
-                                    </div>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="DetailVal" class="form-check-input"/>
 
-
-                                </div>
+                                }
+                                <input name="DetailId" value="@x.CategoryDetail.Id" hidden="hidden">
                             </div>
+                        }
 
-                            <div>
-                                <div class="card card-info card-outline mt-4">
-                                    <div class="card-header">
-                                        <h3 class="card-title">
-                                            <small class="h5"> معرفی محصول</small>
-                                        </h3>
-                                        <!-- tools box -->
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool btn-sm"
-                                                    data-widget="collapse"
-                                                    data-toggle="tooltip"
-                                                    title="Collapse">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool btn-sm"
-                                                    data-widget="remove"
-                                                    data-toggle="tooltip"
-                                                    title="Remove">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </div>
-                                        <!-- /. tools -->
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                <textarea id="editor1" name="editor1" style="width: 100%">
-                </textarea>
-                                        </div>
-                                    </div>
+                        if (x.CategoryDetail.DataType != DataType.CheckBox && x.CategoryDetail.DataType != DataType.SelectBox)
+                        {
+                            <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                            <div class="input-group-prepend">
+                            <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
                                 </div>
-
-                            </div>
-                            <div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
-                                <div class="form-input w-50">
-                                    <button type="button" onclick="insertProduct()" class="btn btn-primary w-100">
-                                        ثبت
-                                    </button>
-                                </div>
-                                <div class="form-group w-25">
-                                    <div class="form-check">
-                                        @{
-                                        if (products.IsActive)
-                                        {
-                                        <input type="checkbox" id="IsActive" checked="checked"
-                                               class="form-check-input"/>
-                                        }
-                                        else
-                                        {
-                                        <input type="checkbox" id="IsActive" class="form-check-input"/>
-                                        }
-                                        }
-                                        <label class="form-check-label">وضعیت فعال</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div><!-- /.card-body -->
+                                <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                                <input name="DetailId" value="@x.CategoryDetail.Id" hidden="hidden">
+                             </div>
+                        }
+                    }
+                }
             </div>
         </div>
     </div>
+</div>
+
+<div class="card card-info card-outline mt-4">
+<div class="card-header">
+    <h3 class="card-title">
+        <small class="h4">قیمت و موجودی</small>
+    </h3>
+    <!-- tools box -->
+    <div class="card-tools">
+        <button type="button" class="btn btn-tool btn-sm"
+                data-widget="collapse"
+                data-toggle="tooltip"
+                title="Collapse">
+            <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool btn-sm"
+                data-widget="remove"
+                data-toggle="tooltip"
+                title="Remove">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    <!-- /. tools -->
+</div>
+<!-- /.card-header -->
+<div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+    <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+        <div class="form-group w-50 p-3  d-flex flex-column">
+            <label for="exampleInputPassword1">وضعیت کالا</label>
+            <select id="ProductStatus" class="form-control select2"
+                    aria-label="Default select example" required="required">
+                @{
+                    if ((int)products.ProductStatus == 0)
+                    {
+                        <option value="0" selected="selected">موجود</option>
+                    }
+                    else
+                    {
+                        <option value="0">موجود</option>
+                    }
+
+                    if ((int)products.ProductStatus == 1)
+                    {
+                        <option value="1" selected="selected">غیر موجود</option>
+                    }
+                    else
+                    {
+                        <option value="1">غیر موجود</option>
+                    }
+
+                    if ((int)products.ProductStatus == 2)
+                    {
+                        <option value="2" selected="selected">به زودی</option>
+                    }
+                    else
+                    {
+                        <option value="2">به زودی</option>
+                    }
+
+                    if ((int)products.ProductStatus == 3)
+                    {
+                        <option value="3" selected="selected">از رده خارج</option>
+                    }
+                    else
+                    {
+                        <option value="3">از رده خارج</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group w-50 p-3" id="">
+            <label>مبلغ تخفیف</label>
+            <input id="DiscountAmount" value="@products.DiscountAmount" type="text"
+                   class="form-control">
+        </div>
+
+    </div>
+
+    <div>
+        <div class="d-flex justify-content-start gap-5">
+            <div class="d-flex flex-column align-items-start p-3 m-3">
+                <label>پیشنهاد لحظه ای</label>
+                @{
+                    if (products.MomentaryOffer)
+                    {
+                        <input type="checkbox" class="form-check-input" id="MomentaryOffer"
+                               required="required" checked="checked"/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="form-check-input" id="MomentaryOffer"
+                               required="required"/>
+                    }
+                }
+            </div>
+            <div class="d-flex flex-column align-items-start p-3 m-3">
+                <label>پیشنهاد ویژه</label>
+                @{
+                    if (products.IsOffer)
+                    {
+                        <input type="checkbox" class="form-check-input" id="Offer"
+                               checked="checked" required="required"/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="form-check-input" id="Offer"
+                               required="required"/>
+                    }
+                }
+            </div>
+            <div class="d-flex flex-column align-items-start p-3 m-3">
+                <label>نمایش در کالای پیشنهادی</label>
+                @{
+                    if (products.IsShowIndex)
+                    {
+                        <input type="checkbox" class="form-check-input" id="ShowIndex"
+                               checked="checked" required="required"/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="form-check-input" id="ShowIndex"
+                               required="required"/>
+                    }
+                }
+            </div>
+        </div>
+        @{
+            if (products.IsOffer)
+            {
+                <div id="OfferForm">
+                    <div class="d-flex justify-content-center p-3" style="gap: 20px">
+                        <div class="form-group w-50  d-flex flex-column">
+                            <label for="exampleInputPassword1">رنگ مورد نظر</label>
+                            <select id="OfferColor" class="form-control "
+                                    aria-label="Default select example" required="required">
+                                @foreach (var i in products.ProductColors)
+                                {
+                                    if (products.Offer.ColorId == i.ColorId)
+                                    {
+                                        <option value="@i.Color.Id"
+                                                selected="selected">
+                                            @i.Color.Title
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i.Color.Id">@i.Color.Title</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column w-25">
+                            <label>مبلغ</label>
+                            <input id="OfferAmount" value="@products.Offer.OfferAmount"
+                                   type="text" class="form-control">
+                        </div>
+                        <div class="form-group align-items-center w-50">
+                            <label>از تاریخ</label>
+                            <div class="input-group date" style="border-radius: 7px"
+                                 data-provide="datepicker">
+                                <input id="datePicker" value="@products.Offer.StartDate"
+                                       type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between w-75" style="gap: 10px">
+                            <div class="d-flex flex-column">
+                                <label for="days">روز</label>
+                                <input type="number" id="days" name="days" min="0" max="30"
+                                       value="@products.Offer.Days"
+                                       class="form-control"><br><br>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <label for="hours">ساعت</label>
+                                <input type="number" id="hours" name="hours" min="0" max="24"
+                                       value="@products.Offer.Hours"
+                                       class="form-control"><br><br>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <label for="minutes">دقیقه</label>
+                                <input type="number" id="minutes" name="minutes" min="0"
+                                       max="60" value="@products.Offer.Minutes"
+                                       class="form-control"><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="display: none !important" id="OfferForm">
+                    <div class="d-flex justify-content-center p-3" style="gap: 20px">
+                        <div class="form-group w-50  d-flex flex-column">
+                            <label for="exampleInputPassword1">رنگ مورد نظر</label>
+                            <select id="OfferColor" class="form-control "
+                                    aria-label="Default select example" required="required">
+
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column w-25">
+                            <label>مبلغ</label>
+                            <input id="OfferAmount" type="text" class="form-control">
+                        </div>
+                        <div class="form-group align-items-center w-50">
+                            <label>از تاریخ</label>
+                            <div class="input-group date" style="border-radius: 7px"
+                                 data-provide="datepicker">
+                                <input id="datePicker" type="text" class="form-control">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between w-75" style="gap: 10px">
+                            <div class="d-flex flex-column">
+                                <label for="days">روز</label>
+                                <input type="number" id="days" name="days" min="0" max="30"
+                                       value="0" class="form-control"><br><br>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <label for="hours">ساعت</label>
+                                <input type="number" id="hours" name="hours" min="0" max="24"
+                                       value="0" class="form-control"><br><br>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <label for="minutes">دقیقه</label>
+                                <input type="number" id="minutes" name="minutes" min="0"
+                                       max="60" value="0" class="form-control"><br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+    <div class="d-flex flex-column  p-3">
+        <label>رنگ محصول</label>
+        <div class="form-group w-100 p-3">
+            <select id="Colors" class="form-control select2 w-100" multiple="multiple"
+                    style="width: fit-content;min-width: 200px;text-align: right"
+                    required="required">
+                @{
+                    foreach (var i in colors)
+                    {
+                        if (products.ProductColors.Select(x => x.ColorId).ToList().Contains(i.Id))
+                        {
+                            <option value="@i.Id,@i.Title" selected="selected">@i.Title</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id,@i.Title">@i.Title</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div>
+            <label id="labelColor" style="display: none">قیمت بر اساس رنگ</label>
+            <div id="colorProduct"
+                 class="form-group w-100 p-3 d-flex flex-column justify-content-between align-content-center gap-4 flex-wrap">
+                @{
+                    foreach (var i in products.ProductColors)
+                    {
+                        <div class="d-flex justify-content-between color-opt" style="gap: 25px">
+
+                            <div class="form-group d-flex w-100 colors-form"
+                                 style="max-width: 250px;max-height: 50px">
+                                <div class="input-group-prepend">
+                                    <span style="border-radius: 0 5px 5px 0;"
+                                          class="input-group-text">
+                                        @i.Color.Title
+                                    </span>
+                                </div>
+                                <input name="colorPrice`@i.Color.Id`" value="@i.Price"
+                                       style="border-radius: 5px 0 0 5px;" type="text"
+                                       class="form-control">
+                                <input name="ColorId`@i.Color.Id`" value="@i.Color.Id"
+                                       hidden="hidden">
+                            </div>
+                            <div class="form-group d-flex w-100 colors-form"
+                                 style="max-width: 250px;max-height: 50px">
+                                <div class="input-group-prepend">
+                                    <span style="border-radius: 0 5px 5px 0;"
+                                          class="input-group-text">
+                                        موجودی
+                                    </span>
+                                </div>
+                                <input name="colorInv`@i.Color.Id`" value="@i.Inventory"
+                                       style="border-radius: 5px 0 0 5px;" type="text"
+                                       class="form-control">
+                            </div>
+                            <div class="form-group w-100 d-flex flex-column">
+                                <select name="Gu`@i.Color.Id`"
+                                        class="form-control select2 Guarantees">
+                                    @{
+                                        foreach (var g in Guarantees)
+                                        {
+                                            if (g.Id == i.GuaranteeId)
+                                            {
+                                                <option value="@g.Id" selected="selected">@g.Title</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@g.Id">@g.Title</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">گالری عکس</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div class="form-group w-50 p-3">
+                <label for="exampleInputFile">تصویر کالا</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="ImageUri">
+                        <input type="text" id="Image64" hidden="hidden">
+                        <label class="custom-file-label" for="exampleInputFile">
+                            انتخاب
+                            فایل
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group w-50  p-1" style="justify-content: center;">
+                <img id="ProdImage" src="/Images/ProductImage/@products.ImageUri"
+                     style="object-fit: cover;text-align: center" class="imageThreeP"
+                     width="130"/>
+            </div>
+        </div>
+
+        <div class="p-2 mt-3"
+             style="background-color:	rgb(220,220,220,0.4);border-radius: 10px">
+            <div class="p-3 m-2">
+                <div class="form-group w-100 p-3">
+                    <input type="file" id="imageInput" accept="image/*" multiple>
+                    <br><br>
+                    <div id="imageContainer" class="image-container">
+                        @{
+                            foreach (var i in products.ProductImages)
+                            {
+                                <img src="/Images/ProductImage/@i.ImageUri"/>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<div>
+    <div class="card card-info card-outline mt-4">
+        <div class="card-header">
+            <h3 class="card-title">
+                <small class="h5"> معرفی محصول</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="mb-3">
+                <textarea id="editor1" name="editor1" style="width: 100%">
+                </textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
+    <div class="form-input w-50">
+        <button type="button" onclick="insertProduct()" class="btn btn-primary w-100">
+            ثبت
+        </button>
+    </div>
+    <div class="form-group w-25">
+        <div class="form-check">
+            @{
+                if (products.IsActive)
+                {
+                    <input type="checkbox" id="IsActive" checked="checked"
+                           class="form-check-input"/>
+                }
+                else
+                {
+                    <input type="checkbox" id="IsActive" class="form-check-input"/>
+                }
+            }
+            <label class="form-check-label">وضعیت فعال</label>
+        </div>
+    </div>
+</div>
+
+</form>
+</div>
+</div><!-- /.card-body -->
+</div>
+</div>
+</div>
 </section>
 
 @section script{
 
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-<script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
     $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
@@ -923,7 +989,7 @@ List<Guarantee> Guarantees = ViewBag.Guarantee;
 
 
 </script>
-<script>
+    <script>
 
     $('#ImageUri').on('change', function (event) {
         var input = event.target;
