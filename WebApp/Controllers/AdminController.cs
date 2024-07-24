@@ -4,6 +4,7 @@ using Application.Admin.V1.Commands.ConfirmPasswordAdmin;
 using Application.Admin.V1.Commands.LoginCodAdmin;
 using Application.Admin.V1.Queries.CheckAdminNumber;
 using Application.Common.ApiResult;
+using Application.Common.Utilities;
 using Application.Dtos.Factor;
 using Application.Dtos.Products;
 using Application.Dtos.User;
@@ -21,6 +22,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTested.AspNetCore.Mvc.Utilities.Extensions;
 using WebApp.Models;
+using Offer = Application.Products.Commands.Offer;
+using ProductColor = Domain.Entity.Product.ProductColor;
+using ProductDetail = Domain.Entity.Product.ProductDetail;
 using UserDto = WebApp.Models.UserDto;
 
 namespace WebApp.Controllers;
@@ -550,19 +554,20 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+
     public async Task<ActionResult> EditProduct(int id)
     {
-        if (User.Identity.IsAuthenticated&&id>0)
+        if (User.Identity.IsAuthenticated && id > 0)
         {
             ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .Include(x => x.ProductDetails).ThenInclude(x=>x.CategoryDetail)
-                .Include(x=>x.ProductImages)
-                .Include(x=>x.Offer).ThenInclude(q=>q.Color)
-                .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id==id);
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                .Include(x => x.ProductImages)
+                .Include(x => x.Offer).ThenInclude(q => q.Color)
+                .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
 
@@ -1119,32 +1124,186 @@ public class AdminController : Controller
         });
         return RedirectToAction("ProductManage");
     }
+
     public async Task<ActionResult> UpdateProduct(Root request)
     {
+        var product = await _work.GenericRepository<Product>().Table.FirstOrDefaultAsync(x => x.Id == request.Id);
+        if (product == null) throw new Exception();
         Upload up = new Upload(_webHostEnvironment);
-        string imageUri = string.Empty;
-        List<string> images = new List<string>();
-        if (!string.IsNullOrWhiteSpace(request.ImageUri))
+
+        #region prod
+
+        product.Title = request.Title;
+        product.PersianTitle = request.PersianTitle;
+        product.Detail = request.Detail;
+        product.MetaDesc = request.MetaDesc;
+        product.MetaKeyword = request.MetaKeyword;
+        product.FullDesc = request.FullDesc;
+        product.ImageUri = !string.IsNullOrWhiteSpace(request.ImageUri)
+            ? up.AddImage(request.ImageUri, "Images/ProductImage",
+                Guid.NewGuid().ToString().Substring(0, 6))
+            : product.ImageUri;
+        product.ProductGift = request.ProductGift;
+        product.DiscountAmount = request.DiscountAmount.ToDouble();
+        product.ProductStatus = (ProductStatus)request.ProductStatus.ToInt();
+        product.IsActive = request.IsActive;
+        product.IsShowIndex = request.IsShowIndex;
+        product.IsOffer = request.IsOffer;
+        product.Strengths = request.Strengths;
+        product.WeakPoints = request.WeakPoints;
+        product.MomentaryOffer = request.MomentaryOffer;
+        
+        if (product.BrandId != request.BrandId.ToInt())
         {
-            imageUri = up.AddImage(request.ImageUri, "Images/ProductImage",
-                Guid.NewGuid().ToString().Substring(0, 6));
+            var brand = await _work.GenericRepository<Brand>().Table
+                .FirstOrDefaultAsync(x => x.Id == request.BrandId.ToInt());
+            if (brand == null) throw new Exception();
+            product.BrandId = brand.Id;
+        }
+        
+        if (product.SubCategoryId != request.SubCategoryId.ToInt()&&request.SubCategoryId.ToInt()>0)
+        {
+            var subCat = await _work.GenericRepository<SubCategory>().Table
+                .FirstOrDefaultAsync(x => x.Id == request.SubCategoryId.ToInt());
+            if (subCat == null) throw new Exception();
+            product.SubCategoryId = subCat.Id;
+
+            var catDetail = await _work.GenericRepository<ProductDetail>().Table.Where(x => x.ProductId == product.Id)
+                .ToListAsync();
+            foreach (var i in catDetail)
+            {
+                await _work.GenericRepository<ProductDetail>().DeleteAsync(i, CancellationToken.None);
+            }
+
+            foreach (var i in request.ProductDetails)
+            {
+                await _work.GenericRepository<ProductDetail>().AddAsync(new ProductDetail
+                {
+                    ProductId = product.Id,
+                    Value = i.DetailName,
+                    CategoryDetailId = i.DetailId.ToInt(),
+                }, CancellationToken.None);
+            }
+        }
+        else
+        {
+            var catDetail = await _work.GenericRepository<ProductDetail>().Table.Where(x => x.ProductId == product.Id)
+                .ToListAsync();
+            foreach (var i in catDetail)
+            {
+                var val = request.ProductDetails.FirstOrDefault(x => x.Id == i.Id);
+                if (val != null)
+                {
+                    i.Value = val.DetailName;
+                    await _work.GenericRepository<ProductDetail>().UpdateAsync(i, CancellationToken.None);
+                }
+            }
+        }
+        
+        await _work.GenericRepository<Product>().UpdateAsync(product, CancellationToken.None);
+        #endregion
+
+      
+
+      
+
+        #region color
+
+        var proColor = await _work.GenericRepository<ProductColor>().Table.Where(x => x.ProductId == product.Id)
+            .ToListAsync();
+
+        foreach (var i in request.ProductColors)
+        {
+            if (i.Id > 0)
+            {
+                var prod = proColor.FirstOrDefault(x => x.Id == i.Id);
+                prod.Price = i.ColorPrice.ToDouble();
+                prod.Inventory = i.ColorInv.ToInt();
+                prod.GuaranteeId = i.Gu.ToInt();
+                await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
+            }
+            else
+            {
+                await _work.GenericRepository<ProductColor>().AddAsync(new ProductColor
+                {
+                    ProductId = product.Id,
+                    Priority = 1,
+                    GuaranteeId = i.Gu.ToInt(),
+                    ColorId = i.ColorId.ToInt(),
+                    Inventory = i.ColorInv.ToInt(),
+                    Price = i.ColorPrice.ToDouble(),
+                }, CancellationToken.None);
+            }
         }
 
-        if (request.Images.Count > 0)
+        foreach (var i in proColor)
         {
+            if (request.ProductColors.All(x => x.Id != i.Id))
+            {
+                await _work.GenericRepository<ProductColor>().DeleteAsync(i, CancellationToken.None);
+            }
+        }
+
+        #endregion
+
+        if (request.IsOffer)
+        {
+            var offer = await _work.GenericRepository<Domain.Entity.Product.Offer>().Table
+                .FirstOrDefaultAsync(x => x.ProductId == product.Id);
+            if (offer != null)
+            {
+                offer.OfferAmount = request.Offer.OfferAmount.ToDouble();
+                offer.Days = request.Offer.Days.ToInt();
+                offer.Hours = request.Offer.Hours.ToInt();
+                offer.Minutes = request.Offer.Minutes.ToInt();
+                offer.ColorId = request.Offer.ColorId.ToInt();
+                offer.StartDate = request.Offer.Time;
+                await _work.GenericRepository<Domain.Entity.Product.Offer>().UpdateAsync(offer, CancellationToken.None);
+            }
+            else
+            {
+                await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(new Domain.Entity.Product.Offer
+                {
+                    Days = request.Offer.Days.ToInt(),
+                    ProductId = product.Id,
+                    StartDate = request.Offer.Time,
+                    OfferAmount = request.Offer.OfferAmount.ToDouble(),
+                    ColorId = request.Offer.ColorId.ToInt(),
+                    Minutes = request.Offer.Minutes.ToInt(),
+                    Hours = request.Offer.Hours.ToInt(),
+                }, CancellationToken.None);
+            }
+        }
+
+        if (request.Images.Any())
+        {
+            var prodImages = await _work.GenericRepository<ImageGallery>().Table.Where(x => x.ProductId == product.Id)
+                .ToListAsync();
+            foreach (var i in prodImages)
+            {
+                await _work.GenericRepository<ImageGallery>().DeleteAsync(i, CancellationToken.None);
+            }
+            List<string> images = new List<string>();
+
             foreach (var i in request.Images)
             {
                 images.Add(up.AddImage(i, "Images/ProductImage",
                     Guid.NewGuid().ToString().Substring(0, 6)));
+                
+            }
+            
+            var productGallery = images.Select(x => new ImageGallery
+            {
+                ProductId = product.Id,
+                ImageUri = x
+            }).ToList();
+            foreach (var i in productGallery)
+            {
+                await _work.GenericRepository<Domain.Entity.Product.ImageGallery>()
+                    .AddAsync(i, CancellationToken.None); 
             }
         }
 
-        request.ImageUri = imageUri;
-        request.Images = images;
-        await _mediator.Send(new InsertProductCommand
-        {
-            Product = request
-        });
         return RedirectToAction("ProductManage");
     }
     // string Title, string PersianTitle, string Detail, string MetaDesc,

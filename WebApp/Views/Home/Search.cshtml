@@ -17,7 +17,7 @@
             <div class="header-right">
                 <div class="col-lg-3 pr">
                     <div class="header-logo row text-right">
-                        <a href="#">
+                        <a href="@Url.Action("Index")">
                             <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
                         </a>
                     </div>
@@ -25,28 +25,13 @@
                 <div class="col-lg-8 pr">
                     <div class="header-search row text-right">
                         <div class="header-search-box">
-                            <form action="#" class="form-search">
-                                <input type="search" class="header-search-input" name="search-input"
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
                                         <img src="/assetsCli/images/search.png" alt="search">
                                     </button>
-                                    <div class="search-filter">
-                                        <div class="form-ui">
-                                            <div class="custom-select-ui">
-                                                <select class="right">
-                                                    <option>همه دسته ها</option>
-                                                    @{
-                                                        foreach (var i in categories)
-                                                        {
-                                                            <option>@i.Name</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </form>
                             <div class="search-result">

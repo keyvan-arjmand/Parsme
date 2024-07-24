@@ -18,7 +18,7 @@ public static partial class Helpers
     public static string GetConfirmCode()
     {
         var code = string.Empty;
-        for (var i = 0; i < 6; i++)
+        for (var i = 0; i < 5; i++)
         {
             code += new Random().Next(0, 9).ToString();
         }

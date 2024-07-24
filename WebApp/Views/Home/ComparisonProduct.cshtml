@@ -27,28 +27,13 @@
                 <div class="col-lg-8 pr">
                     <div class="header-search row text-right">
                         <div class="header-search-box">
-                            <form action="#" class="form-search">
-                                <input type="search" class="header-search-input" name="search-input"
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
                                         <img src="/assetsCli/images/search.png" alt="search">
                                     </button>
-                                    <div class="search-filter">
-                                        <div class="form-ui">
-                                            <div class="custom-select-ui">
-                                                <select class="right">
-                                                    <option>همه دسته ها</option>
-                                                    @{
-                                                        foreach (var i in categories)
-                                                        {
-                                                            <option>@i.Name</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </form>
                             <div class="search-result">
@@ -92,17 +77,11 @@
                                         <li class="account-item">
                                             @if (User.Identity.IsAuthenticated)
                                             {
-                                                <a href="@Url.Action("Profile", "Home")" class="account-link">
-                                                    پنل
-                                                    کاربری
-                                                </a>
+                                                <a href="@Url.Action("Profile", "Home")" class="account-link">پنل کاربری</a>
                                             }
                                             else
                                             {
-                                                <a href="@Url.Action("Login", "Home")"
-                                                   class="account-link">
-                                                    عضویت/ورود
-                                                </a>
+                                                <a href="@Url.Action("Login", "Home")" class="account-link">عضویت/ورود</a>
                                             }
                                         </li>
                                         @if (User.Identity.IsAuthenticated)
@@ -188,12 +167,10 @@
                                                                 {
                                                                     <li class="mini-cart-item">
                                                                         <div class="mini-cart-item-content">
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })"
-                                                                               class="mini-cart-item-close">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
                                                                                 <i class="mdi mdi-close"></i>
                                                                             </a>
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })"
-                                                                               class="mini-cart-item-image d-block">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
                                                                                 <img src="/Images/ProductImage/@i.ImageUri">
                                                                             </a>
                                                                             <span class="product-name-card">
@@ -201,9 +178,7 @@
                                                                             </span>
                                                                             <div class="header-basket-list-item-color-badge">
                                                                                 رنگ:
-                                                                                <span
-                                                                                    style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode">
-                                                                                </span>
+                                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
@@ -241,10 +216,7 @@
                                             </span>
                                         </div>
                                         <div class="mini-card-button">
-                                            <a href="@Url.Action("Basket", "Home")" class="view-card">
-                                                مشاهده سبد
-                                                خرید
-                                            </a>
+                                            <a href="@Url.Action("Basket", "Home")" class="view-card">مشاهده سبد خرید</a>
                                         </div>
                                     </div>
                                 </div>
@@ -287,10 +259,7 @@
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })"
-                                                       class="category-level-3">
-                                                        @b.Title
-                                                    </a>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
                                                 </li>
                                             }
 

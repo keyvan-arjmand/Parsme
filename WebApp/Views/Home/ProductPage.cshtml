@@ -19,7 +19,7 @@
             <div class="header-right">
                 <div class="col-lg-3 pr">
                     <div class="header-logo row text-right">
-                        <a href="#">
+                        <a href="@Url.Action("Index")">
                             <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
                         </a>
                     </div>
@@ -27,28 +27,13 @@
                 <div class="col-lg-8 pr">
                     <div class="header-search row text-right">
                         <div class="header-search-box">
-                            <form action="#" class="form-search">
-                                <input type="search" class="header-search-input" name="search-input"
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
                                         <img src="/assetsCli/images/search.png" alt="search">
                                     </button>
-                                    <div class="search-filter">
-                                        <div class="form-ui">
-                                            <div class="custom-select-ui">
-                                                <select class="right">
-                                                    <option>همه دسته ها</option>
-                                                    @{
-                                                        foreach (var i in categories)
-                                                        {
-                                                            <option>@i.Name</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </form>
                             <div class="search-result">
@@ -473,7 +458,7 @@
                         }
 
                         <li class="Three-dimensional">
-
+                        
                             <div class="modal fade" id="more-product" tabindex="-1"
                                  role="dialog" aria-labelledby="exampleModalCenterTitle"
                                  aria-hidden="true">
@@ -491,7 +476,7 @@
                                                                 src="/Images/ProductImage/@i.ImageUri" width="145px" style="max-height: 150px"/>
                                                         </a>
                                                     }
-
+                        
                                                     <a
                                                         href="/Images/ProductImage/@prod.ImageUri">
                                                         <img
@@ -515,7 +500,7 @@
                 </div>
             </div>
             <div class="gallery-item">
-                <div class="gallery-img">
+                <div class="gallery-img" id="custom-events">
                     <a href="#" data-toggle="modal" data-target="#more-product">
                         <img id="img-product-zoom"
                              src="/Images/ProductImage/@prod.ImageUri"
@@ -651,10 +636,6 @@
                         <div class="col=lg-6 col-md-6 col-xs-12 pr color-panel" id="@i.ColorId">
                             <div class="product-seller-info">
                                 <div class="seller-info-changable">
-                                    <div class="product-seller-row vendor">
-                                        <span class="title"> فروشنده:</span>
-                                        <a href="#" class="product-name">پارس می</a>
-                                    </div>
                                     <div class="product-seller-row guarantee">
                                         <span class="title"> گارانتی:</span>
                                         <a href="#" class="product-name">@i.Guarantee.Title</a>
@@ -662,7 +643,7 @@
                                     <div class="product-seller-row price">
                                         <span class="title"> قیمت:</span>
                                         <a href="#" class="product-name">
-                                            <span class="amount">
+                                            <span class="amount" style="color: black">
                                                 @i.Price
                                                 <span>تومان</span>
                                             </span>
@@ -674,7 +655,7 @@
                                         <div class="product-seller-row price">
                                             <span class="title"> تخفیف:</span>
                                             <a href="#" class="product-name">
-                                                <span class="amount">
+                                                <span class="amount" style="color: black">
                                                     @prod.IsOffer.Pass(offer, prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
@@ -683,7 +664,7 @@
                                         <div class="product-seller-row price">
                                             <span class="title"> قیمت نهایی:</span>
                                             <a href="#" class="product-name">
-                                                <span class="amount">
+                                                <span class="amount" style="color:  #2dff11">
                                                     @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
@@ -708,10 +689,6 @@
                         <div class="col=lg-6 col-md-6 col-xs-12 pr d-none color-panel" id="@i.ColorId">
                             <div class="product-seller-info">
                                 <div class="seller-info-changable">
-                                    <div class="product-seller-row vendor">
-                                        <span class="title"> فروشنده:</span>
-                                        <a href="#" class="product-name">پارس می</a>
-                                    </div>
                                     <div class="product-seller-row guarantee">
                                         <span class="title"> گارانتی:</span>
                                         <a href="#" class="product-name">@i.Guarantee.Title</a>
@@ -719,7 +696,7 @@
                                     <div class="product-seller-row price">
                                         <span class="title"> قیمت:</span>
                                         <a href="#" class="product-name">
-                                            <span class="amount">
+                                            <span class="amount" style="color: black">
                                                 @i.Price.ToString("N0")
                                                 <span>تومان</span>
                                             </span>
@@ -731,7 +708,7 @@
                                         <div class="product-seller-row price">
                                             <span class="title"> تخفیف:</span>
                                             <a href="#" class="product-name">
-                                                <span class="amount">
+                                                <span class="amount" style="color: black">
                                                     @prod.IsOffer.Pass(offer, prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>
@@ -740,7 +717,7 @@
                                         <div class="product-seller-row price">
                                             <span class="title"> قیمت نهایی:</span>
                                             <a href="#" class="product-name">
-                                                <span class="amount">
+                                                <span class="amount" style="color: #2dff11">
                                                     @i.Price.DiscountProduct(prod.IsOffer ? offer : prod.DiscountAmount).ToString("N0")
                                                     <span>تومان</span>
                                                 </span>

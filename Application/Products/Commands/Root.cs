@@ -41,6 +41,7 @@ public class Offer
 
 public class ProductColor
 {
+    public int Id { get; set; }
     public string Gu { get; set; }
     public string ColorInv { get; set; }
     public string ColorId { get; set; }
@@ -49,6 +50,7 @@ public class ProductColor
 
 public class ProductDetail
 {
+    public int Id { get; set; }
     public string DetailId { get; set; }
     public string DetailName { get; set; }
 }

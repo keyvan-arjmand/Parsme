@@ -1,8 +1,13 @@
 ﻿using System.Diagnostics;
+using Application.Admin.V1.Commands.ConfirmCodAdmin;
+using Application.Common.Utilities;
+using Application.Constants.Kavenegar;
 using Application.Interfaces;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
+using Kavenegar;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
@@ -14,6 +19,7 @@ namespace WebApp.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IMediator _mediator;
     private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _work;
     private readonly RoleManager<Role> _roleManager;
@@ -21,13 +27,14 @@ public class HomeController : Controller
     private readonly SignInManager<User> _signInManager;
 
     public HomeController(ILogger<HomeController> logger, IUnitOfWork work, SignInManager<User> signInManager,
-        RoleManager<Role> roleManager, UserManager<User> userManager)
+        RoleManager<Role> roleManager, UserManager<User> userManager, IMediator mediator)
     {
         _logger = logger;
         _work = work;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _userManager = userManager;
+        _mediator = mediator;
     }
 
     public async Task<IActionResult> Index()
@@ -799,6 +806,51 @@ public class HomeController : Controller
         return View();
     }
 
+    public async Task<IActionResult> SignUp(string phoneNumber, string pass)
+    {
+        if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == phoneNumber))
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
+            if (user.Password == pass)
+            {
+                await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+                return RedirectToAction("Profile");
+            }
+
+            return RedirectToAction("Login");
+        }
+        else
+        {
+            var user = new Domain.Entity.User.User
+            {
+                Family = string.Empty,
+                Name = string.Empty,
+                PhoneNumber = phoneNumber,
+                Email = string.Empty,
+                Password = pass,
+                InsertDate = DateTime.Now,
+                UserName = phoneNumber,
+                SecurityStamp = string.Empty,
+                CityId = 1,
+                Sheba = string.Empty,
+                NationalCode = string.Empty,
+            };
+            if (!await _roleManager.RoleExistsAsync("user"))
+            {
+                await _roleManager.CreateAsync(new Role
+                {
+                    Name = "user"
+                });
+            }
+
+            await _userManager.CreateAsync(user, pass);
+
+            await _userManager.AddToRoleAsync(user, "user");
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("ConfirmPhoneNumber", new { user.PhoneNumber });
+        }
+    }
+
     public async Task<IActionResult> Basket()
     {
         var basketProducts = new List<Product>();
@@ -868,9 +920,70 @@ public class HomeController : Controller
         return View();
     }
 
+    public async Task<ActionResult> LoginPhone()
+    {
+        return View();
+    }
+
+    public async Task<ActionResult> ConfirmPhoneNumber(string phoneNumber)
+    {
+        var user = await _userManager.FindByNameAsync(phoneNumber);
+        var userRoles = await _userManager.GetRolesAsync(user);
+        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+        if (user == null && userRoles.Any(x => !x.Equals("admin")))
+            throw new Exception("User not Exist");
+        user.ConfirmCode = Helpers.GetConfirmCode();
+        user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
+        await _userManager.UpdateAsync(user);
+        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+            "VerifyCodeFaani");
+        @ViewBag.Phone = phoneNumber;
+        return View();
+    }
+
     public async Task<ActionResult> Register()
     {
         return View();
+    }
+
+    public async Task<ActionResult> ConfirmCode(string phoneNumber)
+    {
+        ViewBag.Phone = phoneNumber;
+        return View();
+    }
+
+    public async Task<ActionResult> WelcomeParsme()
+    {
+        return View();
+    }
+
+    public async Task<ActionResult> ValidateCode(string phoneNumber, string code)
+    {
+        var user = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+        await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+        return Ok();
+    }   
+    public async Task<ActionResult> ValidateCodeUser(string phoneNumber, string code)
+    {
+        var user = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+        await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+        return Ok();
+    }
+
+    public async Task<ActionResult> SendLoginCode(string phoneNumber)
+    {
+        var user = await _userManager.FindByNameAsync(phoneNumber);
+        var userRoles = await _userManager.GetRolesAsync(user);
+        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+        if (user == null && userRoles.Any(x => !x.Equals("admin")))
+            throw new Exception("User not Exist");
+        user.ConfirmCode = Helpers.GetConfirmCode();
+        user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
+        await _userManager.UpdateAsync(user);
+        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+            "VerifyCodeFaani");
+        return Ok(
+        );
     }
 
     public async Task<ActionResult> ProfileDetail()

@@ -559,16 +559,25 @@
     <section id="amazing-slider" class="carousel slide carousel-fade card" data-ride="carousel">
         <div class="row m-0">
             <ol class="carousel-indicators carousel-indicators-order col-lg-3">
-                <li class="carousel-item-li active" data-target="#amazing-slider" data-slide-to="0">
-                </li>
-                <li class="carousel-item-li" data-target="#amazing-slider" data-slide-to="1" class="">
-                </li>
-                <li class="carousel-item-li" data-target="#amazing-slider" data-slide-to="2" class="">
-                </li>
-                <li class="carousel-item-li" data-target="#amazing-slider" data-slide-to="3" class="">
-                </li>
-                <li class="carousel-item-li" data-target="#amazing-slider" data-slide-to="4" class="">
-                </li>
+                @{
+                    int index1 = 0;
+                    for (int i = 0; i < offers.Count; i++)
+                    {
+                        if (index1 == 0)
+                        {
+                            <li class="carousel-item-li active" data-target="#amazing-slider" data-slide-to="@i">
+                            </li> 
+                        }
+                        else
+                        {
+                            <li class="carousel-item-li " data-target="#amazing-slider" data-slide-to="@i">
+                            </li>
+                        }
+
+                        index1++;
+                    }
+                }
+          
             </ol>
             <div class="carousel-inner p-0 col-12 col-lg-11">
                 @{
@@ -583,7 +592,7 @@
                                         <a class="w-100 text-center img-link-amazing" href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @if (i.IsOffer)
                                             {
-                                            <div class="promotion-badge p-2">فروش ویژه</div>
+                                            <div class="promotion-badge p-2">تخفیفات</div>
 
                                             }
                                             <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
@@ -595,6 +604,7 @@
                                             <div class="discount">
                                                 <span class="discount-percent">
                                                     @i.Offer.OfferAmount.ToString("N0")
+                                                    تومان
                                                 </span>
                                             </div>
                                             <h2 class="product-title">
@@ -671,6 +681,7 @@
                                             <div class="discount">
                                                 <span class="discount-percent">
                                                     @i.Offer.OfferAmount.ToString("N0")
+                                                    تومان
                                                 </span>
                                             </div>
                                             <h2 class="product-title">

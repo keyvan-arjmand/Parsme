@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود</title>
+
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+</head>
+<body>
+
+<!-- login----------------------------------->
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            <section class="page-account-box">
+                <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
+                    <div class="ds-userlogin">
+                        <a href="#" class="account-box-logo">Parsme</a>
+                        <div class="account-box">
+                            <div class="Login-to-account mt-4">
+                                <div class="account-box-content">
+                                    <div class="message-light">
+                                        <div class="massege-light-send">
+                                            برای شماره همراه @ViewBag.Phone کد تایید ارسال گردید
+                                            @* <div class="form-edit-number"> *@
+                                            @*     <a href="#" class="edit-number-link">ویرایش شماره</a> *@
+                                            @* </div> *@
+                                            <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
+
+                                        </div>
+                                        <div class="account-box-verify-content">
+                                            <div class="form-account">
+                                                <div class="form-account-title">کد فعال سازی پیامک شده را وارد کنید</div>
+                                                <div class="form-account-row">
+                                                    <div class="lines-number-input">
+                                                        <input type="text" class="line-number-account" maxlength="1">
+                                                        <input type="text" class="line-number-account" maxlength="1">
+                                                        <input type="text" class="line-number-account" maxlength="1">
+                                                        <input type="text" class="line-number-account" maxlength="1">
+                                                        <input type="text" class="line-number-account" maxlength="1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-account-row">
+                                            <div class="receive-verify-code">
+                                                <p id="countdown-verify-end">
+                                                    <span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span>
+                                                    <i class="fa fa-clock-o"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="account-footer">
+                                            <div class="account-footer">
+                                                <div class="form-row-account">
+                                                    <button class="btn btn-primary "type="button" onclick="Login()">ورود به پارس می</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!-- login----------------------------------->
+
+<!-- scroll_Progress------------------------->
+<div class="progress-wrap">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+    </svg>
+</div>
+<!-- scroll_Progress------------------------->
+
+</body>
+
+<!-- file js---------------------------------------------------->
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/countdown.min.js"></script>
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
+<script>
+    function Login(){
+        // Select all input elements with the class "line-number-account"
+        const inputs = document.querySelectorAll('.line-number-account');
+        // Initialize an empty string to hold the combined values
+        let compressedString = '';
+        // Loop through each input element and append its value to the compressedString
+        inputs.forEach(input => {
+            compressedString += input.value;
+        });
+        // Display the compressed string in the result paragraph
+        $.ajax({
+            type: "Post",
+            data: {phoneNumber:$('#PhoneNumber').val(),code:compressedString},
+            url: "/Home/ValidateCodeUser/",
+            success: function (data) {
+                window.location.href= `@Url.Action("WelcomeParsme", "Home")`
+            },
+            error: function (xhr) {
+                alert("کد وارد شده معتبر نمیباشد");
+            }
+        });
+    }
+</script>
+</html>

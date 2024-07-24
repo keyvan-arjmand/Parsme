@@ -6,7 +6,8 @@ Layout = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ثبت نام</title>
+    <title>ورود</title>
+
     <!-- font---------------------------------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
@@ -28,39 +29,18 @@ Layout = null;
                     <div class="ds-userlogin">
                         <a href="#" class="account-box-logo">Parsme</a>
                         <div class="account-box">
-                            <div class="account-box-headline">
-                                <a href="@Url.Action("Login", "Home")" class="login-ds">
-                                    <span class="title">ورود</span>
-                                    <span class="sub-title">به پارس می</span>
-                                </a>
-                                <a href="@Url.Action("Register", "Home")" class="register-ds active">
-                                    <span class="title">ثبت نام</span>
-                                    <span class="sub-title">در پارس می</span>
-                                </a>
-                            </div>
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
-                                    <h4>ثبت نام در پارس می</h4>
-                                    <form  class="form-account text-right" asp-action="SignUp" asp-controller="Home" method="post"  >
+                                    <h4 class="mb-2">ورود با کد یکبار مصرف</h4>
+                                    <div class="form-account text-right">
                                         <div class="form-account-title">
-                                            <label for="phoneNumber">شماره موبایل</label>
-                                            <input type="text" class="number-email-input" id="phoneNumber" name="phoneNumber">
-                                        </div>
-                                        <div class="form-account-title">
-                                            <label for="password">رمز عبور</label>
-                                            <input type="password" id="password" class="password-input" name="pass">
-                                        </div>
-                                        <div class="form-auth-row">
-                                            <label for="#" class="ui-checkbox mt-1">
-                                                <input type="checkbox" value="1" name="login" id="remember">
-                                                <span class="ui-checkbox-check"></span>
-                                            </label>
-                                            <label for="remember" class="remember-me mr-0"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت پارس می را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+                                            <label>شماره موبایل</label>
+                                            <input id="Phone" type="text" class="number-email-input" >
                                         </div>
                                         <div class="form-row-account">
-                                            <button class="btn btn-primary ">ثبت نام در پارس می</button>
+                                            <button class="btn btn-primary " onclick="Login()">ارسال کد</button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -94,5 +74,22 @@ Layout = null;
 <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
+<script>
+    function Login(){
 
+        $.ajax({
+            type: "Post",
+            data: {phoneNumber:$('#Phone').val()},
+            url: "/Home/SendLoginCode",
+            success: function (data) {
+                var phoneNumber = $('#Phone').val();
+                var confirmCodeUrl = '@Url.Action("ConfirmCode", "Home")';
+                window.location.href = confirmCodeUrl + '?phoneNumber=' + encodeURIComponent(phoneNumber);
+            },
+            error: function (xhr) {
+                alert("شماره وارد شده معتبر نمیباشد");
+            }
+        });
+    }
+</script>
 </html>
