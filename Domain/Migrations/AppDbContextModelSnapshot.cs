@@ -210,6 +210,30 @@ namespace Domain.Migrations
                     b.ToTable("SaleServices");
                 });
 
+            modelBuilder.Entity("Domain.Entity.IndexPage.SearchResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Href")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SearchResults");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -217,6 +241,9 @@ namespace Domain.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BrandDetailId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Desc")
                         .IsRequired()
@@ -238,9 +265,70 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandDetailId");
+
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.BrandDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstBannerHref")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstBannerImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecBannerHref")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecBannerImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderHref")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderHref1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderHref2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderImage1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderImage2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BrandDetails");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>
@@ -505,6 +593,9 @@ namespace Domain.Migrations
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("InterestRate")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -1041,9 +1132,15 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
                 {
+                    b.HasOne("Domain.Entity.Product.BrandDetail", "BrandDetail")
+                        .WithMany()
+                        .HasForeignKey("BrandDetailId");
+
                     b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
                         .WithMany("Brands")
                         .HasForeignKey("SubCategoryId");
+
+                    b.Navigation("BrandDetail");
 
                     b.Navigation("SubCategory");
                 });

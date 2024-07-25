@@ -10,5 +10,7 @@ public class Brand:BaseEntity
     public string Desc { get; set; } = string.Empty;
     public int? SubCategoryId { get; set; }
     [ForeignKey("SubCategoryId")] public SubCategory? SubCategory { get; set; }
+    public int? BrandDetailId { get; set; }
+    [ForeignKey("BrandDetailId")] public BrandDetail? BrandDetail { get; set; }
  
 }

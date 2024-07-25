@@ -18,6 +18,7 @@ public class Product : BaseEntity
     public string Strengths { get; set; } = string.Empty;
     public string WeakPoints { get; set; } = string.Empty;
     public double DiscountAmount { get; set; }
+    public double InterestRate { get; set; }
 
     public int BrandId { get; set; }
     [ForeignKey(nameof(BrandId))] public Brand Brand { get; set; } = default!;

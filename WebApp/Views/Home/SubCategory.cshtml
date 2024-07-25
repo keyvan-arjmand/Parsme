@@ -4,6 +4,7 @@
     Layout = "_Layout";
     ViewData["Title"] = "Home Page";
     List<Product> products = ViewBag.Products;
+    List<CategoryDetail> categoryDetails = ViewBag.CatDetail;
     List<Product> maxPrice = products
         .OrderBy(x => x.ProductColors.Min(pc => pc.Price))
         .ThenByDescending(x => x.ProductColors.Max(pc => pc.Price))
@@ -19,135 +20,137 @@
     List<SearchResult> searchResults = ViewBag.Search;
 
 }
-@section Header{
-<header class="header-main">
-    <div class="d-block">
-        <section class="h-main-row">
-            <div class="col-lg-9 col-md-12 col-xs-12 pr">
-                <div class="header-right">
-                    <div class="col-lg-3 pr">
-                        <div class="header-logo row text-right">
-                            <a href="@Url.Action("Index")">
-                                <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 pr">
-                        <div class="header-search row text-right">
-                            <div class="header-search-box">
-                                <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                    <input type="search" class="header-search-input" name="search"
-                                           placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
-                                    <div class="action-btns">
-                                        <button class="btn btn-search" type="submit">
-                                            <img src="/assetsCli/images/search.png" alt="search">
-                                        </button>
-                                    </div>
-                                </form>
-                                @{
-                                if (searchResults.Any())
-                                {
-                                <div class="search-result">
-                                    <ul class="search-result-list mb-0">
-                                        @{
-                                        foreach (var i in searchResults)
-                                        {
-                                        <li>
-                                            <a href="@i.Href">
-                                                <i class="mdi mdi-clock-outline"></i>
-                                                @i.Value
-                                                <a class="btn btn-light btn-continue-search" href="@i.Href">
-                                                    <i class="fa fa-angle-left"></i>
-                                                </a>
-                                            </a>
-                                        </li>
-                                        }
-                                        }
 
-                                    </ul>
-                                    <div class="localSearchSimple"></div>
-                                </div>
-                                }
-                                }
-                            </div>
-                        </div>
+
+@section Header{
+    <header class="header-main">
+    <div class="d-block">
+    <section class="h-main-row">
+        <div class="col-lg-9 col-md-12 col-xs-12 pr">
+            <div class="header-right">
+                <div class="col-lg-3 pr">
+                    <div class="header-logo row text-right">
+                        <a href="@Url.Action("Index")">
+                            <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-0 col-xs-12 pl">
-                <div class="header-left">
-                    <div class="header-account text-left">
-                        <div class="d-block">
-                            <div class="account-box">
-                                <div class="nav-account d-block pl">
-                                <span class="icon-account">
-                                    <img src="/assetsCli/images/man.png" class="avator">
-                                </span>
-                                    <span class="title-account">حساب کاربری</span>
-                                    <div class="dropdown-menu">
-                                        <ul class="account-uls mb-0">
-                                            <li class="account-item">
-                                                @if (User.Identity.IsAuthenticated)
+                <div class="col-lg-8 pr">
+                    <div class="header-search row text-right">
+                        <div class="header-search-box">
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
+                                       placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                                <div class="action-btns">
+                                    <button class="btn btn-search" type="submit">
+                                        <img src="/assetsCli/images/search.png" alt="search">
+                                    </button>
+                                </div>
+                            </form>
+                            @{
+                                if (searchResults.Any())
+                                {
+                                    <div class="search-result">
+                                        <ul class="search-result-list mb-0">
+                                            @{
+                                                foreach (var i in searchResults)
                                                 {
-                                                <a href="@Url.Action("Profile", "Home")" class="account-link">پنل کاربری</a>
+                                                    <li>
+                                                        <a href="@i.Href">
+                                                            <i class="mdi mdi-clock-outline"></i>
+                                                            @i.Value
+                                                            <a class="btn btn-light btn-continue-search" href="@i.Href">
+                                                                <i class="fa fa-angle-left"></i>
+                                                            </a>
+                                                        </a>
+                                                    </li>
                                                 }
-                                                else
-                                                {
-                                                <a href="@Url.Action("Login", "Home")" class="account-link">عضویت/ورود</a>
-                                                }
-                                            </li>
-                                            @if (User.Identity.IsAuthenticated)
-                                            {
-                                            <li class="account-item">
-                                                <a href="@Url.Action("Logout")" class="account-link">خروج</a>
-                                            </li>
                                             }
 
                                         </ul>
+                                        <div class="localSearchSimple"></div>
                                     </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-0 col-xs-12 pl">
+            <div class="header-left">
+                <div class="header-account text-left">
+                    <div class="d-block">
+                        <div class="account-box">
+                            <div class="nav-account d-block pl">
+                                <span class="icon-account">
+                                    <img src="/assetsCli/images/man.png" class="avator">
+                                </span>
+                                <span class="title-account">حساب کاربری</span>
+                                <div class="dropdown-menu">
+                                    <ul class="account-uls mb-0">
+                                        <li class="account-item">
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <a href="@Url.Action("Profile", "Home")" class="account-link">پنل کاربری</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("Login", "Home")" class="account-link">عضویت/ورود</a>
+                                            }
+                                        </li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="account-item">
+                                                <a href="@Url.Action("Logout")" class="account-link">خروج</a>
+                                            </li>
+                                        }
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <nav class="header-main-nav">
-            <div class="d-block">
-                <div class="align-items-center">
-                    <ul class="menu-ul mega-menu-level-one">
-                        @{
+        </div>
+    </section>
+    <nav class="header-main-nav">
+        <div class="d-block">
+            <div class="align-items-center">
+                <ul class="menu-ul mega-menu-level-one">
+                    @{
                         foreach (var i in categories)
                         {
-                        <li id="nav-menu-item" class="menu-item nav-overlay">
+                            <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                            <a  class="current-link-menu">
-                                <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
-                                @i.Name
-                                <i class="fa fa-angle-down"></i>
-                            </a>
-                            <ul class="sub-menu is-mega-menu mega-menu-level-two">
-                                @foreach (var q in i.SubCategories)
-                                {
-                                <li class="menu-mega-item menu-item-type-mega-menu">
-                                    <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
-                                        @q.Name
-                                    </a>
-                                    <ul class="sub-menu mega-menu-level-three">
-                                        @foreach (var b in q.Brands)
-                                        {
-                                        <li class="menu-mega-item-three">
-                                            <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
-                                                @b.Title
+                                <a  class="current-link-menu">
+                                    <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
+                                    @i.Name
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="sub-menu is-mega-menu mega-menu-level-two">
+                                    @foreach (var q in i.SubCategories)
+                                    {
+                                        <li class="menu-mega-item menu-item-type-mega-menu">
+                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                                @q.Name
                                             </a>
+                                            <ul class="sub-menu mega-menu-level-three">
+                                                @foreach (var b in q.Brands)
+                                                {
+                                                    <li class="menu-mega-item-three">
+                                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
+                                                            @b.Title
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
                                         </li>
-                                        }
-                                    </ul>
-                                </li>
-                                }
+                                    }
 
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
                         }
 
                         <li id="nav-menu-item" class="menu-item ">
@@ -168,22 +171,22 @@
                             </a>
 
                         </li>
-                        }
-                        <li class="divider-space-card">
-                            <div class="header-cart-basket">
-                                <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
+                    }
+                    <li class="divider-space-card">
+                        <div class="header-cart-basket">
+                            <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
                                 <span class="icon-cart">
                                     <i class="mdi mdi-shopping"></i>
                                 </span>
-                                    <span class="title-cart">سبد خرید</span>
-                                    <span class="price-cart">
+                                <span class="title-cart">سبد خرید</span>
+                                <span class="price-cart">
                                     @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
-                                        <span>تومان</span>
+                                    <span>تومان</span>
                                 </span>
-                                    <span class="count-cart">@basket.Count</span>
-                                </a>
-                                @if (basket.Count > 0)
-                                {
+                                <span class="count-cart">@basket.Count</span>
+                            </a>
+                            @if (basket.Count > 0)
+                            {
                                 <div class="widget-shopping-cart">
                                     <div class="widget-shopping-cart-content">
                                         <div class="wrapper">
@@ -191,46 +194,46 @@
                                                 <div class="force-overflow">
                                                     <ul class="product-list-widget">
                                                         @{
-                                                        if (basket.Count > 0)
-                                                        {
-                                                        @foreach (var i in basket)
-                                                        {
-                                                        <li class="mini-cart-item">
-                                                            <div class="mini-cart-item-content">
-                                                                <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
-                                                                    <i class="mdi mdi-close"></i>
-                                                                </a>
-                                                                <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
-                                                                    <img src="/Images/ProductImage/@i.ImageUri">
-                                                                </a>
-                                                                <span class="product-name-card">
+                                                            if (basket.Count > 0)
+                                                            {
+                                                                @foreach (var i in basket)
+                                                                {
+                                                                    <li class="mini-cart-item">
+                                                                        <div class="mini-cart-item-content">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
+                                                                                <i class="mdi mdi-close"></i>
+                                                                            </a>
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                                <img src="/Images/ProductImage/@i.ImageUri">
+                                                                            </a>
+                                                                            <span class="product-name-card">
                                                                                 @i.PersianTitle
                                                                             </span>
-                                                                <div class="header-basket-list-item-color-badge">
-                                                                    رنگ:
-                                                                    <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
-                                                                </div>
-                                                                <div class="quantity">
+                                                                            <div class="header-basket-list-item-color-badge">
+                                                                                رنگ:
+                                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
+                                                                            </div>
+                                                                            <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
                                                                                     @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
                                                                                     <span>تومان</span>
                                                                                 </span>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        }
-                                                        }
-                                                        else
-                                                        {
-                                                        <li class="mini-cart-item">
-                                                            <div class="mini-cart-item-content">
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="mini-cart-item">
+                                                                    <div class="mini-cart-item-content">
                                                                         <span class="product-name-card">
                                                                             سبد خالی
                                                                         </span>
 
-                                                            </div>
-                                                        </li>
-                                                        }
+                                                                    </div>
+                                                                </li>
+                                                            }
                                                         }
 
 
@@ -250,110 +253,110 @@
                                         </div>
                                     </div>
                                 </div>
-                                }
+                            }
 
-                            </div>
+                        </div>
 
-                        </li>
-                    </ul>
-                </div>
+                    </li>
+                </ul>
             </div>
-        </nav>
-        <!--    responsive-megamenu-mobile----------------->
-        <nav class="sidebar">
-            <div class="nav-header">
-                <div class="header-cover"></div>
-                <div class="logo-wrap">
-                    <a class="logo-icon" href="@Url.Action("Index")">
-                        <img alt="logo-icon" src="/Images/Banner/parsme-logo.png" width="40">
-                    </a>
-                </div>
+        </div>
+    </nav>
+    <!--    responsive-megamenu-mobile----------------->
+    <nav class="sidebar">
+        <div class="nav-header">
+            <div class="header-cover"></div>
+            <div class="logo-wrap">
+                <a class="logo-icon" href="@Url.Action("Index")">
+                    <img alt="logo-icon" src="/Images/Banner/parsme-logo.png" width="40">
+                </a>
             </div>
-            <ul class="nav-categories ul-base">
-                @{
+        </div>
+        <ul class="nav-categories ul-base">
+            @{
                 foreach (var c in categories)
                 {
-                <li>
-                    <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapse`@c.Id`"
-                       aria-expanded="false" aria-controls="collapse`@c.Id`">
-                        <i class="mdi mdi-chevron-down"></i>@c.Name
-                    </a>
-                    <div id="collapse`@c.Id`" class="collapse" aria-labelledby="heading`@c.Id`"
-                         data-parent="#accordionExample" style="">
-                        <ul>
-                            @foreach (var s in c.SubCategories)
-                            {
-                            <li class="has-sub">
-                                <a href="@Url.Action("Search", "Home", new { @s.Name })" class="category-level-2">@s.Name</a>
-                                <ul>
-                                    @foreach (var b in s.Brands)
-                                    {
-                                    <li>
-                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
-                                    </li>
-                                    }
+                    <li>
+                        <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapse`@c.Id`"
+                           aria-expanded="false" aria-controls="collapse`@c.Id`">
+                            <i class="mdi mdi-chevron-down"></i>@c.Name
+                        </a>
+                        <div id="collapse`@c.Id`" class="collapse" aria-labelledby="heading`@c.Id`"
+                             data-parent="#accordionExample" style="">
+                            <ul>
+                                @foreach (var s in c.SubCategories)
+                                {
+                                    <li class="has-sub">
+                                        <a href="@Url.Action("Search", "Home", new { @s.Name })" class="category-level-2">@s.Name</a>
+                                        <ul>
+                                            @foreach (var b in s.Brands)
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
+                                                </li>
+                                            }
 
-                                </ul>
-                            </li>
-                            }
-                        </ul>
-                    </div>
-                </li>
-                }
-                }
-            </ul>
-        </nav>
-        <div class="nav-btn nav-slider">
-            <span class="linee1"></span>
-            <span class="linee2"></span>
-            <span class="linee3"></span>
-        </div>
-        <div class="overlay"></div>
-        <!-- bottom-menu-joomy -->
-        <div class="bottom-menu-joomy">
-            <ul class="mb-0">
-                <li>
-                    <a href="@Url.Action("Index")">
-                        <i class="mdi mdi-home"></i>
-                        صفحه اصلی
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <div class="nav-btn nav-slider">
-                            <i class="mdi mdi-menu" aria-hidden="true"></i>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
                         </div>
-                        دسته بندی ها
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Basket")">
-                        <i class="mdi mdi-cart"></i>
-                        سبد خرید
-                        <div class="shopping-bag-item">@basket.Count</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="mdi mdi-magnify"></i>
-                        جستجو
-                    </a>
-                </li>
-                @if (User.Identity.IsAuthenticated)
-                {
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+    <div class="nav-btn nav-slider">
+        <span class="linee1"></span>
+        <span class="linee2"></span>
+        <span class="linee3"></span>
+    </div>
+    <div class="overlay"></div>
+    <!-- bottom-menu-joomy -->
+    <div class="bottom-menu-joomy">
+        <ul class="mb-0">
+            <li>
+                <a href="@Url.Action("Index")">
+                    <i class="mdi mdi-home"></i>
+                    صفحه اصلی
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <div class="nav-btn nav-slider">
+                        <i class="mdi mdi-menu" aria-hidden="true"></i>
+                    </div>
+                    دسته بندی ها
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Basket")">
+                    <i class="mdi mdi-cart"></i>
+                    سبد خرید
+                    <div class="shopping-bag-item">@basket.Count</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="mdi mdi-magnify"></i>
+                    جستجو
+                </a>
+            </li>
+            @if (User.Identity.IsAuthenticated)
+            {
                 <li>
                     <a href="@Url.Action("Profile")">
                         <i class="mdi mdi-account"></i>
                         حساب کاربری
                     </a>
                 </li>
-                }
+            }
 
-            </ul>
-        </div>
-        <!--    responsive-megamenu-mobile----------------->
+        </ul>
     </div>
-</header>
+    <!--    responsive-megamenu-mobile----------------->
+    </div>
+    </header>
 
 }
 
@@ -371,27 +374,27 @@
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
     <style>
-        .countdown .countdown-value {
-            font-family: "IRANSans";
-            font-weight: 500;
-            width: 29px !important;
-            height: 30px!important;
-            background: #fff;
-            border-radius: 25px;
-            line-height: 35px;
-            color: #6d6c6c;
-            font-size: 11px;
-            border: 1px solid #cdcdcd;
-        }
-        .countdown-timer {
-            width: 100%;
-            text-align: center;
-            margin-top: 0px !important;
-            display: block;
-            position: relative;
-        }
+    .countdown .countdown-value {
+        font-family: "IRANSans";
+        font-weight: 500;
+        width: 29px !important;
+        height: 30px!important;
+        background: #fff;
+        border-radius: 25px;
+        line-height: 35px;
+        color: #6d6c6c;
+        font-size: 11px;
+        border: 1px solid #cdcdcd;
+    }
+    .countdown-timer {
+        width: 100%;
+        text-align: center;
+        margin-top: 0px !important;
+        display: block;
+        position: relative;
+    }
 
-    </style>
+</style>
 }
 
 <div class="container-main">
@@ -405,7 +408,6 @@
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index")">خانه</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">نتیجه جستجو</li>
         </ol>
     </nav>
 </div>
@@ -450,29 +452,80 @@
                         <button class="btn btn-block text-right" data-toggle="collapse"
                                 href="#headingTwo" role="button" aria-expanded="false"
                                 aria-controls="headingTwo">
-                            برند ها
+                            مشخصات
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
                     </h2>
                 </header>
-                <div class="product-filter">
+                @{
+                    if(categoryDetails.Any())
+                    {
+                                        <div class="product-filter">
                     <div class="card">
                         <div class="collapse show" id="headingTwo">
                             <div class="card-main mb-0">
-                                @{
-                                    foreach (var i in brands)
-                                    {
-                                        <div style="cursor:pointer;" class="form-auth-row SubCat">
-                                            <a class="text-decoration-none " style="color: black;cursor: pointer" href="@Url.Action("GetByBrand", "Home", new { @i.Id })">
-                                                @i.Title
-                                            </a>
+                                <div class="sidebar-menu-widget-area">
+                                    <section class="megamenu-widget">
+                                        <div class="header-main-menu">
+                                            <ul class="main-menu-ul category-menu mega-menu-level-one">
+                                                @{
+                                                foreach (var c in categoryDetails)
+                                                {
+                                                <li class="main-menu-item category-menu-item menu-item-type-custom">
+                                                    <a href="#" class="main-menu-link-category">
+                                                        @c.Title
+                                                    </a>
+                                                    <ul class="mega-menu-category sub-menu mega-menu-level-two" style="width: fit-content !important;">
+                                                        <li class="menu-category-item menu-item-type-custom menu-item" style="width: fit-content !important;">
+                                                            <ul class="sub-menu-category mega-menu-level-there" style="width: fit-content !important;">
+                                                                @foreach (var i in c.Option.Split(",").ToList())
+                                                                {
+                                                                <li class="menu-category-item-there">
+                                                                    <a href="@Url.Action("SubCategory", "Home", new { detailId = c.Id , value = @i , subCategoryId =c.SubCategoryId})">
+                                                                        @i
+                                                                    </a>
+                                                                </li>
+                                                                }
+                                                            </ul>
+                                                        </li>
+
+                                                    </ul>
+                                                </li>
+                                                }
+                                                }
+                                            </ul>
                                         </div>
-                                    }
-                                }
+                                    </section>
+                                </div>
+                            
                             </div>
                         </div>
                     </div>
                 </div>
+
+                    }
+                    else
+                    {
+                        <div class="product-filter">
+                            <div class="card">
+                                <div class="collapse show" id="headingTwo">
+                                    <div class="card-main mb-0">
+                                        @{
+                                            foreach (var i in brands)
+                                            {
+                                                <div style="cursor:pointer;" class="form-auth-row SubCat">
+                                                    <a class="text-decoration-none " style="color: black;cursor: pointer" href="@Url.Action("GetByBrand", "Home", new { @i.Id })">
+                                                        @i.Title
+                                                    </a>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </section>
             <section class="widget-product-categories">
                 <header class="cat-header">
@@ -768,24 +821,19 @@
 @section script
 {
     <script>
-        function Search(){
-        
-            var search ='@Html.Raw(ViewBag.Search)'
-            //brand
-           
-            //price
-            const spanElement = document.getElementById('slider-non-linear-step-value');
-            // Get the text content of the span
-            const spanText = spanElement.textContent;
-
-            // Split the text to get the individual numbers
-            const values = spanText.split(' - ');
-            var min = values[0].replace(/,/g, '');
-            var max = values[1].replace(/,/g, '');
-            var confirmCodeUrl = '@Url.Action("Search", "Home")';
-            window.location.href = confirmCodeUrl + '?search=' + search+"&min="+min+'&max='+max;
-        }
-    </script>
+    function Search(){
+        var id ='@Html.Raw(ViewBag.Id)'
+        const spanElement = document.getElementById('slider-non-linear-step-value');
+        // Get the text content of the span
+        const spanText = spanElement.textContent;
+        // Split the text to get the individual numbers
+        const values = spanText.split(' - ');
+        var min = values[0].replace(/,/g, '');
+        var max = values[1].replace(/,/g, '');
+        var confirmCodeUrl = '@Url.Action("SubCategory", "Home")';
+        window.location.href = confirmCodeUrl + '?id=' + id+"&min="+min+'&max='+max;
+    }
+</script>
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="/assetsCli/js/vendor/bootstrap.js"></script>
     <!-- plugin--/assetsCli--------------------------------------------->

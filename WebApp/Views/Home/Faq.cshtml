@@ -1,13 +1,31 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Product
-@{
-    Layout = "_Layout";
-    ViewData["Title"] = "Home Page";
-    List<Product> products = ViewBag.Products;
-    List<Product> basket = ViewBag.BasketProd;
-    List<Category> categories = ViewBag.Categories;
-    List<SearchResult> searchResults = ViewBag.Search;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+Domain.Entity.User.User user = ViewBag.User;
+List<SearchResult> searchResults = ViewBag.Search;
+
+}
+
+
+@section link
+{
+<!-- font---------------------------------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+<!-- plugin------------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/lightgallery.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+<!-- main-style--------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/main.css">
+<link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 @section Header{
@@ -148,13 +166,13 @@
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("Faq")" class="current-link-menu">
                                 سوالات متداول
                             </a>
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("ContactUs")" class="current-link-menu">
                                 تماس با ما
                             </a>
 
@@ -348,305 +366,283 @@
 
 }
 
-@section link
-{
-    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin-----------------"a-------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style-------------"a-------------->
-    <link rel="stylesheet" href="/assetsCli/css/main.css">
-    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
-    <style>
-        .countdown .countdown-value {
-            font-family: "IRANSans";
-            font-weight: 500;
-            width: 29px !important;
-            height: 30px!important;
-            background: #fff;
-            border-radius: 25px;
-            line-height: 35px;
-            color: #6d6c6c;
-            font-size: 11px;
-            border: 1px solid #cdcdcd;
-        }
-        .countdown-timer {
-            width: 100%;
-            text-align: center;
-            margin-top: 0px !important; 
-            display: block;
-            position: relative;
-        }
-    </style>
-}
-
 <div class="container-main">
-<div class="d-block">
-<div class="page-content page-row">
-<div class="main-row">
-<div id="breadcrumb">
-    <i class="mdi mdi-home"></i>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">خانه</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page"> محصولات</li>
-        </ol>
-    </nav>
-</div>
+    <div class="d-block">
+        <div class="page-content col-12">
+            <div class="info-page-faq">
+                <div id="content-bottom">
+                    <div class="content-bottom-title">
+                        <h2 class="box-rounded-headline">دسته بندی پرسش ها</h2>
+                        <div class="add-group-border">
+                            <a href="#">
+                                <div class="add-group"></div>
+                                <img src="assets/images/page-faq/add-group.png" alt="fag">
+                                <h3>ورود و ثبت نام</h3>
+                            </a>
+                        </div>
 
-<!-- start sidebar--------------------->
-<div class="col-lg-3 col-md-3 col-xs-12 pr sticky-sidebar">
-    <div class="shop-archive-sidebar">
-        <div class="sidebar-archive mb-3">
-            <section class="widget-product-categories">
-                <header class="cat-header">
-                    <h2 class="mb-0">
-                        <button class="btn btn-block text-right" data-toggle="collapse"
-                                href="#headingOne" role="button" aria-expanded="false"
-                                aria-controls="headingOne">
-                            دسته بندی محصولات
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h2>
-                </header>
+                        <div class="open-box-border">
+                            <a href="#">
+                                <div class="open-box"></div>
+                                <img src="assets/images/page-faq/open-box.png" alt="fag">
+                                <h3>روند ثبت سفارش</h3>
+                            </a>
+                        </div>
 
-                <div class="product-filter">
-                    <div class="card">
-                        <div class="collapse show" id="headingOne">
-                            <div class="card-main mb-0">
-                                @{
-                                    foreach (var i in categories.Select(x => x.SubCategories.ToList()).FirstOrDefault())
-                                    {
-                                        <div class="form-auth-row SubCat">
-                                            <label for="#" class="ui-checkbox">
-                                                <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
-                                                <span class="ui-checkbox-check"></span>
-                                            </label>
-                                            <label for="rem ember" class="remember-me">@i.Name</label>
-                                        </div>
-                                    }
-                                }
-                            </div>
+                        <div class="tracking-border">
+                            <a href="#">
+                                <div class="tracking"></div>
+                                <img src="assets/images/page-faq/tracking.png" alt="fag">
+                                <h3>پیگیری ارسال سفارش</h3>
+                            </a>
+                        </div>
+
+                        <div class="return-border">
+                            <a href="#">
+                                <div class="return"></div>
+                                <img src="assets/images/page-faq/return.png" alt="fag">
+                                <h3>بازگرداندن کالا</h3>
+                            </a>
+                        </div>
+
+                        <div class="gift-border">
+                            <a href="#">
+                                <div class="gift"></div>
+                                <img src="assets/images/page-faq/gift.png" alt="fag">
+                                <h3>کد تخفیف و کارت هدیه</h3>
+                            </a>
+                        </div>
+
+                        <div class="market-border">
+                            <a href="#">
+                                <div class="market"></div>
+                                <img src="assets/images/page-faq/market.png" alt="fag">
+                                <h3>سوپرمارکت</h3>
+                        </div>
+
+                        <div class="transparency-border">
+                            <a href="#">
+                                <div class="transparency"></div>
+                                <img src="assets/images/page-faq/transparency.png" alt="fag">
+                                <h3>تعهد به شفافیت</h3>
+                            </a>
+                        </div>
+
+                        <div class="Multi-shipment-border">
+                            <a href="#">
+                                <div class="Multi-shipment"></div>
+                                <img src="assets/images/page-faq/100000040.png" alt="fag">
+                                <h3>چند مرسوله ایی</h3>
+                            </a>
+                        </div>
+
+                        <div class="sport-team-border">
+                            <a href="#">
+                                <div class="sport-team"></div>
+                                <img src="assets/images/page-faq/sport-team.png" alt="fag">
+                                <h3>دعوت از دوستان</h3>
+                            </a>
+                        </div>
+
+                        <div class="other-border">
+                            <a href="#">
+                                <div class="other-hover"></div>
+                                <img src="assets/images/page-faq/other.svg" alt="fag">
+                                <h3>سایر موارد</h3>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </section>
-            <section class="widget-product-categories">
-                <header class="cat-header">
-                    <h2 class="mb-0">
-                        <button class="btn btn-block text-right" data-toggle="collapse"
-                                href="#headingTwo" role="button" aria-expanded="false"
-                                aria-controls="headingTwo">
-                            برند ها
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h2>
-                </header>
-                <div class="product-filter">
-                    <div class="card">
-                        <div class="collapse show" id="headingTwo">
-                            <div class="card-main mb-0">
-                                @{
-                                    foreach (var i in categories.Select(x => x.SubCategories.Select(x => x.Brands).FirstOrDefault()).FirstOrDefault())
-                                    {
-                                        <div class="form-auth-row Brand">
-                                            <label for="#" class="ui-checkbox">
-                                                <input type="checkbox" value="@i.Id" name="login" id="@i.Id">
-                                                <span class="ui-checkbox-check"></span>
-                                            </label>
-                                            <label for="remember" class="remember-me">@i.Title</label>
-                                        </div>
-                                    }
-                                }
-                            </div>
+            </div>
+            <div class="info-page-faq">
+                <div class="content-info-page">
+                    <h2 class="box-rounded_headline">پرتکرارترین پرسش ها</h2>
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub">
+                                    <a>شرایط خرید و بازگرداندن کالا برای کالاهای سوپر مارکتی چگونه است؟</a>
+                                    <ul style="display: none;">
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> چطور میتوانم امتیاز‌ بگیریم؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> میتوانم سفارش خود را در محل پرداخت کنم؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a> چطور درخواست خود را جهت مرجوعی کالا به شما اطلاع دهم؟</a>
+                                    <ul style="display: none;">
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> چطور میتوانم سفارشم را لغو کنم ؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> چرا سفارشم دو مرسوله شده است؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> در چه شرایطی میتوانم کالای خود را بازگردانم؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> روند رسیدگی به درخواست مرجوعی کالا چگونه است؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> چطور میتوانم بدون برقراری تماس ، درخواست مرجوعی
+                                        کالای خریداری شده را اعلام کنم؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub"><a href="#"> چطور میتوانم سفارشم را پیگیری کنم ؟</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
+                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
+                                                است.</a></li>
+                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
+                                                class="fa fa-angle-left"></i></a>
+                                    </ul>
+                                </li>
+
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </section>
-            <section class="widget-product-categories">
-                <header class="cat-header">
-                    <h2 class="mb-0">
-                        <button class="btn btn-block text-right collapsed" data-toggle="collapse"
-                                href="#headingThree" role="button" aria-expanded="false"
-                                aria-controls="headingThree">
-                            محدوده قیمت
-                            <i class="mdi mdi-chevron-down"></i>
-                        </button>
-                    </h2>
-                </header>
-                <div class="product-filter">
-                    <div class="card">
-                        <div class="collapse show" id="headingThree">
-                            <div class="card-main mb-0">
-                                <div class="">
-                                    <form >
-                                        <div class="mt-5 mb-4">
-                                            <div id="slider-non-linear-step"></div>
-                                        </div>
-                                        <div class="filter-range mt-2 mb-2 pr">
-                                            <span>قیمت: </span>
-                                            <span class="example-val"
-                                                  id="slider-non-linear-step-value">
-                                            </span> تومان
-                                        </div>
-                                        <div class="mt-2 pl">
-                                            <button class="btn btn-range" type="button" onclick="Search()">
-                                                اعمال
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            </div>
         </div>
     </div>
 </div>
-<div class="col-lg-9 col-md-9 col-xs-12 pl">
-    <div class="shop-archive-content mt-3 d-block">
-        <div class="archive-header">
-            <h2 class="archive-header-title">آرشیو محصولات</h2>
-            <div class="sort-tabs mt-0 d-inline-block pr">
-                <h4>مرتب‌سازی بر اساس :</h4>
-            </div>
-            <div class="nav-sort-tabs-res">
-                <ul class="nav sort-tabs-options" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" id="Most-Popular-tab" data-toggle="tab"
-                           href="#Most-Popular" role="tab" aria-controls="Most-Popular"
-                           aria-selected="false">
-                            محبوب‌ترین
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="newest-tab" data-toggle="tab" href="#newest"
-                           role="tab" aria-controls="newest" aria-selected="false">
-                            جدیدترین
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="cheapest-tab" data-toggle="tab" href="#cheapest"
-                           role="tab" aria-controls="cheapest" aria-selected="false">
-                            ارزان‌ترین
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="most-expensive-tab" data-toggle="tab"
-                           href="#most-expensive" role="tab" aria-controls="most-expensive"
-                           aria-selected="false">
-                            گران‌ترین
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="product-items">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="Most-visited" role="tabpanel"
-                     aria-labelledby="Most-visited-tab">
-                    <div class="row">
-                        @{
-                            if (products.Count > 0)
-                            {
-                                foreach (var i in products)
-                                {
-                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
-                                        <section class="product-box product product-type-simple">
-                                            <div class="thumb">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
-                                                    @if (i.IsOffer)
-                                                    {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                        {
-                                                            <div class="d-flex justify-content-between gap-3">
-                                                                <div class="promotion-badge">فروش ویژه</div>
-                                                                <div class="countdown-timer">
-                                                                    <div class="countdown h4" data-date-time="@i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    }
-                                        
-                                                    <img src="/Images/ProductImage/@i.ImageUri">
-                                                </a>
-                                            </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
-                                            <div class="price">
-                                                <span class="amount">
-                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
-                                                    <span>تومان</span>
-                                                </span>
-                                            </div>
-                                        </section>
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                <div class="p-2 m-1 text-center">محصولی یافت نشد</div>
-                            }
-                        }
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="pagination-product">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link active" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
 @section script
 {
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/lightgallery-all.js"></script>
+<script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

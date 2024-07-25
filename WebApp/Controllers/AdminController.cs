@@ -10,7 +10,6 @@ using Application.Dtos.Products;
 using Application.Dtos.User;
 using Application.Interfaces;
 using Application.Products.Commands;
-using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;

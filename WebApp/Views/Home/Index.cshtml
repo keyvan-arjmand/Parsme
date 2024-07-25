@@ -1,7 +1,6 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
-@using WebApp.Views.Home
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Home Page";
@@ -11,6 +10,7 @@
     List<Product> newProd = ViewBag.NewProd;
     List<Product> basket = ViewBag.BasketProd;
     List<Category> categories = ViewBag.Categories;
+    List<SearchResult> searchResults = ViewBag.Search;
     Banner banners = ViewBag.Banners;
 }
 
@@ -40,27 +40,31 @@
                                     </button>
                                 </div>
                             </form>
-                            <div class="search-result">
-                                <ul class="search-result-list mb-0">
-                                    @{
-                                        foreach (var i in categories)
-                                        {
-                                            <li>
-                                                <a href="">
-                                                    <i class="mdi mdi-clock-outline"></i>
-                                                    @i.Name
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
-                                                        <i class="fa fa-angle-left"></i>
-                                                    </button>
-                                                </a>
-                                            </li>
-                                        }
-                                    }
+                            @{
+                                if (searchResults.Any())
+                                {
+                                    <div class="search-result">
+                                        <ul class="search-result-list mb-0">
+                                            @{
+                                                foreach (var i in searchResults)
+                                                {
+                                                    <li>
+                                                        <a href="@i.Href">
+                                                            <i class="mdi mdi-clock-outline"></i>
+                                                            @i.Value
+                                                            <a class="btn btn-light btn-continue-search" href="@i.Href">
+                                                                <i class="fa fa-angle-left"></i>
+                                                            </a>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
 
-
-                                </ul>
-                                <div class="localSearchSimple"></div>
-                            </div>
+                                        </ul>
+                                        <div class="localSearchSimple"></div>
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -113,7 +117,8 @@
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a href="#" class="current-link-menu">
+                                <a  class="current-link-menu">
+                                    <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
                                 </a>
@@ -121,7 +126,7 @@
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="#" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -148,13 +153,13 @@
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("Faq")" class="current-link-menu">
                                 سوالات متداول
                             </a>
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("ContactUs")" class="current-link-menu">
                                 تماس با ما
                             </a>
 
@@ -379,14 +384,14 @@
                                                 <img src="/Images/Category/@c.LogoUri">
                                                 @c.Name
                                             </a>
-                                            <ul class="mega-menu-category sub-menu mega-menu-level-two">
+                                            <ul class="mega-menu-category sub-menu mega-menu-level-two" style="width: fit-content !important;">
                                                 @foreach (var i in c.SubCategories)
                                                 {
-                                                    <li class="menu-category-item menu-item-type-custom menu-item">
+                                                    <li class="menu-category-item menu-item-type-custom menu-item" style="width: fit-content !important;">
                                                         <a href="#" class="menu-category-link-title">
                                                             @i.Name
                                                         </a>
-                                                        <ul class="sub-menu-category mega-menu-level-there">
+                                                        <ul class="sub-menu-category mega-menu-level-there" style="width: fit-content !important;">
                                                             @foreach (var b in i.Brands)
                                                             {
                                                                 <li class="menu-category-item-there">
@@ -399,9 +404,6 @@
                                                     </li>
                                                 }
 
-                                                <div class="bg-image">
-                                                    <img src="/Images/Category/@c.LogoUri" alt="" width="150">
-                                                </div>
                                             </ul>
                                         </li>
                                     }

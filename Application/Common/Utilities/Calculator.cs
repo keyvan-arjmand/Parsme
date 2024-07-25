@@ -34,6 +34,7 @@ public static class Calculator
     }
 
     public static double Pass(this bool state, double amount1, double amount2)
+    
     {
         return state ? amount1 : amount2;
     }
