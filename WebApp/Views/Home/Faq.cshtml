@@ -1,31 +1,34 @@
 ﻿@using Application.Common.Utilities
+@using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebApp.Views.Home
+@using Faq = Domain.Entity.IndexPage.Faq
 
 @{
-Layout = "_Layout";
-List<Category> categories = ViewBag.Categories;
-List<Product> basket = ViewBag.BasketProd;
-Domain.Entity.User.User user = ViewBag.User;
-List<SearchResult> searchResults = ViewBag.Search;
-
+    Layout = "_Layout";
+    List<Category> categories = ViewBag.Categories;
+    List<Product> basket = ViewBag.BasketProd;
+    Domain.Entity.User.User user = ViewBag.User;
+    List<SearchResult> searchResults = ViewBag.Search as List<SearchResult>;
+    List<Faq> faqs = ViewBag.Faq;
 }
 
 
 @section link
 {
-<!-- font---------------------------------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-<!-- plugin------------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/lightgallery.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-<!-- main-style--------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/main.css">
-<link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/lightgallery.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 @section Header{
@@ -366,283 +369,138 @@ List<SearchResult> searchResults = ViewBag.Search;
 
 }
 
+
 <div class="container-main">
-    <div class="d-block">
-        <div class="page-content col-12">
-            <div class="info-page-faq">
-                <div id="content-bottom">
-                    <div class="content-bottom-title">
-                        <h2 class="box-rounded-headline">دسته بندی پرسش ها</h2>
-                        <div class="add-group-border">
-                            <a href="#">
-                                <div class="add-group"></div>
-                                <img src="assets/images/page-faq/add-group.png" alt="fag">
-                                <h3>ورود و ثبت نام</h3>
-                            </a>
-                        </div>
-
-                        <div class="open-box-border">
-                            <a href="#">
-                                <div class="open-box"></div>
-                                <img src="assets/images/page-faq/open-box.png" alt="fag">
-                                <h3>روند ثبت سفارش</h3>
-                            </a>
-                        </div>
-
-                        <div class="tracking-border">
-                            <a href="#">
-                                <div class="tracking"></div>
-                                <img src="assets/images/page-faq/tracking.png" alt="fag">
-                                <h3>پیگیری ارسال سفارش</h3>
-                            </a>
-                        </div>
-
-                        <div class="return-border">
-                            <a href="#">
-                                <div class="return"></div>
-                                <img src="assets/images/page-faq/return.png" alt="fag">
-                                <h3>بازگرداندن کالا</h3>
-                            </a>
-                        </div>
-
-                        <div class="gift-border">
-                            <a href="#">
-                                <div class="gift"></div>
-                                <img src="assets/images/page-faq/gift.png" alt="fag">
-                                <h3>کد تخفیف و کارت هدیه</h3>
-                            </a>
-                        </div>
-
-                        <div class="market-border">
-                            <a href="#">
-                                <div class="market"></div>
-                                <img src="assets/images/page-faq/market.png" alt="fag">
-                                <h3>سوپرمارکت</h3>
-                        </div>
-
-                        <div class="transparency-border">
-                            <a href="#">
-                                <div class="transparency"></div>
-                                <img src="assets/images/page-faq/transparency.png" alt="fag">
-                                <h3>تعهد به شفافیت</h3>
-                            </a>
-                        </div>
-
-                        <div class="Multi-shipment-border">
-                            <a href="#">
-                                <div class="Multi-shipment"></div>
-                                <img src="assets/images/page-faq/100000040.png" alt="fag">
-                                <h3>چند مرسوله ایی</h3>
-                            </a>
-                        </div>
-
-                        <div class="sport-team-border">
-                            <a href="#">
-                                <div class="sport-team"></div>
-                                <img src="assets/images/page-faq/sport-team.png" alt="fag">
-                                <h3>دعوت از دوستان</h3>
-                            </a>
-                        </div>
-
-                        <div class="other-border">
-                            <a href="#">
-                                <div class="other-hover"></div>
-                                <img src="assets/images/page-faq/other.svg" alt="fag">
-                                <h3>سایر موارد</h3>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+<div class="d-block">
+<div class="page-content col-12">
+<div class="info-page-faq">
+    <div id="content-bottom">
+        <div class="content-bottom-title">
+            <h2 class="box-rounded-headline">دسته بندی پرسش ها</h2>
+            <div class="add-group-border">
+                <a href="#">
+                    <div class="add-group"></div>
+                    <img src="/assetsCli/images/page-faq/add-group.png" alt="fag">
+                    <h3>ورود و ثبت نام</h3>
+                </a>
             </div>
-            <div class="info-page-faq">
-                <div class="content-info-page">
-                    <h2 class="box-rounded_headline">پرتکرارترین پرسش ها</h2>
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub">
-                                    <a>شرایط خرید و بازگرداندن کالا برای کالاهای سوپر مارکتی چگونه است؟</a>
-                                    <ul style="display: none;">
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
 
-                            </ul>
-                        </div>
-                    </div>
+            <div class="open-box-border">
+                <a href="#">
+                    <div class="open-box"></div>
+                    <img src="/assetsCli/images/page-faq/open-box.png" alt="fag">
+                    <h3>روند ثبت سفارش</h3>
+                </a>
+            </div>
 
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> چطور میتوانم امتیاز‌ بگیریم؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
+            <div class="tracking-border">
+                <a href="#">
+                    <div class="tracking"></div>
+                    <img src="/assetsCli/images/page-faq/tracking.png" alt="fag">
+                    <h3>پیگیری ارسال سفارش</h3>
+                </a>
+            </div>
 
-                            </ul>
-                        </div>
-                    </div>
+            <div class="return-border">
+                <a href="#">
+                    <div class="return"></div>
+                    <img src="/assetsCli/images/page-faq/return.png" alt="fag">
+                    <h3>بازگرداندن کالا</h3>
+                </a>
+            </div>
 
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> میتوانم سفارش خود را در محل پرداخت کنم؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
+            <div class="gift-border">
+                <a href="#">
+                    <div class="gift"></div>
+                    <img src="/assetsCli/images/page-faq/gift.png" alt="fag">
+                    <h3>کد تخفیف و کارت هدیه</h3>
+                </a>
+            </div>
 
-                            </ul>
-                        </div>
-                    </div>
+            <div class="market-border">
+                <a href="#">
+                <div class="market"></div>
+                <img src="/assetsCli/images/page-faq/market.png" alt="fag">
+                <h3>سوپرمارکت</h3>
+            </div>
+            </a>
 
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a> چطور درخواست خود را جهت مرجوعی کالا به شما اطلاع دهم؟</a>
-                                    <ul style="display: none;">
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
+            <div class="transparency-border">
+                <a href="#">
+                    <div class="transparency"></div>
+                    <img src="/assetsCli/images/page-faq/transparency.png" alt="fag">
+                    <h3>تعهد به شفافیت</h3>
+                </a>
+            </div>
 
-                            </ul>
-                        </div>
-                    </div>
+            <div class="Multi-shipment-border">
+                <a href="#">
+                    <div class="Multi-shipment"></div>
+                    <img src="/assetsCli/images/page-faq/100000040.png" alt="fag">
+                    <h3>چند مرسوله ایی</h3>
+                </a>
+            </div>
 
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> چطور میتوانم سفارشم را لغو کنم ؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
+            <div class="sport-team-border">
+                <a href="#">
+                    <div class="sport-team"></div>
+                    <img src="/assetsCli/images/page-faq/sport-team.png" alt="fag">
+                    <h3>دعوت از دوستان</h3>
+                </a>
+            </div>
 
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> چرا سفارشم دو مرسوله شده است؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> در چه شرایطی میتوانم کالای خود را بازگردانم؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> روند رسیدگی به درخواست مرجوعی کالا چگونه است؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> چطور میتوانم بدون برقراری تماس ، درخواست مرجوعی
-                                        کالای خریداری شده را اعلام کنم؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="toggle-box">
-                        <div class="toggle-box-active">
-                            <ul>
-                                <li class="has-sub"><a href="#"> چطور میتوانم سفارشم را پیگیری کنم ؟</a>
-                                    <ul>
-                                        <li class="has-sub"><a href="#">لطفاً پیش از خرید، موارد زیر را به‌دقت
-                                                بخوانید؛ زیرا ثبت هر سفارش در دیجی‌استور به معنی موافقت با شرایط زیر
-                                                است.</a></li>
-                                        <a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i
-                                                class="fa fa-angle-left"></i></a>
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div class="other-border">
+                <a href="#">
+                    <div class="other-hover"></div>
+                    <img src="/assetsCli/images/page-faq/other.svg" alt="fag">
+                    <h3>سایر موارد</h3>
+                </a>
             </div>
         </div>
     </div>
 </div>
+<div class="info-page-faq">
+<div class="content-info-page">
+<h2 class="box-rounded_headline">پرتکرارترین پرسش ها</h2>
+@{
+    foreach (var i in faqs)
+    {
+        <div class="toggle-box">
+            <div class="toggle-box-active">
+                <ul>
+                    <li class="has-sub">
+                        <a>@i.Title</a>
+                        <ul style="display: none;">
+                            <li class="has-sub">
+                                <a href="#">@i.Desc</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    }
+}
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 @section script
 {
-<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-<script src="/assetsCli/js/vendor/bootstrap.js"></script>
-<!-- plugin--/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-<script src="/assetsCli/js/vendor/lightgallery-all.js"></script>
-<script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
-<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-<!-- main js-/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
+    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
+    <!-- plugin--/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+    <script src="/assetsCli/js/vendor/lightgallery-all.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+    <!-- main js-/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/main.js"></script>
 }

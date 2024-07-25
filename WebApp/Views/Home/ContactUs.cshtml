@@ -1,31 +1,34 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
-@using Domain.Entity.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebApp.Views.Home
+@using Faq = Domain.Entity.IndexPage.Faq
 
 @{
-    Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
-    List<Product> basket = ViewBag.BasketProd;
-    List<UserAddress> addresses = ViewBag.Address;
-    Domain.Entity.User.User user = ViewBag.User;
-    List<SearchResult> searchResults = ViewBag.Search;
-
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+Domain.Entity.User.User user = ViewBag.User;
+List<SearchResult> searchResults = ViewBag.Search as List<SearchResult>;
+List<Faq> faqs = ViewBag.Faq;
 }
+
 
 @section link
 {
-    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin------------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style--------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/main.css">
-    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+<!-- font---------------------------------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+<!-- plugin------------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/lightgallery.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+<!-- main-style--------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/main.css">
+<link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 @section Header{
@@ -366,150 +369,131 @@
 
 }
 
-
-
 <div class="container-main">
-    <div class="d-block">
-        <section class="profile-home">
-            <div class="col-lg">
-                <div class="post-item-profile order-1 d-block">
-                    <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                        <div class="sidebar-profile sidebar-navigation">
-                            <section class="profile-box">
-                                <header class="profile-box-header-inline">
-                                    <div class="profile-avatar user-avatar profile-img">
-                                        <img src="/assetsCli/images/man.png">
-                                    </div>
-                                </header>
-                                <footer class="profile-box-content-footer">
-                                    <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
-                                    <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
-                                    <div class="profile-box-tabs">
-                                        <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
-                                            <i
-                                                class="mdi mdi-logout-variant">
-                                            </i>خروج از حساب
-                                        </a>
-                                    </div>
-                                </footer>
-                            </section>
-                            <section class="profile-box">
-                                <ul class="profile-account-navs">
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("Profile")" class="">
-                                            <i class="mdi mdi-account-outline"></i>
-                                            پروفایل
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserOrder")" class="">
-                                            <i class="mdi mdi-cart"></i>
-                                            همه سفارش ها
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserFav")" class="">
-                                            <i class="mdi mdi-heart"></i>
-                                            لیست علاقه مندی
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("UserAddress")" class="active">
-                                            <i class="mdi mdi-map-outline"></i>
-                                            آدرس ها
-                                        </a>
-                                    </li>
-                                    <li class="profile-account-nav-item navigation-link-dashboard">
-                                        <a href="@Url.Action("ProfileDetail")" class="">
-                                            <i class="mdi mdi-tooltip-text-outline"></i>
-                                            اطلاعات حساب
-                                        </a>
-                                    </li>
-                                </ul>
-                            </section>
+    <div class="col-12">
+        <div id="content">
+            <div class="contact-us">
+                <div class="col-lg-9 col-md-9 col-xs-12 mx-auto">
+                    <div class="contact-us-section">
+                        <div class="box-header">
+                            <span class="box-title">تماس با کالامارکت</span>
                         </div>
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12 pl">
-                        <div class="profile-content">
-                            <div class="m-1 p-2">
-                                <a href="@Url.Action("UserAddAddress")" class="btn btn-success ">آدرس جدید</a>
-                            </div>
-                            @{
-                                if (addresses.Count > 0)
-                                {
-                                    @foreach (var i in addresses)
-                                    {
-                                        <div class="profile-stats">
-                                            <div class="profile-address">
-                                                <div class="profile-address-item">
-                                                    <div class="profile-address-item-top">
-                                                        <div class="profile-address-item-title">@i.City.State.Title ، @i.City.Name</div>
-
-                                                    </div>
-
-                                                    <div class="profile-address-content">
-                                                        <ul class="profile-address-info">
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-map-outline"></i>
-                                                                    @i.City.State.Title ، @i.City.Name
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-email-outline"></i>
-                                                                    @i.Number
-                                                                </div>
-                                                            </li>
-                                                        
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-account"></i>
-                                                                    @i.City.State.Title ، @i.City.Name
-                                                                </div>
-                                                            </li>
-                                                            <li class="location-link d-flex justify-content-between gap-2">
-                                                                <a href="#" class="edit-address-link">ویرایش آدرس</a>
-                                                                <div class="ui-more">
-                                                                    <button class="btn-remove-address btn btn-danger"
-                                                                            type="submit">
-                                                                        حذف
-                                                                    </button>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="contact-us-row">
+                            <p>برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.</p>
+                        </div>
+                        <form action="#" id="contactForm" class="contact-us-form">
+                            <div class="contact-us-row contact-us-row--align-top">
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">موضوع*</div>
+                                    <div class="custom-select-ui">
+                                        <select class="right">
+                                            <option>-- انتخاب موضوع --</option>
+                                            <option>پیشنهاد</option>
+                                            <option>انتقاد یا شکایات</option>
+                                            <option>پیگیری سفارش</option>
+                                            <option>خدمات پس از فروش</option>
+                                            <option>استعلام گارانتی</option>
+                                            <option>مدیریت</option>
+                                        </select>
+                                        <div class="nice-select right" tabindex="0"><span class="current">-- انتخاب
+                                                    موضوع --</span>
+                                            <ul class="list">
+                                                <li data-value="-- انتخاب موضوع --" class="option selected">--
+                                                    انتخاب موضوع --</li>
+                                                <li data-value="پیشنهاد" class="option">پیشنهاد</li>
+                                                <li data-value=" انتقاد یا شکایات" class="option"> انتقاد یا شکایات
+                                                </li>
+                                                <li data-value="پیگیری سفارش" class="option">پیگیری سفارش</li>
+                                                <li data-value="خدمات پس از فروش" class="option">خدمات پس از فروش
+                                                </li>
+                                                <li data-value="استعلام گارانتی" class="option">استعلام گارانتی</li>
+                                                <li data-value="مدیریت" class="option">مدیریت</li>
+                                            </ul>
                                         </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div>ادرسی ثبت نشده</div>
-                                }
-                            }
+                                    </div>
+                                </label>
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">نام و نام خانوادگی*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[fullName]" type="text" placeholder=""
+                                               class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row--align-width">
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">ایمیل*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[email]" type="email" placeholder=""
+                                               class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">تلفن تماس*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[phone]" type="number" placeholder=""
+                                               class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row--align-bottom">
+                                <label for="#" class="form-field-container w-100">
+                                    <div class="form-field-label">متن پیام*</div>
+                                    <div class="form-field-frame">
+                                            <textarea name="contact[message]" type="text" placeholder=""
+                                                      class="form-field js-input-field form-control"></textarea>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row-align-left text-left d-block pl-3">
+                                <button type="button" class="btn btn-info js-contact-form-submit">
+                                    ثبت و ارسال
+                                </button>
+                            </div>
+                        </form>
+                        <div class="box-header">
+                            <span class="box-title">اطلاعات کالامارکت</span>
+                        </div>
+                        <div class="contact-us-row">
+                            <div class="contact-us-address-container">
+                                <div class="contact-us-address-header">
+                                    دفتر مرکزی
+                                </div>
+                                <div class="contact-us-address-text">
+                                    استان تهران - شهر تهران - خیابان گاندی جنوبی - نبش خیابان ۲۱ - پلاک ۲۸
+                                </div>
+                                <div class="contact-us-address-header">
+                                    تماس با گارانتی
+                                </div>
+                                <div class="contact-us-address-text">
+                                    برای پیگیری کالاهایی که با کارت گارانتی کالامارکت به فروش می رسند با شماره
+                                    ۶۱۹۳۰۰۱۰−۰۲۱ تماس بگیرید
+                                </div>
+                                <div class="contact-us-address-header">
+                                    ایمیل سازمانی
+                                </div>
+                                <div class="contact-us-address-text">
+                                    info@kalamarket.com
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 </div>
 
 @section script
 {
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/lightgallery-all.js"></script>
+<script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

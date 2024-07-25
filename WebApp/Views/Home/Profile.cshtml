@@ -1,4 +1,5 @@
 ﻿@using Application.Common.Utilities
+@using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -24,6 +25,7 @@
 <link rel="stylesheet" href="/assetsCli/css/main.css">
 <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
+
 @section Header{
     <header class="header-main">
     <div class="d-block">
@@ -162,13 +164,13 @@
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("Faq")" class="current-link-menu">
                                 سوالات متداول
                             </a>
 
                         </li>
                         <li id="nav-menu-item" class="menu-item ">
-                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                            <a href="@Url.Action("ContactUs")" class="current-link-menu">
                                 تماس با ما
                             </a>
 

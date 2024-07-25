@@ -117,7 +117,7 @@
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a  class="current-link-menu">
+                                <a class="current-link-menu">
                                     <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
@@ -126,7 +126,7 @@
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })" class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -915,24 +915,39 @@
                                                     </a>
                                                 </h2>
                                                 <div class="price">
-                                                    @if (i.DiscountAmount > 0)
+                                                    @if (i.IsOffer)
                                                     {
-                                                        <del>
-                                                            <span>
-                                                                @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                                            </span>
-                                                        </del>
-                                                        <ins>
-                                                            <span>
-                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                            </span>
-                                                        </ins>
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            <del>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                                </span>
+                                                            </del>
+                                                            <ins>
+                                                                <span>
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                                            </ins>
+                                                            <div>
+
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <ins>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                                </span>
+                                                            </ins>
+                                                        }
                                                     }
                                                     else
                                                     {
                                                         <ins>
                                                             <span>
-                                                                @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                             </span>
                                                         </ins>
                                                     }
@@ -995,24 +1010,39 @@
                                         </a>
                                     </h2>
                                     <div class="price">
-                                        @if (i.DiscountAmount > 0)
+                                        @if (i.IsOffer)
                                         {
-                                            <del>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </del>
-                                            <ins>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </ins>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <del>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </del>
+                                                <ins>
+                                                    <span>
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                                <div>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
                                         }
                                         else
                                         {
                                             <ins>
                                                 <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                 </span>
                                             </ins>
                                         }
@@ -1067,24 +1097,39 @@
                                         </a>
                                     </h2>
                                     <div class="price">
-                                        @if (i.DiscountAmount > 0)
+                                        @if (i.IsOffer)
                                         {
-                                            <del>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </del>
-                                            <ins>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </ins>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <del>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </del>
+                                                <ins>
+                                                    <span>
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                                <div>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
                                         }
                                         else
                                         {
                                             <ins>
                                                 <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                 </span>
                                             </ins>
                                         }
@@ -1160,24 +1205,39 @@
                                         </a>
                                     </h2>
                                     <div class="price">
-                                        @if (i.DiscountAmount > 0)
+                                        @if (i.IsOffer)
                                         {
-                                            <del>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </del>
-                                            <ins>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                </span>
-                                            </ins>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <del>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </del>
+                                                <ins>
+                                                    <span>
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                                <div>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
                                         }
                                         else
                                         {
                                             <ins>
                                                 <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                 </span>
                                             </ins>
                                         }

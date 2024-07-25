@@ -46,6 +46,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<SaleServices> SaleServices { set; get; }
     public DbSet<BrandDetail> BrandDetails { set; get; }
     public DbSet<SearchResult> SearchResults { set; get; }
+    public DbSet<Faq> Faqs { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
