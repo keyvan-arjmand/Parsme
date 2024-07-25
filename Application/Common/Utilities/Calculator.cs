@@ -32,8 +32,37 @@ public static class Calculator
     {
         return amount - discount;
     }
-    public static double Pass(this bool state,double amount1,double amount2)
+
+    public static double Pass(this bool state, double amount1, double amount2)
     {
         return state ? amount1 : amount2;
+    }
+
+    public static double CalcOffer(this DateTime time, double discount, double offerDiscount, double price, int day,
+        int hour,
+        int min, bool isOffer)
+    {
+        var offerTime = time.AddDays(day).AddHours(hour).AddMinutes(min);
+
+        return (isOffer, offerTime >= DateTime.Now) switch
+        {
+            (true, true) => price - offerDiscount,
+            (false, true) => price - discount,
+            (true, false) => price - discount,
+            (false, false) => price - discount
+        };
+    }
+
+    public static bool CalcOffer(this DateTime time, int day, int hour, int min, bool isOffer)
+    {
+        var offerTime = time.AddDays(day).AddHours(hour).AddMinutes(min);
+
+        return (isOffer, offerTime >= DateTime.Now) switch
+        {
+            (true, true) => true,
+            (false, true) => false,
+            (true, false) => false,
+            (false, false) => false
+        };
     }
 }

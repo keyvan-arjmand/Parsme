@@ -90,6 +90,7 @@ public class HomeController : Controller
             .OrderBy(x => x.InsertDate).Take(20).ToListAsync();
         ViewBag.OfferMoments =
             await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x=>x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Where(x => x.MomentaryOffer).Take(7).ToListAsync();
 

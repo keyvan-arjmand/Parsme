@@ -6085,14 +6085,14 @@ button.close {
 }
 
 .carousel-indicators .active {
-  background-color: #651fff !important;
+  background-color: #d52e31 !important;
   color: #fff !important;
   width: 25px;
   transition: all 300ms ease;
 }
 
 .carousel-indicators-ul .active {
-  background-color: #651fff !important;
+  background-color: #d52e31 !important;
   color: #fff !important;
   transition: all 300ms ease;
 }

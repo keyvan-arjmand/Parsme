@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
-@section Header{
+@section Header{ 
     <header class="header-main">
     <div class="d-block">
     <section class="h-main-row">
@@ -245,7 +245,7 @@
         <div class="nav-header">
             <div class="header-cover"></div>
             <div class="logo-wrap">
-                <a class="logo-icon" href="#">
+                <a class="logo-icon" href="@Url.Action("Index")">
                     <img alt="logo-icon" src="/Images/Banner/parsme-logo.png" width="40">
                 </a>
             </div>
@@ -255,17 +255,17 @@
                 foreach (var c in categories)
                 {
                     <li>
-                        <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
-                           aria-expanded="false" aria-controls="collapseOne">
+                        <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapse`@c.Id`"
+                           aria-expanded="false" aria-controls="collapse`@c.Id`">
                             <i class="mdi mdi-chevron-down"></i>@c.Name
                         </a>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                        <div id="collapse`@c.Id`" class="collapse" aria-labelledby="heading`@c.Id`"
                              data-parent="#accordionExample" style="">
                             <ul>
                                 @foreach (var s in c.SubCategories)
                                 {
                                     <li class="has-sub">
-                                        <a href="#" class="category-level-2">@s.Name</a>
+                                        <a href="@Url.Action("Search","Home",new{@s.Name})" class="category-level-2">@s.Name</a>
                                         <ul>
                                             @foreach (var b in s.Brands)
                                             {
@@ -284,7 +284,6 @@
             }
         </ul>
     </nav>
-
     <div class="nav-btn nav-slider">
         <span class="linee1"></span>
         <span class="linee2"></span>
@@ -295,7 +294,7 @@
     <div class="bottom-menu-joomy">
         <ul class="mb-0">
             <li>
-                <a href="home-1.html">
+                <a href="@Url.Action("Index")">
                     <i class="mdi mdi-home"></i>
                     صفحه اصلی
                 </a>
@@ -309,10 +308,10 @@
                 </a>
             </li>
             <li>
-                <a href="cart.html">
+                <a href="@Url.Action("Basket")">
                     <i class="mdi mdi-cart"></i>
                     سبد خرید
-                    <div class="shopping-bag-item">2</div>
+                    <div class="shopping-bag-item">@basket.Count</div>
                 </a>
             </li>
             <li>
@@ -321,12 +320,16 @@
                     جستجو
                 </a>
             </li>
-            <li>
-                <a href="login.html">
-                    <i class="mdi mdi-account"></i>
-                    حساب کاربری
-                </a>
-            </li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>
+                    <a href="@Url.Action("Profile")">
+                        <i class="mdi mdi-account"></i>
+                        حساب کاربری
+                    </a>
+                </li>
+            }
+          
         </ul>
     </div>
     <!--    responsive-megamenu-mobile----------------->
