@@ -12,7 +12,6 @@
     List<Category> categories = ViewBag.Categories;
     List<CategoryDetail> categoryDetails = ViewBag.CatDetails;
     List<SearchResult> searchResults = ViewBag.Search;
-
 }
 
 
@@ -86,11 +85,17 @@
                                         <li class="account-item">
                                             @if (User.Identity.IsAuthenticated)
                                             {
-                                                <a href="@Url.Action("Profile", "Home")" class="account-link">پنل کاربری</a>
+                                                <a href="@Url.Action("Profile", "Home")" class="account-link">
+                                                    پنل
+                                                    کاربری
+                                                </a>
                                             }
                                             else
                                             {
-                                                <a href="@Url.Action("Login", "Home")" class="account-link">عضویت/ورود</a>
+                                                <a href="@Url.Action("Login", "Home")"
+                                                   class="account-link">
+                                                    عضویت/ورود
+                                                </a>
                                             }
                                         </li>
                                         @if (User.Identity.IsAuthenticated)
@@ -118,7 +123,7 @@
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a  class="current-link-menu">
+                                <a class="current-link-menu">
                                     <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
@@ -127,7 +132,8 @@
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })"
+                                               class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -194,10 +200,12 @@
                                                                 {
                                                                     <li class="mini-cart-item">
                                                                         <div class="mini-cart-item-content">
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })"
+                                                                               class="mini-cart-item-close">
                                                                                 <i class="mdi mdi-close"></i>
                                                                             </a>
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })"
+                                                                               class="mini-cart-item-image d-block">
                                                                                 <img src="/Images/ProductImage/@i.ImageUri">
                                                                             </a>
                                                                             <span class="product-name-card">
@@ -205,7 +213,9 @@
                                                                             </span>
                                                                             <div class="header-basket-list-item-color-badge">
                                                                                 رنگ:
-                                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
+                                                                                <span
+                                                                                    style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode">
+                                                                                </span>
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
@@ -243,7 +253,10 @@
                                             </span>
                                         </div>
                                         <div class="mini-card-button">
-                                            <a href="@Url.Action("Basket", "Home")" class="view-card">مشاهده سبد خرید</a>
+                                            <a href="@Url.Action("Basket", "Home")" class="view-card">
+                                                مشاهده سبد
+                                                خرید
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -281,12 +294,18 @@
                                 @foreach (var s in c.SubCategories)
                                 {
                                     <li class="has-sub">
-                                        <a href="@Url.Action("Search", "Home", new { @s.Name })" class="category-level-2">@s.Name</a>
+                                        <a href="@Url.Action("Search", "Home", new { @s.Name })"
+                                           class="category-level-2">
+                                            @s.Name
+                                        </a>
                                         <ul>
                                             @foreach (var b in s.Brands)
                                             {
                                                 <li>
-                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })"
+                                                       class="category-level-3">
+                                                        @b.Title
+                                                    </a>
                                                 </li>
                                             }
 
@@ -366,6 +385,12 @@
     <!-- assetsCli-------------->/
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <style>
+    .clear-btn {
+        display: none;
+        cursor: pointer;
+    }
+</style>
 }
 
 <div class="container-main">
@@ -375,7 +400,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
-                        <a href="#">خانه</a>
+                        <a href="@Url.Action("Index")">خانه</a>
                     </li>
                     @{
                         if (prods.Count() > 0)
@@ -385,7 +410,7 @@
                             </li>
                             <li class="breadcrumb-item active open"
                                 aria-current="page">
-                                @prods.FirstOrDefault().SubCategory.Name
+                                <a href="@Url.Action("SubCategory", "Home", new { SubCategoryId = prods.FirstOrDefault().SubCategory.Id })">@prods.FirstOrDefault().SubCategory.Name</a>
                             </li>
                         }
                     }
@@ -428,19 +453,37 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div class="form-outline p-2 m-1 d-flex" data-mdb-input-init>
+                                                    <input type="search" id="searchInput" class="form-control"
+                                                           placeholder="جستجو کنید" aria-label="Search"/>
+                                                    @{
+                                                        int subId = prods.Count > 0 ? prods.FirstOrDefault().SubCategoryId : 0;
+                                                        <input value="@subId" hidden="hidden" id="SubId"/>
+                                                    }
+                                                    <div class="input-group-append">
+                                                        <button class="btn  clear-btn" type="button"
+                                                                id="clearBtn" onclick="clearSearch()">
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                </div>
                                                 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
-                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-                                                        <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0"  id="prodcomp">
+                                                        <div
+                                                            class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
                                                             <div class="owl-stage-outer">
                                                                 <div class="owl-stage"
                                                                      style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 500px;">
                                                                     @{
                                                                         foreach (var i in prodBySubCat)
                                                                         {
-                                                                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                                                                            <div class="owl-item active tab-item"
+                                                                                 style="width: 296.75px; margin-left: 10px;">
                                                                                 <div class="item">
-                                                                                    <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })" class="d-block hover-img-link">
-                                                                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                                                                    <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })"
+                                                                                       class="d-block hover-img-link">
+                                                                                        <img src="/Images/ProductImage/@i.ImageUri"
+                                                                                             class="img-fluid" alt="">
                                                                                     </a>
                                                                                     <h2 class="post-title">
                                                                                         <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })">
@@ -448,19 +491,40 @@
                                                                                         </a>
                                                                                     </h2>
                                                                                     <div class="price">
-                                                                                        @if (i.DiscountAmount > 0||i.IsOffer)
+
+                                                                                        @if (i.IsOffer)
                                                                                         {
-                                                                                            <ins>
-                                                                                                <span>
-                                                                                                       @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                                                                </span>
-                                                                                            </ins>
+                                                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                                            {
+                                                                                                <del>
+                                                                                                    <span>
+                                                                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                                                                    </span>
+                                                                                                </del>
+                                                                                                <ins>
+                                                                                                    <span>
+                                                                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                                                        <span>تومان</span>
+                                                                                                    </span>
+                                                                                                </ins>
+                                                                                                <div>
+
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <ins>
+                                                                                                    <span>
+                                                                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                                                                    </span>
+                                                                                                </ins>
+                                                                                            }
                                                                                         }
                                                                                         else
                                                                                         {
                                                                                             <ins>
                                                                                                 <span>
-                                                                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")<span>تومان</span>
+                                                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                                                                 </span>
                                                                                             </ins>
                                                                                         }
@@ -489,14 +553,29 @@
                                             <a class="remove-item" href="@Url.Action("RemoveInComparison", "Home", new { i.Id })">
                                                 <i class="mdi mdi-close"></i>
                                             </a>
-                                            <a class="comparison-item-thumb" href="#">
+                                            <a class="comparison-item-thumb" href="@Url.Action("ProductPage", "Home", new { i.Id })">
                                                 <img src="/Images/ProductImage/@i.ImageUri"
                                                      alt="Samsung-S10Plus">
                                             </a>
-                                            <a class="comparison-item-title" href="#">@i.PersianTitle</a>
+                                            <a class="comparison-item-title" href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
                                             <span class="amount">
-                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(@i.IsOffer ? @i.Offer!.OfferAmount : @i.DiscountAmount)
+                                                      @if (i.IsOffer)
+                                                {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                 <span>تومان</span>
+
+                                                }
+                                                else
+                                                {
+                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                }
+                                                }
+                                                else
+                                                {
+                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                }
                                             </span>
                                         </div>
                                     </td>
@@ -508,7 +587,7 @@
                         </thead>
                         <tbody>
                         <tr class="bg-cs-table-tr">
-                            <th class="text-uppercase">خلاصه</th>
+                            <th class="text-uppercase">عنوان</th>
                             @{
                                 foreach (var i in prods)
                                 {
@@ -534,12 +613,29 @@
                         <tr>
                             <th>قیمت</th>
                             @{
-                                foreach (var p in prods)
+                                foreach (var i in prods)
                                 {
                                     <td>
                                         <span class="amount">
-                                            @p.ProductColors.FirstOrDefault().Price.DiscountProduct(@p.IsOffer ? @p.Offer.OfferAmount : @p.DiscountAmount)
-                                            <span>تومان</span>
+                                            
+                                            
+                                              @if (i.IsOffer)
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+
+                                            }
+                                            else
+                                            {
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                            }
+                                            }
+                                            else
+                                            {
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                            }
                                         </span>
                                     </td>
                                 }
@@ -592,6 +688,7 @@
 </div>
 
 @section script{
+
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="/assetsCli/js/vendor/bootstrap.js"></script>
     <!-- plugin--/assetsCli--------------------------------------------->
@@ -604,4 +701,86 @@
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <!-- main js-/assetsCli--------------------------------------------->
     <script src="/assetsCli/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            function onInputChange(event) {
+                var currentValue = $(event.target).val();
+                console.log(currentValue);
+                console.log($('#SubId').val());
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        subCatId: $('#SubId').val(),
+                        search: currentValue
+                    },
+                    url: "/Home/GetProdComparison",
+                    success: function(data) {
+                        var htmlContainer = '';
+                        var html = '';
+                      
+                        // Assuming data is an array of products
+                        data.forEach(function(item) {
+                            html += `
+               <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                            <div class="item">
+                                <a href="/Home/ComparisonProduct/${item.id}" class="d-block hover-img-link">
+                                    <img src="/Images/ProductImage/${item.imageUri}" class="img-fluid" alt="">
+                                </a>
+                                <h2 class="post-title">
+                                    <a href="/Home/ComparisonProduct/${item.id}">
+                                        ${item.persianTitle}
+                                    </a>
+                                </h2>
+                                <div class="price">
+                                    <ins>
+                                        <span>
+                                            ${item.productColors[0].price}<span>تومان</span>
+                                        </span>
+                                    </ins>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        });
+                        htmlContainer+=`
+                        
+                        <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+    <div class="owl-stage-outer">
+        ${html}
+    </div>
+</div>
+         
+                        `
+                        document.getElementById("prodcomp").innerHTML = htmlContainer;
+                    },
+                    error: function(xhr) {
+                        console.error("خطا در درخواست AJAX: ", xhr);
+                    }
+                });
+            }
+
+            $('#searchInput').on('input', onInputChange);
+        });
+
+        function handleInputChange() {
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearBtn');
+        if (searchInput.value) {
+            clearBtn.style.display = 'inline-block';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+    }
+
+    function clearSearch() {
+        const searchInput = document.getElementById('searchInput');
+        searchInput.value = '';
+        handleInputChange();
+        // Trigger the onchange event manually after clearing the input
+        searchInput.dispatchEvent(new Event('change'));
+    }
+
+    document.getElementById('searchInput').addEventListener('input', handleInputChange);
+
+</script>
 }

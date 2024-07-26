@@ -374,13 +374,13 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">خانه</a>
+                <a href="@Url.Action("Index")">خانه</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="#">@prod.SubCategory.Category!.Name</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="#">@prod.SubCategory.Name</a>
+                <a href="@Url.Action("SubCategory","Home",new {subCategoryId=@prod.SubCategoryId})">@prod.SubCategory.Name</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">@prod.PersianTitle</li>
         </ol>
@@ -438,32 +438,8 @@
                                                     </label>
                                                     <label for="remember"
                                                            class="remember-me mr-0">
-                                                        ایمیل به
-                                                        info@digismart.com
-                                                    </label>
-                                                </div>
-                                                <div class="form-auth-row">
-                                                    <label for="#" class="ui-checkbox mt-1">
-                                                        <input type="checkbox" value="1"
-                                                               name="login" id="remember">
-                                                        <span class="ui-checkbox-check"></span>
-                                                    </label>
-                                                    <label for="remember"
-                                                           class="remember-me mr-0">
                                                         پیامک به
                                                         *******0991
-                                                    </label>
-                                                </div>
-                                                <div class="form-auth-row">
-                                                    <label for="#" class="ui-checkbox mt-1">
-                                                        <input type="checkbox" value="1"
-                                                               name="login" id="remember">
-                                                        <span class="ui-checkbox-check"></span>
-                                                    </label>
-                                                    <label for="remember"
-                                                           class="remember-me mr-0">
-                                                        سیستم پیام شخصی
-                                                        کالامارکت
                                                     </label>
                                                 </div>
                                             </div>
@@ -562,7 +538,7 @@
     </div>
     </section>
 </div>
-<div class="col-lg-7 col-xs-12 pl mt-5 d-block">
+<div class="col-lg-7 col-xs-12 pl mt-1 d-block">
 <section class="product-info">
 <div class="product-headline">
     <h1 class="product-title">
@@ -570,7 +546,44 @@
     </h1>
  
 </div>
-    <div class="product-attributes">
+<div class="product-attributes">
+    <div class="product-config">
+        <span class="product-title-en">@prod.Title</span>
+    </div>
+</div>
+<div  class="product-config-wrapper">
+    <div class="product-directory">
+        <ul>
+            <li>
+            <span>
+                <i class="fa fa-archive"></i> دسته:
+            </span>
+                <a href="#" class="product-link product-cat-title">@prod.SubCategory.Category.Name</a>
+                ,
+                <a href="@Url.Action("SubCategory","Home",new {subCategoryId=@prod.SubCategoryId})" class="product-link product-cat-title">@prod.SubCategory.Name</a>
+            </li>
+            <li>
+            <span>
+                <i class="fa fa-tags"></i> برچسب:
+            </span>
+                @{
+                foreach (var i in prod.MetaKeyword.Split(",").ToList())
+                {
+                <a href="@Url.Action("Search","Home",new{search=@i})" class="product-link product-tag-title">@i</a>
+                }
+                }
+            </li>
+            <li>
+            <span>
+                برند:
+            </span>
+                <a href="@Url.Action("GetByBrand","Home",new {prod.BrandId})" class="product-link product-tag-title">@prod.Brand.Title</a>
+            </li>
+        </ul>
+    </div>
+    
+</div>
+    <div class="product-attributes p-2">
         <div class="product-config">
             @if (prod.IsOffer)
             {
@@ -588,41 +601,8 @@
             }
         </div>
     </div>
-<div class="product-attributes">
-    <div class="product-config">
-        <span class="product-title-en">@prod.Title</span>
-    </div>
-</div>
+
 <div class="product-config-wrapper">
-<div class="product-directory">
-    <ul>
-        <li>
-            <span>
-                <i class="fa fa-archive"></i> دسته:
-            </span>
-            <a href="#" class="product-link product-cat-title">@prod.SubCategory.Category.Name</a>
-            ,
-            <a href="#" class="product-link product-cat-title">@prod.SubCategory.Name</a>
-        </li>
-        <li>
-            <span>
-                <i class="fa fa-tags"></i> برچسب:
-            </span>
-            @{
-                foreach (var i in prod.MetaKeyword.Split(",").ToList())
-                {
-                    <a href="#" class="product-link product-tag-title">@i</a>
-                }
-            }
-        </li>
-        <li>
-            <span>
-                برند:
-            </span>
-            <a href="#" class="product-link product-tag-title">@prod.Brand.Title</a>
-        </li>
-    </ul>
-</div>
 <div class="col=lg-6 col-md-6 col-xs-12 pr">
     <div class="product-variants">
         <span>رنگ بندی: </span>
@@ -1003,9 +983,6 @@
                             <h3 class="content-expert-title ">برسی تخصصی محصول</h3>
                             <div class="content-expert-text text-center">
                                 <p style="text-align:center">@Html.Raw(prod.FullDesc)</p>
-                                <div class="content-expert-img">
-                                    <img src="/assetsCli/images/page-single-product/tab-content/note10-1.jpg">
-                                </div>
                             </div>
                         </section>
                     </div>

@@ -846,6 +846,18 @@ public class HomeController : Controller
     {
         return View();
     }
+    
+    public async Task<List<Product>> GetProdComparison(int subCatId,string search)
+    {
+        var prods = await _work.GenericRepository<Product>().TableNoTracking
+            .Include(x => x.ProductColors)
+            .Where(x=>x.SubCategoryId==subCatId)
+            .Where(x => 
+                        x.PersianTitle.Contains(search) ||
+                        x.Title.Contains(search) ||
+                        x.Detail.Contains(search)).ToListAsync();
+        return prods;
+    }
 
     public async Task<IActionResult> ComparisonProduct(int id)
     {
