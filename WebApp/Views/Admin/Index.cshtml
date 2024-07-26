@@ -57,7 +57,6 @@
         <div class="small-box bg-success">
             <div class="inner">
                 <h3> 12</h3>
-
                 <p>سفارشات امروز</p>
             </div>
             <div class="icon">
@@ -71,8 +70,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3> @users.Count</h3>
-
+                <h3> @users.Where(x=>x.InsertDate>=DateTime.Now.AddDays(-15)).ToList().Count</h3>
                 <p>کاربران جدید</p>
             </div>
             <div class="icon">
@@ -87,7 +85,6 @@
         <div class="small-box bg-danger">
             <div class="inner">
                 <h3> @users.Count</h3>
-
                 <p>کاربران کل</p>
             </div>
             <div class="icon">
@@ -230,7 +227,7 @@
                         foreach (var i in users)
                         {
                             <li>
-                                <img src="/dist/img/user1-128x128.jpg" alt="User Image">
+                                <img src="/assetsCli/images/man.png" alt="User Image">
                                 <a class="users-list-name mt-2" href="#">@i.Name @i.Family</a>
                                 <span class="users-list-date">امروز</span>
                             </li>

@@ -3,6 +3,7 @@ using Application.Admin.V1.Commands.ConfirmCodAdmin;
 using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
 using Application.Interfaces;
+using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
@@ -68,7 +69,7 @@ public class HomeController : Controller
 
         ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
-            .Include(x=>x.Offer)
+            .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Take(20).ToListAsync();
         var otherProd = new List<Product>();
@@ -76,7 +77,7 @@ public class HomeController : Controller
         {
             otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                 .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
-                .Include(x=>x.Offer)
+                .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Take(4).ToListAsync());
         }
@@ -84,13 +85,13 @@ public class HomeController : Controller
         ViewBag.OtherParsme = otherProd;
         ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
-            .Include(x=>x.Offer)
+            .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Take(10).ToListAsync();
         ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
-            .Include(x=>x.Offer)
+            .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .OrderBy(x => x.InsertDate).Take(20).ToListAsync();
         ViewBag.OfferMoments =
@@ -487,6 +488,163 @@ public class HomeController : Controller
         }
     }
 
+    public async Task<IActionResult> Checkout(string code, int postMethod)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var basketProducts = new List<Product>();
+            if (HttpContext.Session.GetString("basket") != null)
+            {
+                var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
+                    .ToList();
+                foreach (var i in basketList)
+                {
+                    var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                        .FirstOrDefaultAsync(x => x.Id == i);
+
+                    var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                        .ThenInclude(x => x.Color)
+                        .Include(x => x.Offer)
+                        .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                    prod.ProductColors = new List<ProductColor>() { prodColor };
+                    basketProducts.Add(prod!);
+                }
+            }
+
+            ViewBag.BasketProd = basketProducts;
+            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+                .Include(x => x.SubCategories)
+                .ThenInclude(x => x.Brands)
+                .ToListAsync();
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+            ViewBag.Code = code;
+            ViewBag.PostMethod = postMethod;
+            ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<IActionResult> DiscountCheck(string code)
+    {
+        var result = _work.GenericRepository<DiscountCode>().TableNoTracking
+            .Any(x => x.Code == code && x.IsActive && x.Count > 0);
+        if (result)
+        {
+            return Ok();
+        }
+        else
+        {
+            throw new Exception();
+            ;
+        }
+    }
+
+    public async Task<IActionResult> ProductFactor(string discountCode, List<int> productColorIds, int postMethodId,
+        int userAddressId)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var user = _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+            var discount = await _work.GenericRepository<DiscountCode>().Table
+                .FirstOrDefaultAsync(x => x.Code == discountCode);
+            var discountAmount = discount?.Amount ?? 0;
+            var basketProducts = new List<Product>();
+            if (HttpContext.Session.GetString("basket") != null)
+            {
+                var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+                foreach (var i in basketList)
+                {
+                    var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                        .FirstOrDefaultAsync(x => x.Id == i);
+
+                    var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                        .ThenInclude(x => x.Color)
+                        .Include(x => x.Offer)
+                        .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                    prod.ProductColors = new List<ProductColor>() { prodColor };
+                    basketProducts.Add(prod!);
+                }
+            }
+
+            var prods = basketProducts;
+            double price = 0;
+            double offer = 0;
+            foreach (var i in prods)
+            {
+                if (i.IsOffer)
+                {
+                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                    {
+                        offer += i.Offer.OfferAmount;
+                        price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    }
+                    else
+                    {
+                        offer += i.DiscountAmount;
+                        price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                    }
+                }
+                else
+                {
+                    offer += i.DiscountAmount;
+                    price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                }
+            }
+            var factor = new Factor()
+            {
+                Amount = price,
+                UserId = user.Id,
+                DiscountCode = discountCode,
+                UserAddressId = userAddressId,
+                DiscountAmount = discountAmount,
+                PostMethodId = postMethodId,
+                InsertDate = DateTime.Now,
+                Status = Status.Pending,
+                AmountPrice = offer,
+            };
+            await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
+            foreach (var i in productColorIds)
+            {
+                var prod = await _work.GenericRepository<Product>().Table.Include(x => x.ProductColors)
+                    .FirstOrDefaultAsync(x => x.ProductColors.Any(q => q.Id == i));
+                await _work.GenericRepository<FactorProduct>().AddAsync(new FactorProduct
+                {
+                    ProductId = prod.Id,
+                    FactorId = factor.Id
+                }, CancellationToken.None);
+            }
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<IActionResult> InsertContact(string Name, string PhoneNumber, string Email, string Message,
+        int Subject)
+    {
+        await _work.GenericRepository<ContactUs>().AddAsync(new ContactUs()
+        {
+            Email = Email,
+            PhoneNumber = PhoneNumber,
+            Name = Name,
+            Message = Message,
+            Subject = (Subject)Subject,
+            InsertDate = DateTime.Now
+        }, CancellationToken.None);
+
+        return RedirectToAction("Index");
+    }
+
     public async Task<IActionResult> ProductPage(int id)
     {
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -599,6 +757,7 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         return View();
     }
+
     public async Task<IActionResult> AboutUs()
     {
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -629,6 +788,7 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         return View();
     }
+
     public async Task<IActionResult> ContactUs()
     {
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -659,6 +819,7 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         return View();
     }
+
     public async Task<IActionResult> Search(string search, double min, double max)
     {
         ViewBag.Search = search;
@@ -846,16 +1007,16 @@ public class HomeController : Controller
     {
         return View();
     }
-    
-    public async Task<List<Product>> GetProdComparison(int subCatId,string search)
+
+    public async Task<List<Product>> GetProdComparison(int subCatId, string search)
     {
         var prods = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.ProductColors)
-            .Where(x=>x.SubCategoryId==subCatId)
-            .Where(x => 
-                        x.PersianTitle.Contains(search) ||
-                        x.Title.Contains(search) ||
-                        x.Detail.Contains(search)).ToListAsync();
+            .Where(x => x.SubCategoryId == subCatId)
+            .Where(x =>
+                x.PersianTitle.Contains(search) ||
+                x.Title.Contains(search) ||
+                x.Detail.Contains(search)).ToListAsync();
         return prods;
     }
 
@@ -1030,6 +1191,7 @@ public class HomeController : Controller
             .ThenInclude(x => x.Brands)
             .ToListAsync();
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.Take(4).ToListAsync();
 
         ViewBag.BasketProd = basketProducts;
         return View();

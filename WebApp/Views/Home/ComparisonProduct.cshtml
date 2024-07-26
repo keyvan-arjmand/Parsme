@@ -390,6 +390,10 @@
         display: none;
         cursor: pointer;
     }
+    .owl-stage {
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
 }
 
@@ -468,11 +472,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
-                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0"  id="prodcomp">
+                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0" >
                                                         <div
                                                             class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-                                                            <div class="owl-stage-outer">
-                                                                <div class="owl-stage"
+                                                            <div class="owl-stage-outer" >
+                                                                <div class="owl-stage"  id="prodcomp"
                                                                      style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 500px;">
                                                                     @{
                                                                         foreach (var i in prodBySubCat)
@@ -703,10 +707,14 @@
     <script src="/assetsCli/js/main.js"></script>
     <script>
         $(document).ready(function() {
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: true,
+                items: 1,
+            });
             function onInputChange(event) {
                 var currentValue = $(event.target).val();
-                console.log(currentValue);
-                console.log($('#SubId').val());
                 $.ajax({
                     type: "GET",
                     data: {
@@ -715,49 +723,55 @@
                     },
                     url: "/Home/GetProdComparison",
                     success: function(data) {
-                        var htmlContainer = '';
                         var html = '';
-                      
                         // Assuming data is an array of products
                         data.forEach(function(item) {
                             html += `
-               <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
-                            <div class="item">
-                                <a href="/Home/ComparisonProduct/${item.id}" class="d-block hover-img-link">
-                                    <img src="/Images/ProductImage/${item.imageUri}" class="img-fluid" alt="">
-                                </a>
-                                <h2 class="post-title">
-                                    <a href="/Home/ComparisonProduct/${item.id}">
-                                        ${item.persianTitle}
-                                    </a>
-                                </h2>
-                                <div class="price">
-                                    <ins>
-                                        <span>
-                                            ${item.productColors[0].price}<span>تومان</span>
-                                        </span>
-                                    </ins>
-                                </div>
-                            </div>
+        <div class="owl-item active tab-item"
+           style="width: 296.75px; margin-left: 10px;">
+                    <div class="item">
+                        <a href="/Home/ComparisonProduct/${item.id}" class="d-block hover-img-link">
+                            <img src="/Images/ProductImage/${item.imageUri}" class="img-fluid" alt=""> 
+                        </a>
+                        <h2 class="post-title">
+                            <a href="/Home/ComparisonProduct/${item.id}">
+                                ${item.persianTitle}
+                            </a>
+                        </h2>
+                        <div class="price">
+                            <ins>
+                                <span>
+                                    ${item.productColors[0].price}<span>تومان</span>
+                                </span>
+                            </ins>
                         </div>
-                    `;
-                        });
-                        htmlContainer+=`
-                        
-                        <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-    <div class="owl-stage-outer">
-        ${html}
-    </div>
+                    </div>
 </div>
-         
-                        `
-                        document.getElementById("prodcomp").innerHTML = htmlContainer;
+                `;
+                        });
+
+                        // Set the innerHTML
+                        var htmlContainer = `
+                <div class="owl-stage"  style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 288px;">
+                                            ${html}
+                 </div>
+            `;
+                        document.getElementById("prodcomp").innerHTML = html;
+
+                        // Initialize Owl Carousel
+                       $('.owl-carousel').owlCarousel({
+                           loop: true,
+                           margin: 10,
+                           nav: true,
+                           items: 1
+                       });
                     },
                     error: function(xhr) {
                         console.error("خطا در درخواست AJAX: ", xhr);
                     }
                 });
             }
+
 
             $('#searchInput').on('input', onInputChange);
         });

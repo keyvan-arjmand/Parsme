@@ -375,7 +375,8 @@
             $("#TitleCatDetail").val(currentrow.find($("input.mTitleCatDetail[type=text]")).val());
             $("#SubCatId").val(currentrow.find($("input.mSubCatId[type=text]")).val());
             $('#FeatureId').val(currentrow.find($("input.mFeatureId[type=text]")).val());
-            $("#isSearchCatDetail").val(currentrow.find($("input.misSearchCatDetail[type=text]")).val());
+            var val = currentrow.find($("input.misSearchCatDetail[type=text]")).val();
+            document.getElementById('isSearchCatDetail').checked = val === 'True';
             
             $("#DataType").val(currentrow.find($("input.mDataType[type=text]")).val());
             var dataType=currentrow.find($("input.mDataType[type=text]")).val();

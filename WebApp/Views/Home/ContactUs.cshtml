@@ -376,38 +376,38 @@ List<Faq> faqs = ViewBag.Faq;
                 <div class="col-lg-9 col-md-9 col-xs-12 mx-auto">
                     <div class="contact-us-section">
                         <div class="box-header">
-                            <span class="box-title">تماس با کالامارکت</span>
+                            <span class="box-title">تماس با پارس می</span>
                         </div>
                         <div class="contact-us-row">
                             <p>برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.</p>
                         </div>
-                        <form action="#" id="contactForm" class="contact-us-form">
+                        <form  asp-action="InsertContact" asp-controller="Home" method="post" id="contactForm" class="contact-us-form">
                             <div class="contact-us-row contact-us-row--align-top">
                                 <label for="#" class="form-field-container">
                                     <div class="form-field-label">موضوع*</div>
                                     <div class="custom-select-ui">
-                                        <select class="right">
+                                        <select class="right" required="required" name="Subject">
                                             <option>-- انتخاب موضوع --</option>
-                                            <option>پیشنهاد</option>
-                                            <option>انتقاد یا شکایات</option>
-                                            <option>پیگیری سفارش</option>
-                                            <option>خدمات پس از فروش</option>
-                                            <option>استعلام گارانتی</option>
-                                            <option>مدیریت</option>
+                                            <option value="0">پیشنهاد</option>
+                                            <option value="=1">انتقاد یا شکایات</option>
+                                            <option value="2">پیگیری سفارش</option>
+                                            <option value="3">خدمات پس از فروش</option>
+                                            <option value="3">استعلام گارانتی</option>
+                                            <option value="4">مدیریت</option>
                                         </select>
                                         <div class="nice-select right" tabindex="0"><span class="current">-- انتخاب
                                                     موضوع --</span>
                                             <ul class="list">
-                                                <li data-value="-- انتخاب موضوع --" class="option selected">--
+                                                <li data-value="" class="option selected">--
                                                     انتخاب موضوع --</li>
-                                                <li data-value="پیشنهاد" class="option">پیشنهاد</li>
-                                                <li data-value=" انتقاد یا شکایات" class="option"> انتقاد یا شکایات
+                                                <li data-value="0" class="option">پیشنهاد</li>
+                                                <li data-value="1" class="option"> انتقاد یا شکایات
                                                 </li>
-                                                <li data-value="پیگیری سفارش" class="option">پیگیری سفارش</li>
-                                                <li data-value="خدمات پس از فروش" class="option">خدمات پس از فروش
+                                                <li data-value="2" class="option">پیگیری سفارش</li>
+                                                <li data-value="3" class="option">خدمات پس از فروش
                                                 </li>
-                                                <li data-value="استعلام گارانتی" class="option">استعلام گارانتی</li>
-                                                <li data-value="مدیریت" class="option">مدیریت</li>
+                                                <li data-value="4" class="option">استعلام گارانتی</li>
+                                                <li data-value="5" class="option">مدیریت</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -415,7 +415,7 @@ List<Faq> faqs = ViewBag.Faq;
                                 <label for="#" class="form-field-container">
                                     <div class="form-field-label">نام و نام خانوادگی*</div>
                                     <div class="form-field-frame">
-                                        <input name="contact[fullName]" type="text" placeholder=""
+                                        <input name="Name" type="text" placeholder=""
                                                class="form-field js-input-field form-control">
                                     </div>
                                 </label>
@@ -424,14 +424,14 @@ List<Faq> faqs = ViewBag.Faq;
                                 <label for="#" class="form-field-container">
                                     <div class="form-field-label">ایمیل*</div>
                                     <div class="form-field-frame">
-                                        <input name="contact[email]" type="email" placeholder=""
+                                        <input name="Email" type="email" placeholder=""
                                                class="form-field js-input-field form-control">
                                     </div>
                                 </label>
                                 <label for="#" class="form-field-container">
                                     <div class="form-field-label">تلفن تماس*</div>
                                     <div class="form-field-frame">
-                                        <input name="contact[phone]" type="number" placeholder=""
+                                        <input name="PhoneNumber" type="number" placeholder=""
                                                class="form-field js-input-field form-control">
                                     </div>
                                 </label>
@@ -440,19 +440,19 @@ List<Faq> faqs = ViewBag.Faq;
                                 <label for="#" class="form-field-container w-100">
                                     <div class="form-field-label">متن پیام*</div>
                                     <div class="form-field-frame">
-                                            <textarea name="contact[message]" type="text" placeholder=""
+                                            <textarea name="Message" type="text" placeholder=""
                                                       class="form-field js-input-field form-control"></textarea>
                                     </div>
                                 </label>
                             </div>
                             <div class="contact-us-row contact-us-row-align-left text-left d-block pl-3">
-                                <button type="button" class="btn btn-info js-contact-form-submit">
+                                <button type="submit" class="btn btn-info js-contact-form-submit">
                                     ثبت و ارسال
                                 </button>
                             </div>
                         </form>
                         <div class="box-header">
-                            <span class="box-title">اطلاعات کالامارکت</span>
+                            <span class="box-title">اطلاعات پارس می</span>
                         </div>
                         <div class="contact-us-row">
                             <div class="contact-us-address-container">
@@ -460,20 +460,20 @@ List<Faq> faqs = ViewBag.Faq;
                                     دفتر مرکزی
                                 </div>
                                 <div class="contact-us-address-text">
-                                    استان تهران - شهر تهران - خیابان گاندی جنوبی - نبش خیابان ۲۱ - پلاک ۲۸
+                                    استان تهران - شهر تهران - خیابان ۸
                                 </div>
                                 <div class="contact-us-address-header">
                                     تماس با گارانتی
                                 </div>
                                 <div class="contact-us-address-text">
-                                    برای پیگیری کالاهایی که با کارت گارانتی کالامارکت به فروش می رسند با شماره
+                                    برای پیگیری کالاهایی که با کارت گارانتی پارس می به فروش می رسند با شماره
                                     ۶۱۹۳۰۰۱۰−۰۲۱ تماس بگیرید
                                 </div>
                                 <div class="contact-us-address-header">
                                     ایمیل سازمانی
                                 </div>
                                 <div class="contact-us-address-text">
-                                    info@kalamarket.com
+                                    info@parsme
                                 </div>
                             </div>
                         </div>

@@ -60,8 +60,37 @@ public class AdminController : Controller
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
                 .Include(x => x.Brand)
+                .OrderByDescending(x=>x.InsertDate)
                 .ToListAsync();
 
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }  public async Task<ActionResult> ManageDiscount(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.DiscountCode = await _work.GenericRepository<DiscountCode>().TableNoTracking
+                    .Where(x=>x.Code.Contains(search))
+                    .OrderByDescending(x=>x.Id)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.DiscountCode = await _work.GenericRepository<DiscountCode>().TableNoTracking
+                    .OrderByDescending(x=>x.Id)
+                    .ToListAsync();
+            }
+            
             #endregion
 
             return View();
@@ -379,7 +408,29 @@ public class AdminController : Controller
             return View("Login");
         }
     }
-
+    public async Task<ActionResult> ManageContact(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Contact = await _work.GenericRepository<ContactUs>().TableNoTracking
+                    .Where(x=>x.Name.Contains(search)||x.PhoneNumber.Contains(search)||x.Message.Contains(search))
+                    .OrderByDescending(x => x.InsertDate).ToListAsync();   
+            }
+            else
+            {
+                ViewBag.Contact = await _work.GenericRepository<ContactUs>().TableNoTracking
+                    .OrderByDescending(x => x.InsertDate).ToListAsync();
+            }
+         
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
     public async Task<ActionResult> ManageCategory(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
@@ -947,6 +998,156 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> ManageFaq(string search, int page = 1)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking
+                    .Where(x => x.Title.Contains(search) || x.Desc.Contains(search))
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking.ToListAsync();
+            }
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+    public async Task<ActionResult> UpdateFaq(int id,string title, string desc)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var faq = await _work.GenericRepository<Faq>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            faq.Title = title;
+            faq.Desc = desc;
+            await _work.GenericRepository<Faq>().UpdateAsync(faq, CancellationToken.None);
+            return RedirectToAction("ManageFaq");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+    public async Task<ActionResult> InsertFaq(string title, string desc)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<Faq>().AddAsync(new Faq
+            {
+                Desc = desc,
+                Title = title,
+            }, CancellationToken.None);
+            return RedirectToAction("ManageFaq");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+
+    
+    
+    
+    public async Task<ActionResult> ManageSearchResult(string search, int page = 1)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.search = await _work.GenericRepository<SearchResult>().TableNoTracking
+                    .Where(x => x.Href.Contains(search) || x.Value.Contains(search))
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.search = await _work.GenericRepository<SearchResult>().TableNoTracking.ToListAsync();
+            }
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+    public async Task<ActionResult> UpdateSearchResult(int id,string value, string href)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var search = await _work.GenericRepository<SearchResult>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            search.Value = value;
+            search.Href = href;
+            await _work.GenericRepository<SearchResult>().UpdateAsync(search, CancellationToken.None);
+            return RedirectToAction("ManageSearchResult");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+    public async Task<ActionResult> InsertSearchResult(string value, string href)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<SearchResult>().AddAsync(new SearchResult()
+            {
+               Value = value,
+               Href = href
+            }, CancellationToken.None);
+            return RedirectToAction("ManageSearchResult");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+
+    
+    
+    
+    public async Task<ActionResult> UpdateDiscount(int id,string code, double amount , int count)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var discount = await _work.GenericRepository<DiscountCode>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            discount.Count = count;
+            discount.Code = code;
+            discount.Amount = amount;
+            await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
+            return RedirectToAction("ManageDiscount");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+    public async Task<ActionResult> InsertDiscount(string code, double amount , int count)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _work.GenericRepository<DiscountCode>().AddAsync(new DiscountCode()
+            {
+               Count = count,
+               Amount = amount,
+               Code = code,
+               IsActive = true
+            }, CancellationToken.None);
+            return RedirectToAction("ManageSearchResult");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+
+    
     public async Task<ActionResult> ManageState(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
@@ -1152,7 +1353,7 @@ public class AdminController : Controller
         product.Strengths = request.Strengths;
         product.WeakPoints = request.WeakPoints;
         product.MomentaryOffer = request.MomentaryOffer;
-        
+
         if (product.BrandId != request.BrandId.ToInt())
         {
             var brand = await _work.GenericRepository<Brand>().Table
@@ -1160,8 +1361,8 @@ public class AdminController : Controller
             if (brand == null) throw new Exception();
             product.BrandId = brand.Id;
         }
-        
-        if (product.SubCategoryId != request.SubCategoryId.ToInt()&&request.SubCategoryId.ToInt()>0)
+
+        if (product.SubCategoryId != request.SubCategoryId.ToInt() && request.SubCategoryId.ToInt() > 0)
         {
             var subCat = await _work.GenericRepository<SubCategory>().Table
                 .FirstOrDefaultAsync(x => x.Id == request.SubCategoryId.ToInt());
@@ -1199,13 +1400,11 @@ public class AdminController : Controller
                 }
             }
         }
-        
+
         await _work.GenericRepository<Product>().UpdateAsync(product, CancellationToken.None);
+
         #endregion
 
-      
-
-      
 
         #region color
 
@@ -1283,15 +1482,15 @@ public class AdminController : Controller
             {
                 await _work.GenericRepository<ImageGallery>().DeleteAsync(i, CancellationToken.None);
             }
+
             List<string> images = new List<string>();
 
             foreach (var i in request.Images)
             {
                 images.Add(up.AddImage(i, "Images/ProductImage",
                     Guid.NewGuid().ToString().Substring(0, 6)));
-                
             }
-            
+
             var productGallery = images.Select(x => new ImageGallery
             {
                 ProductId = product.Id,
@@ -1300,7 +1499,7 @@ public class AdminController : Controller
             foreach (var i in productGallery)
             {
                 await _work.GenericRepository<Domain.Entity.Product.ImageGallery>()
-                    .AddAsync(i, CancellationToken.None); 
+                    .AddAsync(i, CancellationToken.None);
             }
         }
 
