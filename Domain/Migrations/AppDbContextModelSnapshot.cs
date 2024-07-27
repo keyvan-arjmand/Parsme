@@ -22,6 +22,193 @@ namespace Domain.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entity.Factor.Factor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AmountPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("DiscountAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("DiscountCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FactorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PostMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostMethodId");
+
+                    b.HasIndex("UserAddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Factors");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.FactorProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("FactorId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ProductColorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactorId");
+
+                    b.HasIndex("ProductColorId");
+
+                    b.ToTable("FactorProducts");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.LogFactor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FactorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactorId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LogFactors");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.LogReturnedFactor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ReturnedFactorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReturnedFactorId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LogReturnedFactors");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.ReturnedFactor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FactorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReturnedStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReturnedType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactorId");
+
+                    b.ToTable("ReturnedFactors");
+                });
+
             modelBuilder.Entity("Domain.Entity.IndexPage.Banner", b =>
                 {
                     b.Property<int>("Id")
@@ -1192,6 +1379,85 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entity.Factor.Factor", b =>
+                {
+                    b.HasOne("Domain.Entity.User.PostMethod", "PostMethod")
+                        .WithMany()
+                        .HasForeignKey("PostMethodId");
+
+                    b.HasOne("Domain.Entity.User.UserAddress", "UserAddress")
+                        .WithMany()
+                        .HasForeignKey("UserAddressId");
+
+                    b.HasOne("Domain.Entity.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("PostMethod");
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserAddress");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.FactorProduct", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.Factor", "Factor")
+                        .WithMany("Products")
+                        .HasForeignKey("FactorId");
+
+                    b.HasOne("Domain.Entity.Product.ProductColor", "ProductColor")
+                        .WithMany()
+                        .HasForeignKey("ProductColorId");
+
+                    b.Navigation("Factor");
+
+                    b.Navigation("ProductColor");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.LogFactor", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.Factor", "Factor")
+                        .WithMany("Logs")
+                        .HasForeignKey("FactorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entity.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Factor");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.LogReturnedFactor", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.ReturnedFactor", "Factor")
+                        .WithMany()
+                        .HasForeignKey("ReturnedFactorId");
+
+                    b.HasOne("Domain.Entity.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Factor");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.ReturnedFactor", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.Factor", "Factor")
+                        .WithMany()
+                        .HasForeignKey("FactorId");
+
+                    b.Navigation("Factor");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
                 {
                     b.HasOne("Domain.Entity.Product.BrandDetail", "BrandDetail")
@@ -1285,7 +1551,7 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Product.Product", null)
+                    b.HasOne("Domain.Entity.Product.Product", "Product")
                         .WithMany("ProductColors")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1294,6 +1560,8 @@ namespace Domain.Migrations
                     b.Navigation("Color");
 
                     b.Navigation("Guarantee");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ProductDetail", b =>
@@ -1415,6 +1683,13 @@ namespace Domain.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Factor", b =>
+                {
+                    b.Navigation("Logs");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>

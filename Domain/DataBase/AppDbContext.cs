@@ -1,4 +1,5 @@
-﻿using Domain.Entity.IndexPage;
+﻿using Domain.Entity.Factor;
+using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -48,6 +49,11 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<SearchResult> SearchResults { set; get; }
     public DbSet<Faq> Faqs { set; get; }
     public DbSet<ContactUs> ContactUs { set; get; }
+    public DbSet<Factor> Factors { set; get; }
+    public DbSet<FactorProduct> FactorProducts { set; get; }
+    public DbSet<LogFactor> LogFactors { set; get; }
+    public DbSet<LogReturnedFactor> LogReturnedFactors { set; get; }
+    public DbSet<ReturnedFactor> ReturnedFactors { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

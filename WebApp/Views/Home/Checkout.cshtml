@@ -397,47 +397,49 @@
 <div class="col-lg">
 <div class="checkout woocommerce-checkout">
 <div class="content-checkout container">
-    @* @if (!string.IsNullOrWhiteSpace(code1)) *@
-    @* { *@
-    @*     <div class="notices-wrapper"> *@
-    @*         <div class="col-12"> *@
-    @*             <div class="form-coupon-toggle"> *@
-    @*         *@
-    @*                 <div class="info"> *@
-    @*                     کد تخفیف : *@
-    @*                     @code1 *@
-    @*                 </div> *@
-    @* *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </div> *@
-    @* } *@
+    @if (code1!=null)
+    {
+        <div class="notices-wrapper">
+            <div class="col-12">
+                <div class="form-coupon-toggle">
+    
+                    <div class="info">
+                        <span>   کد تخفیف :
+                            @code1.Code</span>
+                        <span>  مبلغ :
+                            @code1.Amount</span>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    }
 
 <div class="middle-container">
-<form action="#" class="form-checkout">
+<form asp-action="ProductFactor" asp-controller="Payment" method="post" class="form-checkout">
 <div class="col2-set" id="customer-details">
     <div class="col-12">
         <div class="billing-fields mt-4">
             <h4>جزئیات صورتحساب</h4>
+           
             <div class="form-checkout-row">
                 <h5 class="p-3">ارسال به آدرس</h5>
-                @{
+                <div class="d-flex flex-column">
+                    @{
                     foreach (var i in userAddresses)
                     {
-                        <div class="shipping-totals-outline">
-                            <label for="#" class="outline-radio">
-                                <input type="radio" name="payment_method"
-                                       id="@i.Id">
-                                <span class="outline-radio-check"></span>
-                            </label>
-                            <label for="#" class="shipping-totals-title-row">
-                                <div class="shipping-totals-title">
-                                    <span> @i.Address </span>
-                                </div>
-                            </label>
-                        </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="@i.Id" type="radio" name="userAddressId" id="address`@i.Id`">
+                        <label class="form-check-label" for="address`@i.Id">
+                            @i.Address
+                        </label>
+                    </div>
+
                     }
-                }
+                    }
+                </div>
+                <input value="@postMethods" name="postMethodId" hidden="hidden"/>
+                <input value="@code1.Code" name="discountCode" hidden="hidden"/>
                 <div class="Order-another-shipping-address mt-5">
                     <div class="Order-address d-inline-block">
                         <button class="btn btn-block text-right collapsed"
@@ -450,7 +452,7 @@
                     <div class="shipping-address">
                         <div id="collapseExample" class="collapse">
                             <div class="middle-container">
-                                <form action="#" class="form-checkout">
+                                <div  class="form-checkout">
                                     <div class="form-checkout-row">
                                         <label for="name">
                                             نام تحویل گیرنده
@@ -564,7 +566,7 @@
                                                placeholder="کد پستی را بدون خط تیره بنویسید">
 
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -574,7 +576,7 @@
                     توضیحات سفارش
                     <span class="optional">(اختیاری)</span>
                 </label>
-                <textarea rows="5" cols="30" id="address"
+                <textarea rows="5" cols="30" id="desc" name="desc"
                                                           class="textarea-name-checkout form-control"
                                                           placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
 
@@ -708,8 +710,8 @@
     function  CheckCode(){
         $.ajax({
             type: "Post",
-            data: {discountCode: $('#DiscountCode').val(),},
-            url: "/Home/ProductFactor",
+            data: {discountCode: $('#DiscountCode').val(),postMethodId: $('#postMethodId').val(),userAddressId: $('#userAddressId').val(),desc: $('#desc').val(),},
+            url: "/Payment/ProductFactor/",
             success: function (data) {
                 alert("کد تخفیف معتبر است")
             },
@@ -719,7 +721,14 @@
             }
         });
     }
-
+    document.querySelectorAll('input[type="radio"][name="userAddressId"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const otherInput = document.getElementById('otherInput');
+            if (this.checked) {
+                otherInput.name = this.id + "Name"; // Change the name attribute
+            }
+        });
+    });
 
 </script>
     <!-- file js---------------------------------------------------->

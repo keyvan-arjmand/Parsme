@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApp.Views.Home;
+namespace WebApp.Views.Payment;
 
 public class ProductFactor : PageModel
 {

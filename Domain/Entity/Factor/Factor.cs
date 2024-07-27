@@ -13,11 +13,15 @@ public class Factor:BaseEntity
     [ForeignKey("UserId")] public User.User? User { get; set; }
     public int? PostMethodId { get; set; }
     [ForeignKey("PostMethodId")] public PostMethod? PostMethod { get; set; }
+    public string Desc { get; set; } = string.Empty;
+    public string FactorCode { get; set; } = string.Empty;
     public string DiscountCode { get; set; } = string.Empty;
-    public double DiscountAmount { get; set; }
-    public double Amount { get; set; }
-    public double AmountPrice { get; set; }
+    public double DiscountAmount { get; set; }//discount code
+    public double Amount { get; set; }//pure price
+    public double AmountPrice { get; set; }//offer
     public DateTime InsertDate { get; set; }
+    public bool IsReturned { get; set; }
     public Status Status { get; set; }
     public ICollection<FactorProduct> Products { get; set; } = default!;
+    public ICollection<LogFactor> Logs { get; set; } = default!;
 }
