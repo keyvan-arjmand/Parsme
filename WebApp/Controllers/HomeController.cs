@@ -519,7 +519,7 @@ public class HomeController : Controller
                 .ThenInclude(x => x.Brands)
                 .ToListAsync();
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
-            ViewBag.Code = code;
+            ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking.FirstOrDefaultAsync(x=>x.Code==code);
             ViewBag.PostMethod = postMethod;
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
             return View();
@@ -836,7 +836,7 @@ public class HomeController : Controller
                             x.PersianTitle.Contains(search) ||
                             x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search))
+                            x.Detail.Contains(search)||x.MetaDesc.Contains(search)||x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .ToListAsync();
         }
@@ -850,7 +850,7 @@ public class HomeController : Controller
                 .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                             x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search)).ToListAsync();
+                            x.Detail.Contains(search)||x.MetaKeyword.Contains(search)).ToListAsync();
         }
 
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking

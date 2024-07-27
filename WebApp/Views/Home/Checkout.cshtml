@@ -11,7 +11,7 @@
     List<UserAddress> userAddresses = ViewBag.Address;
     List<SearchResult> searchResults = ViewBag.Search;
     int postMethods = ViewBag.PostMethod;
-    string code1 = ViewBag.Code;
+    DiscountCode code1 = ViewBag.Code;
     double price = 0;
     double offer = 0;
     foreach (var i in basket)
@@ -397,21 +397,21 @@
 <div class="col-lg">
 <div class="checkout woocommerce-checkout">
 <div class="content-checkout container">
-    @if (!string.IsNullOrWhiteSpace(code1))
-    {
-        <div class="notices-wrapper">
-            <div class="col-12">
-                <div class="form-coupon-toggle">
-           
-                    <div class="info">
-                        کد تخفیف :
-                        @code1
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    }
+    @* @if (!string.IsNullOrWhiteSpace(code1)) *@
+    @* { *@
+    @*     <div class="notices-wrapper"> *@
+    @*         <div class="col-12"> *@
+    @*             <div class="form-coupon-toggle"> *@
+    @*         *@
+    @*                 <div class="info"> *@
+    @*                     کد تخفیف : *@
+    @*                     @code1 *@
+    @*                 </div> *@
+    @* *@
+    @*             </div> *@
+    @*         </div> *@
+    @*     </div> *@
+    @* } *@
 
 <div class="middle-container">
 <form action="#" class="form-checkout">
