@@ -5,28 +5,30 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_Layout";
-    List<Category> categories = ViewBag.Categories;
-    List<Product> basket = ViewBag.BasketProd;
-    List<UserAddress> addresses = ViewBag.Address;
-    Domain.Entity.User.User user = ViewBag.User;
-    List<SearchResult> searchResults = ViewBag.Search;
+Layout = "_Layout";
+List<Category> categories = ViewBag.Categories;
+List<Product> basket = ViewBag.BasketProd;
+List<City> cities = ViewBag.City;
+Domain.Entity.User.User user = ViewBag.User;
+List<SearchResult> searchResults = ViewBag.Search;
+UserAddress address = ViewBag.Address;
 
 }
 
 @section link
 {
-    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin------------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style--------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/main.css">
-    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+<!-- plugin------------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+<!-- main-style--------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/main.css">
+<link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
+
 
 @section Header{
 <header class="header-main">
@@ -366,8 +368,6 @@
 
 }
 
-
-
 <div class="container-main">
     <div class="d-block">
         <section class="profile-home">
@@ -432,64 +432,62 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12 pl">
                         <div class="profile-content">
-                            <div class="m-1">
-                                <a href="@Url.Action("UserAddAddress")" class="btn btn-success ">آدرس جدید</a>
-                            </div>
-                            @{
-                                if (addresses.Count > 0)
-                                {
-                                    @foreach (var i in addresses)
-                                    {
-                                        <div class="profile-stats">
-                                            <div class="profile-address">
-                                                <div class="profile-address-item">
-                                                    <div class="profile-address-item-top">
-                                                        <div class="profile-address-item-title">@i.City.State.Title ، @i.City.Name</div>
+                            <div class="profile-stats">
+                                <div class="profile-address">
+                                    <div class="middle-container">
+                                        <form asp-action="UpdateAddress" asp-controller="Home" method="post" class="form-checkout">
+                                            <input value="@address.Id" name="Id" hidden="hidden"/>
+                                            <div class="form-checkout-row">
+                                                <label for="name">نام تحویل گیرنده
+                                                    <abbr class="required"
+                                                          title="ضروری" style="color:red;">*</abbr></label>
+                                                <input type="text" id="name" value="@address.Name"
+                                                       class="input-name-checkout form-control" name="Name">
+                                                <label for="phone-number">شماره موبایل
+                                                    <abbr class="required"
+                                                          title="ضروری" style="color:red;">*</abbr></label>
+                                                <input type="text" id="phone-number"  value="@address.Number"
+                                                       class="input-name-checkout form-control text-left" name="Number">
 
-                                                    </div>
+                                                <div class="form-checkout-valid-row">
+                                                    <label for="city">شهر
+                                                        <abbr class="required" title="ضروری"
+                                                              style="color:red;">*</abbr></label>
+                                                    <select name="CityId" id="city"   class="form-control">  
+                                                        <option value="0" selected="selected">شهر مورد نظر
+                                                            خود را انتخاب کنید</option>
+                                                        @foreach (var i in cities)
+                                                        {
+                                                            <option value="@i.Id">@i.Name</option>
 
-                                                    <div class="profile-address-content">
-                                                        <ul class="profile-address-info">
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-map-outline"></i>
-                                                                    @i.Address
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-email-outline"></i>
-                                                                    @i.Number
-                                                                </div>
-                                                            </li>
-                                                        
-                                                            <li>
-                                                                <div class="profile-address-info-item location">
-                                                                    <i class="mdi mdi-account"></i>
-                                                                    @i.Name
-                                                                </div>
-                                                            </li>
-                                                            <li class="location-link d-flex justify-content-between gap-2">
-                                                                <a href="@Url.Action("EditAddress","Home",new{@i.Id})" class="edit-address-link">ویرایش آدرس</a>
-                                                                <div class="ui-more">
-                                                                    <a class="text-decoration-none btn-remove-address btn btn-danger"
-                                                                            href="@Url.Action("RemoveAddress","Home",new{@i.Id})">
-                                                                        حذف
-                                                                    </a>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                        }
+                                                    </select>
+
+                                                </div>
+
+                                                <label for="post-code">کد پستی
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">*</abbr></label>
+                                                <input type="text" id="post-code"  value="@address.PostCode"
+                                                       class="input-name-checkout form-control" name="PostCode"
+                                                       placeholder="کد پستی را بدون خط تیره بنویسید">
+
+                                                <label for="address">آدرس
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">*</abbr></label>
+                                                <textarea rows="5" cols="30" id="address" name="Address"  
+                                                          class="textarea-name-checkout form-control">@address.Address</textarea>
+
+                                                <div class="AR-CR">
+                                                    <button type="submit" class="btn-registrar"> ثبت آدرس</button>
+                                                    <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal"
+                                                       aria-label="Close">بازگشت</a>
                                                 </div>
                                             </div>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div>ادرسی ثبت نشده</div>
-                                }
-                            }
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -500,16 +498,24 @@
 
 @section script
 {
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Embed the CityId value using Razor syntax
+            var citiId = `@Html.Raw(address.CityId)`;
+            // Set the value of the HTML element
+                document.getElementById('city').value = citiId;
+        });
+    </script>
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="/assetsCli/js/vendor/wNumb.js"></script>
+<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

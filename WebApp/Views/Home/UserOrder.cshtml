@@ -1,4 +1,5 @@
 ﻿@using Application.Common.Utilities
+@using Domain.Entity.Factor
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -9,6 +10,7 @@ List<Category> categories = ViewBag.Categories;
 List<Product> basket = ViewBag.BasketProd;
 Domain.Entity.User.User user = ViewBag.User;
 List<SearchResult> searchResults = ViewBag.Search;
+List<Factor> factors =  ViewBag.Order;
 
 }
 
@@ -381,7 +383,7 @@ List<SearchResult> searchResults = ViewBag.Search;
                                 </header>
                                 <footer class="profile-box-content-footer">
                                     <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate.ToPersianTime()</span>
                                     <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
                                     <div class="profile-box-tabs">
                                         <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
@@ -443,60 +445,130 @@ List<SearchResult> searchResults = ViewBag.Search;
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td class="order-code">DKC-57262900</td>
-                                            <td>سه شنبه 4 فروردین 99</td>
-                                            <td class="Waiting text-success">پرداخت شده</td>
-                                            <td class="totla">
-                                                <span class="amount">2,400,000
-                                                    <span>تومان</span>
-                                                </span>
-                                            </td>
-                                            <td class="detail"><a href="@Url.Action("OrderDetail")"
-                                                                  class="btn btn-secondary d-block">نمایش</a></td>
-                                        </tr>
+                                        @{
+                                            if (factors.Count > 0)
+                                            {
+                                                foreach (var i in factors)
+                                                {
+                                                    var price = i.Amount - i.DiscountAmount;
+                                                    <tr>
+                                                        <td class="order-code">@i.FactorCode</td>
+                                                        <td>@i.InsertDate.ToPersianTime()</td>
+                                                        <td class="Waiting text-success">@i.Status.ToDisplay()</td>
+                                                        <td class="totla">
+                                                            <span class="amount">
+                                                                @price.ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                                        </td>
+                                                        <td class="detail">
+                                                            <a href="@Url.Action("OrderDetail","Home",new{i.Id})"
+                                                               class="btn btn-secondary d-block">نمایش</a></td>
+                                                    </tr>
+                                                }
+                                                
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td class="order-code"></td>
+                                                    <td></td>
+                                                    <td class="Waiting text-danger">سفارشی یافت نشد</td>
+                                                    <td class="totla">
+                                                    </td>
+                                                    <td class="detail">
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        
                                         </tbody>
+                                        
                                     </table>
-                                    <div class="profile-orders">
-                                        <div class="collapse">
-                                            <div class="profile-orders-item">
-                                                <div class="profile-orders-header">
-                                                    <a href="profile-order-2.html"
-                                                       class="profile-orders-header-details">
-                                                        <div class="profile-orders-header-summary">
-                                                            <div class="profile-orders-header-row">
-                                                                <span
-                                                                    class="profile-orders-header-id">DKC-79356178</span>
-                                                                <span
-                                                                    class="profile-orders-header-state text-success">پرداخت
-                                                                    شده</span>
+                                    @if (factors.Count > 0)
+                                    {
+                                    foreach (var i in factors)
+                                    {
+                                    var price = i.Amount - i.DiscountAmount;
+                                       <div class="profile-orders">
+                                            <div class="collapse">
+                                                <div class="profile-orders-item">
+                                                    <div class="profile-orders-header">
+                                                        <a href="@Url.Action("OrderDetail","Home",new{i.Id})"
+                                                            class="profile-orders-header-details">
+                                                            <div class="profile-orders-header-summary">
+                                                                <div class="profile-orders-header-row">
+                                                                    <span
+                                                                        class="profile-orders-header-id">@i.FactorCode</span>
+                                                                    <span
+                                                                        class="profile-orders-header-state text-success">@i.Status.ToDisplay()</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </a>
-                                                    <!-- <hr class="ui-separator"> -->
-                                                    <div class="profile-orders-header-data">
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-label">تاریخ ثبت سفارش</div>
-                                                            <div class="profile-info-value">سه شنبه 4 فروردین 99
+                                                        </a>
+                                                        <!-- <hr class="ui-separator"> -->
+                                                        <div class="profile-orders-header-data">
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-label">تاریخ ثبت سفارش</div>
+                                                                <div class="profile-info-value">@i.InsertDate.ToPersianTime()
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-label">مبلغ قابل پرداخت</div>
-                                                            <div class="profile-info-value">0</div>
-                                                        </div>
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-label">مبلغ کل</div>
-                                                            <div class="profile-info-value">
-                                                                <span class="amount">2,400,000
-                                                                    <span>تومان</span>
-                                                                </span>
+                                                        
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-label">مبلغ کل</div>
+                                                                <div class="profile-info-value">
+                                                                    <span class="amount">@price.ToString("N0")
+                                                                        <span>تومان</span>
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
+                                    }
+                                    else
+                                    {
+                                       <div class="profile-orders">
+                                            <div class="collapse">
+                                                <div class="profile-orders-item">
+                                                    <div class="profile-orders-header">
+                                                        <a href="profile-order-2.html"
+                                                            class="profile-orders-header-details">
+                                                            <div class="profile-orders-header-summary">
+                                                                <div class="profile-orders-header-row">
+                                                                    <span
+                                                                        class="profile-orders-header-id">-</span>
+                                                                    <span
+                                                                        class="profile-orders-header-state text-success">خریدی یافت نشد</span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <!-- <hr class="ui-separator"> -->
+                                                        <div class="profile-orders-header-data">
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-label">  </div>
+                                                                <div class="profile-info-value">    
+                                                                </div>
+                                                            </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-label">  </div>
+                                                                <div class="profile-info-value">0</div>
+                                                            </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-label"> </div>
+                                                                <div class="profile-info-value">
+                                                                    <span class="amount">0
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

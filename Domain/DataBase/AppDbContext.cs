@@ -58,6 +58,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Brand>().HasQueryFilter(x => !x.IsDelete);
+        modelBuilder.Entity<UserAddress>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<Color>().HasQueryFilter(x => !x.IsDelete);

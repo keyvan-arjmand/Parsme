@@ -163,6 +163,26 @@ public class HomeController : Controller
         }
     }
 
+    public async Task<ActionResult> RemoveInFav(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user != null)
+            {
+                var fav = await _work.GenericRepository<UserFav>().TableNoTracking
+                    .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == id);
+                await _work.GenericRepository<UserFav>().DeleteAsync(fav, CancellationToken.None);
+            }
+
+            return RedirectToAction("UserFav", "Home");
+        }
+        else
+        {
+            return RedirectToAction("login", "Home");
+        }
+    }
+
     public async Task<IActionResult> Profile()
     {
         if (User.Identity.IsAuthenticated)
@@ -241,6 +261,52 @@ public class HomeController : Controller
                 .ThenInclude(x => x.State)
                 .Where(x => x.UserId == user.Id).ToListAsync();
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
+    public async Task<IActionResult> EditAddress(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+                .Include(x => x.SubCategories)
+                .ThenInclude(x => x.Brands)
+                .ToListAsync();
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
+                       new User();
+            ViewBag.User = user;
+            var basketProducts = new List<Product>();
+            if (HttpContext.Session.GetString("basket") != null)
+            {
+                var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
+                    .ToList();
+                foreach (var i in basketList)
+                {
+                    var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                        .FirstOrDefaultAsync(x => x.Id == i);
+
+                    var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                        .ThenInclude(x => x.Color)
+                        .Include(x => x.Offer)
+                        .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                    prod.ProductColors = new List<ProductColor>() { prodColor };
+                    basketProducts.Add(prod!);
+                }
+            }
+
+            ViewBag.BasketProd = basketProducts;
+            ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
+                .ThenInclude(x => x.State)
+                .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == id);
+            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
 
             return View();
         }
@@ -341,7 +407,7 @@ public class HomeController : Controller
         }
     }
 
-    public async Task<IActionResult> OrderDetail()
+    public async Task<IActionResult> OrderDetail(int id)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -373,7 +439,13 @@ public class HomeController : Controller
 
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-
+            ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             return View();
         }
@@ -415,7 +487,13 @@ public class HomeController : Controller
 
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-
+            ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .Where(x => x.User.UserName == User.Identity.Name).ToListAsync();
 
             return View();
         }
@@ -488,6 +566,44 @@ public class HomeController : Controller
         }
     }
 
+    public async Task<IActionResult> UpdateAddress(int id, string name, string address, int cityId, string number,
+        string postCode)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var result = await _work.GenericRepository<UserAddress>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            result.Name = name;
+            result.Address = address;
+            result.CityId = cityId;
+            result.Number = number;
+            result.PostCode = postCode;
+            await _work.GenericRepository<UserAddress>().UpdateAsync(result, CancellationToken.None);
+            return RedirectToAction("UserAddress");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
+    public async Task<IActionResult> RemoveAddress(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
+                       new User();
+            var address = await _work.GenericRepository<UserAddress>().Table
+                .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == id);
+            address.IsDelete = true;
+            await _work.GenericRepository<UserAddress>().UpdateAsync(address, CancellationToken.None);
+            return RedirectToAction("UserAddress");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
     public async Task<IActionResult> Checkout(string code, int postMethod)
     {
         if (User.Identity.IsAuthenticated)
@@ -519,7 +635,8 @@ public class HomeController : Controller
                 .ThenInclude(x => x.Brands)
                 .ToListAsync();
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
-            ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking.FirstOrDefaultAsync(x=>x.Code==code);
+            ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Code == code);
             ViewBag.PostMethod = postMethod;
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
             return View();
@@ -545,7 +662,7 @@ public class HomeController : Controller
         }
     }
 
-  
+
     public async Task<IActionResult> InsertContact(string Name, string PhoneNumber, string Email, string Message,
         int Subject)
     {
@@ -753,7 +870,7 @@ public class HomeController : Controller
                             x.PersianTitle.Contains(search) ||
                             x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search)||x.MetaDesc.Contains(search)||x.MetaKeyword.Contains(search))
+                            x.Detail.Contains(search) || x.MetaDesc.Contains(search) || x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .ToListAsync();
         }
@@ -767,7 +884,7 @@ public class HomeController : Controller
                 .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                             x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search)||x.MetaKeyword.Contains(search)).ToListAsync();
+                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search)).ToListAsync();
         }
 
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -1249,10 +1366,7 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
-                       new User();
-
+            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
             return View();
         }
         else

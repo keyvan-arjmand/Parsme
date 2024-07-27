@@ -4,27 +4,26 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-Layout = "_Layout";
-List<Category> categories = ViewBag.Categories;
-List<Product> basket = ViewBag.BasketProd;
-List<UserFav> favs = ViewBag.Fav;
-Domain.Entity.User.User user = ViewBag.User;
-List<SearchResult> searchResults = ViewBag.Search;
-
+    Layout = "_Layout";
+    List<Category> categories = ViewBag.Categories;
+    List<Product> basket = ViewBag.BasketProd;
+    List<UserFav> favs = ViewBag.Fav;
+    Domain.Entity.User.User user = ViewBag.User;
+    List<SearchResult> searchResults = ViewBag.Search;
 }
 
 @section link
 {
-<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-<!-- plugin------------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-<!-- main-style--------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/main.css">
-<link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 
@@ -131,7 +130,7 @@ List<SearchResult> searchResults = ViewBag.Search;
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a  class="current-link-menu">
+                                <a class="current-link-menu">
                                     <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
@@ -140,7 +139,7 @@ List<SearchResult> searchResults = ViewBag.Search;
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })" class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -382,7 +381,7 @@ List<SearchResult> searchResults = ViewBag.Search;
                                 </header>
                                 <footer class="profile-box-content-footer">
                                     <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate.ToPersianTime()</span>
                                     <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
                                     <div class="profile-box-tabs">
                                         <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
@@ -444,54 +443,78 @@ List<SearchResult> searchResults = ViewBag.Search;
                                         </thead>
                                         <tbody>
                                         @{
-                                        if (favs.Count > 0)
-                                        {
-                                            foreach (var i in favs)
+                                            if (favs.Count > 0)
+                                            {
+                                                foreach (var i in favs)
+                                                {
+                                                    <tr>
+
+                                                        <th scope="row">
+                                                            <div class="favorites-product-img">
+                                                                <img src="/Images/ProductImage/@i.Product.ImageUri">
+                                                                <div class="product-rate">
+                                                                    <i class="fa fa-star active"></i>
+                                                                    <i class="fa fa-star active"></i>
+                                                                    <i class="fa fa-star active"></i>
+                                                                    <i class="fa fa-star active"></i>
+                                                                    <i class="fa fa-star active"></i>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <td>
+                                                            <a href="@Url.Action("ProductPage", "Home", new { i.Product.Id })">@i.Product.PersianTitle</a>
+                                                        </td>
+                                                        <td>
+                                                            @if (i.Product.IsOffer)
+                                                            {
+                                                                if (i.Product.Offer.StartDate.CalcOffer(i.Product.Offer.Days, i.Product.Offer.Hours, i.Product.Offer.Minutes, i.Product.IsOffer) && i.Product.ProductColors.Any(x => x.ColorId == i.Product.Offer.ColorId))
+                                                                {
+                                                                    <span class="amount">
+                                                                        @i.Product.Offer.StartDate.CalcOffer(i.Product.DiscountAmount, i.Product.Offer.OfferAmount, i.Product.ProductColors.FirstOrDefault(x => x.ColorId == i.Product.Offer.ColorId).Price, i.Product.Offer.Days, i.Product.Offer.Hours, i.Product.Offer.Minutes, i.Product.IsOffer)
+                                                                        <span>تومان</span>
+                                                                    </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="amount">
+                                                                        @i.Product.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.Product.DiscountAmount).ToString("N0")
+                                                                        <span>تومان</span>
+                                                                    </span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="amount">
+                                                                    @i.Product.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.Product.DiscountAmount).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                                            }
+
+                                                        </td>
+                                                        <td class="text-left actions">
+                                                            <a href="@Url.Action("RemoveInFav","Home",new{i.Id})" class="remove-product">
+                                                                <i
+                                                                    class="mdi mdi-close">
+                                                                </i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                                <tr class="spacer"></tr>
+                                            }
+                                            else
                                             {
                                                 <tr>
-
-                                                    <th scope="row">
-                                                        <div class="favorites-product-img">
-                                                            <img src="/Images/ProductImage/@i.Product.ImageUri">
-                                                            <div class="product-rate">
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                            </div>
-                                                        </div>
-                                                    </th>
-                                                    <td>
-                                                        <a href="#">@i.Product.PersianTitle</a>
-                                                    </td>
-                                                    <td>
-                                                        <span class="amount">   @i.Product.ProductColors.FirstOrDefault().Price.DiscountProduct(i.Product.IsOffer ? i.Product.Offer.OfferAmount : i.Product.DiscountAmount)
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-left actions">
-                                                        <a href="#" class="remove-product">
-                                                            <i
-                                                                class="mdi mdi-close"></i></a>
-                                                    </td>
+                                                    <th>یافت نشد</th>
                                                 </tr>
-
                                             }
-                                        <tr class="spacer"></tr>
                                         }
-                                        else
-                                        {
-                                            <tr>
-                                                <th>یافت نشد</th>
-                                            </tr>
-                                        }
-                                        }
-                              
-                                 
+
+
                                         </tbody>
                                     </table>
-                            
+
                                 </div>
                             </div>
                         </div>
@@ -501,6 +524,7 @@ List<SearchResult> searchResults = ViewBag.Search;
         </section>
     </div>
 </div>
+
 @section script
 {
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>

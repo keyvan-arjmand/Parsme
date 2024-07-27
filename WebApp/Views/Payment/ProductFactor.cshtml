@@ -1,18 +1,622 @@
-﻿@page
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Factor
+@using Domain.Entity.IndexPage
+@using Domain.Entity.Product
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = null;
+    Layout = "_Layout";
+    List<Product> basket = ViewBag.BasketProd;
+    List<Category> categories = ViewBag.Categories;
+    List<SearchResult> searchResults = ViewBag.Search;
+    Factor factor = ViewBag.Factor;
 }
 
-<!DOCTYPE html>
+@section Header{
+    <header class="header-main">
+    <div class="d-block">
+    <section class="h-main-row">
+        <div class="col-lg-9 col-md-12 col-xs-12 pr">
+            <div class="header-right">
+                <div class="col-lg-3 pr">
+                    <div class="header-logo row text-right">
+                        <a href="@Url.Action("Index")">
+                            <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 pr">
+                    <div class="header-search row text-right">
+                        <div class="header-search-box">
+                            <form asp-action="search" asp-controller="home" method="post" class="form-search">
+                                <input type="search" class="header-search-input" name="search"
+                                       placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                                <div class="action-btns">
+                                    <button class="btn btn-search" type="submit">
+                                        <img src="/assetsCli/images/search.png" alt="search">
+                                    </button>
+                                </div>
+                            </form>
+                            @{
+                                if (searchResults.Any())
+                                {
+                                    <div class="search-result">
+                                        <ul class="search-result-list mb-0">
+                                            @{
+                                                foreach (var i in searchResults)
+                                                {
+                                                    <li>
+                                                        <a href="@i.Href">
+                                                            <i class="mdi mdi-clock-outline"></i>
+                                                            @i.Value
+                                                            <a class="btn btn-light btn-continue-search" href="@i.Href">
+                                                                <i class="fa fa-angle-left"></i>
+                                                            </a>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    dasdasdasda23123
+                                        </ul>
+                                        <div class="localSearchSimple"></div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-0 col-xs-12 pl">
+            <div class="header-left">
+                <div class="header-account text-left">
+                    <div class="d-block">
+                        <div class="account-box">
+                            <div class="nav-account d-block pl">
+                                <span class="icon-account">
+                                    <img src="/assetsCli/images/man.png" class="avator">
+                                </span>
+                                <span class="title-account">حساب کاربری</span>
+                                <div class="dropdown-menu">
+                                    <ul class="account-uls mb-0">
+                                        <li class="account-item">
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <a href="@Url.Action("Profile", "Home")" class="account-link">پنل کاربری</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("Login", "Home")" class="account-link">عضویت/ورود</a>
+                                            }
+                                        </li>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="account-item">
+                                                <a href="@Url.Action("Logout")" class="account-link">خروج</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <nav class="header-main-nav">
+        <div class="d-block">
+            <div class="align-items-center">
+                <ul class="menu-ul mega-menu-level-one">
+                    @{
+                        foreach (var i in categories)
+                        {
+                            <li id="nav-menu-item" class="menu-item nav-overlay">
+
+                                <a class="current-link-menu">
+                                    <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
+                                    @i.Name
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="sub-menu is-mega-menu mega-menu-level-two">
+                                    @foreach (var q in i.SubCategories)
+                                    {
+                                        <li class="menu-mega-item menu-item-type-mega-menu">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })" class="mega-menu-link">
+                                                @q.Name
+                                            </a>
+                                            <ul class="sub-menu mega-menu-level-three">
+                                                @foreach (var b in q.Brands)
+                                                {
+                                                    <li class="menu-mega-item-three">
+                                                        <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
+                                                            @b.Title
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </li>
+                        }
+
+                        <li id="nav-menu-item" class="menu-item ">
+                            <a href="@Url.Action("AboutUs")" class="current-link-menu">
+                                درباره ما
+                            </a>
+
+                        </li>
+                        <li id="nav-menu-item" class="menu-item ">
+                            <a href="@Url.Action("Faq")" class="current-link-menu">
+                                سوالات متداول
+                            </a>
+
+                        </li>
+                        <li id="nav-menu-item" class="menu-item ">
+                            <a href="@Url.Action("ContactUs")" class="current-link-menu">
+                                تماس با ما
+                            </a>
+
+                        </li>
+                    }
+                    <li class="divider-space-card">
+                        <div class="header-cart-basket">
+                            <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
+                                <span class="icon-cart">
+                                    <i class="mdi mdi-shopping"></i>
+                                </span>
+                                <span class="title-cart">سبد خرید</span>
+                                <span class="price-cart">
+                                    @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                    <span>تومان</span>
+                                </span>
+                                <span class="count-cart">@basket.Count</span>
+                            </a>
+                            @if (basket.Count > 0)
+                            {
+                                <div class="widget-shopping-cart">
+                                    <div class="widget-shopping-cart-content">
+                                        <div class="wrapper">
+                                            <div class="scrollbar" id="style-1">
+                                                <div class="force-overflow">
+                                                    <ul class="product-list-widget">
+                                                        @{
+                                                            if (basket.Count > 0)
+                                                            {
+                                                                @foreach (var i in basket)
+                                                                {
+                                                                    <li class="mini-cart-item">
+                                                                        <div class="mini-cart-item-content">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
+                                                                                <i class="mdi mdi-close"></i>
+                                                                            </a>
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                                <img src="/Images/ProductImage/@i.ImageUri">
+                                                                            </a>
+                                                                            <span class="product-name-card">
+                                                                                @i.PersianTitle
+                                                                            </span>
+                                                                            <div class="header-basket-list-item-color-badge">
+                                                                                رنگ:
+                                                                                <span style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode"></span>
+                                                                            </div>
+                                                                            <div class="quantity">
+                                                                                <span class="quantity-Price-amount">
+                                                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
+                                                                                    <span>تومان</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="mini-cart-item">
+                                                                    <div class="mini-cart-item-content">
+                                                                        <span class="product-name-card">
+                                                                            سبد خالی
+                                                                        </span>
+
+                                                                    </div>
+                                                                </li>
+                                                            }
+                                                        }
+
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mini-card-total">
+                                            <strong>قیمت کل : </strong>
+                                            <span class="price-total">
+                                                @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                                <span>تومان</span>
+                                            </span>
+                                        </div>
+                                        <div class="mini-card-button">
+                                            <a href="@Url.Action("Basket", "Home")" class="view-card">مشاهده سبد خرید</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--    responsive-megamenu-mobile----------------->
+    <nav class="sidebar">
+        <div class="nav-header">
+            <div class="header-cover"></div>
+            <div class="logo-wrap">
+                <a class="logo-icon" href="@Url.Action("Index")">
+                    <img alt="logo-icon" src="/Images/Banner/parsme-logo.png" width="40">
+                </a>
+            </div>
+        </div>
+        <ul class="nav-categories ul-base">
+            @{
+                foreach (var c in categories)
+                {
+                    <li>
+                        <a href="#" class="collapsed" type="button" data-toggle="collapse" data-target="#collapse`@c.Id`"
+                           aria-expanded="false" aria-controls="collapse`@c.Id`">
+                            <i class="mdi mdi-chevron-down"></i>@c.Name
+                        </a>
+                        <div id="collapse`@c.Id`" class="collapse" aria-labelledby="heading`@c.Id`"
+                             data-parent="#accordionExample" style="">
+                            <ul>
+                                @foreach (var s in c.SubCategories)
+                                {
+                                    <li class="has-sub">
+                                        <a href="@Url.Action("Search", "Home", new { @s.Name })" class="category-level-2">@s.Name</a>
+                                        <ul>
+                                            @foreach (var b in s.Brands)
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })" class="category-level-3">@b.Title</a>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+    <div class="nav-btn nav-slider">
+        <span class="linee1"></span>
+        <span class="linee2"></span>
+        <span class="linee3"></span>
+    </div>
+    <div class="overlay"></div>
+    <!-- bottom-menu-joomy -->
+    <div class="bottom-menu-joomy">
+        <ul class="mb-0">
+            <li>
+                <a href="@Url.Action("Index")">
+                    <i class="mdi mdi-home"></i>
+                    صفحه اصلی
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <div class="nav-btn nav-slider">
+                        <i class="mdi mdi-menu" aria-hidden="true"></i>
+                    </div>
+                    دسته بندی ها
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Basket")">
+                    <i class="mdi mdi-cart"></i>
+                    سبد خرید
+                    <div class="shopping-bag-item">@basket.Count</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="mdi mdi-magnify"></i>
+                    جستجو
+                </a>
+            </li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>
+                    <a href="@Url.Action("Profile")">
+                        <i class="mdi mdi-account"></i>
+                        حساب کاربری
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </div>
+    <!--    responsive-megamenu-mobile----------------->
+    </div>
+    </header>
+
+}
+
+@section link
+{
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+}
+
+<div class="container-main">
+    <div class="d-block">
+        <section class="blog-checkout d-block order-1">
+            <div class="col-lg">
+                <div class="checkout woocommerce-checkout">
+                    <div class="content-checkout">
+                        <div class="middle-container">
+                            <form action="#" class="form-checkout">
+                                <div class="col2-set" id="customer-details">
+                                    <div class="col-12">
+                                        <div class="billing-fields mt-4">
+                                            <h4 class="text-success">سفارش دریافت شد</h4>
+                                            <p class="thankyou-order-received">
+                                                پرداخت با موفقیت انجام شد. سفارش شما
+                                                با موفقیت ثبت شد و در زمان تعیین شده برای شما ارسال خواهد شد.
+                                                از اینکه پارس می را برای خرید انتخاب کردید از شما سپاسگزاریم.
+                                            </p>
+                                            <ul class="order-overview">
+                                                <li class="order-overview-item">
+                                                    کد سفارش :
+                                                    <span>@factor.FactorCode</span>
+                                                </li>
+                                                <li class="order-overview-item">
+                                                    تاریخ :
+                                                    <span>@factor.InsertDate.ToPersianTime()</span>
+                                                </li>
+                                                <li class="order-overview-item">
+                                                    روش پرداخت :
+                                                    <span>پرداخت اینترنتی هوشمند</span>
+                                                </li>
+                                                <li class="order-overview-item">
+                                                    قیمت نهایی :
+                                                    @{
+                                                        var factorAmountPrice = factor.Amount - factor.AmountPrice;
+                                                        <span class="amount">
+                                                            @factorAmountPrice
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    }
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="order-review-heading">سفارش شما</h3>
+                                <div class="checkout-review-order">
+                                    <table class="checkout-review-order-table table table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="product-name">محصول</th>
+                                            <th scope="col" class="product-price">قیمت کل</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @{
+                                            foreach (var i in factor.Products.Select(x => x.ProductColor.Product).ToList())
+                                            {
+                                                <tr class="checkout-cart-item">
+                                                    <td class="product-name">@i.PersianTitle</td>
+                                                    <td class="product-price text-info">
+                                                        @if (i.IsOffer)
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                                <span class="amount">
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                                    <span>تومان</span>
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="amount">
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="amount">
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                        </tbody>
+                                        <tfoot>
+
+                                        <tr class="cart-subtotal">
+                                            <th>مجموع</th>
+                                            <td>
+                                                @{
+                                                    <span class="amount">
+                                                        @factorAmountPrice
+                                                        <span>تومان</span>
+                                                    </span>
+                                                }
+
+                                            </td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>حمل ونقل</th>
+                                            <td>
+                                                <div class="shipping-totals-item">
+                                                    @factor.PostMethod.Title :
+                                                    @{
+                                                        if (factor.PostMethod.Price > 0)
+                                                        {
+                                                            <span class="shipping-destination">
+
+                                                                factor.PostMethod.Price.ToString("N0");
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="shipping-destination">
+                                                                رایگان
+                                                            </span>
+                                                        }
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>روش پرداخت</th>
+                                            <td>
+                                                <div class="shipping-totals-item">
+                                                    <span class="shipping-destination">
+                                                        پرداخت اینترنتی
+                                                        هوشمند
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="cart-discount">
+                                            <th>تخفیف شما از این خرید</th>
+                                            <td data-title=" تخفیف شما از این خرید ">
+                                                <div class="price">
+                                                    @{
+                                                        var discount = factor.DiscountAmount + factor.AmountPrice;
+                                                        <span class="amount">
+                                                            @discount
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    }
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <div class="profile-address pr-3 pl-3 mt-5">
+                                        <div class="box-header">
+                                            <span class="box-title">نشانی ما</span>
+                                        </div>
+                                        <div class="profile-address-item">
+                                            <div class="profile-address-item-top">
+                                                <div class="profile-address-item-title">تهران ولیعصر</div>
+                                            </div>
+
+                                            <div class="profile-address-content">
+                                                <ul class="profile-address-info">
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <i class="mdi mdi-map-outline"></i>
+                                                            تهران ولیعصر
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <i class="mdi mdi-email-outline"></i>
+                                                            945789651235
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <i class="mdi mdi-phone"></i>
+                                                            0991*******
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="profile-address-info-item location">
+                                                            <i class="mdi mdi-account"></i>
+                                                            تهران ولیعصر
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
-</body>
-</html>
+
+@section script
+{
+    <script>
+        function CheckOut(){
+        console.log(getCheckedRadioId())
+            window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
+        }
+        function  CheckCode(){
+            $.ajax({
+                type: "Post",
+                data: {code: $('#DiscountCode').val()},
+                url: "/Home/DiscountCheck",
+                success: function (data) {
+                    alert("کد تخفیف معتبر است")
+                },
+                error: function (xhr) {
+                    console.dir(xhr)
+                    alert("کدتخفیف نامعتبر");
+                }
+            });
+        }
+        function getCheckedRadioId() {
+            const radioButtons = document.querySelectorAll('input[name="payment_method"]');
+            let checkedRadioId = null;
+            radioButtons.forEach(function(radio) {
+                if (radio.checked) {
+                    checkedRadioId = radio.id;
+                }
+            });
+            return checkedRadioId;
+        }
+    
+    
+    </script>
+    <!-- file js---------------------------------------------------->
+    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
+    <!-- plugin--/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+    <script src="/assetsCli/js/vendor/wNumb.js"></script>
+    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+    <!-- main js-/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/main.js"></script>
+}

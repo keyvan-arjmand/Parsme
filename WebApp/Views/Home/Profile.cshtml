@@ -379,7 +379,7 @@
                                 </header>
                                 <footer class="profile-box-content-footer">
                                     <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate.ToPersianTime()</span>
                                     <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
                                     <div class="profile-box-tabs">
                                         <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
@@ -448,17 +448,17 @@
                                         </td>
                                         <td>
                                             <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
+                                            <div class="value">@user.InsertDate.ToPersianTime()</div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
+                                            <div class="title"> شماره شبا :</div>
+                                            <div class="value">@user.Sheba</div>
                                         </td>
                                         <td>
                                             <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
+                                            <div class="value">@user.NationalCode</div>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -479,15 +479,15 @@
                                         </li>
                                         <li class="profile-item">
                                             <div class="title">تاریخ عضویت:</div>
-                                            <div class="value">@user.InsertDate</div>
+                                            <div class="value">@user.InsertDate.ToPersianTime()</div>
                                         </li>
                                         <li class="profile-item">
-                                            <div class="title"> دریافت خبرنامه :</div>
-                                            <div class="value">بله</div>
+                                            <div class="title"> شماره شبا :</div>
+                                            <div class="value">@user.Sheba</div>
                                         </li>
                                         <li class="profile-item">
                                             <div class="title"> کد ملی :</div>
-                                            <div class="value">-</div>
+                                            <div class="value">@user.NationalCode</div>
                                         </li>
                                     </ul>
                                 </div>

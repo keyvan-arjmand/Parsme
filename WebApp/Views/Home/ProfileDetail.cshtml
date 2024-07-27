@@ -380,7 +380,7 @@
                                 </header>
                                 <footer class="profile-box-content-footer">
                                     <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate.ToPersianTime()</span>
                                     <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
                                     <div class="profile-box-tabs">
                                         <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
@@ -471,7 +471,24 @@
                                                 </label>
                                                 <input type="text" name="email"
                                                        class="input-email-checkout form-control" value="@user.Email">
-
+                                                <label for="NationalCode">
+                                                    کد ملی
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
+                                                <input type="text" name="NationalCode"
+                                                       class="input-email-checkout form-control" value="@user.NationalCode">
+                                                <label for="Sheba">
+                                                    شماره شبا
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
+                                                <input type="text" name="Sheba"
+                                                       class="input-email-checkout form-control" value="@user.Sheba">
                                                 <label for="password">
                                                     رمز عبور قبلی
                                                     <abbr class="required"

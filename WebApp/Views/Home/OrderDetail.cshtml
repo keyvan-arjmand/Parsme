@@ -1,4 +1,5 @@
 ﻿@using Application.Common.Utilities
+@using Domain.Entity.Factor
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -9,7 +10,8 @@
     List<Product> basket = ViewBag.BasketProd;
     Domain.Entity.User.User user = ViewBag.User;
     List<SearchResult> searchResults = ViewBag.Search;
-
+    Factor factor = ViewBag.Order;
+    var factorAmountPrice = factor.Amount - factor.AmountPrice;
 }
 
 @section link
@@ -380,7 +382,7 @@
                                 </header>
                                 <footer class="profile-box-content-footer">
                                     <span class="profile-box-nameuser">@user.Name @user.Family</span>
-                                    <span class="profile-box-registery-date">@user.InsertDate</span>
+                                    <span class="profile-box-registery-date">@user.InsertDate.ToPersianTime()</span>
                                     <span class="profile-box-phone">شماره همراه : *******@user.PhoneNumber.Substring(0, 4)</span>
                                     <div class="profile-box-tabs">
                                         <a href="@Url.Action("Logout", "Home")" class="profile-box-tab-sign-out">
@@ -440,15 +442,44 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td class="product-name">گوشی موبایل اپل مدل iPhone 13 CH دو سیم‌ کارت ظرفیت 256 گیگابایت و رم 4 گیگابایت - نات اکتیو</td>
-                                            <td class="product-total">
-                                                <span class="amount">
-                                                    <span>تومان</span>
-                                                    40,000,000
-                                                </span>
-                                            </td>
-                                        </tr>
+                                        @{
+                                            foreach (var i in factor.Products.Select(x=>x.ProductColor.Product).ToList())
+                                            {
+                                                <tr>
+                                                    <td class="product-name">@i.PersianTitle</td>
+                                                    <td class="product-total">
+                                                        <span class="amount">
+                                                            <span>تومان</span>
+                                                            @if (i.IsOffer)
+                                                            {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                            <span class="amount">
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                                <span>تومان</span>
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                            <span class="amount">
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                                </span>
+                                                            }
+                                                            }
+                                                            else
+                                                            {
+                                                            <span class="amount">
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                      
                                         </tbody>
                                         <tfoot>
                                         <tr>
@@ -456,28 +487,25 @@
                                             <td>
                                                 <span class="amount">
                                                     <span>تومان</span>
-                                                    40,000,000
+                                                    @factorAmountPrice.ToString("N0")
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">حمل و نقل:</th>
-                                            <td>حمل و نقل رایگان</td>
+                                            <td>@factor.PostMethod.Title</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">روش پرداخت:</th>
                                             <td>انتقال مستقیم بانکی</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">تعداد</th>
-                                            <td>1</td>
-                                        </tr>
+                                     
                                         <tr>
                                             <th scope="row">قیمت نهایی:</th>
                                             <td>
                                                 <span class="amount">
                                                     <span>تومان</span>
-                                                   40,000,000
+                                                    @factorAmountPrice.ToString("N0")
                                                 </span>
                                             </td>
                                         </tr>
@@ -485,35 +513,39 @@
                                     </table>
                                     <br>
                                     <br>
-                                    <div class="order-view-customer">
+                                    <div class="profile-address pr-3 pl-3 mt-5">
                                         <div class="box-header">
                                             <span class="box-title">نشانی ما</span>
                                         </div>
                                         <div class="profile-address-item">
+                                            <div class="profile-address-item-top">
+                                                <div class="profile-address-item-title">تهران ولیعصر</div>
+                                            </div>
+
                                             <div class="profile-address-content">
                                                 <ul class="profile-address-info">
                                                     <li>
                                                         <div class="profile-address-info-item location">
-                                                            <span class="title-address">آدرس : </span>
-                                                            خراسان شمالی، بجنورد
+                                                            <i class="mdi mdi-map-outline"></i>
+                                                            تهران ولیعصر
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="profile-address-info-item location">
-                                                            <span class="title-address">ایمیل : </span>
-                                                            info@digismart.com
+                                                            <i class="mdi mdi-email-outline"></i>
+                                                            945789651235
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="profile-address-info-item location">
-                                                            <span class="title-address">شماره تلفن : </span>
+                                                            <i class="mdi mdi-phone"></i>
                                                             0991*******
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="profile-address-info-item location">
-                                                            <span class="title-address">کد پستی : </span>
-                                                            945789651235
+                                                            <i class="mdi mdi-account"></i>
+                                                            تهران ولیعصر
                                                         </div>
                                                     </li>
                                                 </ul>
