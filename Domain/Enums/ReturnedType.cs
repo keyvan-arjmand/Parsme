@@ -2,5 +2,5 @@
 
 public enum ReturnedType
 {
-    
+    destruction=0
 }

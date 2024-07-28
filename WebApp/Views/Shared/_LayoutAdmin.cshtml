@@ -53,7 +53,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
         textarea {
             min-height: 40px;
         }
-
+        
         .modal {
             z-index: 1041;
         }
@@ -207,15 +207,15 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                             </a>
                                             <ul class="nav nav-treeview">
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("ManageFactor", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>سفارش محصول</p>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a href="@Url.Action("dd", "Admin")" class="nav-link ">
+                                                    <a href="@Url.Action("ManageReturnedFactor", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>برگشت از فروش</p>
+                                                        <p>مرجوعی سفارش</p>
                                                     </a>
                                                 </li>
 
@@ -303,6 +303,18 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                         <p>نتایج جستجو</p>
                                                     </a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ManageSearchResult", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>درباره ما</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ManageSearchResult", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>تماس با ما</p>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
 
@@ -325,7 +337,7 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                 <li class="nav-item">
                                     <a href="@Url.Action("ManageContact", "Admin")" class="nav-link">
                                         <i class="fa fa-phone nav-icon"></i>
-                                        <p>تماس با ما</p>
+                                        <p>پیام ها</p>
                                     </a>
                                 </li>
                             </ul>

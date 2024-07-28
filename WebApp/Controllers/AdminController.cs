@@ -10,6 +10,7 @@ using Application.Dtos.Products;
 using Application.Dtos.User;
 using Application.Interfaces;
 using Application.Products.Commands;
+using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
@@ -100,8 +101,66 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+ public async Task<ActionResult> ManageFactor(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
 
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .Where(x=>x.DiscountCode.Contains(search)||x.Desc.Contains(search)||x.FactorCode.Contains(search))
+                    .OrderByDescending(x=>x.InsertDate)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .OrderByDescending(x=>x.InsertDate)
+                    .ToListAsync();
+            }
+            
+            #endregion
 
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> FactorDetail(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .FirstOrDefaultAsync(x=>x.Id==id);
+            #endregion
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
     public async Task<ActionResult> Brand(string search)
     {
         if (User.Identity.IsAuthenticated)

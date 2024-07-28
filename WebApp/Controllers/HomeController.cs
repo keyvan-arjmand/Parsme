@@ -565,7 +565,73 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
     }
+    public async Task<IActionResult> ReturnedFactor(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+                .Include(x => x.SubCategories)
+                .ThenInclude(x => x.Brands)
+                .ToListAsync();
+            ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
+                           new User();
+            var basketProducts = new List<Product>();
+            if (HttpContext.Session.GetString("basket") != null)
+            {
+                var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
+                    .ToList();
+                foreach (var i in basketList)
+                {
+                    var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                        .FirstOrDefaultAsync(x => x.Id == i);
 
+                    var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                        .ThenInclude(x => x.Color)
+                        .Include(x => x.Offer)
+                        .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                    prod.ProductColors = new List<ProductColor>() { prodColor };
+                    basketProducts.Add(prod!);
+                }
+            }
+
+            ViewBag.BasketProd = basketProducts;
+            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Index","Home");
+        }
+    }
+    public async Task<IActionResult> InsertReturnedFactor(int id, string Desc, int Type)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            factor.IsReturned = true;
+            await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+            await _work.GenericRepository<ReturnedFactor>().AddAsync(new ReturnedFactor
+            {
+                ReturnedType = (ReturnedType)Type,
+                InsertDate = DateTime.Now,
+                FactorId = id,
+                Desc = Desc
+            }, CancellationToken.None);
+            return RedirectToAction("UserOrder");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
     public async Task<IActionResult> UpdateAddress(int id, string name, string address, int cityId, string number,
         string postCode)
     {

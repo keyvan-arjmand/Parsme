@@ -131,7 +131,7 @@
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a  class="current-link-menu">
+                                <a class="current-link-menu">
                                     <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
@@ -140,7 +140,7 @@
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })" class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -443,7 +443,7 @@
                                         </thead>
                                         <tbody>
                                         @{
-                                            foreach (var i in factor.Products.Select(x=>x.ProductColor.Product).ToList())
+                                            foreach (var i in factor.Products.Select(x => x.ProductColor.Product).ToList())
                                             {
                                                 <tr>
                                                     <td class="product-name">@i.PersianTitle</td>
@@ -452,34 +452,34 @@
                                                             <span>تومان</span>
                                                             @if (i.IsOffer)
                                                             {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                            {
-                                                            <span class="amount">
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
-                                                                <span>تومان</span>
-                                                                </span>
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                {
+                                                                    <span class="amount">
+                                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                                        <span>تومان</span>
+                                                                    </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="amount">
+                                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                        <span>تومان</span>
+                                                                    </span>
+                                                                }
                                                             }
                                                             else
                                                             {
-                                                            <span class="amount">
+                                                                <span class="amount">
                                                                     @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                                <span>تومان</span>
+                                                                    <span>تومان</span>
                                                                 </span>
-                                                            }
-                                                            }
-                                                            else
-                                                            {
-                                                            <span class="amount">
-                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                                <span>تومان</span>
-                                                            </span>
                                                             }
                                                         </span>
                                                     </td>
                                                 </tr>
                                             }
                                         }
-                                      
+
                                         </tbody>
                                         <tfoot>
                                         <tr>
@@ -499,7 +499,7 @@
                                             <th scope="row">روش پرداخت:</th>
                                             <td>انتقال مستقیم بانکی</td>
                                         </tr>
-                                     
+
                                         <tr>
                                             <th scope="row">قیمت نهایی:</th>
                                             <td>
@@ -512,6 +512,23 @@
                                         </tfoot>
                                     </table>
                                     <br>
+                                    @if (factor.IsReturned)
+                                    {
+                                        <div class="p-3">
+                                            <span class="p-2 badge badge-info d-block">درخواست مرجوعی شما در حال پیگیری میباشد</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="">
+                                            <a href="@Url.Action("ReturnedFactor", "Home", new { factor.Id })" style="width: 150px"
+                                               class="btn btn-warning d-block">
+                                                درخواست مرجوعی
+                                            </a>
+                                        </div>
+                                    }
+
+
                                     <br>
                                     <div class="profile-address pr-3 pl-3 mt-5">
                                         <div class="box-header">
@@ -561,6 +578,7 @@
         </section>
     </div>
 </div>
+
 @section script
 {
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>

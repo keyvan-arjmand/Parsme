@@ -2,5 +2,5 @@
 
 public enum ReturnedStatus
 {
-    
+    Peending=0
 }
