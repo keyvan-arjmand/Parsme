@@ -12,6 +12,7 @@ List<Product> basket = ViewBag.BasketProd;
 Domain.Entity.User.User user = ViewBag.User;
 List<SearchResult> searchResults = ViewBag.Search as List<SearchResult>;
 List<Faq> faqs = ViewBag.Faq;
+ContactPage Contact = ViewBag.Contact;
 }
 
 
@@ -455,27 +456,7 @@ List<Faq> faqs = ViewBag.Faq;
                             <span class="box-title">اطلاعات پارس می</span>
                         </div>
                         <div class="contact-us-row">
-                            <div class="contact-us-address-container">
-                                <div class="contact-us-address-header">
-                                    دفتر مرکزی
-                                </div>
-                                <div class="contact-us-address-text">
-                                    استان تهران - شهر تهران - خیابان ۸
-                                </div>
-                                <div class="contact-us-address-header">
-                                    تماس با گارانتی
-                                </div>
-                                <div class="contact-us-address-text">
-                                    برای پیگیری کالاهایی که با کارت گارانتی پارس می به فروش می رسند با شماره
-                                    ۶۱۹۳۰۰۱۰−۰۲۱ تماس بگیرید
-                                </div>
-                                <div class="contact-us-address-header">
-                                    ایمیل سازمانی
-                                </div>
-                                <div class="contact-us-address-text">
-                                    info@parsme
-                                </div>
-                            </div>
+                          @Html.Raw(Contact.Desc)
                         </div>
                     </div>
                 </div>

@@ -91,6 +91,9 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<int?>("FactorId")
                         .HasColumnType("int");
 
@@ -207,6 +210,30 @@ namespace Domain.Migrations
                     b.HasIndex("FactorId");
 
                     b.ToTable("ReturnedFactors");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.AboutUsPage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Head")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AboutUsPages");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.Banner", b =>
@@ -339,6 +366,26 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Banners");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.ContactPage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactPages");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.ContactUs", b =>

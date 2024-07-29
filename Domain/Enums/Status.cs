@@ -9,7 +9,7 @@ public enum Status
     [Display(Name = "رد شده")]
     Rejected = 1,
     [Display(Name = "در حال پردازش")]
-    Pending=3,
+    Pending=2,
     [Display(Name = "مرجوعی")]
-    Returned = 4
+    Returned = 3
 }

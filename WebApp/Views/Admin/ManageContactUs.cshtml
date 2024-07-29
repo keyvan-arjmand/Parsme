@@ -1,0 +1,105 @@
+﻿@using Domain.Entity.IndexPage
+@using Domain.Entity.Product
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+Layout = "_LayoutAdmin";
+ContactPage about = ViewBag.Contact;
+}
+
+@section link
+{
+<style>
+    .modal{
+        top: 80px;
+    }
+</style>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت صفحه درباره ما</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- /.col -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2 d-flex justify-content-start">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">تماس با ما</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-between p-2"
+                                      asp-action="InsertContactUs" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <div class="form-group w-100">
+                                        <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <textarea id="editor1" name="desc" style="width: 100%">
+@about.Desc
+                                                                                       
+</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="d-flex flex-column align-content-center justify-content-center ">
+                                        <div class="form-input">
+                                            <button type="submit" class="btn btn-primary">ثبت</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@section script{
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+
+    $(document).ready(function () {
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .then(function (editor) {
+                const htmlString = '@Html.Raw(about.Desc)';
+                editor.setData(htmlString);
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+  
+
+        // bootstrap WYSIHTML5 - text editor
+
+        $('.textarea').wysihtml5({
+            toolbar: {fa: true}
+        })
+    });
+</script>
+
+}

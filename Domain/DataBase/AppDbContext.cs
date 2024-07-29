@@ -54,6 +54,8 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<LogFactor> LogFactors { set; get; }
     public DbSet<LogReturnedFactor> LogReturnedFactors { set; get; }
     public DbSet<ReturnedFactor> ReturnedFactors { set; get; }
+    public DbSet<ContactPage> ContactPages { set; get; }
+    public DbSet<AboutUsPage> AboutUsPages { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

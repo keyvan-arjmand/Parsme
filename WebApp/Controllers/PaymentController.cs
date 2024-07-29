@@ -113,6 +113,8 @@ public class PaymentController : Controller
                 Desc = desc,
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
+            discount.Count--;
+            await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
             foreach (var i in JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
                          .ToList())
             {

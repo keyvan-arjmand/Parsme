@@ -61,7 +61,7 @@ public class AdminController : Controller
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
                 .Include(x => x.Brand)
-                .OrderByDescending(x=>x.InsertDate)
+                .OrderByDescending(x => x.InsertDate)
                 .ToListAsync();
 
             #endregion
@@ -72,7 +72,9 @@ public class AdminController : Controller
         {
             return View("Login");
         }
-    }  public async Task<ActionResult> ManageDiscount(string search)
+    }
+
+    public async Task<ActionResult> ManageDiscount(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -81,17 +83,17 @@ public class AdminController : Controller
             if (!string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.DiscountCode = await _work.GenericRepository<DiscountCode>().TableNoTracking
-                    .Where(x=>x.Code.Contains(search))
-                    .OrderByDescending(x=>x.Id)
+                    .Where(x => x.Code.Contains(search))
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
             }
             else
             {
                 ViewBag.DiscountCode = await _work.GenericRepository<DiscountCode>().TableNoTracking
-                    .OrderByDescending(x=>x.Id)
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
             }
-            
+
             #endregion
 
             return View();
@@ -101,7 +103,8 @@ public class AdminController : Controller
             return View("Login");
         }
     }
- public async Task<ActionResult> ManageFactor(string search)
+
+    public async Task<ActionResult> ManageFactor(string search)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -109,28 +112,158 @@ public class AdminController : Controller
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
+                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
                     .Include(x => x.User)
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
                     .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
-                    .Where(x=>x.DiscountCode.Contains(search)||x.Desc.Contains(search)||x.FactorCode.Contains(search))
-                    .OrderByDescending(x=>x.InsertDate)
+                    .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
+                                x.FactorCode.Contains(search))
+                    .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
             else
             {
-                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
+                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
                     .Include(x => x.User)
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
                     .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
-                    .OrderByDescending(x=>x.InsertDate)
+                    .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
-            
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> SalesInvoice(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
+                                x.FactorCode.Contains(search))
+                    .OrderByDescending(x => x.InsertDate)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .OrderByDescending(x => x.InsertDate)
+                    .ToListAsync();
+            }
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> ManageReturnedFactor(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Factors =
+                    await _work.GenericRepository<ReturnedFactor>().TableNoTracking
+                        .Include(x => x.Factor).ThenInclude(x => x.User)
+                        .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
+                        .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
+                        .Include(x => x.Factor).ThenInclude(x => x.Products)
+                        .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Brand)
+                        .Include(x => x.Factor).ThenInclude(x => x.Products)
+                        .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Color)
+                        .Where(x => x.Factor.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
+                                    x.Factor.FactorCode.Contains(search))
+                        .OrderByDescending(x => x.InsertDate)
+                        .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Factors = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
+                    .Include(x => x.Factor).ThenInclude(x => x.User)
+                    .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
+                    .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
+                    .Include(x => x.Factor).ThenInclude(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Brand)
+                    .Include(x => x.Factor).ThenInclude(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Color)
+                    .OrderByDescending(x => x.InsertDate)
+                    .ToListAsync();
+            }
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> IncomeReport(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Factors =
+                    await _work.GenericRepository<Factor>().TableNoTracking
+                        .Include(x => x.User)
+                        .Include(x => x.PostMethod)
+                        .Include(x => x.UserAddress)
+                        .Include(x => x.Products)
+                        .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                        .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
+                                    x.FactorCode.Contains(search))
+                        .OrderByDescending(x => x.InsertDate)
+                        .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                    .Include(x => x.User)
+                    .Include(x => x.PostMethod)
+                    .Include(x => x.UserAddress)
+                    .Include(x => x.Products)
+                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                    .OrderByDescending(x => x.InsertDate)
+                    .ToListAsync();
+            }
+
             #endregion
 
             return View();
@@ -146,14 +279,21 @@ public class AdminController : Controller
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
-                ViewBag.Factors =  await _work.GenericRepository<Factor>().TableNoTracking
-                    .Include(x => x.User)
-                    .Include(x => x.PostMethod)
-                    .Include(x => x.UserAddress)
-                    .Include(x => x.Products)
-                    .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
-                    .FirstOrDefaultAsync(x=>x.Id==id);
+
+            ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress).ThenInclude(q => q.City)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Color)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Logs = await _work.GenericRepository<LogFactor>().TableNoTracking.Include(x => x.User)
+                .Where(x => x.FactorId == id).ToListAsync();
+
             #endregion
+
             return View();
         }
         else
@@ -161,6 +301,205 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+
+    public async Task<ActionResult> ManageContactUs()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            ViewBag.Contact = await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+    public async Task<ActionResult> ManageAboutUs()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            ViewBag.Contact = await _work.GenericRepository<AboutUsPage>().TableNoTracking.FirstOrDefaultAsync();
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+    public async Task<ActionResult> InsertContactUs(string desc)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            var result = await _work.GenericRepository<ContactPage>().Table.FirstOrDefaultAsync();
+            if (result != null)
+            {
+                result.Desc = desc;
+                await _work.GenericRepository<ContactPage>().UpdateAsync(result, CancellationToken.None);
+            }
+            else
+            {
+                await _work.GenericRepository<ContactPage>().AddAsync(new ContactPage
+                {
+                    Desc = desc
+                }, CancellationToken.None);
+            }
+
+            #endregion
+
+            return RedirectToAction("ManageContactUs");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> InsertAboutUs(string head, string body)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+        
+            var result = await _work.GenericRepository<AboutUsPage>().Table.FirstOrDefaultAsync();
+            if (result != null)
+            {
+                result.Body = body;
+                result.Head = head;
+                await _work.GenericRepository<AboutUsPage>().UpdateAsync(result, CancellationToken.None);
+            }
+            else
+            {
+                await _work.GenericRepository<AboutUsPage>().AddAsync(new AboutUsPage
+                {
+                    Body = body,
+                    Head = head
+                }, CancellationToken.None);
+            }
+            #endregion
+
+            return RedirectToAction("ManageAboutUs");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> Invoice(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress).ThenInclude(q => q.City)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Color)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Logs = await _work.GenericRepository<LogFactor>().TableNoTracking.Include(x => x.User)
+                .Where(x => x.FactorId == id).ToListAsync();
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> ReturnedFactorDetail(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            ViewBag.Factors = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
+                .Include(x => x.Factor).ThenInclude(x => x.User)
+                .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
+                .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
+                .Include(x => x.Factor).ThenInclude(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Brand)
+                .Include(x => x.Factor).ThenInclude(x => x.Products)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Color)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Logs = await _work.GenericRepository<LogReturnedFactor>().TableNoTracking.Include(x => x.User)
+                .Where(x => x.ReturnedFactorId == id).ToListAsync();
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> ChangeStatus(int id, string desc, int status)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            factor.Status = (Status)status;
+            var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+            await _work.GenericRepository<LogFactor>().AddAsync(new LogFactor
+            {
+                InsertDate = DateTime.Now,
+                UserId = admin.Id,
+                FactorId = factor.Id,
+                Desc = desc,
+            }, CancellationToken.None);
+            await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+            return RedirectToAction("FactorDetail", "Admin", new { factor.Id });
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> ChangeReturnedStatus(int id, string desc, int status)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var factor = await _work.GenericRepository<ReturnedFactor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            factor.ReturnedStatus = (ReturnedStatus)status;
+            var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+            await _work.GenericRepository<LogReturnedFactor>().AddAsync(new LogReturnedFactor()
+            {
+                InsertDate = DateTime.Now,
+                UserId = admin.Id,
+                ReturnedFactorId = factor.Id,
+                Desc = desc,
+            }, CancellationToken.None);
+            await _work.GenericRepository<ReturnedFactor>().UpdateAsync(factor, CancellationToken.None);
+            return RedirectToAction("ReturnedFactorDetail", "Admin", new { factor.Id });
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
     public async Task<ActionResult> Brand(string search)
     {
         if (User.Identity.IsAuthenticated)
@@ -467,6 +806,7 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+
     public async Task<ActionResult> ManageContact(string search)
     {
         if (User.Identity.IsAuthenticated)
@@ -474,15 +814,15 @@ public class AdminController : Controller
             if (!string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.Contact = await _work.GenericRepository<ContactUs>().TableNoTracking
-                    .Where(x=>x.Name.Contains(search)||x.PhoneNumber.Contains(search)||x.Message.Contains(search))
-                    .OrderByDescending(x => x.InsertDate).ToListAsync();   
+                    .Where(x => x.Name.Contains(search) || x.PhoneNumber.Contains(search) || x.Message.Contains(search))
+                    .OrderByDescending(x => x.InsertDate).ToListAsync();
             }
             else
             {
                 ViewBag.Contact = await _work.GenericRepository<ContactUs>().TableNoTracking
                     .OrderByDescending(x => x.InsertDate).ToListAsync();
             }
-         
+
             return View();
         }
         else
@@ -490,6 +830,7 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+
     public async Task<ActionResult> ManageCategory(string search, int index)
     {
         if (User.Identity.IsAuthenticated)
@@ -1079,7 +1420,8 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
-    public async Task<ActionResult> UpdateFaq(int id,string title, string desc)
+
+    public async Task<ActionResult> UpdateFaq(int id, string title, string desc)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1094,6 +1436,7 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+
     public async Task<ActionResult> InsertFaq(string title, string desc)
     {
         if (User.Identity.IsAuthenticated)
@@ -1111,9 +1454,7 @@ public class AdminController : Controller
         }
     }
 
-    
-    
-    
+
     public async Task<ActionResult> ManageSearchResult(string search, int page = 1)
     {
         if (User.Identity.IsAuthenticated)
@@ -1136,7 +1477,8 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
-    public async Task<ActionResult> UpdateSearchResult(int id,string value, string href)
+
+    public async Task<ActionResult> UpdateSearchResult(int id, string value, string href)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1151,14 +1493,15 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+
     public async Task<ActionResult> InsertSearchResult(string value, string href)
     {
         if (User.Identity.IsAuthenticated)
         {
             await _work.GenericRepository<SearchResult>().AddAsync(new SearchResult()
             {
-               Value = value,
-               Href = href
+                Value = value,
+                Href = href
             }, CancellationToken.None);
             return RedirectToAction("ManageSearchResult");
         }
@@ -1168,10 +1511,8 @@ public class AdminController : Controller
         }
     }
 
-    
-    
-    
-    public async Task<ActionResult> UpdateDiscount(int id,string code, double amount , int count)
+
+    public async Task<ActionResult> UpdateDiscount(int id, string code, double amount, int count)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1187,16 +1528,17 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
-    public async Task<ActionResult> InsertDiscount(string code, double amount , int count)
+
+    public async Task<ActionResult> InsertDiscount(string code, double amount, int count)
     {
         if (User.Identity.IsAuthenticated)
         {
             await _work.GenericRepository<DiscountCode>().AddAsync(new DiscountCode()
             {
-               Count = count,
-               Amount = amount,
-               Code = code,
-               IsActive = true
+                Count = count,
+                Amount = amount,
+                Code = code,
+                IsActive = true
             }, CancellationToken.None);
             return RedirectToAction("ManageSearchResult");
         }
@@ -1206,7 +1548,7 @@ public class AdminController : Controller
         }
     }
 
-    
+
     public async Task<ActionResult> ManageState(string search, int index)
     {
         if (User.Identity.IsAuthenticated)

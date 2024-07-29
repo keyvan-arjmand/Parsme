@@ -5,28 +5,16 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 Layout = "_LayoutAdmin";
-List<Factor> factors = ViewBag.Factors;
+List<ReturnedFactor> factors = ViewBag.Factors;
 }
 
 @section link
 {
-    <style>
+<style>
     .modal{
         top: 80px;
     }
 </style>
-<link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
-<!-- IonIcons -->
-<!-- Theme style -->
-<link rel="stylesheet" href="/dist/css/adminlte.min.css">
-<!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
-<!-- bootstrap rtl -->
-<link rel="stylesheet" href="/dist/css/bootstrap-rtl.min.css">
-<!-- template rtl version -->
-<link rel="stylesheet" href="/dist/css/custom-style.css">
-
 }
 
 <div class="content-header">
@@ -52,69 +40,18 @@ List<Factor> factors = ViewBag.Factors;
             <!-- /.col -->
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header no-border">
-                        <h3 class="card-title">بررسی اجمالی فروشگاه آنلاین</h3>
-                        <div class="card-tools">
-                            <a href="#" class="btn btn-sm btn-tool">
-                                <i class="fa fa-download"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-tool">
-                                <i class="fa fa-bars"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                            <p class="text-success text-xl text-center">
-                                <i class="fa fa-shopping-basket"></i>
-                            </p>
-                            <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-up text-success"></i> @factors.Count
-                    </span>
-                                <span class="text-muted">سفارشات کل</span>
-                            </p>
-                        </div>
-                        <!-- /.d-flex -->
-                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                            <p class="text-warning text-xl text-center">
-                                <i class="fa fa-shopping-cart"></i>
-                            </p>
-                            <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-up text-warning"></i>@factors.Where(x=>x.InsertDate>=DateTime.Now).ToList().Count
-                    </span>
-                                <span class="text-muted">سفارشات امروز</span>
-                            </p>
-                        </div>
-                        <!-- /.d-flex -->
-                        <div class="d-flex justify-content-between align-items-center mb-0">
-                            <p class="text-danger text-xl text-center">
-                                <i class="fa fa-archive"></i>
-                            </p>
-                            <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-down text-danger "></i> @factors.Where(x=>x.IsReturned).ToList().Count
-                    </span>
-                                <span class="text-muted">تعداد مرجوعی</span>
-                            </p>
-                        </div>
-                        <!-- /.d-flex -->
-                    </div>
-                </div>
-                <div class="card">
                     <div class="card-header p-2 d-flex justify-content-start">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <a class="nav-link active show" href="#activity" data-toggle="tab">سفارشات</a>
                             </li>
                         </ul>
-
+                   
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="card mt-3">
-                                <form asp-action="ManageFactor" asp-controller="Admin" method="post">
+                                <form asp-action="ManageReturnedFactor" asp-controller="Admin" method="post">
                                     <div class="input-group p-3  m-2 w-50">
                                         <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
                                         <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
@@ -128,40 +65,42 @@ List<Factor> factors = ViewBag.Factors;
                                             <th class="text-center" style="width: 5%">id</th>
                                             <th class="text-center" style="width: 10%">کد فاکتور</th>
                                             <th class="text-center" style="width: 20%">نام کاربر</th>
+                                            <th class="text-center" style="width: 20%">علت مرجوعی</th>
                                             <th class="text-center" style="width: 25%">مبلغ</th>
                                             <th class="text-center" style="width: 10%">تاریخ</th>
                                             <th class="text-center" style="width: 20%">وضعیت</th>
                                             <th class="text-center" style="width: 10%">#</th>
                                         </tr>
                                         @{
-                                            if (factors.Count < 1)
-                                            {
-                                                <tr>
-                                                    <td> </td>
-                                                    <td> </td>
-                                                    <td class="text-center">
-                                                        یافت نشد
+                                        if (factors.Count < 1)
+                                        {
+                                        <tr>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td class="text-center">
+                                                یافت نشد
 
-                                                    </td>
-                                                </tr>
-                                            }
-                                            else
-                                            {
-                                                foreach (var i in factors)
-                                                {
-                                                    <tr>
-                                                        <td class="text-center">@i.Id</td>
-                                                        <td class="text-center">@i.FactorCode</td>
-                                                        <td class="text-center">@i.User.Name @i.User.Family</td>
-                                                        <td class="text-center">@i.Amount.ToString("N0")</td>
-                                                        <td class="text-center">@i.InsertDate.ToPersianTime()</td>
-                                                        <td class="text-center">@i.Status.ToDisplay()</td>
-                                                        <td class="text-center">
-                                                            <a class="badge bg-warning text-muted" href="@Url.Action("FactorDetail", "Admin", new { @i.Id })">مشاهده</a>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            }
+                                            </td>
+                                        </tr>
+                                        }
+                                        else
+                                        {
+                                        foreach (var i in factors)
+                                        {
+                                        <tr>
+                                            <td class="text-center">@i.Id</td>
+                                            <td class="text-center">@i.Factor.FactorCode</td>
+                                            <td class="text-center">@i.Factor.User.Name @i.Factor.User.Family</td>
+                                            <td class="text-center">@i.ReturnedType.ToDisplay()</td>
+                                            <td class="text-center">@i.Factor.Amount.ToString("N0")</td>
+                                            <td class="text-center">@i.InsertDate.ToPersianTime()</td>
+                                            <td class="text-center">@i.ReturnedStatus.ToDisplay()</td>
+                                            <td class="text-center">
+                                                    <a class="badge bg-warning text-muted" href="@Url.Action("ReturnedFactorDetail","Admin",new {@i.Id})">مشاهده</a>
+                                            </td>
+                                        </tr>
+                                        }
+                                        }
                                         }
                                         </tbody>
                                     </table>
@@ -224,7 +163,7 @@ List<Factor> factors = ViewBag.Factors;
         });
 
     });
+ 
 </script>
-<script src="/dist/js/pages/dashboard3.js"></script>
 
 }

@@ -886,6 +886,7 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
+        ViewBag.About = await _work.GenericRepository<AboutUsPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 
@@ -917,6 +918,7 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
+        ViewBag.Contact=await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 
