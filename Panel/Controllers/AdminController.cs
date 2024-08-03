@@ -1088,6 +1088,11 @@ public class AdminController : Controller
     {
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         return View();
+    } 
+    public async Task<IActionResult> ManageSlider()
+    {
+        ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
+        return View();
     }
 
 
@@ -1119,15 +1124,6 @@ public class AdminController : Controller
                 BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner"),
                 BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref,
                 BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref,
-                SliderImage = up.Uploadfile(request.SliderImage, "Banner"),
-                SliderImage1 = up.Uploadfile(request.SliderImage1, "Banner"),
-                SliderImage2 = up.Uploadfile(request.SliderImage2, "Banner"),
-                SliderHref = request.SliderHref,
-                SliderHref1 = request.SliderHref1,
-                SliderHref2 = request.SliderHref2,
-                SliderTitle = request.SliderTitle,
-                SliderTitle1 = request.SliderTitle1,
-                SliderTitle2 = request.SliderTitle2,
             }, CancellationToken.None);
         }
         else
@@ -1167,6 +1163,38 @@ public class AdminController : Controller
             banners.SmallBannerMiddle4Href = request.SmallBannerMiddle4Href;
             banners.SmallSideBannerHref = request.SmallSideBannerHref;
 
+            banners.BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner");
+            banners.BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner");
+            banners.BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref;
+            banners.BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref;
+            await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
+        }
+
+        return RedirectToAction("ManageBanner");
+    }
+ public async Task<IActionResult> UpdateSlider(BannerDto request)
+    {
+        if (request.Id <= 0)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+
+            await _work.GenericRepository<Banner>().AddAsync(new Banner
+            {
+                SliderImage = up.Uploadfile(request.SliderImage, "Banner"),
+                SliderImage1 = up.Uploadfile(request.SliderImage1, "Banner"),
+                SliderImage2 = up.Uploadfile(request.SliderImage2, "Banner"),
+                SliderHref = request.SliderHref,
+                SliderHref1 = request.SliderHref1,
+                SliderHref2 = request.SliderHref2,
+                SliderTitle = request.SliderTitle,
+                SliderTitle1 = request.SliderTitle1,
+                SliderTitle2 = request.SliderTitle2,
+            }, CancellationToken.None);
+        }
+        else
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var banners = await _work.GenericRepository<Banner>().GetByIdAsync(CancellationToken.None, request.Id);
             banners.SliderHref = request.SliderHref;
             banners.SliderHref1 = request.SliderHref1;
             banners.SliderHref2 = request.SliderHref2;
@@ -1183,16 +1211,11 @@ public class AdminController : Controller
             banners.SliderTitle = request.SliderTitle;
             banners.SliderTitle1 = request.SliderTitle1;
             banners.SliderTitle2 = request.SliderTitle2;
-            banners.BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner");
-            banners.BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner");
-            banners.BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref;
-            banners.BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref;
             await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
         }
 
-        return RedirectToAction("ManageBanner");
+        return RedirectToAction("ManageSlider");
     }
-
     public async Task<ActionResult> Login()
     {
         return View();
@@ -1855,7 +1878,7 @@ public class AdminController : Controller
             }
             else
             {
-                await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(new Domain.Entity.Product.Offer
+                var offerInsert = new Domain.Entity.Product.Offer
                 {
                     Days = request.Offer.Days.ToInt(),
                     ProductId = product.Id,
@@ -1864,7 +1887,11 @@ public class AdminController : Controller
                     ColorId = request.Offer.ColorId.ToInt(),
                     Minutes = request.Offer.Minutes.ToInt(),
                     Hours = request.Offer.Hours.ToInt(),
-                }, CancellationToken.None);
+                };
+                await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(offerInsert, CancellationToken.None);
+                product.OfferId = offerInsert.Id;
+                await _work.GenericRepository<Product>().UpdateAsync(product, CancellationToken.None);
+
             }
         }
 

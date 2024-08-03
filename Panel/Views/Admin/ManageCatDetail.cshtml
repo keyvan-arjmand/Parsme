@@ -347,7 +347,7 @@
             }
         });
         $('#DataTypeInp').on('change', function() {
-            if ($(this).val() == '1' || $('#DataTypeInp').val() == '3') {
+            if ($(this).val() == '1' ) {
                 $('#OptionInp').show();
                 $('#FlexDataType').addClass("justify-content-between");
                 $('#FlexDataType').removeClass("justify-content-start gap-4");
@@ -359,7 +359,7 @@
         });
 
         // Initial check to set the correct visibility based on the default selected value
-        if ($('#DataTypeInp').val() == '1' || $('#DataTypeInp').val() == '3') {
+        if ($('#DataTypeInp').val() == '1') {
             $('#OptionInp').show();
             $('#FlexDataType').addClass("justify-content-between");
             $('#FlexDataType').removeClass("justify-content-start gap-4");
@@ -380,7 +380,7 @@
             
             $("#DataType").val(currentrow.find($("input.mDataType[type=text]")).val());
             var dataType=currentrow.find($("input.mDataType[type=text]")).val();
-            if (dataType == 1 || dataType == 3){
+            if (dataType == 1 ){
                 $("#OpDiv").css("display","block");
                 $("#Option").css("display","block");
                 $("#Option").val(currentrow.find($("input.mOption[type=text]")).val()).change();
