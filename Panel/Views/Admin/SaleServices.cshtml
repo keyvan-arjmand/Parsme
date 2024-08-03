@@ -1,0 +1,207 @@
+﻿@using Domain.Entity.IndexPage
+@model Panel.Models.SaleService
+@{
+Layout = "_LayoutAdmin";
+SaleServices saleServices = ViewBag.SaleServices;
+}
+
+@section link
+{
+<style>
+    .modal{
+        top: 80px;
+    }
+    img{
+        max-width: 650px;
+    }
+</style>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت خدمات فروش</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- /.col -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">خدمات فروش</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
+                                      asp-action="InsertSaleServices" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <input asp-for="Id" value="@saleServices.Id" hidden="hidden">
+                                    <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لوگو</label>
+                                                    <input type="file" asp-for="Desc1Logo" id="Desc1LogoIn" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">توضیحات</label>
+                                                    <input asp-for="Desc1" value="@saleServices.Desc1" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Logo/@saleServices.Desc1Logo"  id="Desc1Logo" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لوگو</label>
+                                                    <input type="file" asp-for="Desc2Logo" id="Desc2LogoIn" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">توضیحات</label>
+                                                    <input asp-for="Desc2" value="@saleServices.Desc2" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Logo/@saleServices.Desc2Logo"  id="Desc2Logo" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لوگو</label>
+                                                    <input type="file" asp-for="Desc3Logo" id="Desc3LogoIn" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">توضیحات</label>
+                                                    <input asp-for="Desc3" value="@saleServices.Desc3" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Logo/@saleServices.Desc3Logo"  id="Desc3Logo" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لوگو</label>
+                                                    <input type="file" asp-for="Desc4Logo" id="Desc4LogoIn" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">توضیحات</label>
+                                                    <input asp-for="Desc4" value="@saleServices.Desc4" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Logo/@saleServices.Desc4Logo"  id="Desc4Logo" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                    
+                                        <div class=" m-2  p-3 w-50">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">لوگو</label>
+                                                    <input type="file" asp-for="Desc5Logo" id="Desc5LogoIn" class="form-control">
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <label for="exampleInputPassword1">توضیحات</label>
+                                                    <input asp-for="Desc5" value="@saleServices.Desc5" class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                            </div>
+                                            <div class="input-group p-3 " style="justify-content: center;">
+                                                <img src="/Images/Logo/@saleServices.Desc5Logo"  id="Desc5Logo" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w-100">
+                                        <button class="btn btn-success" type="submit"> ثبت</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@section script{
+
+    <script>
+
+    $('#Desc1LogoIn').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Desc1Logo').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#Desc2LogoIn').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Desc2Logo').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#Desc3LogoIn').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Desc3Logo').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#Desc4LogoIn').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Desc4Logo').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#Desc5LogoIn').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#Desc5Logo').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+ 
+</script>
+}

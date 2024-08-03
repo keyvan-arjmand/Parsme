@@ -1,0 +1,170 @@
+﻿@using Domain.Entity.Product
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutAdmin";
+    List<Color> colors = ViewBag.Colors;
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت رنگ</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+           
+            <!-- /.col -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">رنگ ها</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start gap-3 p-2" asp-action="InsertColor" asp-controller="Admin" method="post">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان رنگ</label>
+                                        <input name="title" class="form-control" id="exampleInputPassword1" placeholder="عنوان رنگ را وارد کنید">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>انتخاب رنگ</label>
+                                        <input name="code" type="text" class="form-control my-colorpicker1">
+                                    </div>
+                                    <div class="d-flex flex-column align-content-center justify-content-end ">
+                                        <div class="form-group">
+                                            <div class="form-input">
+                                                <button type="submit" class="btn btn-primary">ثبت</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="card mt-3">
+                                <form asp-action="Color" asp-controller="Admin" method="post">
+                                    <div class="input-group p-3 w-25   m-2">
+                                        <input type="text" value="1" name="index" hidden="hidden"/>
+                                        <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                    </div>
+                                </form>
+                                <div class="card-body p-0">
+                                    <table class="table table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <th class="text-center" style="width: 10%">id</th>
+                                            <th class="text-center" style="width: 30%">عنوان</th>
+                                            <th class="text-center" style="width: 30%">کد</th>
+                                            <th style="width: 15%">رنگ</th>
+                                            <th class="text-center" style="width: 15%">#</th>
+                                        </tr>
+                                        @{
+                                            if (colors.Count < 1)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        یافت نشد
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                foreach (var i in colors)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">@i.Id</td>
+                                                        <td class="text-center">@i.Title</td>
+                                                        <td class="text-center">@i.ColorCode</td>
+                                                        <td >
+                                                            <h1 style="background-color: @i.ColorCode ;border-radius: 30px ;width: 15%" class="p-3 "></h1>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <form>
+                                                                <a class="badge bg-warning text-muted modalColor" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                                <input type="text" name="mColorCode" class="mColorCode" value="@i.ColorCode" hidden="hidden"/>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateColor" asp-controller="Admin" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش </h5>
+                <button type="button" class="btn-close" style="margin: 0 0 0 0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="Id" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">عنوان رنگ</label>
+                        <input name="title" class="form-control" id="ColorTitle" placeholder="عنوان رنگ را وارد کنید">
+                    </div>
+                    <div class="form-group">
+                        <label>انتخاب رنگ</label>
+                        <input name="ColorCode" type="text" id="ColorCode" class="form-control my-colorpicker1">
+                    </div>
+                  
+                </div>
+                <div class="modal-footer d-flex justify-content-between gap-2">
+                    <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+                </div>
+               </div>
+        </form>
+    </div>
+</div>
+
+@section script{
+
+    <script>
+  
+    $(document).ready(function () {
+
+        $(".modalColor").click(function () {
+            var currentrow = $(this).closest("form");
+
+            $("#Id").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#ColorTitle").val(currentrow.find($("input.mTitle[type=text]")).val());
+            $("#ColorCode").val(currentrow.find($("input.mColorCode[type=text]")).val());
+        });
+    });
+</script>
+  
+}
