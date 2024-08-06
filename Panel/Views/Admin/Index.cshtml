@@ -1,9 +1,12 @@
-﻿@using Domain.Entity.Product
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Product
 @using Domain.Entity.User
 @{
     Layout = "_LayoutAdmin";
     List<User> users = ViewBag.Users;
     List<Product> products = ViewBag.Products;
+    int factorCount = ViewBag.FactorCount;
+    int factorPendingCount = ViewBag.FactorPendingCount;
 }
 
 @section link
@@ -25,9 +28,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-left">
                     <li class="breadcrumb-item">
-                        <a href="#">خانه</a>
+                        <a href="@Url.Action("Index")">خانه</a>
                     </li>
-                    <li class="breadcrumb-item active">داشبورد</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -41,14 +43,14 @@
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>1</h3>
+                <h3>@factorPendingCount</h3>
 
                 <p>سفارشات جدید</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+            <a href="@Url.Action("ManageFactor")" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -56,13 +58,13 @@
         <!-- small box -->
         <div class="small-box bg-success">
             <div class="inner">
-                <h3> 12</h3>
+                <h3> @factorCount</h3>
                 <p>سفارشات امروز</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
+            <a href="@Url.Action("ManageFactor")"class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -117,7 +119,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <p class="text-center">
-                            <strong>@DateTime.Today.ToString("dd MMM yyyy")</strong>
+                            <strong>@DateTime.Today.ToPersianTime()</strong>
                         </p>
 
                         <div class="chart">
@@ -229,7 +231,7 @@
                             <li>
                                 <img src="/assetsCli/images/man.png" alt="User Image">
                                 <a class="users-list-name mt-2" href="#">@i.Name @i.Family</a>
-                                <span class="users-list-date">امروز</span>
+                                <span class="users-list-date">@i.InsertDate.ToPersianTime()</span>
                             </li>
                         }
                     }
@@ -278,7 +280,7 @@
             -webkit-box-orient: vertical; /* Vertical orientation */
             -webkit-line-clamp: 3; /* Number of lines before truncation */
             overflow: hidden; /* Hides the overflow text */
-            width: 200px; ">
+            width: 540px; ">
                                         @i.PersianTitle
                                     </span>
                                 </div>

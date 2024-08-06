@@ -50,6 +50,10 @@ public class AdminController : Controller
         {
             #region ViewBag
 
+            ViewBag.FactorPendingCount = await _work.GenericRepository<Factor>().TableNoTracking
+                .CountAsync(x => x.Status == Status.Pending);
+            ViewBag.FactorCount = await _work.GenericRepository<Factor>().TableNoTracking
+                .CountAsync();
             ViewBag.Users = await _userManager.Users.ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)

@@ -3,6 +3,7 @@
 @using Domain.Entity.Product
 @using Domain.Entity.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebApp.Models
 
 @{
     Layout = "_Layout";
@@ -28,6 +29,50 @@
         else
         {
             price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+        }
+    }
+
+    List<BasketProduct> products = new List<BasketProduct>();
+    foreach (var i in basket)
+    {
+        if (products.Any(x => x.ProductColors.FirstOrDefault().Id == i.ProductColors.FirstOrDefault().Id))
+        {
+            products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == i.ProductColors.FirstOrDefault().Id).Count++;
+        }
+        else
+        {
+            products.Add(new BasketProduct
+            {
+                SubCategoryId = i.SubCategoryId,
+                ProductStatus = i.ProductStatus,
+                ProductColors = i.ProductColors.ToList(),
+                InsertDate = i.InsertDate,
+                Brand = i.Brand,
+                Count = 1,
+                Code = i.Code,
+                DiscountAmount = i.DiscountAmount,
+                Detail = i.Detail,
+                Offer = i.Offer,
+                Strengths = i.Strengths,
+                Title = i.Title,
+                BrandId = i.BrandId,
+                ImageUri = i.ImageUri,
+                FullDesc = i.FullDesc,
+                InterestRate = i.InterestRate,
+                IsOffer = i.IsOffer,
+                IsActive = i.IsActive,
+                MetaDesc = i.MetaDesc,
+                MetaKeyword = i.MetaKeyword,
+                MomentaryOffer = i.MomentaryOffer,
+                OfferId = i.OfferId,
+                PersianTitle = i.PersianTitle,
+                ProductDetails = i.ProductDetails.ToList(),
+                ProductGift = i.ProductGift,
+                ProductImages = i.ProductImages.ToList(),
+                SubCategory = i.SubCategory,
+                WeakPoints = i.WeakPoints,
+                IsShowIndex = i.IsShowIndex
+            });
         }
     }
 }
@@ -449,7 +494,7 @@ else
                                         </thead>
                                         <tbody>
                                         @{
-                                            foreach (var i in basket)
+                                            foreach (var i in products)
                                             {
                                                 <tr>
                                                     <th scope="row" class="product-cart-name">

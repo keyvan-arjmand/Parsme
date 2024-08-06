@@ -1,19 +1,22 @@
-﻿@using Domain.Entity.Product
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Product
 @using Domain.Entity.User
 @{
-    Layout = "_LayoutAdmin";
-    List<User> users = ViewBag.Users;
-    List<Product> products = ViewBag.Products;
+Layout = "_LayoutAdmin";
+List<User> users = ViewBag.Users;
+List<Product> products = ViewBag.Products;
 }
 
 @section link
 {
     <style>
-         
-            .form-control .custom-file-input . {
-            width: 50% !important;
-            }
-        </style>
+.desc{
+    display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;width: 540px;
+}
+    .form-control .custom-file-input . {
+        width: 50% !important;
+    }
+</style>
 }
 
 <div class="content-header">
@@ -34,237 +37,241 @@
     </div><!-- /.container-fluid -->
 </div>
 <section class="content">
-<div class="container-fluid">
-<!-- Small boxes (Stat box) -->
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>1</h3>
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>1</h3>
 
-                <p>سفارشات جدید</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3> 12</h3>
-                <p>سفارشات امروز</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3> @users.Where(x=>x.InsertDate>=DateTime.Now.AddDays(-15)).ToList().Count</h3>
-                <p>کاربران جدید</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-person-add"></i>
-            </div>
-            <a href="@Url.Action("ManageUser")#" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3> @users.Count</h3>
-                <p>کاربران کل</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="@Url.Action("ManageUser")" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
-</div>
-<!-- /.row -->
-<!-- Main row -->
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">گزارش ماهیانه</h5>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-widget="remove">
-                        <i class="fa fa-times"></i>
-                    </button>
+                        <p>سفارشات جدید</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="@Url.Action("ManageFactor")" class="small-box-footer">اطلاعات بیشتر <i
+                            class="fa fa-arrow-circle-left"></i></a>
                 </div>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <p class="text-center">
-                            <strong>@DateTime.Today.ToString("dd MMM yyyy")</strong>
-                        </p>
-
-                        <div class="chart">
-                            <!-- Sales Chart Canvas -->
-                            <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
-                        </div>
-                        <!-- /.chart-responsive -->
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3> 12</h3>
+                        <p>سفارشات امروز</p>
                     </div>
-                    <!-- /.col -->
-                    <div class="col-md-4">
-                        <p class="text-center">
-                            <strong>آمار کلی محصولات</strong>
-                        </p>
-
-                        <div class="progress-group">
-                            موجودی کالا
-                            <span class="float-left"><b> 123</b>/ 3</span>
-                            <div class="progress progress-sm">
-                                <div class="progress-bar bg-primary" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <!-- /.progress-group -->
-
-                        <div class="progress-group">
-                            خرید های موفق
-                            <span class="float-left"><b> 1</b>/ 22</span>
-                            <div class="progress progress-sm">
-                                <div class="progress-bar bg-success" style="width: 75%"></div>
-                            </div>
-                        </div>
-
-                        <!-- /.progress-group -->
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
                     </div>
-                    <!-- /.col -->
+                    <a href="@Url.Action("ManageFactor")" class="small-box-footer">اطلاعات بیشتر <i
+                            class="fa fa-arrow-circle-left"></i></a>
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- ./card-body -->
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3> @users.Where(x => x.InsertDate >= DateTime.Now.AddDays(-15)).ToList().Count</h3>
+                        <p>کاربران جدید</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="@Url.Action("ManageUser")#" class="small-box-footer">اطلاعات بیشتر <i
+                            class="fa fa-arrow-circle-left"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3> @users.Count</h3>
+                        <p>کاربران کل</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="@Url.Action("ManageUser")" class="small-box-footer">اطلاعات بیشتر <i
+                            class="fa fa-arrow-circle-left"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">گزارش ماهیانه</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="text-center">
+                                    <strong>@DateTime.Today.ToPersianTime()</strong>
+                                </p>
+
+                                <div class="chart">
+                                    <!-- Sales Chart Canvas -->
+                                    <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                                </div>
+                                <!-- /.chart-responsive -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <p class="text-center">
+                                    <strong>آمار کلی محصولات</strong>
+                                </p>
+
+                                <div class="progress-group">
+                                    موجودی کالا
+                                    <span class="float-left"><b> 123</b>/ 3</span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <!-- /.progress-group -->
+
+                                <div class="progress-group">
+                                    خرید های موفق
+                                    <span class="float-left"><b> 1</b>/ 22</span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-success" style="width: 75%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- /.progress-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
                             <span class="description-percentage text-success">
                                 <i class="fa fa-caret-up"></i>
                             </span>
-                            <h5 class="description-header">تومان 35,210.43</h5>
-                            <span class="description-text">کل گردش حساب</span>
+                                    <h5 class="description-header">تومان 35,210.43</h5>
+                                    <span class="description-text">کل گردش حساب</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-warning"><i class="fa fa-caret-left"></i> 0%</span>
+                                    <h5 class="description-header">تومان 10,390.90</h5>
+                                    <span class="description-text">فروش ماه</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fa fa-caret-up"></i> 20%</span>
+                                    <h5 class="description-header">تومان 24,813.53</h5>
+                                    <span class="description-text">سود ماه</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block">
+                                    <span class="description-percentage text-danger"><i class="fa fa-caret-down"></i> 18%</span>
+                                    <h5 class="description-header">1200</h5>
+                                    <span class="description-text">مالیات</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
                         </div>
-                        <!-- /.description-block -->
+                        <!-- /.row -->
                     </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
-                            <span class="description-percentage text-warning"><i class="fa fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">تومان 10,390.90</h5>
-                            <span class="description-text">فروش ماه</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block border-right">
-                            <span class="description-percentage text-success"><i class="fa fa-caret-up"></i> 20%</span>
-                            <h5 class="description-header">تومان 24,813.53</h5>
-                            <span class="description-text">سود ماه</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                        <div class="description-block">
-                            <span class="description-percentage text-danger"><i class="fa fa-caret-down"></i> 18%</span>
-                            <h5 class="description-header">1200</h5>
-                            <span class="description-text">مالیات</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
+                    <!-- /.card-footer -->
                 </div>
-                <!-- /.row -->
+                <!-- /.card -->
             </div>
-            <!-- /.card-footer -->
+            <!-- /.col -->
         </div>
-        <!-- /.card -->
-    </div>
-    <!-- /.col -->
-</div>
-<div class="row connectedSortable">
-    <div class="col-6">
-        <!-- USERS LIST -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">آخرین اعضا</h3>
+        <div class="row connectedSortable">
+            <div class="col-6">
+                <!-- USERS LIST -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">آخرین اعضا</h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-widget="remove">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <ul class="users-list clearfix">
-                    @{
-                        foreach (var i in users)
-                        {
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <ul class="users-list clearfix">
+                            @{
+                            foreach (var i in users)
+                            {
                             <li>
                                 <img src="/assetsCli/images/man.png" alt="User Image">
                                 <a class="users-list-name mt-2" href="#">@i.Name @i.Family</a>
-                                <span class="users-list-date">امروز</span>
+                                <span class="users-list-date">@i.InsertDate.ToPersianTime()</span>
                             </li>
-                        }
-                    }
+                            }
+                            }
 
-                </ul>
-                <!-- /.users-list -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer text-center">
-                <a href="@Url.Action("ManageUser")">مشاهده همه کاربران</a>
-            </div>
-            <!-- /.card-footer -->
-        </div>
-        <!--/.card -->
-    </div>
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">محصولات تازه اضافه شده</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-widget="remove">
-                        <i class="fa fa-times"></i>
-                    </button>
+                        </ul>
+                        <!-- /.users-list -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer text-center">
+                        <a href="@Url.Action("ManageUser")">مشاهده همه کاربران</a>
+                    </div>
+                    <!-- /.card-footer -->
                 </div>
+                <!--/.card -->
             </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <ul class="products-list product-list-in-card pl-2 pr-2">
-                    @{
-                        foreach (var i in products)
-                        {
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">محصولات تازه اضافه شده</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @{
+                            foreach (var i in products)
+                            {
                             <li class="item">
                                 <div class="product-img">
                                     <img src="/Images/ProductImage/@i.ImageUri" alt="Product Image" class="img-size-50">
@@ -272,30 +279,27 @@
                                 <div class="product-info">
                                     <a href="@Url.Action("ProductManage")" class="product-title">
                                         @i.SubCategory.Name
-                                        <span class="badge badge-warning float-left">@i.Brand.Title</span>
+                                        <span class="badge badge-warning float-left"
+                                              style="margin-left: 15px">@i.Brand.Title</span>
                                     </a>
-                                    <span class="product-description" style=" display: -webkit-box; /* Uses a flexible box model */
-            -webkit-box-orient: vertical; /* Vertical orientation */
-            -webkit-line-clamp: 3; /* Number of lines before truncation */
-            overflow: hidden; /* Hides the overflow text */
-            width: 200px; ">
+                                    <span class="product-description desc">
                                         @i.PersianTitle
                                     </span>
                                 </div>
                             </li>
-                        }
-                    }
+                            }
+                            }
 
-                </ul>
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer text-center">
+                        <a href="@Url.Action("Product", "Admin")" class="uppercase fs-5">نمایش همه محصولات</a>
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer text-center">
-                <a href="@Url.Action("Product", "Admin")" class="uppercase fs-5">نمایش همه محصولات</a>
-            </div>
-            <!-- /.card-footer -->
         </div>
-    </div>
-</div>
-<!-- /.row (main row) -->
-</div><!-- /.container-fluid -->
+        <!-- /.row (main row) -->
+    </div><!-- /.container-fluid -->
 </section>

@@ -2,8 +2,8 @@
 @using Domain.Entity.Factor
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-Layout = "_LayoutAdmin";
-List<Factor> factors = ViewBag.Factors;
+    Layout = "_LayoutAdmin";
+    List<Factor> factors = ViewBag.Factors;
 }
 
 @section link
@@ -13,17 +13,17 @@ List<Factor> factors = ViewBag.Factors;
         top: 80px;
     }
 </style>
-<link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
-<!-- IonIcons -->
-<!-- Theme style -->
-<link rel="stylesheet" href="/dist/css/adminlte.min.css">
-<!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- IonIcons -->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-<!-- bootstrap rtl -->
-<link rel="stylesheet" href="/dist/css/bootstrap-rtl.min.css">
-<!-- template rtl version -->
-<link rel="stylesheet" href="/dist/css/custom-style.css">
+    <!-- bootstrap rtl -->
+    <link rel="stylesheet" href="/dist/css/bootstrap-rtl.min.css">
+    <!-- template rtl version -->
+    <link rel="stylesheet" href="/dist/css/custom-style.css">
 
 }
 
@@ -67,9 +67,9 @@ List<Factor> factors = ViewBag.Factors;
                                 <i class="fa fa-shopping-basket"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-up text-success"></i> @factors.Count
-                    </span>
+                                <span class="font-weight-bold text-center">
+                                    <i class="fa fa-arrow-up text-success"></i> @factors.Count
+                                </span>
                                 <span class="text-muted">سفارشات کل</span>
                             </p>
                         </div>
@@ -79,9 +79,9 @@ List<Factor> factors = ViewBag.Factors;
                                 <i class="fa fa-shopping-cart"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-up text-warning"></i>@factors.Where(x=>x.InsertDate>=DateTime.Now).ToList().Count
-                    </span>
+                                <span class="font-weight-bold text-center">
+                                    <i class="fa fa-arrow-up text-warning"></i>@factors.Count(x => x.InsertDate.Day == DateTime.Now.Day)
+                                </span>
                                 <span class="text-muted">سفارشات امروز</span>
                             </p>
                         </div>
@@ -91,9 +91,9 @@ List<Factor> factors = ViewBag.Factors;
                                 <i class="fa fa-archive"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold text-center">
-                      <i class="fa fa-arrow-down text-danger "></i> @factors.Where(x=>x.IsReturned).ToList().Count
-                    </span>
+                                <span class="font-weight-bold text-center">
+                                    <i class="fa fa-arrow-down text-danger "></i> @factors.Where(x => x.IsReturned).ToList().Count
+                                </span>
                                 <span class="text-muted">تعداد مرجوعی</span>
                             </p>
                         </div>
@@ -201,7 +201,7 @@ List<Factor> factors = ViewBag.Factors;
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -209,7 +209,7 @@ List<Factor> factors = ViewBag.Factors;
 
 @section script{
 
-<script>
+    <script>
 
     $(document).ready(function () {
 
@@ -223,6 +223,6 @@ List<Factor> factors = ViewBag.Factors;
 
     });
 </script>
-<script src="/dist/js/pages/dashboard3.js"></script>
+    <script src="/dist/js/pages/dashboard3.js"></script>
 
 }
