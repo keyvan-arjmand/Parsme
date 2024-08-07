@@ -10,7 +10,7 @@
     List<Category> categories = ViewBag.Categories;
     List<UserAddress> userAddresses = ViewBag.Address;
     List<SearchResult> searchResults = ViewBag.Search;
-    int postMethods = ViewBag.PostMethod;
+    PostMethod postMethods = ViewBag.PostMethod;
     DiscountCode code1 = ViewBag.Code;
     double price = 0;
     double offer = 0;
@@ -389,319 +389,244 @@
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <style>
+        .middle-container .form-checkout .form-checkout-row label{
+            float: none;
+            width: 50%;
+        }
+        .middle-container .form-checkout .form-checkout-row input{
+            width: 50%;
+            height: 21px;
+        }
+    </style>
 }
 
 <div class="container-main">
-<div class="d-block">
-<section class="blog-checkout d-block order-1">
-<div class="col-lg">
-<div class="checkout woocommerce-checkout">
-<div class="content-checkout container">
-    @if (code1!=null)
-    {
-        <div class="notices-wrapper">
-            <div class="col-12">
-                <div class="form-coupon-toggle">
-    
-                    <div class="info">
-                        <span>   کد تخفیف :
-                            @code1.Code</span>
-                        <span>  مبلغ :
-                            @code1.Amount</span>
-                    </div>
-    
-                </div>
-            </div>
-        </div>
-    }
+    <div class="d-block">
+        <section class="blog-checkout d-block order-1">
+            <div class="col-lg">
+                <div class="checkout woocommerce-checkout">
+                    <div class="content-checkout container">
+                        @if (code1.Amount > 0)
+                        {
+                            <div class="notices-wrapper">
+                                <div class="col-12">
+                                    <div class="form-coupon-toggle">
 
-<div class="middle-container">
-<form asp-action="ProductFactor" asp-controller="Payment" method="post" class="form-checkout">
-<div class="col2-set" id="customer-details">
-    <div class="col-12">
-        <div class="billing-fields mt-4">
-            <h4>جزئیات صورتحساب</h4>
-           
-            <div class="form-checkout-row">
-                <h5 class="p-3">ارسال به آدرس</h5>
-                <div class="d-flex flex-column">
-                    @{
-                    foreach (var i in userAddresses)
-                    {
-                    <div class="form-check">
-                        <input class="form-check-input" value="@i.Id" type="radio" name="userAddressId" id="address`@i.Id`">
-                        <label class="form-check-label" for="address`@i.Id">
-                            @i.Address
-                        </label>
-                    </div>
-
-                    }
-                    }
-                </div>
-                <input value="@postMethods" name="postMethodId" hidden="hidden"/>
-                <input value="@code1.Code" name="discountCode" hidden="hidden"/>
-                <div class="Order-another-shipping-address mt-5">
-                    <div class="Order-address d-inline-block">
-                        <button class="btn btn-block text-right collapsed"
-                                data-toggle="collapse" href="#collapseExample"
-                                role="button" aria-expanded="false"
-                                aria-controls="collapseExample">
-                            <span>سفارش به آدرس دیگری حمل شود؟</span>
-                        </button>
-                    </div>
-                    <div class="shipping-address">
-                        <div id="collapseExample" class="collapse">
-                            <div class="middle-container">
-                                <div  class="form-checkout">
-                                    <div class="form-checkout-row">
-                                        <label for="name">
-                                            نام تحویل گیرنده
-                                            <abbr
-                                                class="required" title="ضروری"
-                                                style="color:red;">
-                                                *
-                                            </abbr></span>
-                                        </label>
-                                        <input type="text" id="name"
-                                               class="input-name-checkout form-control">
-                                        <label for="phone-number">
-                                            شماره موبایل
-                                            <abbr
-                                                class="required" title="ضروری"
-                                                style="color:red;">
-                                                *
-                                            </abbr>
-                                        </label>
-                                        <input type="text" id="phone-number"
-                                               class="input-name-checkout form-control text-left">
-                                        <label for="fixed-number">
-                                            شماره تلفن ثابت
-                                            <abbr class="required" title="ضروری"
-                                                  style="color:red;">
-                                                *
-                                            </abbr>
-                                        </label>
-                                        <input type="text" id="fixed-number"
-                                               class="input-name-checkout form-control text-left">
-
-                                        <div class="form-checkout-valid-row">
-                                            <label for="province">
-                                                استان
-                                                <abbr class="required" title="ضروری"
-                                                      style="color:red;">
-                                                    *
-                                                </abbr>
-                                            </label>
-                                            <select name="" id="province"
-                                                    class="form-control">
-                                                <option value="date-desc"
-                                                        selected="selected">
-                                                    استان مورد
-                                                    نظر خود را انتخاب کنید
-                                                </option>
-                                                <option value="date-asc">
-                                                    تهران
-                                                </option>
-                                                <option value="rate">مشهد</option>
-                                                <option value="views">
-                                                    اصفهان
-                                                </option>
-                                                <option value="comments">
-                                                    شیراز
-                                                </option>
-                                            </select>
-                                            <label for="bld-num">
-                                                پلاک
-                                                <abbr class="required" title="ضروری"
-                                                      style="color:red;">
-                                                    *
-                                                </abbr>
-                                            </label>
-                                            <input type="text" id="bld-num"
-                                                   class="input-name-checkout js-input-bld-num form-control">
-
+                                        <div class="info">
+                                            <span>
+                                                کد تخفیف :
+                                                @code1.Code
+                                            </span>
+                                            <span>
+                                                مبلغ :
+                                                @code1.Amount.ToString("N0")
+                                            </span>
                                         </div>
-
-                                        <div class="form-checkout-valid-row">
-                                            <label for="city">
-                                                شهر
-                                                <abbr class="required" title="ضروری"
-                                                      style="color:red;">
-                                                    *
-                                                </abbr>
-                                            </label>
-                                            <select name="" id="city"
-                                                    class="form-control">
-                                                <option value="date-desc"
-                                                        selected="selected">
-                                                    شهر مورد نظر
-                                                    خود را انتخاب کنید
-                                                </option>
-                                                <option value="date-asc">
-                                                    آشخانه
-                                                </option>
-                                                <option value="rate">شیروان</option>
-                                                <option value="views">
-                                                    اسفراین
-                                                </option>
-                                                <option value="comments">
-                                                    جاجرم
-                                                </option>
-                                            </select>
-                                            <label for="apt-id">واحد</label>
-                                            <input type="text" id="apt-id"
-                                                   class="input-name-checkout js-input-apt-id form-control">
-                                        </div>
-
-                                        <label for="post-code">
-                                            کد پستی
-                                            <abbr
-                                                class="required" title="ضروری"
-                                                style="color:red;">
-                                                *
-                                            </abbr>
-                                        </label>
-                                        <input type="text" id="post-code"
-                                               class="input-name-checkout form-control"
-                                               placeholder="کد پستی را بدون خط تیره بنویسید">
 
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        }
 
-                <label for="address">
-                    توضیحات سفارش
-                    <span class="optional">(اختیاری)</span>
-                </label>
-                <textarea rows="5" cols="30" id="desc" name="desc"
+                        <div class="middle-container">
+                            <form asp-action="ProductFactor" asp-controller="Payment" method="post" class="form-checkout">
+                                <div class="col2-set" id="customer-details">
+                                    <div class="col-12">
+                                        <div class="billing-fields mt-4">
+                                            <h4>جزئیات صورتحساب</h4>
+
+                                            <div class="form-checkout-row">
+                                                <h5 class="p-3">ارسال به آدرس</h5>
+                                                <div class="d-flex flex-column">
+                                                    @{
+                                                        foreach (var i in userAddresses)
+                                                        {
+                                                            <div class="">
+                                                                <input class="form-check-input" value="@i.Id" type="radio" name="userAddressId" id="address`@i.Id`">
+                                                                <label class="form-check-label" for="address`@i.Id">
+                                                                    @i.Address
+                                                                </label>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                                <input value="@postMethods.Id" name="postMethodId" hidden="hidden"/>
+                                                <input value="@code1.Code" name="discountCode" hidden="hidden"/>
+
+                                                <label for="address">
+                                                    توضیحات سفارش
+                                                    <span class="optional">(اختیاری)</span>
+                                                </label>
+                                                <textarea rows="5" cols="30" id="desc" name="desc"
                                                           class="textarea-name-checkout form-control"
                                                           placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
 
-            </div>
-        </div>
-    </div>
-</div>
-<h3 class="order-review-heading">سفارش شما</h3>
-<div class="checkout-review-order">
-    <table class="checkout-review-order-table table table-borderless">
-        <thead>
-        <tr>
-            <th scope="col" class="product-name">محصول</th>
-            <th scope="col" class="product-price">قیمت کل</th>
-        </tr>
-        </thead>
-        <tbody>
-        @{
-            foreach (var i in basket)
-            {
-                <tr class="checkout-cart-item">
-                    <td class="product-name">@i.PersianTitle</td>
-                    <td class="product-price text-info">
-                        @if (i.IsOffer)
-                        {
-                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                            {
-                                <span class="amount">
-                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
-                                    <span>تومان</span>
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="amount">
-                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                    <span>تومان</span>
-                                </span>
-                            }
-                        }
-                        else
-                        {
-                            <span class="amount">
-                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                <span>تومان</span>
-                            </span>
-                        }
-                    </td>
-                </tr>
-            }
-        }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="order-review-heading">سفارش شما</h3>
+                                <div class="checkout-review-order">
+                                    <table class="checkout-review-order-table table table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="product-name">محصول</th>
+                                            <th scope="col" class="product-price">قیمت کل</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @{
+                                            foreach (var i in basket)
+                                            {
+                                                <tr class="checkout-cart-item">
+                                                    <td class="product-name">@i.PersianTitle</td>
+                                                    <td class="product-price text-info">
 
-        </tbody>
-        <tfoot>
+                                                        <span class="amount">
+                                                            @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
 
-        <tr class="cart-subtotal">
-            <th>مجموع</th>
-            <td>
-                <span class="amount">
-                    @price.ToString("N0")
-                    <span>تومان</span>
-                </span>
-            </td>
-        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        @if (code1.Amount > 0)
+                                        {
+                                            <tr class="cart-subtotal">
 
-        <tr class="cart-discount">
-            <th>تخفیف شما از این خرید</th>
-            <td data-title=" تخفیف شما از این خرید ">
-                <div class="price">
-                    <del>
-                        <span>
-                            @basket.Sum(x => x.ProductColors.FirstOrDefault().Price).ToString("N0")
-                            <span>تومان</span>
-                        </span>
-                    </del>
-                    <ins>
-                        <span class="amount">
-                            @offer.ToString("N0")
-                            <span>تومان</span>
-                        </span>
-                    </ins>
+                                                <th>کد تخفیف</th>
+                                                <td>
+                                                    <span class="amount">
+                                                        @code1.Amount.ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @{
+                                            var offerDiscount = 0.0;
+                                            foreach (var i in basket)
+                                            {
+                                                @if (i.IsOffer)
+                                                {
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                    {
+                                                        offerDiscount += @i.Offer.OfferAmount;
+                                                    }
+                                                }
+                                              
+                                            }
+
+                                            var discountProd = basket.Sum(x => x.DiscountAmount) + offerDiscount;
+                                        }
+                                        <tr class="cart-subtotal">
+                                            <th>تخفیف محصول</th>
+                                            <td>
+                                                <span class="amount">
+                                                    @discountProd.ToString("N0")
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            <th>ارسال</th>
+                                            <td>
+                                                <span class="amount">
+                                                    @postMethods.Price.ToString("N0")
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @{
+                                            var totalPrice = price;
+                                            if (code1 != null)
+                                            {
+                                                totalPrice -= code1.Amount;
+                                            }
+
+                                            if (postMethods.Price > 0)
+                                            {
+                                                totalPrice += postMethods.Price;
+                                            }
+
+                                            offer += code1.Amount;
+                                        }
+                                        <tr class="cart-subtotal">
+                                            <th>مجموع</th>
+                                            <td>
+                                                <span class="amount">
+                                                    @totalPrice.ToString("N0")
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @{
+                                            var totalWithDiscount = totalPrice + offer;
+                                        }
+                                        <tr class="cart-discount">
+                                            <th>تخفیف شما از این خرید</th>
+                                            <td data-title=" تخفیف شما از این خرید ">
+                                                <div class="price">
+                                                    <del>
+                                                        <span>
+                                                            @totalWithDiscount.ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </del>
+                                                    <ins>
+                                                        <span class="amount">
+                                                            @totalPrice.ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <ul class="checkout-payment-methods">
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method"
+                                                       id="payment-option-online" readonly="readonly" checked="checked">
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">پرداخت با درگاه بانکی</div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <div class="form-auth-row">
+                                        <label for="#" class="ui-checkbox mt-1">
+                                            <input type="checkbox" value="1" name="login" id="remember">
+                                            <span class="ui-checkbox-check"></span>
+                                        </label>
+                                        <label for="remember" class="remember-me mr-0">
+                                            <a href="#">حریم خصوصی</a> و
+                                            <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را
+                                            مطالعه نموده و با کلیه موارد آن موافقم
+                                            <abbr class="required"
+                                                  title="ضروری" style="color:red;">
+                                                *
+                                            </abbr>
+                                        </label>
+                                    </div>
+                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit">
+                                        ثبت
+                                        سفارش
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </td>
-        </tr>
-        </tfoot>
-    </table>
-    <ul class="checkout-payment-methods">
-        <li class="checkout-payment-method-item d-block">
-            <label for="#" class="outline-radio">
-                <input type="radio" name="payment_method"
-                       id="payment-option-online">
-                <span class="outline-radio-check"></span>
-            </label>
-            <label for="#" class="shipping-totals-title-row">
-                <div class="shipping-totals-title">پرداخت هنگام دریافت</div>
-            </label>
-        </li>
-    </ul>
-    <div class="form-auth-row">
-        <label for="#" class="ui-checkbox mt-1">
-            <input type="checkbox" value="1" name="login" id="remember">
-            <span class="ui-checkbox-check"></span>
-        </label>
-        <label for="remember" class="remember-me mr-0">
-            <a href="#">حریم خصوصی</a> و
-            <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را
-            مطالعه نموده و با کلیه موارد آن موافقم
-            <abbr class="required"
-                  title="ضروری" style="color:red;">
-                *
-            </abbr>
-        </label>
+            </div>
+        </section>
     </div>
-    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit">
-        ثبت
-        سفارش
-    </button>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</section>
-</div>
 </div>
 
 @section script

@@ -565,6 +565,7 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
     }
+
     public async Task<IActionResult> ReturnedFactor(int id)
     {
         if (User.Identity.IsAuthenticated)
@@ -608,9 +609,10 @@ public class HomeController : Controller
         }
         else
         {
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
     }
+
     public async Task<IActionResult> InsertReturnedFactor(int id, string Desc, int Type)
     {
         if (User.Identity.IsAuthenticated)
@@ -632,6 +634,7 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
     }
+
     public async Task<IActionResult> UpdateAddress(int id, string name, string address, int cityId, string number,
         string postCode)
     {
@@ -702,8 +705,8 @@ public class HomeController : Controller
                 .ToListAsync();
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.Code == code);
-            ViewBag.PostMethod = postMethod;
+                .FirstOrDefaultAsync(x => x.Code == code)??new DiscountCode();
+            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.FirstOrDefaultAsync(x=>x.Id==postMethod);
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
             return View();
         }
@@ -918,7 +921,7 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
-        ViewBag.Contact=await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
+        ViewBag.Contact = await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 
@@ -1264,7 +1267,7 @@ public class HomeController : Controller
         }
     }
 
-    public async Task<IActionResult> Basket()
+    public async Task<IActionResult> Basket(int pId = 0)
     {
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -1286,6 +1289,22 @@ public class HomeController : Controller
             }
         }
 
+        var discount = string.Empty;
+        if (HttpContext.Session.GetString("discountCode") != null)
+        {
+            discount = HttpContext.Session.GetString("discountCode");
+        }
+
+        if (string.IsNullOrWhiteSpace(discount))
+        {
+            ViewBag.discount = new DiscountCode();
+        }
+        else
+        {
+            ViewBag.discount = await _work.GenericRepository<DiscountCode>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Code == discount);
+        }
+
         ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking
             .ToListAsync();
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
@@ -1296,6 +1315,10 @@ public class HomeController : Controller
         ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.Take(4).ToListAsync();
 
         ViewBag.BasketProd = basketProducts;
+    
+            ViewBag.SelectPostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Id == pId) ?? new PostMethod();
+
         return View();
     }
 

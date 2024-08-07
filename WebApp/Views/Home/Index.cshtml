@@ -165,6 +165,31 @@
 
                         </li>
                     }
+                    @{
+                    double price = 0;
+                    double offer = 0;
+                    foreach (var i in basket)
+                    {
+                    @if (i.IsOffer)
+                    {
+                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                    {
+                    offer += i.Offer.OfferAmount;
+                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    }
+                    else
+                    {
+                    offer += i.DiscountAmount;
+                    price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                    }
+                    }
+                    else
+                    {
+                    offer += i.DiscountAmount;
+                    price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                    }
+                    }
+                    }
                     <li class="divider-space-card">
                         <div class="header-cart-basket">
                             <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
@@ -173,7 +198,7 @@
                                 </span>
                                 <span class="title-cart">سبد خرید</span>
                                 <span class="price-cart">
-                                    @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                    @price.ToString("N0")
                                     <span>تومان</span>
                                 </span>
                                 <span class="count-cart">@basket.Count</span>
@@ -196,7 +221,7 @@
                                                                             <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
                                                                                 <i class="mdi mdi-close"></i>
                                                                             </a>
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block" style="top: 0">
                                                                                 <img src="/Images/ProductImage/@i.ImageUri">
                                                                             </a>
                                                                             <span class="product-name-card">
@@ -208,7 +233,7 @@
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
-                                                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
+                                                                                    @i.ProductColors.FirstOrDefault()!.Price.ToString("N0")
                                                                                     <span>تومان</span>
                                                                                 </span>
                                                                             </div>
@@ -234,10 +259,11 @@
                                                 </div>
                                             </div>
                                         </div>
+                                     
                                         <div class="mini-card-total">
                                             <strong>قیمت کل : </strong>
                                             <span class="price-total">
-                                                @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                                @price.ToString("N0")
                                                 <span>تومان</span>
                                             </span>
                                         </div>

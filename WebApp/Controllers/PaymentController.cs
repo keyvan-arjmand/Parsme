@@ -45,10 +45,9 @@ public class PaymentController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
+           
             var user =await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
-            var discount = await _work.GenericRepository<DiscountCode>().Table
-                .FirstOrDefaultAsync(x => x.Code == discountCode);
-            var discountAmount = discount?.Amount ?? 0;
+           
             var basketProducts = new List<Product>();
             if (HttpContext.Session.GetString("basket") != null)
             {
@@ -96,7 +95,15 @@ public class PaymentController : Controller
                     price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
                 }
             }
-
+            var discountAmount =  0.0;
+            if (!string.IsNullOrWhiteSpace(discountCode))
+            {
+                var discount = await _work.GenericRepository<DiscountCode>().Table
+                    .FirstOrDefaultAsync(x => x.Code == discountCode);
+                discountAmount = discount.Amount;
+                discount.Count--;
+                await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
+            }
             var factor = new Factor()
             {
                 Amount = price,
@@ -113,8 +120,7 @@ public class PaymentController : Controller
                 Desc = desc,
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
-            discount.Count--;
-            await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
+           
             foreach (var i in JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
                          .ToList())
             {
@@ -130,7 +136,8 @@ public class PaymentController : Controller
             ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x=>x.PostMethod)
                 .Include(x=>x.UserAddress)
-                .Include(x => x.Products)
+                .Include(x=>x.Products).ThenInclude(x=>x.ProductColor).ThenInclude(x=>x.Product)
+                .Include(x => x.Products)     .Include(x => x.Products)
                 .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
                 .FirstOrDefaultAsync(x => x.Id == factor.Id);
             ViewBag.BasketProd = basketProducts;

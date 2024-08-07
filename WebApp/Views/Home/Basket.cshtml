@@ -6,12 +6,14 @@
 @using WebApp.Models
 
 @{
-    Layout = "_Layout";
+    Layout = "_Layout";  
     List<Product> basket = ViewBag.BasketProd;
     List<Category> categories = ViewBag.Categories;
     List<UserAddress> userAddresses = ViewBag.Address;
     List<SearchResult> searchResults = ViewBag.Search;
     List<PostMethod> postMethods = ViewBag.PostMethod;
+    DiscountCode discountCode = ViewBag.discount;
+    PostMethod selectPostMethod = ViewBag.SelectPostMethod;
     double price = 0;
     foreach (var i in basket)
     {
@@ -32,46 +34,43 @@
         }
     }
 
+
     List<BasketProduct> products = new List<BasketProduct>();
-    foreach (var i in basket)
+    foreach (var q in basket)
     {
-        if (products.Any(x => x.ProductColors.FirstOrDefault().Id == i.ProductColors.FirstOrDefault().Id))
+        if (products.Any(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id))
         {
-            products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == i.ProductColors.FirstOrDefault().Id).Count++;
+            products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id).Count++;
         }
         else
         {
             products.Add(new BasketProduct
             {
-                SubCategoryId = i.SubCategoryId,
-                ProductStatus = i.ProductStatus,
-                ProductColors = i.ProductColors.ToList(),
-                InsertDate = i.InsertDate,
-                Brand = i.Brand,
+                SubCategoryId = q.SubCategoryId,
+                ProductStatus = q.ProductStatus,
+                ProductColors = q.ProductColors.ToList(),
+                InsertDate = q.InsertDate,
                 Count = 1,
-                Code = i.Code,
-                DiscountAmount = i.DiscountAmount,
-                Detail = i.Detail,
-                Offer = i.Offer,
-                Strengths = i.Strengths,
-                Title = i.Title,
-                BrandId = i.BrandId,
-                ImageUri = i.ImageUri,
-                FullDesc = i.FullDesc,
-                InterestRate = i.InterestRate,
-                IsOffer = i.IsOffer,
-                IsActive = i.IsActive,
-                MetaDesc = i.MetaDesc,
-                MetaKeyword = i.MetaKeyword,
-                MomentaryOffer = i.MomentaryOffer,
-                OfferId = i.OfferId,
-                PersianTitle = i.PersianTitle,
-                ProductDetails = i.ProductDetails.ToList(),
-                ProductGift = i.ProductGift,
-                ProductImages = i.ProductImages.ToList(),
-                SubCategory = i.SubCategory,
-                WeakPoints = i.WeakPoints,
-                IsShowIndex = i.IsShowIndex
+                Code = q.Code,
+                DiscountAmount = q.DiscountAmount,
+                Detail = q.Detail,
+                Strengths = q.Strengths,
+                Title = q.Title,
+                BrandId = q.BrandId,
+                ImageUri = q.ImageUri,
+                FullDesc = q.FullDesc,
+                InterestRate = q.InterestRate,
+                IsOffer = q.IsOffer,
+                IsActive = q.IsActive,
+                MetaDesc = q.MetaDesc,
+                MetaKeyword = q.MetaKeyword,
+                MomentaryOffer = q.MomentaryOffer,
+                PersianTitle = q.PersianTitle,
+                ProductGift = q.ProductGift,
+                WeakPoints = q.WeakPoints,
+                IsShowIndex = q.IsShowIndex,
+                Id = q.Id,
+                Offer = q.Offer
             });
         }
     }
@@ -429,6 +428,11 @@
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <style>
+        .middle-container .form-checkout .form-checkout-row input {
+        
+}
+    </style>
 }
 
 @if (basket.Count < 1)
@@ -445,13 +449,13 @@
                                         <img src="/assetsCli/images/shopping-cart.png">
                                     </div>
                                     <p class="cart-empty-title">سبد خرید شما در حال حاضر خالی است.</p>
-                                        @if (!User.Identity.IsAuthenticated)
-                                        {
-                                            <a href="@Url.Action("Login", "Home")" class="btn account-btn btn-primary">ورود به حساب کاربری</a>
-                                        }
-                                        <div class="return-to-shop">
-                                            <a href="@Url.Action("Index", "Home")" class="backward btn btn-secondary">بازگشت به صفحه اصلی</a>
-                                        </div>
+                                    @if (!User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("Login", "Home")" class="btn account-btn btn-primary">ورود به حساب کاربری</a>
+                                    }
+                                    <div class="return-to-shop">
+                                        <a href="@Url.Action("Index", "Home")" class="backward btn btn-secondary">بازگشت به صفحه اصلی</a>
+                                    </div>
 
                                 </div>
                             </div>
@@ -525,41 +529,62 @@ else
                                                         </div>
                                                     </th>
                                                     @{
-                                                    string qn ="quantity"+i.Id;
-                                                    string tl ="total"+i.Id;
-                                                    string pr ="price"+i.Id;
+                                                        string qn = "quantity" + i.ProductColors.FirstOrDefault().Id;
+                                                        string tl = "total" + i.Id;
+                                                        string pr = "price" + i.Id;
                                                     }
                                                     <td class="product-cart-price">
                                                         <span class="amount" id="@pr">
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </td>
-                                                
-                                                    <td class="product-cart-quantity">
-                                                        <div class="required-number before">
-                                                            <div class="quantity">
-                                                                <input type="number" min="0" max="5" step="1" value="1" id="@qn`" class="quantity-input">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-cart-total">
-                                                        <span class="amount" id="@tl">
-                                                            @if (i.IsOffer)
+                                                               @if (i.IsOffer)
                                                             {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                                {
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                                }
-                                                                else
-                                                                {
-                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                                }
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                             }
                                                             else
                                                             {
-                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
                                                             }
+                                                            }
+                                                            else
+                                                            {
+                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                            }
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </td>
+
+                                                    <td class="product-cart-quantity">
+                                                        <div class="required-number before">
+                                                            <div class="quantity">
+                                                                <input type="number" min="0" max="5" step="1" value="@i.Count" id="@qn`" class="quantity-input" onchange="handleValueChange(this)">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-cart-total" style=" vertical-align: middle;">
+                                                        <span class="amount" id="@tl">
+                                                            @{
+                                                                var price = new double();
+                                                                if (i.IsOffer)
+                                                                {
+                                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                    {
+                                                                        price = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        price = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    price = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                                }
+
+                                                                price = price * i.Count;
+                                                            }
+                                                            @price.ToString("N0")
+                                                            <span>تومان</span>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -589,32 +614,85 @@ else
                                                                 @{
                                                                     foreach (var i in postMethods)
                                                                     {
-                                                                        <div class="shipping-totals-outline">
-                                                                            <label for="#" class="outline-radio">
-                                                                                <input type="radio" name="payment_method"
-                                                                                       id="@i.Id">
-                                                                                <span class="outline-radio-check"></span>
-                                                                            </label>
-                                                                            <label for="#" class="shipping-totals-title-row">
-                                                                                <div class="shipping-totals-title">
-                                                                                    @if (i.Price > 0)
-                                                                                    {
-                                                                                        <span> @i.Title : @i.Price.ToString("N0")</span>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <span> @i.Title : رایگان </span>
-                                                                                    }
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
+                                                                        if (i.Id == selectPostMethod.Id)
+                                                                        {
+                                                                            <div class="shipping-totals-outline">
+                                                                                <label for="#" class="outline-radio">
+                                                                                    <input type="radio" value="@i.Id" checked="checked" name="payment_method"
+                                                                                           id="@i.Id">
+                                                                                    <span class="outline-radio-check"></span>
+                                                                                </label>
+                                                                                <label for="#" class="shipping-totals-title-row">
+                                                                                    <div class="shipping-totals-title">
+                                                                                        @if (i.Price > 0)
+                                                                                        {
+                                                                                            <span> @i.Title : @i.Price.ToString("N0")</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span> @i.Title : رایگان </span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </label>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="shipping-totals-outline">
+                                                                                <label for="#" class="outline-radio">
+                                                                                    <input type="radio" value="@i.Id" name="payment_method"
+                                                                                           id="@i.Id">
+                                                                                    <span class="outline-radio-check"></span>
+                                                                                </label>
+                                                                                <label for="#" class="shipping-totals-title-row">
+                                                                                    <div class="shipping-totals-title">
+                                                                                        @if (i.Price > 0)
+                                                                                        {
+                                                                                            <span> @i.Title : @i.Price.ToString("N0")</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span> @i.Title : رایگان </span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </label>
+                                                                            </div>
+                                                                        }
                                                                     }
                                                                 }
                                                             </div>
                                                         </li>
+                                                        @if (selectPostMethod.Price >= 0)
+                                                        {
+                                                            <li class="order-total">
+                                                                <span class="amount">ارسال</span>
+                                                                <span> @selectPostMethod.Price.ToString("N0") تومان</span>
+                                                            </li>
+                                                        }
+
+                                                        @if (discountCode.Amount > 0)
+                                                        {
+                                                            <li class="order-total">
+                                                                <span class="amount"> کد تخفیف</span>
+                                                                <span> @discountCode.Amount.ToString("N0") تومان</span>
+                                                            </li>
+                                                        }
+
                                                         <li class="order-total">
                                                             <span class="amount"> مجموع</span>
-                                                            <span> @price.ToString("N0") تومان</span>
+                                                            @{
+                                                                var totalPrice = price;
+                                                                if (discountCode != null)
+                                                                {
+                                                                    totalPrice -= discountCode.Amount;
+                                                                }
+
+                                                                if (selectPostMethod.Price > 0)
+                                                                {
+                                                                    totalPrice += selectPostMethod.Price;
+                                                                }
+                                                            }
+                                                            <span> @totalPrice.ToString("N0") تومان</span>
                                                         </li>
                                                         <li class="discount-code">
                                                             <div class=" align-items-center">
@@ -622,7 +700,7 @@ else
                                                                     <div class="coupon">
                                                                         <form >
                                                                             <input type="text" name="input-coupon"
-                                                                                   class="input-coupon-code" id="DiscountCode"
+                                                                                   class="input-coupon-code" value="@discountCode.Code" id="DiscountCode"
                                                                                    placeholder="كد تخفیف:">
                                                                             <button class="btn btn-coupon"
                                                                                     type="button" onclick="CheckCode()">
@@ -685,6 +763,18 @@ else
     <script>
   
     document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethods = document.getElementsByName('payment_method');
+
+        // Add a change event listener to each radio button
+        paymentMethods.forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Get the value of the selected radio button
+                const selectedValue = document.querySelector('input[name="payment_method"]:checked').value;
+                let href =`@Url.Action("Basket", "Home")`+ '?pId=' + encodeURIComponent(selectedValue)
+                window.location.href=href;
+                // Display the selected value
+            });
+        });
         // Get all quantity input elements
         const quantityInputs = document.querySelectorAll('.quantity-input');
 
@@ -704,22 +794,14 @@ else
         });
     });
     function CheckOut(){
-        console.log(getCheckedRadioId())
-        window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
+        if (getCheckedRadioId()===0 || !getCheckedRadioId()){
+            alert("روش ارسال را انتخاب کنید")
+        }else {
+            window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
+        }
     }
     function  CheckCode(){
-        $.ajax({
-            type: "Post",
-            data: {code: $('#DiscountCode').val()},
-            url: "/Home/DiscountCheck",
-            success: function (data) {
-                alert("کد تخفیف معتبر است")
-            },
-            error: function (xhr) {
-                console.dir(xhr)
-                alert("کدتخفیف نامعتبر");
-            }
-        });
+        window.location.href =`@Url.Action("DiscountCheck", "Basket")`+`?code=`+$('#DiscountCode').val();
     }
     function getCheckedRadioId() {
         const radioButtons = document.querySelectorAll('input[name="payment_method"]');
@@ -729,10 +811,40 @@ else
                 checkedRadioId = radio.id;
             }
         });
+        
         return checkedRadioId;
     }
 
+    const previousValues = {};
 
+    // Set the initial values
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        previousValues[input.id] = parseInt(input.value);
+    });
+
+    function handleValueChange(input) {
+        let newValue = parseInt(input.value);
+        let inputId = input.id;
+        if (newValue > previousValues[inputId]) {
+            previousValues[inputId] = newValue;
+
+            let numberPart = inputId.match(/\d+/)[0];
+
+            let quantityNumber = parseInt(numberPart, 10);
+
+            let href =`@Url.Action("AddToBasket", "Basket")`
+            window.location.href = href+ '?id=' + encodeURIComponent(quantityNumber);
+        } else if (newValue < previousValues[inputId]) {
+            previousValues[inputId] = newValue;
+
+            let numberPart = inputId.match(/\d+/)[0];
+
+            let quantityNumber = parseInt(numberPart, 10);
+
+            let href = `@Url.Action("RemoveInBasket", "Basket")`
+            window.location.href = href+ '?id=' + encodeURIComponent(quantityNumber);
+        } 
+    }
 
 
 </script>

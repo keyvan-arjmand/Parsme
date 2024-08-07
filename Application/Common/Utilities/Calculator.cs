@@ -57,13 +57,21 @@ public static class Calculator
     public static bool CalcOffer(this DateTime time, int day, int hour, int min, bool isOffer)
     {
         var offerTime = time.AddDays(day).AddHours(hour).AddMinutes(min);
-
-        return (isOffer, offerTime >= DateTime.Now) switch
+        if (!isOffer)
         {
-            (true, true) => true,
-            (false, true) => false,
-            (true, false) => false,
-            (false, false) => false
-        };
+            return false;
+        }
+        else
+        {
+            if (offerTime >= DateTime.Now)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+ 
     }
 }

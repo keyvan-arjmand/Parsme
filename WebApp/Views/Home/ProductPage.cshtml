@@ -380,7 +380,7 @@
                 <a href="#">@prod.SubCategory.Category!.Name</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="@Url.Action("SubCategory","Home",new {subCategoryId=@prod.SubCategoryId})">@prod.SubCategory.Name</a>
+                <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = @prod.SubCategoryId })">@prod.SubCategory.Name</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">@prod.PersianTitle</li>
         </ol>
@@ -544,63 +544,63 @@
     <h1 class="product-title">
         @prod.PersianTitle
     </h1>
- 
+
 </div>
 <div class="product-attributes">
     <div class="product-config">
         <span class="product-title-en">@prod.Title</span>
     </div>
 </div>
-<div  class="product-config-wrapper">
+<div class="product-config-wrapper">
     <div class="product-directory">
         <ul>
             <li>
-            <span>
-                <i class="fa fa-archive"></i> دسته:
-            </span>
+                <span>
+                    <i class="fa fa-archive"></i> دسته:
+                </span>
                 <a href="#" class="product-link product-cat-title">@prod.SubCategory.Category.Name</a>
                 ,
-                <a href="@Url.Action("SubCategory","Home",new {subCategoryId=@prod.SubCategoryId})" class="product-link product-cat-title">@prod.SubCategory.Name</a>
+                <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = @prod.SubCategoryId })" class="product-link product-cat-title">@prod.SubCategory.Name</a>
             </li>
             <li>
-            <span>
-                <i class="fa fa-tags"></i> برچسب:
-            </span>
+                <span>
+                    <i class="fa fa-tags"></i> برچسب:
+                </span>
                 @{
-                foreach (var i in prod.MetaKeyword.Split(",").ToList())
-                {
-                <a href="@Url.Action("Search","Home",new{search=@i})" class="product-link product-tag-title">@i</a>
-                }
+                    foreach (var i in prod.MetaKeyword.Split(",").ToList())
+                    {
+                        <a href="@Url.Action("Search", "Home", new { search = @i })" class="product-link product-tag-title">@i</a>
+                    }
                 }
             </li>
             <li>
-            <span>
-                برند:
-            </span>
-                <a href="@Url.Action("GetByBrand","Home",new {prod.BrandId})" class="product-link product-tag-title">@prod.Brand.Title</a>
+                <span>
+                    برند:
+                </span>
+                <a href="@Url.Action("GetByBrand", "Home", new { prod.BrandId })" class="product-link product-tag-title">@prod.Brand.Title</a>
             </li>
         </ul>
     </div>
-    
+
 </div>
-    <div class="product-attributes p-2">
-        <div class="product-config">
-            @if (prod.IsOffer)
+<div class="product-attributes p-2">
+    <div class="product-config">
+        @if (prod.IsOffer)
+        {
+            if (prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer) && prod.ProductColors.Any(x => x.ColorId == prod.Offer.ColorId))
             {
-            if (prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
-            {
-            <div class="d-flex justify-content-between gap-3">
-                <div class="promotion-badge align-self-center badge badge-warning p-2" style=" width: 83px">فروش ویژه</div>
-                <div class="countdown-timer text-start" style="margin-top: 0 !important;text-align: start">
-                    <div class="countdown h4" data-date-time="@prod.InsertDate.AddDays(prod.Offer.Days).AddHours(prod.Offer.Hours).AddMinutes(prod.Offer.Minutes)"
-                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                <div class="d-flex justify-content-between gap-3">
+                    <div class="promotion-badge align-self-center badge badge-warning p-2" style=" width: 83px">فروش ویژه</div>
+                    <div class="countdown-timer text-start" style="margin-top: 0 !important;text-align: start">
+                        <div class="countdown h4" data-date-time="@prod.InsertDate.AddDays(prod.Offer.Days).AddHours(prod.Offer.Hours).AddMinutes(prod.Offer.Minutes)"
+                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                        </div>
                     </div>
                 </div>
-            </div>
             }
-            }
-        </div>
+        }
     </div>
+</div>
 
 <div class="product-config-wrapper">
 <div class="col=lg-6 col-md-6 col-xs-12 pr">
@@ -698,7 +698,7 @@
                 }
                 else
                 {
-                     <div class="col=lg-6 col-md-6 col-xs-12 pr color-panel" id="@i.ColorId">
+                    <div class="col=lg-6 col-md-6 col-xs-12 pr color-panel" id="@i.ColorId">
                         <div class="product-seller-info">
                             <div class="seller-info-changable">
                                 <div class="product-seller-row guarantee">
@@ -820,7 +820,7 @@
                                 <span class="title"> تخفیف:</span>
                                 <a href="#" class="product-name">
                                     <span class="amount" style="color: black">
-                                          @prod.DiscountAmount.ToString("N0")
+                                        @prod.DiscountAmount.ToString("N0")
                                         <span>تومان</span>
                                     </span>
                                 </a>
