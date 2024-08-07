@@ -45,9 +45,8 @@ public class PaymentController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-           
-            var user =await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
-           
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+
             var basketProducts = new List<Product>();
             if (HttpContext.Session.GetString("basket") != null)
             {
@@ -95,7 +94,8 @@ public class PaymentController : Controller
                     price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
                 }
             }
-            var discountAmount =  0.0;
+
+            var discountAmount = 0.0;
             if (!string.IsNullOrWhiteSpace(discountCode))
             {
                 var discount = await _work.GenericRepository<DiscountCode>().Table
@@ -104,6 +104,7 @@ public class PaymentController : Controller
                 discount.Count--;
                 await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
             }
+
             var factor = new Factor()
             {
                 Amount = price,
@@ -120,12 +121,14 @@ public class PaymentController : Controller
                 Desc = desc,
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
-           
+
             foreach (var i in JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket"))
                          .ToList())
             {
                 var prod = await _work.GenericRepository<ProductColor>().Table
                     .FirstOrDefaultAsync(x => x.Id == i);
+                prod.Inventory--;
+                await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
                 await _work.GenericRepository<FactorProduct>().AddAsync(new FactorProduct
                 {
                     ProductColorId = prod.Id,
@@ -134,10 +137,10 @@ public class PaymentController : Controller
             }
 
             ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
-                .Include(x=>x.PostMethod)
-                .Include(x=>x.UserAddress)
-                .Include(x=>x.Products).ThenInclude(x=>x.ProductColor).ThenInclude(x=>x.Product)
-                .Include(x => x.Products)     .Include(x => x.Products)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress)
+                .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product)
+                .Include(x => x.Products).Include(x => x.Products)
                 .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
                 .FirstOrDefaultAsync(x => x.Id == factor.Id);
             ViewBag.BasketProd = basketProducts;
@@ -146,6 +149,7 @@ public class PaymentController : Controller
                 .Include(x => x.SubCategories)
                 .ThenInclude(x => x.Brands)
                 .ToListAsync();
+            HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(new List<int>()));
             return View();
         }
         else
@@ -153,7 +157,4 @@ public class PaymentController : Controller
             return RedirectToAction("Index");
         }
     }
-    
-    
-
 }

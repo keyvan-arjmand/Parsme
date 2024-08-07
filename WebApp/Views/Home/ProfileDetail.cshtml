@@ -2,6 +2,7 @@
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebApp.Models
 
 @{
     Layout = "_Layout";
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
+
 
 
 @section Header{
@@ -129,7 +131,7 @@
                         {
                             <li id="nav-menu-item" class="menu-item nav-overlay">
 
-                                <a  class="current-link-menu">
+                                <a class="current-link-menu">
                                     <img src="/Images/Category/@i.LogoUri" alt="menu" width="22px">
                                     @i.Name
                                     <i class="fa fa-angle-down"></i>
@@ -138,7 +140,7 @@
                                     @foreach (var q in i.SubCategories)
                                     {
                                         <li class="menu-mega-item menu-item-type-mega-menu">
-                                            <a href="@Url.Action("SubCategory","Home",new {subCategoryId=q.Id})" class="mega-menu-link">
+                                            <a href="@Url.Action("SubCategory", "Home", new { subCategoryId = q.Id })" class="mega-menu-link">
                                                 @q.Name
                                             </a>
                                             <ul class="sub-menu mega-menu-level-three">
@@ -177,6 +179,31 @@
 
                         </li>
                     }
+                    @{
+                        double price = 0;
+                        double offer = 0;
+                        foreach (var i in basket)
+                        {
+                            @if (i.IsOffer)
+                            {
+                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                {
+                                    offer += i.Offer.OfferAmount;
+                                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                }
+                                else
+                                {
+                                    offer += i.DiscountAmount;
+                                    price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                }
+                            }
+                            else
+                            {
+                                offer += i.DiscountAmount;
+                                price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                            }
+                        }
+                    }
                     <li class="divider-space-card">
                         <div class="header-cart-basket">
                             <a href="@Url.Action("Basket", "Home")" class="cart-basket-box">
@@ -185,11 +212,52 @@
                                 </span>
                                 <span class="title-cart">سبد خرید</span>
                                 <span class="price-cart">
-                                    @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                    @price.ToString("N0")
                                     <span>تومان</span>
                                 </span>
                                 <span class="count-cart">@basket.Count</span>
                             </a>
+                            @{
+                                List<BasketProduct> products = new List<BasketProduct>();
+                                foreach (var q in basket)
+                                {
+                                    if (products.Any(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id))
+                                    {
+                                        products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id).Count++;
+                                    }
+                                    else
+                                    {
+                                        products.Add(new BasketProduct
+                                        {
+                                            SubCategoryId = q.SubCategoryId,
+                                            ProductStatus = q.ProductStatus,
+                                            ProductColors = q.ProductColors.ToList(),
+                                            InsertDate = q.InsertDate,
+                                            Count = 1,
+                                            Code = q.Code,
+                                            DiscountAmount = q.DiscountAmount,
+                                            Detail = q.Detail,
+                                            Strengths = q.Strengths,
+                                            Title = q.Title,
+                                            BrandId = q.BrandId,
+                                            ImageUri = q.ImageUri,
+                                            FullDesc = q.FullDesc,
+                                            InterestRate = q.InterestRate,
+                                            IsOffer = q.IsOffer,
+                                            IsActive = q.IsActive,
+                                            MetaDesc = q.MetaDesc,
+                                            MetaKeyword = q.MetaKeyword,
+                                            MomentaryOffer = q.MomentaryOffer,
+                                            PersianTitle = q.PersianTitle,
+                                            ProductGift = q.ProductGift,
+                                            WeakPoints = q.WeakPoints,
+                                            IsShowIndex = q.IsShowIndex,
+                                            Id = q.Id,
+                                            Offer = q.Offer
+                                        });
+                                    }
+                                }
+                            }
                             @if (basket.Count > 0)
                             {
                                 <div class="widget-shopping-cart">
@@ -199,16 +267,16 @@
                                                 <div class="force-overflow">
                                                     <ul class="product-list-widget">
                                                         @{
-                                                            if (basket.Count > 0)
+                                                            if (products.Count > 0)
                                                             {
-                                                                @foreach (var i in basket)
+                                                                @foreach (var i in products)
                                                                 {
                                                                     <li class="mini-cart-item">
                                                                         <div class="mini-cart-item-content">
                                                                             <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-close">
                                                                                 <i class="mdi mdi-close"></i>
                                                                             </a>
-                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block">
+                                                                            <a href="@Url.Action("RemoveInBasket", "Home", new { i.ProductColors.FirstOrDefault().Id })" class="mini-cart-item-image d-block" style="top: 0">
                                                                                 <img src="/Images/ProductImage/@i.ImageUri">
                                                                             </a>
                                                                             <span class="product-name-card">
@@ -220,7 +288,33 @@
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
-                                                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.IsOffer ? i.Offer.OfferAmount : i.DiscountAmount).ToString("N0")
+                                                                                    
+                                                                                    <span> تعداد:@i.Count</span>
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="quantity">
+                                                                                <span class="quantity-Price-amount">
+                                                                                    @{
+                                                                                        var priceBasket = new double();
+                                                                                        if (i.IsOffer)
+                                                                                        {
+                                                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                                            {
+                                                                                                priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                priceBasket = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            priceBasket = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                                                        }
+
+                                                                                        priceBasket = priceBasket * i.Count;
+                                                                                    }
+                                                                                    @priceBasket.ToString("N0")
                                                                                     <span>تومان</span>
                                                                                 </span>
                                                                             </div>
@@ -246,10 +340,11 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="mini-card-total">
                                             <strong>قیمت کل : </strong>
                                             <span class="price-total">
-                                                @basket.Sum(x => x.ProductColors.FirstOrDefault().Price.DiscountProduct(x.IsOffer ? x.Offer.OfferAmount : x.DiscountAmount)).ToString("N0")
+                                                @price.ToString("N0")
                                                 <span>تومان</span>
                                             </span>
                                         </div>
@@ -364,6 +459,7 @@
     </header>
 
 }
+
 
 <div class="container-main">
     <div class="d-block">
