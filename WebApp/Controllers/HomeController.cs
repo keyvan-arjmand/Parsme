@@ -464,6 +464,8 @@ public class HomeController : Controller
                 .Include(x => x.Products)
                 .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.FactorId == id);
 
             return View();
         }
@@ -791,13 +793,13 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Where(x => x.SubCategoryId == prodD.SubCategoryId && x.Id != prodD.Id)
             .Take(12).ToListAsync();
-        if (prods.Count<=0)
+        if (prods.Count <= 0)
         {
             ViewBag.Prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                 .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Where(x=>id!=prodD.Id)
+                .Where(x => id != prodD.Id)
                 .Take(12).ToListAsync();
         }
         else
@@ -966,7 +968,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Search(string search, double min, double max)
     {
-        ViewBag.Search = search;
+        ViewBag.SearchR = search;
         if (max > 0)
         {
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
@@ -1032,7 +1034,9 @@ public class HomeController : Controller
 
     public async Task<IActionResult> SubCategory(int subCategoryId, double min, double max, int detailId, string value)
     {
-        ViewBag.Id = subCategoryId;
+      
+    ViewBag.Id = subCategoryId;
+    
         if (max > 0)
         {
             if (detailId > 0)
@@ -1046,7 +1050,7 @@ public class HomeController : Controller
                     .Include(x => x.Offer)
                     .Where(x => x.SubCategoryId == subCategoryId)
                     .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value.Contains(value))
+                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value ==value)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .ToListAsync();
             }
@@ -1076,7 +1080,7 @@ public class HomeController : Controller
                     .Include(x => x.ProductDetails)
                     .Where(x => x.SubCategoryId == subCategoryId)
                     .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value.Contains(value))
+                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value ==value)
                     .ToListAsync();
             }
             else
@@ -1195,6 +1199,10 @@ public class HomeController : Controller
                             comparison.Add(id);
                             HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
                         }
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(new List<int>(id)));
                     }
                 }
                 else

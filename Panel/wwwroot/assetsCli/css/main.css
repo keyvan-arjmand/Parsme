@@ -3926,10 +3926,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .product-rate i.active {
     color: #febd69;
 }
-
+.product-card{
+    min-height: 353px;
+}
 .discount-d {
     position: absolute;
-    top: 45px;
+    top: 15px;
     left: 15px;
 }
 

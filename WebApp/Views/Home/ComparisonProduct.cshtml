@@ -568,6 +568,7 @@
                                                                                         <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })">
                                                                                             @i.PersianTitle
                                                                                         </a>
+
                                                                                     </h2>
                                                                                     <div class="price">
 
@@ -669,8 +670,26 @@
                             @{
                                 foreach (var i in prods)
                                 {
-                                    <td class="">
+                                    <td class="d-flex justify-content-start gap-3">
                                         <span class="text-medium">&nbsp;@i.Title&nbsp;</span>
+                                        
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                        <tr class="">
+                            <th class="text-uppercase">رنگ بندی</th>
+                            @{
+                                foreach (var i in prods)
+                                {
+                                    <td class="d-flex justify-content-start gap-3">
+                                        @{
+                                            foreach (var q in i.ProductColors)
+                                            {
+                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;" class="p-3 m-1"></h1>
+                                            }
+                                        }
                                     </td>
                                 }
                             }

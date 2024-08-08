@@ -2,6 +2,7 @@
 @using Domain.Entity.Factor
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
+@using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WebApp.Models
 
@@ -12,6 +13,7 @@
     Domain.Entity.User.User user = ViewBag.User;
     List<SearchResult> searchResults = ViewBag.Search;
     Factor factor = ViewBag.Order;
+    ReturnedFactor returnedFactor =  ViewBag.ReturnFactor;
     var factorAmountPrice = factor.Amount - factor.AmountPrice;
 }
 
@@ -607,9 +609,20 @@
                                     <br>
                                     @if (factor.IsReturned)
                                     {
-                                        <div class="p-3">
-                                            <span class="p-2 badge badge-info d-block">درخواست مرجوعی شما در حال پیگیری میباشد</span>
-                                        </div>
+                                        @if (returnedFactor.ReturnedStatus == ReturnedStatus.Pending)
+                                        {
+                                            <div class="p-3">
+                                                <span class="p-2 badge badge-info d-block">درخواست مرجوعی شما در حال پیگیری میباشد</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-3">
+                                                <p>نتیجه درخواست مرجوعی:</p>
+                                                <span class="p-2 badge badge-info d-block">@returnedFactor.ReturnedStatus.ToDisplay()</span>
+                                            </div>
+                                        }
+                                     
                                     }
                                     else
                                     {

@@ -275,7 +275,7 @@
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
-                                                                                    
+
                                                                                     <span> تعداد:@i.Count</span>
                                                                                 </span>
                                                                             </div>
@@ -459,6 +459,11 @@
     <!-- main-style--------------/-------------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <style>
+        .product-card{
+            min-height: 353px;
+        }
+    </style>
 }
 
 <div class="container-main">
@@ -627,7 +632,7 @@
 <div class="slider-widget-products slider-content-tabs slider-amazing-product pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
         <header class="card-header">
-            <span class="title-one">محصولات شگفت انگیز</span>
+            <span class="title-one">تخفیفات شگفت انگیز</span>
             <h3 class="card-title"></h3>
         </header>
         <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
@@ -727,7 +732,7 @@
                                         <a class="w-100 text-center img-link-amazing" href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @if (i.IsOffer)
                                             {
-                                                <div class="promotion-badge p-2">تخفیفات</div>
+                                                <div class="promotion-badge p-2">تخفیفات شگفت انگیز</div>
                                             }
                                             <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
                                         </a>
@@ -803,7 +808,7 @@
                                         <a class="w-100 text-center img-link-amazing" href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @if (i.IsOffer)
                                             {
-                                                <div class="promotion-badge p-2">تخفیفات</div>
+                                                <div class="promotion-badge p-2">تخفیفات شگفت انگیز</div>
                                             }
                                             <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
                                         </a>
@@ -952,74 +957,95 @@
                                 @{
                                     foreach (var i in prodCatalog)
                                     {
-                                        <div class="owl-item active tab-item "
-                                             style="width: 309.083px; margin-left: 10px;">
-                                            <div class="item">
-                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
-                                                    @if (i.IsOffer)
-                                                    {
-                                                        <div class="promotion-badge p-2">تخفیفات</div>
-                                                    }
-                                                    <img src="/Images/ProductImage/@i.ImageUri"
-                                                         class="img-fluid" alt="">
-                                                </a>
-                                                <h2 class="post-title">
-                                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                                        @i.PersianTitle
-                                                    </a>
-                                                </h2>
-                                                <div class="price">
-                                                    @if (i.IsOffer)
-                                                    {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                        {
-                                                            <del>
-                                                                <span>
-                                                                    @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
-                                                                </span>
-                                                            </del>
-                                                            <ins>
-                                                                <span>
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                                    <span>تومان</span>
-                                                                </span>
-                                                            </ins>
-                                                            <div>
-
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <ins>
-                                                                <span>
-                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                                </span>
-                                                            </ins>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <ins>
-                                                            <span>
-                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                            </span>
-                                                        </ins>
-                                                    }
-                                                </div>
-                                                <div class="actions">
-                                                    <ul>
-                                                        <li class="action-item like">
-                                                            <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
-                                                                <div class="btn btn-light ">
-                                                                    <i class="fa fa-heart-o"></i>
-                                                                </div>
-                                                            </a>
-
-                                                        </li>
-                                                    </ul>
+                                            <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                <div class="item">
+                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                        @if (i.IsOffer)
+                                        {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                            }
+                                        }
+                                        @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                        {
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                        }
+
+
+                                    </a>
+                                    
+                                    <div class="color-d">
+                                        @foreach (var q in i.ProductColors)
+                                        {
+                                        <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                        }
+                                    </div>
+                                    <h2 class="post-title">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                            @i.PersianTitle
+                                        </a>
+                                    </h2>
+                                    <div class="price">
+                                        @if (i.IsOffer)
+                                        {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <del>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </del>
+                                                <ins>
+                                                    <span>
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                                <div>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                </span>
+                                            </ins>
+                                        }
+                                    </div>
+                                    <div class="actions">
+                                        <ul>
+                                            <li class="action-item like">
+                                                <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                    <div class="btn btn-light ">
+                                                        <i class="fa fa-heart-o"></i>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                                     }
                                 }
 
@@ -1048,16 +1074,38 @@
                     @{
                         foreach (var i in newProd)
                         {
-                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                              <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
                                 <div class="item">
                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
                                         @if (i.IsOffer)
                                         {
-                                            <div class="promotion-badge p-2">تخفیفات</div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                            }
                                         }
-                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                        {
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
+                                                </div>
+                                            </div>
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                        }
+
 
                                     </a>
+                                    <div class="color-d">
+                                        @foreach (var q in i.ProductColors)
+                                        {
+                                        <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                        }
+                                    </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @i.PersianTitle
@@ -1136,15 +1184,38 @@
                     @{
                         foreach (var i in newProd)
                         {
-                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                                <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
                                 <div class="item">
                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
                                         @if (i.IsOffer)
                                         {
-                                            <div class="promotion-badge p-2">تخفیفات</div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                            }
                                         }
-                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                        {
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
+                                                </div>
+                                            </div>
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                        }
+
+
                                     </a>
+                                    <div class="color-d">
+                                        @foreach (var q in i.ProductColors)
+                                        {
+                                        <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                        }
+                                    </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @i.PersianTitle
@@ -1242,17 +1313,38 @@
                     @{
                         foreach (var i in newProd)
                         {
-                            <div class="owl-item active tab-item" style="width: 296.75px; margin-left: 10px;">
+                            <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
                                 <div class="item">
                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
                                         @if (i.IsOffer)
                                         {
-                                            <div class="promotion-badge p-2">تخفیفات</div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                                <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                            }
+                                        }
+                                        @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                        {
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
+                                                </div>
+                                            </div>
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
                                         }
 
-                                        <img src="/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
 
                                     </a>
+                                    <div class="color-d">
+                                        @foreach (var q in i.ProductColors)
+                                        {
+                                        <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                        }
+                                    </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @i.PersianTitle
