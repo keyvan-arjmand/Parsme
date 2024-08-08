@@ -125,12 +125,12 @@ public class HomeController : Controller
         public string PhoneNumber { get; set; } = string.Empty;
     }
 
-    public async Task<ActionResult> UserLogin(string password, string phoneNumber)
+    public async Task<ActionResult> UserLogin(string? password, string phoneNumber)
     {
         var user = await _userManager.FindByNameAsync(phoneNumber);
         if (user != null)
         {
-            var result = await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+            var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
             if (!result.Succeeded)
                 return RedirectToAction("login", "Home");
             return RedirectToAction("Profile", "Home");
@@ -155,7 +155,16 @@ public class HomeController : Controller
                 }, CancellationToken.None);
             }
 
-            return RedirectToAction("Index", "Home");
+            var previousUrl = Request.Headers["Referer"];
+
+            if (!string.IsNullOrEmpty(previousUrl))
+            {
+                return Redirect(previousUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
         else
         {
@@ -175,7 +184,16 @@ public class HomeController : Controller
                 await _work.GenericRepository<UserFav>().DeleteAsync(fav, CancellationToken.None);
             }
 
-            return RedirectToAction("UserFav", "Home");
+            var previousUrl = Request.Headers["Referer"];
+
+            if (!string.IsNullOrEmpty(previousUrl))
+            {
+                return Redirect(previousUrl);
+            }
+            else
+            {
+                return RedirectToAction("UserFav", "Home");
+            }
         }
         else
         {
@@ -705,8 +723,9 @@ public class HomeController : Controller
                 .ToListAsync();
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.Code == code)??new DiscountCode();
-            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.FirstOrDefaultAsync(x=>x.Id==postMethod);
+                .FirstOrDefaultAsync(x => x.Code == code) ?? new DiscountCode();
+            ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Id == postMethod);
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
             return View();
         }
@@ -756,7 +775,7 @@ public class HomeController : Controller
             .ToListAsync();
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
-        ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
+        var prodD = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.Offer)
             .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
@@ -765,6 +784,26 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
             .FirstOrDefaultAsync(x => x.Id == id) ?? new Product();
+        ViewBag.Product = prodD;
+        var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+            .Include(x => x.Offer)
+            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .Where(x => x.SubCategoryId == prodD.SubCategoryId && x.Id != prodD.Id)
+            .Take(12).ToListAsync();
+        if (prods.Count<=0)
+        {
+            ViewBag.Prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+                .Include(x => x.Offer)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Where(x=>id!=prodD.Id)
+                .Take(12).ToListAsync();
+        }
+        else
+        {
+            ViewBag.Prods = prods;
+        }
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -1105,7 +1144,16 @@ public class HomeController : Controller
             HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
         }
 
-        return RedirectToAction("Index", "Home");
+        var previousUrl = Request.Headers["Referer"];
+
+        if (!string.IsNullOrEmpty(previousUrl))
+        {
+            return Redirect(previousUrl);
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 
     public IActionResult Privacy()
@@ -1142,14 +1190,20 @@ public class HomeController : Controller
                         .FirstOrDefaultAsync(x => x.Id == id);
                     if (a.SubCategoryId == pp.SubCategoryId)
                     {
-                        comparison.Add(id);
-                        HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                        if (comparison.All(x => x != id))
+                        {
+                            comparison.Add(id);
+                            HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                        }
                     }
                 }
                 else
                 {
-                    comparison.Add(id);
-                    HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                    if (comparison.All(x => x != id))
+                    {
+                        comparison.Add(id);
+                        HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                    }
                 }
             }
         }
@@ -1157,8 +1211,11 @@ public class HomeController : Controller
         {
             if (id > 0)
             {
-                comparison.Add(id);
-                HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                if (comparison.All(x => x != id))
+                {
+                    comparison.Add(id);
+                    HttpContext.Session.SetString("comparison", JsonConvert.SerializeObject(comparison));
+                }
             }
         }
 
@@ -1315,9 +1372,9 @@ public class HomeController : Controller
         ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.Take(4).ToListAsync();
 
         ViewBag.BasketProd = basketProducts;
-    
-            ViewBag.SelectPostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.Id == pId) ?? new PostMethod();
+
+        ViewBag.SelectPostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.Id == pId) ?? new PostMethod();
 
         return View();
     }
@@ -1351,7 +1408,16 @@ public class HomeController : Controller
 
         basketlist.Remove(id);
         HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
-        return RedirectToAction("Index", "Home");
+        var previousUrl = Request.Headers["Referer"];
+
+        if (!string.IsNullOrEmpty(previousUrl))
+        {
+            return Redirect(previousUrl);
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 
     public async Task<ActionResult> Login()

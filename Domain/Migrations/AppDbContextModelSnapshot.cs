@@ -530,6 +530,31 @@ namespace Domain.Migrations
                     b.ToTable("SearchResults");
                 });
 
+            modelBuilder.Entity("Domain.Entity.Notif.InventoryNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InventoryNotifications");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
                 {
                     b.Property<int>("Id")

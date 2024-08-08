@@ -350,12 +350,12 @@
                     if (products.MomentaryOffer)
                     {
                         <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                               required="required" checked="checked"/>
+                               checked="checked"/>
                     }
                     else
                     {
                         <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                               required="required"/>
+                              />
                     }
                 }
             </div>
@@ -365,12 +365,12 @@
                     if (products.IsOffer)
                     {
                         <input type="checkbox" class="form-check-input" id="Offer"
-                               checked="checked" required="required"/>
+                               checked="checked" />
                     }
                     else
                     {
                         <input type="checkbox" class="form-check-input" id="Offer"
-                               required="required"/>
+                              />
                     }
                 }
             </div>
@@ -380,12 +380,12 @@
                     if (products.IsShowIndex)
                     {
                         <input type="checkbox" class="form-check-input" id="ShowIndex"
-                               checked="checked" required="required"/>
+                               checked="checked" />
                     }
                     else
                     {
                         <input type="checkbox" class="form-check-input" id="ShowIndex"
-                               required="required"/>
+                            />
                     }
                 }
             </div>
@@ -398,7 +398,7 @@
                         <div class="form-group w-50  d-flex flex-column">
                             <label for="exampleInputPassword1">رنگ مورد نظر</label>
                             <select id="OfferColor" class="form-control "
-                                    aria-label="Default select example" required="required">
+                                    aria-label="Default select example" >
                                 @foreach (var i in products.ProductColors)
                                 {
                                     if (products.Offer.ColorId == i.ColorId)
@@ -462,7 +462,7 @@
                         <div class="form-group w-50  d-flex flex-column">
                             <label for="exampleInputPassword1">رنگ مورد نظر</label>
                             <select id="OfferColor" class="form-control "
-                                    aria-label="Default select example" required="required">
+                                    aria-label="Default select example" >
 
                             </select>
                         </div>

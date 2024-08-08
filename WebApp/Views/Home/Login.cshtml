@@ -44,12 +44,12 @@
                                     <form class="form-account text-right" asp-action="UserLogin" asp-controller="Home" method="post">
                                         <div class="form-account-title">
                                             <label for="phoneNumber">شماره موبایل</label>
-                                            <input type="text" class="number-email-input" id="phoneNumber" name="phoneNumber">
+                                            <input type="text" class="number-email-input" id="phoneNumber" name="phoneNumber" required="required">
                                         </div>
                                         <div class="form-account-title">
                                             <label for="password">رمز عبور</label>
                                             <a href="" class="account-link-password">رمز خود را فراموش کرده ام</a>
-                                            <input id="password" type="password" class="password-input" name="password">
+                                            <input id="password" type="password" class="password-input" name="password" required="required">
                                         </div>
                                         <div class="form-auth-row">
                                             <label for="#" class="ui-checkbox mt-1">

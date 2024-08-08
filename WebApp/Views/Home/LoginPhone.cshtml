@@ -76,20 +76,24 @@ Layout = null;
 <script src="/assetsCli/js/main.js"></script>
 <script>
     function Login(){
-
-        $.ajax({
-            type: "Post",
-            data: {phoneNumber:$('#Phone').val()},
-            url: "/Home/SendLoginCode",
-            success: function (data) {
-                var phoneNumber = $('#Phone').val();
-                var confirmCodeUrl = '@Url.Action("ConfirmCode", "Home")';
-                window.location.href = confirmCodeUrl + '?phoneNumber=' + encodeURIComponent(phoneNumber);
-            },
-            error: function (xhr) {
-                alert("شماره وارد شده معتبر نمیباشد");
-            }
-        });
+        if ($('#Phone').val()!=='')
+        {
+            $.ajax({
+                type: "Post",
+                data: {phoneNumber:$('#Phone').val()},
+                url: "/Home/SendLoginCode",
+                success: function (data) {
+                    var phoneNumber = $('#Phone').val();
+                    var confirmCodeUrl = '@Url.Action("ConfirmCode", "Home")';
+                    window.location.href = confirmCodeUrl + '?phoneNumber=' + encodeURIComponent(phoneNumber);
+                },
+                error: function (xhr) {
+                    alert("شماره وارد شده معتبر نمیباشد");
+                }
+            });
+        }else{
+        alert("شماره تلفن را وارد کنید")}
+       
     }
 </script>
 </html>

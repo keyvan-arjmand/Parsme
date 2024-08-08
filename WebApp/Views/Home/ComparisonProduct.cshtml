@@ -16,7 +16,6 @@
 }
 
 
-
 @section Header{
     <header class="header-main">
     <div class="d-block">
@@ -276,7 +275,7 @@
                                                                             </div>
                                                                             <div class="quantity">
                                                                                 <span class="quantity-Price-amount">
-                                                                                    
+
                                                                                     <span> تعداد:@i.Count</span>
                                                                                 </span>
                                                                             </div>
@@ -452,12 +451,10 @@
 {
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- assetsCli-------------->/
     <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- assetsCli-------------->/
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
     <style>
@@ -501,7 +498,10 @@
             @{
                 if (prods.Count() < 1)
                 {
-                    <h5> محصولی یافت نشد</h5>
+                    <div class="p-4 ">
+
+                        <h5> محصولی یافت نشد</h5>
+                    </div>
                 }
                 else
                 {
@@ -547,11 +547,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
-                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0" >
+                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
                                                         <div
                                                             class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-                                                            <div class="owl-stage-outer" >
-                                                                <div class="owl-stage"  id="prodcomp"
+                                                            <div class="owl-stage-outer">
+                                                                <div class="owl-stage" id="prodcomp"
                                                                      style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 500px;">
                                                                     @{
                                                                         foreach (var i in prodBySubCat)
@@ -638,22 +638,21 @@
                                             </a>
                                             <a class="comparison-item-title" href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
                                             <span class="amount">
-                                                      @if (i.IsOffer)
+                                                @if (i.IsOffer)
                                                 {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                <span>تومان</span>
-
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                    {
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                }
-                                                }
-                                                else
-                                                {
-                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                                 }
                                             </span>
                                         </div>
@@ -696,24 +695,23 @@
                                 {
                                     <td>
                                         <span class="amount">
-                                            
-                                            
-                                              @if (i.IsOffer)
-                                            {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                        <span>تومان</span>
 
-                                            }
-                                            else
+
+                                            @if (i.IsOffer)
                                             {
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                            }
-                                            }
-                                            else
-                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                    <span>تومان</span>
+                                                }
+                                                else
+                                                {
                                                     @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                             }
                                         </span>
                                     </td>

@@ -466,46 +466,6 @@
         <div class="sidebar-inner">
             <div class="sidebar-main widget-banner widget card">
                 <!-- category-menu-------------------------->
-                <div class="sidebar-menu-widget-area">
-                    <section class="megamenu-widget">
-                        <div class="header-main-menu">
-                            <ul class="main-menu-ul category-menu mega-menu-level-one">
-                                @{
-                                    foreach (var c in categories)
-                                    {
-                                        <li class="main-menu-item category-menu-item menu-item-type-custom">
-                                            <a href="#" class="main-menu-link-category">
-                                                <img src="/Images/Category/@c.LogoUri">
-                                                @c.Name
-                                            </a>
-                                            <ul class="mega-menu-category sub-menu mega-menu-level-two" style="width: fit-content !important;">
-                                                @foreach (var i in c.SubCategories)
-                                                {
-                                                    <li class="menu-category-item menu-item-type-custom menu-item" style="width: fit-content !important;">
-                                                        <a href="#" class="menu-category-link-title">
-                                                            @i.Name
-                                                        </a>
-                                                        <ul class="sub-menu-category mega-menu-level-there" style="width: fit-content !important;">
-                                                            @foreach (var b in i.Brands)
-                                                            {
-                                                                <li class="menu-category-item-there">
-                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">
-                                                                        @b.Title
-                                                                    </a>
-                                                                </li>
-                                                            }
-                                                        </ul>
-                                                    </li>
-                                                }
-
-                                            </ul>
-                                        </li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                    </section>
-                </div>
                 <div class="slider-main-container d-block d-sm-block d-md-none d-lg-none">
                     <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators carousel-indicators-ul">

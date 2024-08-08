@@ -1,5 +1,6 @@
 ﻿using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
+using Domain.Entity.Notif;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -56,6 +57,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<ReturnedFactor> ReturnedFactors { set; get; }
     public DbSet<ContactPage> ContactPages { set; get; }
     public DbSet<AboutUsPage> AboutUsPages { set; get; }
+    public DbSet<InventoryNotification> InventoryNotifications { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
