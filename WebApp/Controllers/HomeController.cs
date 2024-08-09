@@ -562,6 +562,51 @@ public class HomeController : Controller
         }
     }
 
+    public async Task CastLanding()
+    {
+        var brand = await _work.GenericRepository<BrandLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.BrandId == 8);
+        var brands = await _work.GenericRepository<Brand>().TableNoTracking.Where(x => x.Id != 9)
+            .ToListAsync();
+        foreach (var i in brands)
+        {
+            await _work.GenericRepository<BrandLanding>().AddAsync(new BrandLanding
+            {
+                SmallBanner1 = brand.SmallBanner1,
+                BrandId = i.Id,
+                BigBanner = brand.BigBanner,
+                DescSlider = brand.DescSlider,
+                DescSlider2 = brand.DescSlider2,
+                DescSlider3 = brand.DescSlider3,
+                DescSlider4 = brand.DescSlider4,
+                DescSlider5 = brand.DescSlider5,
+                HrefSlider = brand.HrefSlider,
+                HrefSlider2 = brand.HrefSlider2,
+                HrefSlider3 = brand.HrefSlider3,
+                HrefSlider4 = brand.HrefSlider4,
+                HrefSlider5 = brand.HrefSlider5,
+                ImageSlider = brand.ImageSlider,
+                ImageSlider5 = brand.ImageSlider5,
+                ImageSlider2 = brand.ImageSlider2,
+                SmallBanner2 = brand.SmallBanner2,
+                SmallBanner3 = brand.SmallBanner3,
+                SmallBanner4 = brand.SmallBanner4,
+                ImageSlider3 = brand.ImageSlider3,
+                ImageSlider4 = brand.ImageSlider4,
+                TitleSlider3 = brand.TitleSlider3,
+                TitleSlider = brand.TitleSlider,
+                TitleSlider2 = brand.TitleSlider2,
+                TitleSlider4 = brand.TitleSlider4,
+                HrefSmallBanner1 = brand.HrefSmallBanner1,
+                TitleSlider5 = brand.TitleSlider5,
+                HrefSmallBanner4 = brand.HrefSmallBanner4,
+                HrefBigBanner = brand.HrefBigBanner,
+                HrefSmallBanner2 = brand.HrefSmallBanner2,
+                HrefSmallBanner3 = brand.HrefSmallBanner3
+            }, CancellationToken.None);
+        }
+    }
+
     public async Task<IActionResult> InsertUserAddress(string name, string address, int cityId, string number,
         string postCode)
     {
@@ -799,7 +844,7 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Where(x => x.Id!=prodD.Id)
+                .Where(x => x.Id != prodD.Id)
                 .Take(12).ToListAsync();
         }
         else
@@ -866,6 +911,8 @@ public class HomeController : Controller
             }
         }
 
+        ViewBag.Landing = await _work.GenericRepository<BrandLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.BrandId == id) ?? new();
         ViewBag.BasketProd = basketProducts;
         return View("ProductByBrand");
     }
@@ -1034,9 +1081,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> SubCategory(int subCategoryId, double min, double max, int detailId, string value)
     {
-      
-    ViewBag.Id = subCategoryId;
-    
+        ViewBag.Id = subCategoryId;
+
         if (max > 0)
         {
             if (detailId > 0)
@@ -1050,7 +1096,7 @@ public class HomeController : Controller
                     .Include(x => x.Offer)
                     .Where(x => x.SubCategoryId == subCategoryId)
                     .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value ==value)
+                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value == value)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .ToListAsync();
             }
@@ -1080,7 +1126,7 @@ public class HomeController : Controller
                     .Include(x => x.ProductDetails)
                     .Where(x => x.SubCategoryId == subCategoryId)
                     .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value ==value)
+                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value == value)
                     .ToListAsync();
             }
             else

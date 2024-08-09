@@ -90,6 +90,9 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\images.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\photo_2023-10-12_09-00-55.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\png-clipart-laptop-msi-micro-star-international-motherboard-logo-nvidia-emblem-electronics.png" />
     </ItemGroup>
 
     <ItemGroup>
