@@ -559,6 +559,7 @@ public class HomeController : Controller
         else
         {
             throw new Exception();
+            
         }
     }
 
