@@ -1,6 +1,6 @@
 ﻿using Application.Common.ApiResult;
 
-namespace Panel.Models;
+namespace Application.Dtos.Client;
 
 public class ErrorAdmin
 {

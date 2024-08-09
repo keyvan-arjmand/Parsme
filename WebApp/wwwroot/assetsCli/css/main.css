@@ -3919,7 +3919,16 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     top: 15px;
     left: 15px;
 }
-
+.desc-product  img{
+    width: fit-content;
+    object-fit: cover;
+}
+@media only screen and (max-width: 768px) {
+    .desc-product  img{
+        width: 100% !important;
+        object-fit: cover;
+    }
+}
 .color-d {
     position: absolute;
     width: fit-content;

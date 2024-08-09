@@ -1,0 +1,511 @@
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Factor
+@using Domain.Entity.IndexPage
+@using Domain.Entity.Product
+@using Domain.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Application.Dtos.Client.BrandLandingDto
+@{
+    Layout = "_LayoutAdmin";
+    BrandLanding brand = ViewBag.Factors;
+    Brand ogBrand = ViewBag.Brand;
+}
+
+@section link
+{
+    <style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #007bff !important;
+        color: #fff;
+    }
+img{width: fit-content}
+    .select2-selection--multiple {
+        min-width: 300px;
+        max-width: 300px;
+        float: right;
+    }
+
+    .ck-content {
+        min-height: 200px;
+        height: fit-content;
+    }
+
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .image-container img {
+        max-width: 150px;
+        height: auto;
+    }
+
+    .is-invalid {
+        border: 2px solid red;
+    }
+
+    .text-overflow-cat-card {
+        text-overflow: ellipsis;
+        width: auto;
+        overflow: hidden;
+        text-wrap: normal;
+        height: 60px;
+        direction: rtl;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 40px;
+    }
+</style>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مشخصات برند</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+
+<!-- Profile Image -->
+
+<!-- /.col -->
+<div class="col-md-12">
+<div class="card">
+<div class="card-header p-2">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">@ogBrand.Title</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+
+<form asp-action="UpdateLanding" asp-controller="Admin" enctype="multipart/form-data" class="tab-content">
+<div class="tab-pane p-5 active show" id="SubCategory">
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">محتوا اسلایدر</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <input id="Id" asp-for="Id" value="@brand.Id" hidden="hidden"/>
+        <input id="BrandId" asp-for="BrandId" value="@ogBrand.Id" hidden="hidden"/>
+        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">اسلایدر اول</label>
+                        <input type="file" asp-for="ImageSlider" id="ImageSliderin" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSlider" value="@brand.HrefSlider" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.ImageSlider" id="ImageSlider" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between gap-2">
+                    <div class="d-flex flex-column" style="width: 40%">
+                        <label for="exampleInputPassword1">عنوان</label>
+                        <input type="text" asp-for="TitleSlider" value="@brand.TitleSlider" id="SmallSideBannerin" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column " style="width: 60%">
+                        <label for="exampleInputPassword1">توضیحات</label>
+                        <input type="text" asp-for="DescSlider" id="SmallSideBannerin" value="@brand.DescSlider" title="test" class="form-control">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">اسلایدر دوم</label>
+                        <input type="file" asp-for="ImageSlider2" id="ImageSlider2in" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSlider2" value="@brand.HrefSlider2" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.ImageSlider2" id="ImageSlider2" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+      
+                <div class="d-flex justify-content-between gap-2">
+                    <div class="d-flex flex-column" style="width: 40%">
+                        <label for="exampleInputPassword1">عنوان</label>
+                        <input type="text" asp-for="TitleSlider2" value="@brand.TitleSlider2" id="SmallSideBannerin" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column " style="width: 60%">
+                        <label for="exampleInputPassword1">توضیحات</label>
+                        <input type="text" asp-for="DescSlider2" id="SmallSideBannerin" value="@brand.DescSlider2" title="test" class="form-control">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">اسلایدر سوم</label>
+                        <input type="file" asp-for="ImageSlider3" id="ImageSlider3in" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSlider3" value="@brand.HrefSlider3" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.ImageSlider3" id="ImageSlider3" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+          
+                <div class="d-flex justify-content-between gap-2">
+                    <div class="d-flex flex-column" style="width: 40%">
+                        <label for="exampleInputPassword1">عنوان</label>
+                        <input type="text" asp-for="TitleSlider3" value="@brand.TitleSlider3" id="SmallSideBannerin" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column " style="width: 60%">
+                        <label for="exampleInputPassword1">توضیحات</label>
+                        <input type="text" asp-for="DescSlider3" id="SmallSideBannerin" value="@brand.DescSlider3" title="test" class="form-control">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">اسلایدر چهارم</label>
+                        <input type="file" asp-for="ImageSlider4" id="ImageSlider4in" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSlider4" value="@brand.HrefSlider4" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Banner/@brand.ImageSlider4" id="ImageSlider4" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+            
+                <div class="d-flex justify-content-between gap-2">
+                    <div class="d-flex flex-column" style="width: 40%">
+                        <label for="exampleInputPassword1">عنوان</label>
+                        <input type="text" asp-for="TitleSlider4" value="@brand.TitleSlider4" id="SmallSideBannerin" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column " style="width: 60%">
+                        <label for="exampleInputPassword1">توضیحات</label>
+                        <input type="text" asp-for="DescSlider4" id="SmallSideBannerin" value="@brand.DescSlider4" title="test" class="form-control">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">اسلایدر پنجم</label>
+                        <input type="file" asp-for="ImageSlider5" id="ImageSlider5in" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSlider5" value="@brand.HrefSlider5" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.ImageSlider5" id="ImageSlider5" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between gap-2">
+                    <div class="d-flex flex-column" style="width: 40%">
+                        <label for="exampleInputPassword1">عنوان</label>
+                        <input type="text" asp-for="TitleSlider5" value="@brand.TitleSlider5" id="SmallSideBannerin" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column " style="width: 60%">
+                        <label for="exampleInputPassword1">توضیحات</label>
+                        <input type="text" asp-for="DescSlider5" id="SmallSideBannerin" value="@brand.DescSlider5" title="test" class="form-control">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">بنر ها </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <div class=" m-2  p-3 w-100">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">بنر اول افقی</label>
+                    <input type="file" asp-for="BigBanner" class="form-control" id="BigBannerin">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input asp-for="HrefBigBanner" value="@brand.HrefBigBanner" class="form-control">
+                </div>
+            </div>
+            <div class="input-group p-3 " style="justify-content: center;">
+                <img src="/Images/Brand/@brand.BigBanner" id="BigBanner" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100 p-2">
+
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">بنر کوچک اول</label>
+                        <input type="file" asp-for="SmallBanner1" class="form-control" id="SmallBanner1in">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSmallBanner1" value="@brand.HrefSmallBanner1" class="form-control">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.SmallBanner1" id="SmallBanner1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">بنر کوچک دوم</label>
+                        <input type="file" asp-for="SmallBanner4" class="form-control" id="SmallBanner4in">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSmallBanner4" value="@brand.HrefSmallBanner4" class="form-control">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.SmallBanner4" id="SmallBanner4" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100 p-2">
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">بنر کوچک سوم</label>
+                        <input type="file" asp-for="SmallBanner2" class="form-control" id="SmallBanner2in">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSmallBanner2" value="@brand.HrefSmallBanner2" class="form-control">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.SmallBanner2" id="SmallBanner2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                </div>
+            </div>
+            <div class=" m-2  p-3 w-50">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">بنر کوچک چهارم</label>
+                        <input type="file" asp-for="SmallBanner3" id="SmallBanner3in" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefSmallBanner3" value="@brand.HrefSmallBanner3" class="form-control">
+                    </div>
+                </div>
+                <div class="input-group p-3 " style="justify-content: center;">
+                    <img src="/Images/Brand/@brand.SmallBanner3" id="SmallBanner3" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
+    <div class="form-input w-100">
+        <button type="submit" class="btn btn-primary">
+            ثبت
+        </button>
+    </div>
+</div>
+
+
+</div>
+</form>
+</div><!-- /.card-body -->
+</div>
+</div>
+</div>
+</section>
+
+@section script{
+    <script>
+        $('#ImageSliderin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ImageSlider').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#ImageSlider2in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ImageSlider2').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#ImageSlider3in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ImageSlider3').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#ImageSlider4in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBanner').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#BigBannerin').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBanner').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBanner1in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBanner1').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        $('#SmallBanner2in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBanner2').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBanner3in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBanner3').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBanner4in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBanner4').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#SmallBanner4').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ImageSlider5').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+    </script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+}

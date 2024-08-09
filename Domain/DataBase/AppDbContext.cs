@@ -46,7 +46,6 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Banner> Banners { set; get; }
     public DbSet<PostMethod> PostMethods { set; get; }
     public DbSet<SaleServices> SaleServices { set; get; }
-    public DbSet<BrandDetail> BrandDetails { set; get; }
     public DbSet<SearchResult> SearchResults { set; get; }
     public DbSet<Faq> Faqs { set; get; }
     public DbSet<ContactUs> ContactUs { set; get; }
@@ -58,6 +57,8 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<ContactPage> ContactPages { set; get; }
     public DbSet<AboutUsPage> AboutUsPages { set; get; }
     public DbSet<InventoryNotification> InventoryNotifications { set; get; }
+    public DbSet<FooterLink> FooterLinks { set; get; }
+    public DbSet<BrandLanding> BrandLandings { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

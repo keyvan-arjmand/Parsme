@@ -368,6 +368,117 @@ namespace Domain.Migrations
                     b.ToTable("Banners");
                 });
 
+            modelBuilder.Entity("Domain.Entity.IndexPage.BrandLanding", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BigBanner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DescSlider")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescSlider2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescSlider3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescSlider4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescSlider5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefBigBanner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSlider")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSlider2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSlider3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSlider4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSlider5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSmallBanner1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSmallBanner2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSmallBanner3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefSmallBanner4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSlider")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSlider2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSlider3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSlider4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageSlider5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SmallBanner1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmallBanner2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmallBanner3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmallBanner4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleSlider")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleSlider2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleSlider3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleSlider4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleSlider5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("BrandLandings");
+                });
+
             modelBuilder.Entity("Domain.Entity.IndexPage.ContactPage", b =>
                 {
                     b.Property<int>("Id")
@@ -448,6 +559,107 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faqs");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.FooterLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DescCol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescCol2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescCol3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescFooter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href1Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href1Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href1Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href2Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href2Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href2Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href3Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href3Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href3Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefCol1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefCol2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefCol3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title1Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title1Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title1Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title2Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title2Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title2Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title3Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title3Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title3Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleCol1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleCol2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleCol3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FooterLinks");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.SaleServices", b =>
@@ -563,13 +775,6 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BrandDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Desc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
@@ -586,70 +791,9 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandDetailId");
-
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Brands");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Product.BrandDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstBannerHref")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstBannerImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecBannerHref")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecBannerImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderHref")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderHref1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderHref2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderImage1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SliderImage2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BrandDetails");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>
@@ -1530,17 +1674,22 @@ namespace Domain.Migrations
                     b.Navigation("Factor");
                 });
 
+            modelBuilder.Entity("Domain.Entity.IndexPage.BrandLanding", b =>
+                {
+                    b.HasOne("Domain.Entity.Product.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
                 {
-                    b.HasOne("Domain.Entity.Product.BrandDetail", "BrandDetail")
-                        .WithMany()
-                        .HasForeignKey("BrandDetailId");
-
                     b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
                         .WithMany("Brands")
                         .HasForeignKey("SubCategoryId");
-
-                    b.Navigation("BrandDetail");
 
                     b.Navigation("SubCategory");
                 });

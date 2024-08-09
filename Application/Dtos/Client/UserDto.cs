@@ -1,6 +1,6 @@
 ﻿using Domain.Entity.User;
 
-namespace Panel.Models;
+namespace Application.Dtos.Client;
 
 public class UserDto
 {

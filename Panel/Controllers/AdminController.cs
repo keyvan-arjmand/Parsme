@@ -4,9 +4,12 @@ using Application.Admin.V1.Commands.ConfirmPasswordAdmin;
 using Application.Admin.V1.Commands.LoginCodAdmin;
 using Application.Admin.V1.Queries.CheckAdminNumber;
 using Application.Common.ApiResult;
+using Application.Common.Mapping;
 using Application.Common.Utilities;
+using Application.Dtos.Client;
 using Application.Interfaces;
 using Application.Products.Commands;
+using AutoMapper;
 using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
@@ -19,7 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Panel.Models;
 using ProductColor = Domain.Entity.Product.ProductColor;
 using ProductDetail = Domain.Entity.Product.ProductDetail;
-using UserDto = Panel.Models.UserDto;
+using UserDto = Application.Dtos.Client.UserDto;
 
 namespace Panel.Controllers;
 
@@ -31,9 +34,10 @@ public class AdminController : Controller
     private readonly IMediator _mediator;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IUnitOfWork _work;
+    private readonly IMapper? _mapper;
 
     public AdminController(UserManager<User> userManager, SignInManager<User> signInManager, IMediator mediator,
-        IWebHostEnvironment webHostEnvironment, RoleManager<Role> roleManager, IUnitOfWork work)
+        IWebHostEnvironment webHostEnvironment, RoleManager<Role> roleManager, IUnitOfWork work, IMapper? mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -41,6 +45,7 @@ public class AdminController : Controller
         _webHostEnvironment = webHostEnvironment;
         _roleManager = roleManager;
         _work = work;
+        _mapper = mapper;
     }
 
 
@@ -271,6 +276,89 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> LandingDetail(int id)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Factors = await _work.GenericRepository<BrandLanding>().TableNoTracking
+                .Include(x => x.Brand)
+                .FirstOrDefaultAsync(x => x.BrandId == id)??new();
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+
+    public async Task<IActionResult> UpdateLanding(BrandLandingDto request)
+    {
+        Upload up = new Upload(_webHostEnvironment);
+
+        if (request.Id <= 0)
+        {
+            var entity = _mapper!.Map<BrandLanding>(request);
+            entity.ImageSlider = up.Uploadfile(request.ImageSlider, "Brand");
+            entity.ImageSlider2 = up.Uploadfile(request.ImageSlider2, "Brand");
+            entity.ImageSlider3 = up.Uploadfile(request.ImageSlider3, "Brand");
+            entity.ImageSlider4 = up.Uploadfile(request.ImageSlider4, "Brand");
+            entity.ImageSlider5 = up.Uploadfile(request.ImageSlider5, "Brand");
+
+            entity.BigBanner = up.Uploadfile(request.BigBanner, "Brand");
+
+            entity.SmallBanner1 = up.Uploadfile(request.SmallBanner1, "Brand");
+            entity.SmallBanner2 = up.Uploadfile(request.SmallBanner2, "Brand");
+            entity.SmallBanner3 = up.Uploadfile(request.SmallBanner3, "Brand");
+            entity.SmallBanner4 = up.Uploadfile(request.SmallBanner4, "Brand");
+
+            await _work.GenericRepository<BrandLanding>()
+                .AddAsync(entity, CancellationToken.None);
+        }
+        else
+        {
+            var footer = await _work.GenericRepository<BrandLanding>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.BrandId == request.BrandId);
+            var entity = _mapper!.Map<BrandLanding>(request);
+            entity.Id = footer.Id;
+            entity.ImageSlider = request.ImageSlider != null
+                ? up.Uploadfile(request.ImageSlider, "Brand")
+                : footer.ImageSlider;
+
+            entity.ImageSlider2 = request.ImageSlider2 != null
+                ? up.Uploadfile(request.ImageSlider2, "Brand")
+                : footer.ImageSlider2;
+            entity.ImageSlider3 = request.ImageSlider3 != null
+                ? up.Uploadfile(request.ImageSlider3, "Brand")
+                : footer.ImageSlider3;
+            entity.ImageSlider4 = request.ImageSlider4 != null
+                ? up.Uploadfile(request.ImageSlider4, "Brand")
+                : footer.ImageSlider4;
+            entity.ImageSlider5 = request.ImageSlider5 != null
+                ? up.Uploadfile(request.ImageSlider5, "Brand")
+                : footer.ImageSlider5;
+
+            entity.BigBanner = request.BigBanner != null
+                ? up.Uploadfile(request.BigBanner, "Brand")
+                : footer.BigBanner;
+            entity.SmallBanner1 = request.SmallBanner1 != null
+                ? up.Uploadfile(request.SmallBanner1, "Brand")
+                : footer.SmallBanner1;
+            entity.SmallBanner2 = request.SmallBanner2 != null
+                ? up.Uploadfile(request.SmallBanner2, "Brand")
+                : footer.SmallBanner2;
+            entity.SmallBanner3 = request.SmallBanner3 != null
+                ? up.Uploadfile(request.SmallBanner3, "Brand")
+                : footer.SmallBanner3;
+            entity.SmallBanner4 = request.SmallBanner4 != null
+                ? up.Uploadfile(request.SmallBanner4, "Brand")
+                : footer.SmallBanner4;
+            await _work.GenericRepository<BrandLanding>().UpdateAsync(entity, CancellationToken.None);
+        }
+
+        return RedirectToAction("ManageBrand");
+    }
+
     public async Task<ActionResult> FactorDetail(int id)
     {
         if (User.Identity.IsAuthenticated)
@@ -316,6 +404,7 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+
     public async Task<ActionResult> ManageAboutUs()
     {
         if (User.Identity.IsAuthenticated)
@@ -333,6 +422,7 @@ public class AdminController : Controller
             return View("Login");
         }
     }
+
     public async Task<ActionResult> InsertContactUs(string desc)
     {
         if (User.Identity.IsAuthenticated)
@@ -369,7 +459,6 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-        
             var result = await _work.GenericRepository<AboutUsPage>().Table.FirstOrDefaultAsync();
             if (result != null)
             {
@@ -385,6 +474,7 @@ public class AdminController : Controller
                     Head = head
                 }, CancellationToken.None);
             }
+
             #endregion
 
             return RedirectToAction("ManageAboutUs");
@@ -506,7 +596,7 @@ public class AdminController : Controller
             if (!string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
-                    .Where(x => x.Title.Contains(search) || x.Desc.Contains(search) ||
+                    .Where(x => x.Title.Contains(search) ||
                                 x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
             }
             else
@@ -577,14 +667,13 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateBrand(int id, string title, string desc, IFormFile image, int subCategoryId)
+    public async Task<ActionResult> UpdateBrand(int id, string title, IFormFile image, int subCategoryId)
     {
         if (User.Identity.IsAuthenticated && id > 0 && subCategoryId > 0)
         {
             Upload up = new Upload(_webHostEnvironment);
             var brand = await _work.GenericRepository<Brand>().Table.FirstOrDefaultAsync(x => x.Id == id);
             brand.Title = title;
-            brand.Desc = desc;
             brand.LogoUri = image != null
                 ? up.Uploadfile(image, "Brand")
                 : brand.LogoUri;
@@ -598,7 +687,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrand(string title, string? desc, IFormFile? logo, int subCatId)
+    public async Task<ActionResult> InsertBrand(string title, IFormFile? logo, int subCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -608,7 +697,6 @@ public class AdminController : Controller
             if (subCat == null) throw new Exception();
             await _work.GenericRepository<Brand>().AddAsync(new Brand
             {
-                Desc = desc ?? string.Empty,
                 Title = title ?? string.Empty,
                 LogoUri = img,
                 SubCategoryId = subCat.Id
@@ -1092,7 +1180,31 @@ public class AdminController : Controller
     {
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         return View();
-    } 
+    }
+
+    public async Task<IActionResult> ManageBrand(string search, int index = 0)
+    {
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                .Where(x => x.Title.Contains(search) ||
+                            x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+        }
+        else
+        {
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                .OrderByDescending(x => x.Id).ToListAsync();
+        }
+
+        return View();
+    }
+
+    public async Task<IActionResult> ManageFooterLink()
+    {
+        ViewBag.Footer = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ?? new();
+        return View();
+    }
+
     public async Task<IActionResult> ManageSlider()
     {
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
@@ -1176,7 +1288,27 @@ public class AdminController : Controller
 
         return RedirectToAction("ManageBanner");
     }
- public async Task<IActionResult> UpdateSlider(BannerDto request)
+
+    public async Task<IActionResult> UpdateFooterLink(FooterDto request)
+    {
+        if (request.Id <= 0)
+        {
+            var entity = _mapper!.Map<FooterLink>(request);
+            await _work.GenericRepository<FooterLink>()
+                .AddAsync(entity, CancellationToken.None);
+        }
+        else
+        {
+            var footer = await _work.GenericRepository<FooterLink>().GetByIdAsync(CancellationToken.None, request.Id);
+            var entity = _mapper!.Map<FooterLink>(request);
+            entity.Id = footer.Id;
+            await _work.GenericRepository<FooterLink>().UpdateAsync(entity, CancellationToken.None);
+        }
+
+        return RedirectToAction("ManageFactor");
+    }
+
+    public async Task<IActionResult> UpdateSlider(BannerDto request)
     {
         if (request.Id <= 0)
         {
@@ -1220,6 +1352,7 @@ public class AdminController : Controller
 
         return RedirectToAction("ManageSlider");
     }
+
     public async Task<ActionResult> Login()
     {
         return View();
@@ -1892,10 +2025,10 @@ public class AdminController : Controller
                     Minutes = request.Offer.Minutes.ToInt(),
                     Hours = request.Offer.Hours.ToInt(),
                 };
-                await _work.GenericRepository<Domain.Entity.Product.Offer>().AddAsync(offerInsert, CancellationToken.None);
+                await _work.GenericRepository<Domain.Entity.Product.Offer>()
+                    .AddAsync(offerInsert, CancellationToken.None);
                 product.OfferId = offerInsert.Id;
                 await _work.GenericRepository<Product>().UpdateAsync(product, CancellationToken.None);
-
             }
         }
 

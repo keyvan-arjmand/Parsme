@@ -1,11 +1,13 @@
-﻿namespace Panel.Models;
+﻿using Microsoft.AspNetCore.Http;
 
-public class UpdateUser
+namespace Application.Dtos.Client;
+
+public class InsertUser
 {
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Family { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public IFormFile Image { get; set; } 
     public string PhoneNumber { get; set; } = string.Empty;
     public int CityId { get; set; }
     public List<string> Role { get; set; } 

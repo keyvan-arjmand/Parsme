@@ -799,7 +799,7 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Where(x => id != prodD.Id)
+                .Where(x => x.Id!=prodD.Id)
                 .Take(12).ToListAsync();
         }
         else

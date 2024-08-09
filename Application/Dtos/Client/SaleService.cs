@@ -1,4 +1,6 @@
-﻿namespace Panel.Models;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application.Dtos.Client;
 
 public class SaleService
 {

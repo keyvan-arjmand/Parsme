@@ -1,4 +1,4 @@
-﻿namespace Panel.Models;
+﻿namespace Application.Dtos.Client;
 
 public class SearchHistory
 {

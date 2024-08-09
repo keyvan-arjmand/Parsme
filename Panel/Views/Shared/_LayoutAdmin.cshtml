@@ -1,9 +1,4 @@
-﻿@using Application.Dtos.User
-@{
-UserLoginDto user;
-var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fa">
 <head>
 
@@ -280,6 +275,12 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                             </a>
                                             <ul class="nav nav-treeview">
                                                 <li class="nav-item">
+                                                    <a href="@Url.Action("ManageBrand", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>برند ها</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
                                                     <a href="@Url.Action("ManageBanner", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>بنر</p>
@@ -319,6 +320,12 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
                                                     <a href="@Url.Action("ManageContactUs", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>تماس با ما</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ManageFooterLink", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>پاورقی</p>
                                                     </a>
                                                 </li>
                                             </ul>

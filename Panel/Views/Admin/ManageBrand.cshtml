@@ -19,14 +19,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">مدیریت برند</h1>
+                <h1 class="m-0 text-dark">مدیریت محتوا برند</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-left">
                     <li class="breadcrumb-item">
                         <a href="@Url.Action("Index", "Admin")">خانه</a>
                     </li>
-                    <li class="breadcrumb-item active">برند</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -54,51 +53,10 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
-                                      asp-action="InsertBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">عنوان برند</label>
-                                        <input name="title" class="form-control" id="exampleInputPassword1">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">لوگو</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group d-flex flex-column ">
-                                        <label for="exampleInputPassword1">نوع زیردسته</label>
-                                        <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example">
-                                            @{
-                                                int index = 0;
-                                                foreach (var i in SubCats)
-                                                {
-                                                    if (index == 0)
-                                                    {
-                                                        <option selected value="@i.Id">@i.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@i.Id">@i.Name</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="d-flex flex-column align-content-center justify-content-center ">
-                                        <div class="form-input">
-                                            <button type="submit" class="btn btn-primary">ثبت</button>
-                                        </div>
-                                    </div>
-                                </form>
 
                             </div>
                             <div class="card mt-3">
-                                <form asp-action="Brand" asp-controller="Admin" method="post">
+                                <form asp-action="ManageBrand" asp-controller="Admin" method="post">
                                     <div class="input-group p-3  m-2 w-50">
                                         <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
                                         <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
@@ -111,7 +69,6 @@
                                         <tr>
                                             <th class="text-center" style="width: 5%">id</th>
                                             <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 25%">توضیخات</th>
                                             <th class="text-center" style="width: 15%">زیر دسته</th>
                                             <th class="text-center" style="width: 25%">لوگو</th>
                                             <th class="text-center" style="width: 10%">#</th>
@@ -141,11 +98,8 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <form>
-                                                                <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
-                                                                <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
-                                                                <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
-                                                                <input type="text" name="mLogo" class="mLogo" value="@i.LogoUri" hidden="hidden"/>
-                                                                <input type="text" name="mSubCategoryId" class="mSubCategoryId" value="@i.SubCategoryId" hidden="hidden"/>
+                                                                <a class="badge bg-warning text-muted modalProduct" href="@Url.Action("LandingDetail", "Admin", new { @i.Id })">مشاهده</a>
+
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -165,52 +119,6 @@
     </div><!-- /.container-fluid -->
 </section>
 
-
-<!-- Modal -->
-<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content" asp-action="UpdateBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ویرایش </h5>
-                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان برند</span>
-                        <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
-                    </div>
-                    <div class="input-group p-3  m-2 w-50">
-                        <select class="form-select catIdP" id="SubCatIdEdit" name="subCategoryId" required="required">
-                            @{
-                                foreach (var i in SubCats)
-                                {
-                                    <option value="@i.Id">@i.Name</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="Image" name="image" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: center;">
-                        <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 @section script{
 
