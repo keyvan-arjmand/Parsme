@@ -6,6 +6,7 @@ using Application.Admin.V1.Queries.CheckAdminNumber;
 using Application.Common.ApiResult;
 using Application.Common.Mapping;
 using Application.Common.Utilities;
+using Application.Constants.Kavenegar;
 using Application.Dtos.Client;
 using Application.Interfaces;
 using Application.Products.Commands;
@@ -15,6 +16,7 @@ using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;
+using Kavenegar;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -283,7 +285,7 @@ public class AdminController : Controller
             ViewBag.Brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Factors = await _work.GenericRepository<BrandLanding>().TableNoTracking
                 .Include(x => x.Brand)
-                .FirstOrDefaultAsync(x => x.BrandId == id)??new();
+                .FirstOrDefaultAsync(x => x.BrandId == id) ?? new();
             return View();
         }
         else
@@ -1470,6 +1472,22 @@ public class AdminController : Controller
         return RedirectToAction("ManageUser");
     }
 
+    public async Task<ActionResult> SendLoginCode(string phoneNumber)
+    {
+        var user = await _userManager.FindByNameAsync(phoneNumber);
+        var userRoles = await _userManager.GetRolesAsync(user);
+        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+        if (user == null && userRoles.Any(x => !x.Equals("admin")))
+            throw new Exception("User not Exist");
+        user.ConfirmCode = Helpers.GetConfirmCode();
+        user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
+        await _userManager.UpdateAsync(user);
+        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+            "VerifyCodeFaani");
+        return Ok(
+        );
+    }
+
     public async Task initAdmin()
     {
         var user = new Domain.Entity.User.User
@@ -1515,7 +1533,7 @@ public class AdminController : Controller
     public async Task<ActionResult> ConfirmPassword(string password, string phoneNumber)
     {
         var user = await _mediator.Send(new ConfirmPasswordAdminCommand(password, phoneNumber));
-        var result = await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+        var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
         if (!result.Succeeded)
             throw new Exception("invalid password");
         return Ok();

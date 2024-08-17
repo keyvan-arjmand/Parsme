@@ -109,7 +109,7 @@ public class PaymentController : Controller
             {
                 Amount = price,
                 UserId = user.Id,
-                DiscountCode = discountCode,
+                DiscountCode = discountCode ?? string.Empty,
                 UserAddressId = userAddressId,
                 DiscountAmount = discountAmount,
                 PostMethodId = postMethodId,
@@ -118,7 +118,7 @@ public class PaymentController : Controller
                 AmountPrice = offer,
                 FactorCode = Helpers.CodeGenerator(user.Id, DateTime.Now.Month.ToString()),
                 IsReturned = false,
-                Desc = desc,
+                Desc = desc ?? string.Empty,
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
 
@@ -140,8 +140,8 @@ public class PaymentController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product)
-                .Include(x => x.Products).Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .ThenInclude(x => x.Offer)
+                .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x=>x.Offer)
                 .FirstOrDefaultAsync(x => x.Id == factor.Id);
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
