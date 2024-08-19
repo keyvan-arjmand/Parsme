@@ -1964,7 +1964,7 @@ public class AdminController : Controller
                 .ToListAsync();
             foreach (var i in catDetail)
             {
-                var val = request.ProductDetails.FirstOrDefault(x => x.Id == i.Id);
+                var val = request.ProductDetails.FirstOrDefault(x => x.DetailId.ToInt() == i.Id);
                 if (val != null)
                 {
                     i.Value = val.DetailName;
@@ -1985,9 +1985,9 @@ public class AdminController : Controller
 
         foreach (var i in request.ProductColors)
         {
-            if (i.Id > 0)
+            if (proColor.Any(x=>x.ColorId==i.ColorId.ToInt()))
             {
-                var prod = proColor.FirstOrDefault(x => x.Id == i.Id);
+                var prod = proColor.FirstOrDefault(x => x.ColorId==i.ColorId.ToInt());
                 prod.Price = i.ColorPrice.ToDouble();
                 prod.Inventory = i.ColorInv.ToInt();
                 prod.GuaranteeId = i.Gu.ToInt();
@@ -2009,7 +2009,7 @@ public class AdminController : Controller
 
         foreach (var i in proColor)
         {
-            if (request.ProductColors.All(x => x.Id != i.Id))
+            if (request.ProductColors.All(x => x.ColorId.ToInt() != i.ColorId))
             {
                 await _work.GenericRepository<ProductColor>().DeleteAsync(i, CancellationToken.None);
             }

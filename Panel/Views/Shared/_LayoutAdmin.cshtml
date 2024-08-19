@@ -34,7 +34,9 @@
     <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
     <!-- Persian Data Picker -->
     <link rel="stylesheet" href="/dist/css/persian-datepicker.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Notiflix CSS (CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.css">
     @await RenderSectionAsync("link", false)
     <style>
         .nav-color {
@@ -56,6 +58,7 @@
     <title>پـنل ادمین</title>
 </head>
 <body class="hold-transition sidebar-mini">
+
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -435,8 +438,25 @@
 <script>
     $('.select2').select2()
     $('.my-colorpicker1').colorpicker()
-    
+    function showCustomAlert() {
+        document.getElementById("customAlert").classList.add("show");
+    }
+
+    function closeCustomAlert() {
+        document.getElementById("customAlert").classList.remove("show");
+    }
+    function showCustomAlertError() {
+        document.getElementById("customAlertError").classList.add("show");
+    }
+
+    function closeCustomAlertError() {
+        document.getElementById("customAlertError").classList.remove("show");
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Notiflix JS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
+
 @await RenderSectionAsync("script", false)
 </body>
 </html>

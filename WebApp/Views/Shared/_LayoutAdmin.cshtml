@@ -57,10 +57,12 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
         .modal {
             z-index: 1041;
         }
+       
     </style>
     <title>پـنل ادمین</title>
 </head>
 <body class="hold-transition sidebar-mini">
+
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -422,7 +424,20 @@ var profile = "/Images/UserProfile/" + User.Identity.Name + ".png";
 <script>
     $('.select2').select2()
     $('.my-colorpicker1').colorpicker()
-    
+    function showCustomAlert() {
+        document.getElementById("customAlert").classList.add("show");
+    }
+
+    function closeCustomAlert() {
+        document.getElementById("customAlert").classList.remove("show");
+    }  
+      function showCustomAlertError() {
+        document.getElementById("customAlertError").classList.add("show");
+    }
+
+    function closeCustomAlertError() {
+        document.getElementById("customAlertError").classList.remove("show");
+    }
 </script>
 @await RenderSectionAsync("script", false)
 </body>

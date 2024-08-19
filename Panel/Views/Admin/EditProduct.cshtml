@@ -216,18 +216,16 @@
                                     {
                                         if (i == x.Value)
                                         {
-                                            <option value="@i">@i</option>
-                                            ;
+                                            <option value="@i" selected="selected">@i</option>
                                         }
                                         else
                                         {
                                             <option value="@i">@i</option>
-                                            ;
                                         }
                                     }
 
                                 </select>
-                                <input name="DetailId" value="${x.id}" hidden="hidden">
+                                <input name="DetailId" value="@x.Id" hidden="hidden" required="required">
                             </div>
                         }
 
@@ -238,26 +236,24 @@
                                 @if (x.Value.Contains("true"))
                                 {
                                     <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
-
                                 }
                                 else
                                 {
                                     <input type="checkbox" name="DetailVal" class="form-check-input"/>
-
                                 }
-                                <input name="DetailId" value="@x.CategoryDetail.Id" hidden="hidden">
+                                <input name="DetailId" value="@x.Id" hidden="hidden">
                             </div>
                         }
 
                         if (x.CategoryDetail.DataType != DataType.CheckBox && x.CategoryDetail.DataType != DataType.SelectBox)
                         {
                             <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
-                            <div class="input-group-prepend">
-                            <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
+                                <div class="input-group-prepend">
+                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
                                 </div>
                                 <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                                <input name="DetailId" value="@x.CategoryDetail.Id" hidden="hidden">
-                             </div>
+                                <input name="DetailId" value="@x.Id" hidden="hidden">
+                            </div>
                         }
                     }
                 }
@@ -350,12 +346,11 @@
                     if (products.MomentaryOffer)
                     {
                         <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                               required="required" checked="checked"/>
+                               checked="checked"/>
                     }
                     else
                     {
-                        <input type="checkbox" class="form-check-input" id="MomentaryOffer"
-                               required="required"/>
+                        <input type="checkbox" class="form-check-input" id="MomentaryOffer"/>
                     }
                 }
             </div>
@@ -365,12 +360,11 @@
                     if (products.IsOffer)
                     {
                         <input type="checkbox" class="form-check-input" id="Offer"
-                               checked="checked" required="required"/>
+                               checked="checked"/>
                     }
                     else
                     {
-                        <input type="checkbox" class="form-check-input" id="Offer"
-                               required="required"/>
+                        <input type="checkbox" class="form-check-input" id="Offer"/>
                     }
                 }
             </div>
@@ -380,12 +374,11 @@
                     if (products.IsShowIndex)
                     {
                         <input type="checkbox" class="form-check-input" id="ShowIndex"
-                               checked="checked" required="required"/>
+                               checked="checked"/>
                     }
                     else
                     {
-                        <input type="checkbox" class="form-check-input" id="ShowIndex"
-                               required="required"/>
+                        <input type="checkbox" class="form-check-input" id="ShowIndex"/>
                     }
                 }
             </div>
@@ -398,7 +391,7 @@
                         <div class="form-group w-50  d-flex flex-column">
                             <label for="exampleInputPassword1">رنگ مورد نظر</label>
                             <select id="OfferColor" class="form-control "
-                                    aria-label="Default select example" required="required">
+                                    aria-label="Default select example">
                                 @foreach (var i in products.ProductColors)
                                 {
                                     if (products.Offer.ColorId == i.ColorId)
@@ -462,7 +455,7 @@
                         <div class="form-group w-50  d-flex flex-column">
                             <label for="exampleInputPassword1">رنگ مورد نظر</label>
                             <select id="OfferColor" class="form-control "
-                                    aria-label="Default select example" required="required">
+                                    aria-label="Default select example">
 
                             </select>
                         </div>
@@ -544,7 +537,7 @@
                                 </div>
                                 <input name="colorPrice`@i.Color.Id`" value="@i.Price"
                                        style="border-radius: 5px 0 0 5px;" type="text"
-                                       class="form-control">
+                                       class="form-control" required="required">
                                 <input name="ColorId`@i.Color.Id`" value="@i.Color.Id"
                                        hidden="hidden">
                             </div>
@@ -558,10 +551,10 @@
                                 </div>
                                 <input name="colorInv`@i.Color.Id`" value="@i.Inventory"
                                        style="border-radius: 5px 0 0 5px;" type="text"
-                                       class="form-control">
+                                       class="form-control" required="required">
                             </div>
                             <div class="form-group w-100 d-flex flex-column">
-                                <select name="Gu`@i.Color.Id`"
+                                <select name="Gu`@i.Color.Id`" required="required"
                                         class="form-control select2 Guarantees">
                                     @{
                                         foreach (var g in Guarantees)
@@ -791,8 +784,10 @@
         requiredFields.forEach(field => {
             if (!field.value) {
                 allFilled = false;
+                console.dir(field)
                 field.classList.add('is-invalid'); // Add a class to highlight the empty field
             } else {
+                
                 field.classList.remove('is-invalid');
             }
         });
@@ -841,7 +836,7 @@
             });
             var datePicker = $("#datePicker").val();
 
-            console.log(datePicker)
+            console.log(detailsArray)
             var request = {
                 Id: $("#Id").val(),
                 Title: $("#Title").val(),
@@ -879,14 +874,21 @@
                 type: "Post",
                 data: {request},
                 url: "/Admin/UpdateProduct",
+                beforeSend: function() {
+                    Notiflix.Loading.circle('در حال پردازش ...');
+                },
                 success: function (data) {
-                    alert("عملیات موفقیت آمیز");
-                    var currentUrl = window.location.origin;
-                    window.open(currentUrl + "Admin/ProductManage/");
+                    Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                    showAlertSuccess();
                 },
                 error: function (xhr) {
-                    alert("خطای داخلی در سرور");
-                }
+                    Notiflix.Notify.error('خطای داخلی');
+                    showAlertError();
+                },
+                complete: function() {
+                    Notiflix.Loading.remove();
+                },
+                timeout: 9000
             });
         }
 
@@ -921,17 +923,17 @@
                             <div class="input-group-prepend">
                                 <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${colorName}</span>
                             </div>
-                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control" required="required">
                             <input name="ColorId${id}" value="${id}" hidden="hidden">
                         </div>
                         <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
                             <div class="input-group-prepend">
                                 <span style="border-radius: 0 5px 5px 0;" class="input-group-text">موجودی</span>
                             </div>
-                            <input name="colorInv${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                            <input name="colorInv${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control" required="required">
                         </div>
                         <div class="form-group w-100 d-flex flex-column">
-                            <select name="Gu${id}" class="form-control select2 Guarantees"></select>
+                            <select name="Gu${id}" class="form-control select2 Guarantees" required="required"></select>
                         </div>
                     `;
 
@@ -1098,7 +1100,23 @@
 
     //   $('.normal-example').persianDatepicker();
     $('.datepicker').datepicker({
-        format: 'mm/dd/yyyy',
+        format: 'YYYY-MM-DD HH:mm',
     });
+    function showAlertSuccess() {
+        Swal.fire({
+            title: 'موفق',
+            text: 'عملیات موفقیت آمیز',
+            icon: 'success',
+            confirmButtonText: 'بستن'
+        });
+    }
+    function showAlertError() {
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
 </script>
 }
