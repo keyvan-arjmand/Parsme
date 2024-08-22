@@ -678,14 +678,22 @@
                 type: "Post",
                 data:{request} ,
                 url: "/Admin/InsertProduct",
+                beforeSend: function() {
+                    Notiflix.Loading.circle('در حال پردازش ...');
+                },
                 success: function (data) {
-                    alert("عملیات موفقیت آمیز");
-                    var currentUrl = window.location.origin;
-                    window.open(currentUrl+"Admin/ProductManage/");
+                    Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                    showAlertSuccess();
+                    window.location.href= `@Url.Action("ProductManage","Admin")`;
                 },
                 error: function (xhr) {
-                    alert("خطای داخلی در سرور");
-                }
+                    Notiflix.Notify.error('خطای داخلی');
+                    showAlertError();
+                },
+                complete: function() {
+                    Notiflix.Loading.remove();
+                },
+                timeout: 9000
             });
         }
       
@@ -803,42 +811,55 @@
             type: "Get",
             data: {subCatId: selected},
             url: "/Admin/GetCategoryDetailBySubCatId",
+            beforeSend: function() {
+                Notiflix.Loading.circle('در حال پردازش ...');
+            },
+
+            error: function (xhr) {
+                Notiflix.Notify.error('خطای داخلی');
+                showAlertError();
+            },
+            complete: function() {
+                Notiflix.Loading.remove();
+            },
+            timeout: 9000,
             success: function (data) {
+            console.log(data)
                 addOption(selected)
                 let html = ``;
-                data.map(x => {
-
-                    if (x.dataType==1)
-                    {
-                        html += `
-                             <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                for (let i = 0; i < data.length; i++) {
+                    var item =data[i];
+                    html+=`<label  style="display: block;" class="h5">${item.feature.title}</label>`
+                    item.categoryDetails
+                        .map(x => {
+                            if (x.dataType == 1) {
+                                html += `
+                             <div class=" d-flex w-100 form-group detail-form">
                              <div class="input-group-prepend">
                               <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
                               </div>
                               <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
                                   ${x.option.split(",").map(y => {
-                            return `<option value="${y}">${y}</option>`;
-                        }).join('')}
+                                    return `<option value="${y}">${y}</option>`;
+                                }).join('')}
                                </select>
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                    }
+                            }
 
-                    if (x.dataType==3)
-                    {
-                        html += `
-                             <div class=" d-flex  gap-3 w-100 form-group detail-form" style="max-width: 190px;">
+                            if (x.dataType == 3) {
+                                html += `
+                             <div class=" d-flex  gap-3 w-100 form-group detail-form" >
                               <span class="">${x.title}</i></span>
                              <input type="checkbox"  name="DetailVal"  class="form-check-input"/>
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                    }
-                    if (x.dataType!=1 && x.dataType !=3)
-                    {
-                        html += `
-                             <div class=" d-flex w-100 form-group detail-form" style="max-width: 250px;">
+                            }
+                            if (x.dataType != 1 && x.dataType != 3) {
+                                html += `
+                             <div class=" d-flex w-100 form-group detail-form" >
                              <div class="input-group-prepend">
                               <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
                               </div>
@@ -846,16 +867,13 @@
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                    }
+                            }
 
-                })
+                        })
+                }
                 $("#labelDetail").css("display", "block");
                 document.getElementById("DetailProduct").innerHTML = html;
             },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-                console.dir(xhr)
-            }
         });
     });
     function addOption(catId) {
@@ -913,5 +931,21 @@
             toolbar: {fa: true}
         })
     })
+    function showAlertSuccess() {
+        Swal.fire({
+            title: 'موفق',
+            text: 'عملیات موفقیت آمیز',
+            icon: 'success',
+            confirmButtonText: 'بستن'
+        });
+    }
+    function showAlertError() {
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
 </script>
 }

@@ -1985,9 +1985,9 @@ public class AdminController : Controller
 
         foreach (var i in request.ProductColors)
         {
-            if (proColor.Any(x=>x.ColorId==i.ColorId.ToInt()))
+            if (proColor.Any(x => x.ColorId == i.ColorId.ToInt()))
             {
-                var prod = proColor.FirstOrDefault(x => x.ColorId==i.ColorId.ToInt());
+                var prod = proColor.FirstOrDefault(x => x.ColorId == i.ColorId.ToInt());
                 prod.Price = i.ColorPrice.ToDouble();
                 prod.Inventory = i.ColorInv.ToInt();
                 prod.GuaranteeId = i.Gu.ToInt();
@@ -2086,12 +2086,39 @@ public class AdminController : Controller
     // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,
     //     Offer Offer, ProductStatus ProductStatus, bool IsActive, bool IsOffer
 
-    public async Task<List<CategoryDetail>> GetCategoryDetailBySubCatId(int subCatId)
+    public async Task<List<DetailProdAdmin>> GetCategoryDetailBySubCatId(int subCatId)
     {
-        return await _work.GenericRepository<CategoryDetail>()
+        var detail = await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
+            .Include(x=>x.SubCategory).ThenInclude(x=>x.Category)
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
+        List<DetailProdAdmin> detailProdAdmins = new List<DetailProdAdmin>();
+        foreach (var i in detail)
+        { 
+            if (detailProdAdmins.Any(x => x.FeatureId == i.FeatureId))
+            {
+                var result = detailProdAdmins.FirstOrDefault(x => x.FeatureId == i.FeatureId);
+                result.CategoryDetails.Add(new CategoryDetailDto
+                {
+                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId,Id = i.Id
+                });
+            }
+            else
+            {
+                var li = new DetailProdAdmin();
+                li.Feature = i.Feature;
+                li.FeatureId = i.FeatureId;
+                li.CategoryDetails.Add(new CategoryDetailDto
+                {
+                    Option = i.Option,DataType = (int)i.DataType,Priority = i.Priority,Title = i.Title,FeatureId = i.FeatureId,ShowInSearch = i.ShowInSearch,SubCategoryId = i.SubCategoryId,Id = i.Id
+                });
+                detailProdAdmins.Add(li);
+            }
+        }
+
+        return detailProdAdmins;
     }
 
     public async Task<List<Brand>> GetBrandBySubCat(int subCatId)
