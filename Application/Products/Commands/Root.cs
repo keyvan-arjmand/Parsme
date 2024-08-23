@@ -27,6 +27,11 @@ public class Root
     public string Strengths { get; set; } = string.Empty;
     public string WeakPoints { get; set; } = string.Empty;
     public bool MomentaryOffer { get; set; }
+        
+    public string SeoTitle { get; set; } = string.Empty;
+    public string SeoDesc { get; set; } = string.Empty;
+    public string SeoCanonical { get; set; } = string.Empty;
+    public double InterestRate { get; set; }
 }
 public class Offer
 {

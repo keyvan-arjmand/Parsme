@@ -11,7 +11,7 @@ public class MappingProfile : Profile
         //Translation
         CreateMap<FooterLink, FooterDto>()
             .ReverseMap();
-        CreateMap<BrandLanding, BrandLandingDto>()
+        CreateMap<CatLanding, BrandLandingDto>()
             .ReverseMap();
     }
 }

@@ -1,11 +1,8 @@
-﻿using Domain.Common;
+﻿namespace Panel.Models;
 
-namespace Domain.Entity.IndexPage;
-
-public class FooterPage:BaseEntity
+public class FooterPageDto
 {
-    //چرا پارس
-    public string WhyParsDesc { get; set; } = string.Empty;
+       public string WhyParsDesc { get; set; } = string.Empty;
     public string SeoWhyParsTitle { get; set; } = string.Empty;
     public string SeoWhyParsDesc { get; set; } = string.Empty;
 

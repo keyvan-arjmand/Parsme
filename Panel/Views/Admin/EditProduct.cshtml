@@ -1,6 +1,7 @@
 ﻿@using Domain.Entity.Product
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Panel.Models
 @{
     Layout = "_LayoutAdmin";
     List<Brand> brands = ViewBag.Brands;
@@ -8,6 +9,32 @@
     List<SubCategory> subCategories = ViewBag.SubCats;
     List<Color> colors = ViewBag.Colors;
     List<Guarantee> Guarantees = ViewBag.Guarantee;
+    var catDetail = new List<CatDetailEdit>();
+    foreach (var i in products.ProductDetails)
+    {
+        if (catDetail.Any(x => x.FeatureId == i.CategoryDetail.FeatureId))
+        {
+            var result = catDetail.FirstOrDefault(x => x.FeatureId == i.CategoryDetail.FeatureId);
+
+            result.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = i.CategoryDetail.SubCategoryId, Id = i.Id, Value = i.Value
+            });
+        }
+        else
+        {
+            var li = new CatDetailEdit();
+            li.Feature = i.CategoryDetail.Feature;
+            li.FeatureId = i.CategoryDetail.FeatureId;
+            li.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = i.CategoryDetail.SubCategoryId, Id = i.Id, Value = i.Value
+            });
+            catDetail.Add(li);
+        }
+    }
 }
 
 @section link
@@ -89,6 +116,9 @@
         <li class="nav-item">
             <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">کد کالا : @products.UnicCode</a>
+        </li>
     </ul>
 </div><!-- /.card-header -->
 <div class="tab-content">
@@ -130,18 +160,7 @@
                        class="form-control" required="required">
             </div>
         </div>
-        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-            <div class="form-group w-50 p-3">
-                <label>معرفی</label>
-                <textarea id="Detail" class="form-control"
-                                                      required="required">@products.Detail</textarea>
-            </div>
-            <div class="form-group w-50 p-3">
-                <label>توضیحات Meta</label>
-                <input id="MetaDesc" value="@products.MetaDesc" type="text"
-                       class="form-control">
-            </div>
-        </div>
+     
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
                 <label>تگ ها</label>
@@ -166,7 +185,14 @@
                                                       required="required">@products.WeakPoints</textarea>
             </div>
         </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+            <div class="form-group w-50 p-3">
+                <label>معرفی کوتاه</label>
+                <textarea id="Detail" class="form-control"
+                          required="required">@products.Detail</textarea>
+            </div>
 
+        </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3 d-flex flex-column">
                 <label for="exampleInputPassword1">دسته بندی</label>
@@ -203,57 +229,61 @@
                  class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
                  style="gap: 30px">
                 @{
-                    @foreach (var x in products.ProductDetails)
+                    @foreach (var q in catDetail)
                     {
-                        if (x.CategoryDetail.DataType == DataType.SelectBox)
+                       <label  style="display: block;" class="h5">@q.Feature.Title</label>
+                        foreach (var x in q.CategoryDetails)
                         {
-                            <div class=" d-flex w-100 form-group detail-form" >
-                                <div class="input-group-prepend">
-                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
+                            if ((DataType)x.DataType == DataType.SelectBox)
+                            {
+                                <div class=" d-flex w-100 form-group detail-form">
+                                    <div class="input-group-prepend">
+                                        <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
+                                    </div>
+                                    <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
+                                        @foreach (var i in x.Option.Split(","))
+                                        {
+                                            if (i == x.Value)
+                                            {
+                                                <option value="@i" selected="selected">@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
+
+                                    </select>
+                                    <input name="DetailId" value="@x.Id" hidden="hidden" required="required">
                                 </div>
-                                <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
-                                    @foreach (var i in x.CategoryDetail.Option.Split(","))
+                            }
+
+                            if ((DataType)x.DataType == DataType.CheckBox)
+                            {
+                                <div class=" d-flex  gap-3 w-100 form-group detail-form">
+                                    <span class="">@x.Title</span>
+                                    @if (x.Value.Contains("true"))
                                     {
-                                        if (i == x.Value)
-                                        {
-                                            <option value="@i" selected="selected">@i</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@i">@i</option>
-                                        }
+                                        <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
                                     }
-
-                                </select>
-                                <input name="DetailId" value="@x.Id" hidden="hidden" required="required">
-                            </div>
-                        }
-
-                        if (x.CategoryDetail.DataType == DataType.CheckBox)
-                        {
-                            <div class=" d-flex  gap-3 w-100 form-group detail-form">
-                                <span class="">@x.CategoryDetail.Title</span>
-                                @if (x.Value.Contains("true"))
-                                {
-                                    <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="DetailVal" class="form-check-input"/>
-                                }
-                                <input name="DetailId" value="@x.Id" hidden="hidden">
-                            </div>
-                        }
-
-                        if (x.CategoryDetail.DataType != DataType.CheckBox && x.CategoryDetail.DataType != DataType.SelectBox)
-                        {
-                            <div class=" d-flex w-100 form-group detail-form" >
-                                <div class="input-group-prepend">
-                                    <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.CategoryDetail.Title</span>
+                                    else
+                                    {
+                                        <input type="checkbox" name="DetailVal" class="form-check-input"/>
+                                    }
+                                    <input name="DetailId" value="@x.Id" hidden="hidden">
                                 </div>
-                                <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                                <input name="DetailId" value="@x.Id" hidden="hidden">
-                            </div>
+                            }
+
+                            if ((DataType)x.DataType != DataType.CheckBox && (DataType)x.DataType != DataType.SelectBox)
+                            {
+                                <div class=" d-flex w-100 form-group detail-form">
+                                    <div class="input-group-prepend">
+                                        <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
+                                    </div>
+                                    <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                                    <input name="DetailId" value="@x.Id" hidden="hidden">
+                                </div>
+                            }
                         }
                     }
                 }
@@ -335,7 +365,14 @@
             <input id="DiscountAmount" value="@products.DiscountAmount" type="text"
                    class="form-control">
         </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
 
+            <div class="form-group w-50 p-3" id="">
+                <label>درصد سود</label>
+                <input id="InterestRate" value="@products.InterestRate" type="text" class="form-control">
+            </div>
+
+        </div>
     </div>
 
     <div>
@@ -409,7 +446,7 @@
                             </select>
                         </div>
                         <div class="d-flex flex-column w-25">
-                            <label>مبلغ</label>
+                            <label> مبلغ تخفیف </label>
                             <input id="OfferAmount" value="@products.Offer.OfferAmount"
                                    type="text" class="form-control">
                         </div>
@@ -460,7 +497,7 @@
                             </select>
                         </div>
                         <div class="d-flex flex-column w-25">
-                            <label>مبلغ</label>
+                            <label>مبلغ تخفیف</label>
                             <input id="OfferAmount" type="text" class="form-control">
                         </div>
                         <div class="form-group align-items-center w-50">
@@ -581,6 +618,54 @@
     </div>
 
 </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">محتوا سئو</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+            <div class="form-group w-50 p-3" id="">
+                <label>عنوان</label>
+                <input id="SeoTitle" value="@products.SeoTitle" type="text" class="form-control">
+            </div>
+            <div class="form-group w-50 p-3" id="">
+                <label>آدرس متعارف</label>
+                <input id="SeoCanonical" type="text" value="@products.SeoCanonical" class="form-control">
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+            <div class="form-group w-50 p-3" id="">
+                <label>توضیحات</label>
+                <textarea id="SeoDesc" type="text"  class="form-control">@products.SeoDesc</textarea>
+            </div>
+
+
+        </div>
+
+    </div>
 </div>
 <div class="card card-info card-outline mt-4">
     <div class="card-header">
@@ -856,6 +941,10 @@
                 IsActive: document.getElementById('IsActive').checked,
                 IsShowIndex: document.getElementById('ShowIndex').checked,
                 Images: data,
+                SeoCanonical:$("#SeoCanonical").val(),
+                InterestRate:$("#InterestRate").val(),
+                SeoDesc:$("#SeoDesc").val(),
+                SeoTitle:$("#SeoTitle").val(),
                 IsOffer: document.getElementById('Offer').checked,
                 MomentaryOffer: document.getElementById('MomentaryOffer').checked,
                 Offer: {
@@ -877,10 +966,9 @@
                 success: function (data) {
                     Notiflix.Notify.success('عملیات با موفقیت انجام شد');
                     showAlertSuccess();
-                    window.location.href= `@Url.Action("ProductManage","Admin")`;
+                    window.location.href= `@Url.Action("ProductManage", "Admin")`;
                 },
                 error: function (xhr) {
-                    Notiflix.Notify.error('خطای داخلی');
                     showAlertError();
                 },
                 complete: function() {
@@ -999,6 +1087,22 @@
             reader.readAsDataURL(input.files[0]);
         }
     });
+    function showAlertSuccess() {
+        Swal.fire({
+            title: 'موفق',
+            text: 'عملیات موفقیت آمیز',
+            icon: 'success',
+            confirmButtonText: 'بستن'
+        });
+    }
+    function showAlertError() {
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
     $('#SubCatSelect').change(function (e) {
         var selected = $(e.target).val();
         $.ajax({
@@ -1010,7 +1114,7 @@
             },
          
             error: function (xhr) {
-                Notiflix.Notify.error('خطای داخلی');
+                Notiflix.Notify.failure('خطای داخلی');
                 showAlertError();
             },
             complete: function() {
@@ -1111,21 +1215,6 @@
     $('.datepicker').datepicker({
         format: 'YYYY-MM-DD HH:mm',
     });
-    function showAlertSuccess() {
-        Swal.fire({
-            title: 'موفق',
-            text: 'عملیات موفقیت آمیز',
-            icon: 'success',
-            confirmButtonText: 'بستن'
-        });
-    }
-    function showAlertError() {
-        Swal.fire({
-            title: 'خطا',
-            text: 'خطای داخلی در سرور',
-            icon: 'error',
-            confirmButtonText: 'بستن'
-        });
-    }
+ 
 </script>
 }

@@ -350,9 +350,16 @@
                 <label>مبلغ تخفیف</label>
                 <input id="DiscountAmount" type="text" class="form-control">
             </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
 
+                <div class="form-group w-50 p-3" id="">
+                    <label>درصد سود</label>
+                    <input id="InterestRate" type="text" class="form-control">
+                </div>
+
+            </div>
         </div>
-
+    
         <div>
             <div class="d-flex justify-content-start gap-5">
                 <div class="d-flex flex-column align-items-start p-3 m-3">
@@ -378,7 +385,7 @@
                         </select>
                     </div>
                     <div class="d-flex flex-column w-25">
-                        <label>مبلغ</label>
+                        <label>مبلغ تخفیف</label>
                         <input id="OfferAmount" type="text" class="form-control">
                     </div>
                     <div class="form-group align-items-center w-50">
@@ -434,6 +441,54 @@
 
     </div>
 </div>
+    <div class="card card-info card-outline mt-4">
+        <div class="card-header">
+            <h3 class="card-title">
+                <small class="h4">محتوا سئو</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+           
+                <div class="form-group w-50 p-3" id="">
+                    <label>عنوان</label>
+                    <input id="SeoTitle" type="text" class="form-control">
+                </div>
+                <div class="form-group w-50 p-3" id="">
+                    <label>آدرس متعارف</label>
+                    <input id="SeoCanonical" type="text" class="form-control">
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+                <div class="form-group w-50 p-3" id="">
+                    <label>توضیحات</label>
+                    <textarea id="SeoDesc" type="text" class="form-control"></textarea>
+                </div>
+         
+
+            </div>
+      
+        </div>
+    </div>
 <div class="card card-info card-outline mt-4">
     <div class="card-header">
         <h3 class="card-title">
@@ -659,6 +714,10 @@
                 ProductStatus:$("#ProductStatus").val(),
                 Strengths:$("#Strengths").val(),
                 WeakPoints:$("#WeakPoints").val(),
+                SeoCanonical:$("#SeoCanonical").val(),
+                InterestRate:$("#InterestRate").val(),
+                SeoDesc:$("#SeoDesc").val(),
+                SeoTitle:$("#SeoTitle").val(),
                 IsActive:document.getElementById('IsActive').checked,
                 IsShowIndex:document.getElementById('ShowIndex').checked,
                 Images:data,
@@ -816,7 +875,7 @@
             },
 
             error: function (xhr) {
-                Notiflix.Notify.error('خطای داخلی');
+                Notiflix.Notify.failure('خطای داخلی');
                 showAlertError();
             },
             complete: function() {

@@ -1,0 +1,853 @@
+﻿@using Domain.Entity.IndexPage
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_LayoutAdmin";
+    FooterPage seoPage = ViewBag.Footer;
+}
+
+@section link
+{
+    <style>
+    .modal{
+        top: 80px;
+    }
+    img{
+        max-width: 650px;
+    }
+    .control-sidebar control-sidebar-dark{
+        display: none;
+    }
+</style>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">مدیریت محتوا</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Admin")">خانه</a>
+                    </li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- /.col -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">پاورقی</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="activity">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
+                                      asp-action="UpdateFooterSeo" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <input value="@seoPage.Id" hidden="hidden">
+
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5"> چرا پارس می؟ </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoWhyParsDesc"  id="Desc" class="form-control">@seoPage.SeoWhyParsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoWhyParsTitle" id="SmallSideBannerin" value="@seoPage.SeoWhyParsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoWhyParsCanonical" value="@seoPage.SeoWhyParsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="WhyParsDesc" style="width: 100%">
+                                                            @seoPage.WhyParsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5"> پارس می در یک نگاه </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsDarYekDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsDarYekDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsDarYekTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsDarYekTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsDarYekCanonical" value="@seoPage.SeoParsDarYekCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsDarYekDesc" style="width: 100%">
+                                                            @seoPage.ParsDarYekDesc
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5"> اهداف </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsGoalsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsGoalsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsGoalsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsGoalsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsGoalsCanonical" value="@seoPage.SeoParsGoalsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsGoalsDesc" style="width: 100%">
+                                                            @seoPage.ParsGoalsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5"> خرید اقساطی لپ تاپ و سایر محصولات
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsInstallmentPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsInstallmentPurchaseDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsInstallmentPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsInstallmentPurchaseTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsInstallmentPurchaseCanonical" value="@seoPage.SeoParsInstallmentPurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsInstallmentPurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsInstallmentPurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">راهنمای خرید از پارس می
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsBuyingGuideDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsBuyingGuideDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsBuyingGuideTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsBuyingGuideTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsBuyingGuideCanonical" value="@seoPage.SeoParsBuyingGuideCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsBuyingGuideDesc" style="width: 100%">
+                                                            @seoPage.ParsBuyingGuideDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">خرید سازمانی
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsOrganizationalPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOrganizationalPurchaseDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsOrganizationalPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOrganizationalPurchaseTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsOrganizationalPurchaseCanonical" value="@seoPage.SeoParsOrganizationalPurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsOrganizationalPurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsOrganizationalPurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">ضمانت 7 روزه
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsOrganizationalPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsWarrantyDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsOrganizationalPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsWarrantyTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsOrganizationalPurchaseCanonical" value="@seoPage.SeoParsWarrantyCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsOrganizationalPurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsWarrantyDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">شیوه ها و هزینه های ارسال
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsShippingMethodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsShippingMethodsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsShippingMethodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsShippingMethodsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsShippingMethodsCanonical" value="@seoPage.SeoParsShippingMethodsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsShippingMethodsDesc" style="width: 100%">
+                                                            @seoPage.ParsShippingMethodsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">مشاوره قبل از خرید
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsConsultationBeforePurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsConsultationBeforePurchaseDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsConsultationBeforePurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsConsultationBeforePurchaseTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsConsultationBeforePurchaseCanonical" value="@seoPage.SeoParsConsultationBeforePurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsConsultationBeforePurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsConsultationBeforePurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">رویه های بازگرداندن کالا
+
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsProceduresForReturningGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsProceduresForReturningGoodsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsProceduresForReturningGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsProceduresForReturningGoodsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsProceduresForReturningGoodsCanonical" value="@seoPage.SeoParsProceduresForReturningGoodsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsProceduresForReturningGoodsDesc" style="width: 100%">
+                                                            @seoPage.ParsProceduresForReturningGoodsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">ره گیری سفارش های ارسالی
+
+
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsTrackingOrdersGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsTrackingOrdersGoodsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsTrackingOrdersGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsTrackingOrdersGoodsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsTrackingOrdersGoodsCanonical" value="@seoPage.SeoParsTrackingOrdersGoodsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsTrackingOrdersDesc" style="width: 100%">
+                                                            @seoPage.ParsTrackingOrdersDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">پشتیبانی آنلاین
+
+
+
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsOnlineSupportDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOnlineSupportDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsOnlineSupportTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOnlineSupportTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsOnlineSupportCanonical" value="@seoPage.SeoParsOnlineSupportCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsOnlineSupportDesc" style="width: 100%">
+                                                            @seoPage.ParsOnlineSupportDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">فوانین و مقررات
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsRegulationsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsRegulationsDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsRegulationsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsRegulationsTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsRegulationsCanonical" value="@seoPage.SeoParsRegulationsCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsRegulationsDesc" style="width: 100%">
+                                                            @seoPage.ParsRegulationsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-info card-outline mt-4">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <small class="h5">حریم خصوصی کاربران
+
+
+                                                </small>
+                                            </h3>
+                                            <!-- tools box -->
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="collapse"
+                                                        data-toggle="tooltip"
+                                                        title="Collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool btn-sm"
+                                                        data-widget="remove"
+                                                        data-toggle="tooltip"
+                                                        title="Remove">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /. tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoParsUserPrivacyDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsUserPrivacyDesc</textarea>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان </label>
+                                                        <input type="text" name="SeoParsUserPrivacyTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsUserPrivacyTitle" title="test" class="form-control">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input name="SeoParsUserPrivacyCanonical" value="@seoPage.SeoParsUserPrivacyCanonical" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group w-100 pt-2">
+                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <textarea id="" class="textare2a1" name="ParsUserPrivacyDesc" style="width: 100%">
+                                                            @seoPage.ParsUserPrivacyDesc
+                                                                                                                                                   
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w-100">
+                                        <button class="btn btn-success" type="submit"> ثبت</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@section script{
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+
+    $(document).ready(function () {
+        ClassicEditor
+            .create(document.querySelector('.textare2a1'))
+        // bootstrap WYSIHTML5 - text editor
+        $('.textarea').wysihtml5({
+            toolbar: {fa: true}
+        })
+    });
+</script>
+}

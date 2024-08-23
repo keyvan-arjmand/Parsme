@@ -565,16 +565,16 @@ public class HomeController : Controller
 
     public async Task CastLanding()
     {
-        var brand = await _work.GenericRepository<BrandLanding>().TableNoTracking
-            .FirstOrDefaultAsync(x => x.BrandId == 8);
+        var brand = await _work.GenericRepository<CatLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.CategoryId == 8);
         var brands = await _work.GenericRepository<Brand>().TableNoTracking.Where(x => x.Id != 9)
             .ToListAsync();
         foreach (var i in brands)
         {
-            await _work.GenericRepository<BrandLanding>().AddAsync(new BrandLanding
+            await _work.GenericRepository<CatLanding>().AddAsync(new CatLanding
             {
                 SmallBanner1 = brand.SmallBanner1,
-                BrandId = i.Id,
+                CategoryId = i.Id,
                 BigBanner = brand.BigBanner,
                 DescSlider = brand.DescSlider,
                 DescSlider2 = brand.DescSlider2,
@@ -912,8 +912,8 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Landing = await _work.GenericRepository<BrandLanding>().TableNoTracking
-            .FirstOrDefaultAsync(x => x.BrandId == id) ?? new();
+        ViewBag.Landing = await _work.GenericRepository<CatLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
         ViewBag.BasketProd = basketProducts;
         return View("ProductByBrand");
     }
@@ -1030,7 +1030,7 @@ public class HomeController : Controller
                             x.PersianTitle.Contains(search) ||
                             x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search) || x.MetaDesc.Contains(search) || x.MetaKeyword.Contains(search))
+                            x.Detail.Contains(search)  || x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .ToListAsync();
         }

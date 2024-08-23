@@ -7,8 +7,9 @@
     Layout = "_LayoutAdmin";
     List<UserDto> users = ViewBag.Users;
     List<City> cities = ViewBag.Cities;
-    List<Role> roles = ViewBag.Roles ;
+    List<Role> roles = ViewBag.Roles;
 }
+
 @section link
 {
     <style>
@@ -18,6 +19,7 @@
     </style>
 
 }
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -47,12 +49,12 @@
                         <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12 col-md-9">
-                                        <form asp-action="ManageUser" asp-controller="Admin" method="post">
-                                    <div class="input-group p-3  m-2">
+                                    <form asp-action="ManageUser" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3  m-2">
                                             <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
                                             <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
-                                    </div>
-                                        </form>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="col-sm-12 col-md-3">
                                     <button type="button" class="btn btn-block btn-success btn-square mt-4 w-50" data-toggle="modal" data-target="#exampleModal1">افزودن</button>
@@ -75,6 +77,9 @@
                                             <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="ورژن: activate to sort column ascending" style="width: 25%;">
                                                 شماره تماس
                                             </th>
+                                            <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="ورژن: activate to sort column ascending" style="width: 25%;">
+                                                نوع حساب
+                                            </th>
                                             <th class="sorting fs-6" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="امتیاز: activate to sort column ascending" style="width: 20%">
                                                 role
                                             </th>
@@ -92,6 +97,11 @@
                                                     <td>@i.Family</td>
                                                     <td>تهران</td>
                                                     <td>@i.PhoneNumber</td>
+                                                    <td >
+                                                        <span class="badge badge-secondary text-center">
+                                                            @i.AccountType.ToDisplay()
+                                                        </span>
+                                                    </td>
                                                     <td>
                                                         @{
                                                             foreach (var q in i.Roles)
@@ -113,6 +123,14 @@
                                                             <input type="text" name="mCityId" class="mCityId" value="@i.CityId" hidden="hidden"/>
                                                             <input type="text" name="mRoles" class="mRoles" value="@i.Roles.ToStringList()" hidden="hidden"/>
                                                             <input type="text" name="mPassword" class="mPassword" value="@i.Password" hidden="hidden"/>
+                                                            <input type="text" name="mAccountType" class="mAccountType" value="@i.AccountType.GetAccTypeId()" hidden="hidden"/>
+                                                            <input type="text" name="mEconomicNumber" class="mEconomicNumber" value="@i.EconomicNumber" hidden="hidden"/>
+                                                            <input type="text" name="mOrganizationName" class="mOrganizationName" value="@i.OrganizationName" hidden="hidden"/>
+                                                            <input type="text" name="mNationalId" class="mNationalId" value="@i.NationalId" hidden="hidden"/>
+                                                            <input type="text" name="mPostCode" class="mPostCode" value="@i.PostCode" hidden="hidden"/>
+                                                            <input type="text" name="mOrganizationNumber" class="mOrganizationNumber" value="@i.OrganizationNumber" hidden="hidden"/>
+                                                            <input type="text" name="mRegistrationNumber" class="mRegistrationNumber" value="@i.RegistrationNumber" hidden="hidden"/>
+                                                            <input type="text" name="mAdderss" class="mAdderss" value="@i.Adderss" hidden="hidden"/>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -146,82 +164,133 @@
 </section>
 <div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 700px !important;">
+    <div class="modal-dialog" style="max-width: 800px !important;">
         <form class="modal-content" asp-action="UpdateAdmin" asp-controller="Admin" method="post">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ویرایش کاربر</h5>
-                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">ویرایش کاربر</h5>
+            <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
+            <div class="d-flex justify-content-between">
+                <div class="input-group p-3  m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام</span>
+                    <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
+                </div>
+                <div class="input-group p-3 m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">فامیل</span>
+                    <input type="text" id="Family" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family" required="required">
+                </div>
             </div>
-            <div class="modal-body">
-                <input type="text" class="idP" id="idP" required="required" name="Id" hidden="hidden">
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام</span>
-                        <input type="text" id="Name" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
-                    </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">فامیل</span>
-                        <input type="text" id="Family" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family">
-                    </div>
+            <div class="d-flex justify-content-between">
+                <div class="input-group p-3  m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره</span>
+                    <input type="text" id="PhoneNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="PhoneNumber" readonly>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره</span>
-                        <input type="text" id="PhoneNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required"  name="PhoneNumber" readonly>
-                    </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">رمزعبور</span>
-                        <input type="text" id="Password" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Password">
-                    </div>
+                <div class="input-group p-3 m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">رمزعبور</span>
+                    <input type="text" id="Password" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Password" readonly="readonly">
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شبا</span>
-                        <input type="text" id="Sheba" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Sheba">
-                    </div>
-                    <div class="input-group p-3 m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدملی</span>
-                        <input type="text" id="CodeMeli" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="NationalCode">
-                    </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="input-group p-3  m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شبا</span>
+                    <input type="text" id="Sheba" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Sheba">
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="input-group p-3  m-2">
-                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">ایمیل</span>
-                        <input type="text" id="Email" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Email">
-                    </div>
-                    <div class="input-group p-3  ">
-                        <select class="form-select catIdP " id="CityId" name="CityId" required="required">
-                            @{
-                                foreach (var i in cities)
-                                {
-                                    <option value="@i.Id">@i.Name</option>
-                                }
+                <div class="input-group p-3 m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدملی</span>
+                    <input type="text" id="CodeMeli" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="NationalCode">
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="input-group p-3  m-2">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">ایمیل</span>
+                    <input type="text" id="Email" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="Email">
+                </div>
+                <div class="input-group p-3  ">
+                    <select class="form-select catIdP " id="CityId" name="CityId" required="required">
+                        @{
+                            foreach (var i in cities)
+                            {
+                                <option value="@i.Id">@i.Name</option>
                             }
-                        </select>
-                    </div>
-                </div>
-                <div class="input-group p-3  m-2 w-50">
-                    <label>Role</label>
-                    <div class="form-group w-100 p-3">
-                        <select  id="Roles" class="form-control select2 w-100" multiple="multiple" name="Role"
-                                style="width: fit-content;min-width: 200px;text-align: right" required="required">
-                            @{
-                                foreach (var i in roles)
-                                {
-                                    <option value="@i.Name">@i.Name</option>
-                                }
-                            }
-                        </select>
-                    </div>
+                        }
+                    </select>
                 </div>
             </div>
-            <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+            <div class="d-flex justify-content-between">
+                <div class="input-group p-3  ">
+                    <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نوع حساب</span>
+
+                    <select class="form-select catIdP " id="AccountTypeE" name="AccountType" required="required" onchange="toggleElements()">
+                        <option value="0">حقیقی</option>
+                        <option value="1">حقوقی</option>
+                    </select>
+                </div>
             </div>
-        </form>
+            <div id="additionalElements" style="display: none;">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره اقتصادی</span>
+                        <input type="text" id="EconomicNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="EconomicNumber">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام شرکت</span>
+                        <input type="text" id="OrganizationName" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" name="OrganizationName">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره ثبت</span>
+                        <input type="text" id="RegistrationNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="RegistrationNumber">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">تماس شرکت</span>
+                        <input type="text" id="OrganizationNumber" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="OrganizationNumber">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شناسه ملی</span>
+                        <input type="text" id="NationalId" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="NationalId">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدپستی</span>
+                        <input type="text" id="PostCode" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="PostCode">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">آدرس شرکت</span>
+                        <textarea type="text" id="Adderss" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Adderss"></textarea>
+                    </div>
+
+                </div>
+            </div>
+          
+        <div class="input-group p-3  m-2 w-50">
+            <label>Role</label>
+            <div class="form-group w-100 p-3">
+                <select id="Roles" class="form-control select2 w-100" multiple="multiple" name="Role"
+                        style="width: fit-content;min-width: 200px;text-align: right" >
+                    @{
+                        foreach (var i in roles)
+                        {
+                            <option value="@i.Name">@i.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
     </div>
+
+    <div class="modal-footer d-flex justify-content-between gap-2">
+        <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+    </div>
+    </form>
+</div>
 </div>
 
 <div class="modal fade exampleModal1" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
@@ -238,11 +307,11 @@
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام</span>
-                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="name">
                     </div>
                     <div class="input-group p-3 m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">فامیل</span>
-                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family">
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" name="Family">
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -252,13 +321,13 @@
                     </div>
                     <div class="input-group p-3 m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">رمزعبور</span>
-                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required" name="Password">
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" readonly="readonly" name="Password">
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شبا</span>
-                        <input type="text"  style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Sheba">
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" name="Sheba">
                     </div>
                     <div class="input-group p-3 m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدملی</span>
@@ -268,29 +337,78 @@
                 <div class="d-flex justify-content-between">
                     <div class="input-group p-3  m-2">
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">ایمیل</span>
-                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Email">
+                        <input type="text" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" name="Email">
                     </div>
                     <div class="input-group p-3  ">
                         <select class="form-select catIdP " name="CityId" required="required">
                             @{
-                            foreach (var i in cities)
-                            {
-                            <option value="@i.Id">@i.Name</option>
-                            }
+                                foreach (var i in cities)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
                             }
                         </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  ">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نوع حساب</span>
+
+                        <select class="form-select catIdP " id="AccountTypeI" name="AccountType" required="required" onchange="toggleElementsI()">
+                            <option value="0">حقیقی</option>
+                            <option value="1">حقوقی</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="additionalElementsI" style="display: none;">
+                    <div class="d-flex justify-content-between">
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره اقتصادی</span>
+                            <input type="text" id="EconomicNumberI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" name="EconomicNumber">
+                        </div>
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">نام شرکت</span>
+                            <input type="text" id="OrganizationNameI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="OrganizationName">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شماره ثبت</span>
+                            <input type="text" id="RegistrationNumberI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="RegistrationNumber">
+                        </div>
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">تماس شرکت</span>
+                            <input type="text" id="OrganizationNumberI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="OrganizationNumber">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">شناسه ملی</span>
+                            <input type="text" id="NationalIdI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="NationalId">
+                        </div>
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">کدپستی</span>
+                            <input type="text" id="PostCodeI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" name="PostCode">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="input-group p-3  m-2">
+                            <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">آدرس شرکت</span>
+                            <textarea type="text" id="AdderssI" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP"  name="Adderss"></textarea>
+                        </div>
+
                     </div>
                 </div>
                 <div class="d-flex flex-column  p-3">
                     <label>Role</label>
                     <div class="form-group w-100 p-3">
-                        <select   class="form-control select2 w-100" multiple="multiple" name="Role"
-                                 style="width: fit-content;min-width: 200px;text-align: right" required="required">
+                        <select class="form-control select2 w-100" multiple="multiple" name="Role"
+                                style="width: fit-content;min-width: 200px;text-align: right" required="required">
                             @{
-                            foreach (var i in roles)
-                            {
-                            <option value="@i.Name">@i.Name</option>
-                            }
+                                foreach (var i in roles)
+                                {
+                                    <option value="@i.Name">@i.Name</option>
+                                }
                             }
                         </select>
                     </div>
@@ -321,11 +439,53 @@
             $("#CodeMeli").val(currentrow.find($("input.mNationalCode[type=text]")).val());
             $("#Email").val(currentrow.find($("input.mEmail[type=text]")).val());
             $("#CityId").val(currentrow.find($("input.mCityId[type=text]")).val());
+            $("#AccountTypeE").val(currentrow.find($("input.mAccountType[type=text]")).val());
+            $("#EconomicNumber").val(currentrow.find($("input.mEconomicNumber[type=text]")).val());
+            $("#OrganizationName").val(currentrow.find($("input.mOrganizationName[type=text]")).val());
+            $("#NationalId").val(currentrow.find($("input.mNationalId[type=text]")).val());
+            $("#PostCode").val(currentrow.find($("input.mPostCode[type=text]")).val());
+            $("#OrganizationNumber").val(currentrow.find($("input.mOrganizationNumber[type=text]")).val());
+            $("#RegistrationNumber").val(currentrow.find($("input.mRegistrationNumber[type=text]")).val());
+            $("#Adderss").val(currentrow.find($("input.mAdderss[type=text]")).val());
             $('#Roles').val(currentrow.find($("input.mRoles[type=text]")).val().split(",")).trigger('change');
+            const accountType = document.getElementById("AccountTypeE").value;
+            const additionalElements = document.getElementById("additionalElements");
+
+            if (accountType == "0") {
+                // Hide additional elements for حقیقی
+                additionalElements.style.display = "none";
+            } else {
+                // Show additional elements for حقوقی
+                additionalElements.style.display = "block";
+            }
         });
        
     });
-   
+    function toggleElements() {
+        const accountType = document.getElementById("AccountTypeE").value;
+        const additionalElements = document.getElementById("additionalElements");
+
+        if (accountType == "0") {
+            // Hide additional elements for حقیقی
+            additionalElements.style.display = "none";
+        } else {
+            // Show additional elements for حقوقی
+            additionalElements.style.display = "block";
+        }
+       
+}
+    function toggleElementsI() {
+        const accountType = document.getElementById("AccountTypeI").value;
+        const additionalElements = document.getElementById("additionalElementsI");
+
+        if (accountType == "0") {
+            // Hide additional elements for حقیقی
+            additionalElements.style.display = "none";
+        } else {
+            // Show additional elements for حقوقی
+            additionalElements.style.display = "block";
+        }
+        }
 </script>
 
 }

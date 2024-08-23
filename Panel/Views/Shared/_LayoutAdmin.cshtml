@@ -34,9 +34,9 @@
     <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
     <!-- Persian Data Picker -->
     <link rel="stylesheet" href="/dist/css/persian-datepicker.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
     <!-- Notiflix CSS (CDN) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.css">
+    <link rel="stylesheet" href="/css/notiflix.css">
     @await RenderSectionAsync("link", false)
     <style>
         .nav-color {
@@ -100,8 +100,9 @@
                     <div class="image">
                         <img src="/assetsCli/images/man.png" class="img-circle elevation-2" alt="User Image">
                     </div>
-                    <div class="info">
-                        <a href="#" class="d-block">@User.Identity.Name</a>
+                    <div class="info d-flex justify-content-between gap-3">
+                        <a  class="d-block align-content-center">@User.Identity.Name</a>
+                        <a href="@Url.Action("LogOut","Admin")" class="d-block btn btn-danger">خروج</a>
                     </div>
                 </div>
 
@@ -280,7 +281,7 @@
                                                 <li class="nav-item">
                                                     <a href="@Url.Action("ManageBrand", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
-                                                        <p>برند ها</p>
+                                                        <p>دسته بندی ها</p>
                                                     </a>
                                                 </li>
                                                 <li class="nav-item">
@@ -329,6 +330,18 @@
                                                     <a href="@Url.Action("ManageFooterLink", "Admin")" class="nav-link ">
                                                         <i class="fa fa-circle-o nav-icon"></i>
                                                         <p>پاورقی</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("SeoIndexPage", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>محتوا سئو صفحه اصلی</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("SeoFooterPage", "Admin")" class="nav-link ">
+                                                        <i class="fa fa-circle-o nav-icon"></i>
+                                                        <p>محتوا و سئو صفحات پاورقی</p>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -453,10 +466,12 @@
         document.getElementById("customAlertError").classList.remove("show");
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/sweetalert.js"></script>
 <!-- Notiflix JS (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
-
+<script src="/js/Notiflix.js"></script>
+<script>
+    Notiflix.Notify.init();
+</script>
 @await RenderSectionAsync("script", false)
 </body>
 </html>

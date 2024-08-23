@@ -39,14 +39,18 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
             FullDesc = request.Product.FullDesc!,
             MetaKeyword = request.Product.MetaKeyword!,
             PersianTitle = request.Product.PersianTitle!,
-            MetaDesc = request.Product.MetaDesc!,
             ProductGift = request.Product.ProductGift!,
             ImageUri = request.Product.ImageUri,
             IsOffer = request.Product.IsOffer,
             Strengths = request.Product.Strengths,
             WeakPoints = request.Product.WeakPoints,
             MomentaryOffer = request.Product.MomentaryOffer,
-            IsShowIndex = request.Product.IsShowIndex
+            IsShowIndex = request.Product.IsShowIndex,
+            SeoCanonical = request.Product.SeoCanonical,
+            InterestRate = request.Product.InterestRate,
+            SeoDesc = request.Product.SeoDesc,
+            SeoTitle = request.Product.SeoTitle,
+            UnicCode = "S"+request.Product.SubCategoryId+"B"+request.Product.BrandId+Guid.NewGuid().ToString().Substring(0, 6)
         };
         await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
         var productGallery = request.Product.Images.Select(x => new ImageGallery

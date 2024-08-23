@@ -73,7 +73,21 @@ public static partial class Helpers
 
         return id;
     }
+    public static int GetAccTypeId(this AccountType type)
+    {
+        var id = 0;
+        switch (type)
+        {
+            case AccountType.Legal:
+                id = 1;
+                break;
+            case AccountType.Genuine:
+                id = 0;
+                break;
+        }
 
+        return id;
+    }
     public static string ToPersianTime(this DateTime calendar)
     {
         try

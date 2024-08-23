@@ -10,13 +10,13 @@ public class Product : BaseEntity
     public string PersianTitle { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
-    public string MetaDesc { get; set; } = string.Empty;
     public string MetaKeyword { get; set; } = string.Empty;
     public string FullDesc { get; set; } = string.Empty;
     public string ImageUri { get; set; } = string.Empty;
     public string ProductGift { get; set; } = string.Empty;
     public string Strengths { get; set; } = string.Empty;
     public string WeakPoints { get; set; } = string.Empty;
+    public string UnicCode { get; set; } = string.Empty;
     public double DiscountAmount { get; set; }
     public double InterestRate { get; set; }
 

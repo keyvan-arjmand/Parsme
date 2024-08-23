@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="~/dist/css/bootstrap-rtl.min.css">
     <!-- template rtl version -->
     <link rel="stylesheet" href="~/dist/css/custom-style.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
+    <!-- Notiflix CSS (CDN) -->
+    <link rel="stylesheet" href="/css/notiflix.css">
 </head>
 <body class="hold-transition lockscreen">
 <!-- Automatic element centering -->
@@ -56,6 +59,12 @@
         </form>
     </div>
 </div>
+<script src="/js/sweetalert.js"></script>
+<!-- Notiflix JS (CDN) -->
+<script src="/js/Notiflix.js"></script>
+<script>
+    Notiflix.Notify.init();
+</script>
 <script>
      function withPassword(){
           $.ajax({
@@ -63,16 +72,40 @@
                  data: {code: $('#Code').val(),phoneNumber:$('#phoneNumber').val()},
                  url: "/Admin/ConfirmCode",
                  success: function (data) {
+                     Notiflix.Notify.success('ورود موفقیت انجام شد');
                   window.location.href= "/admin/index";
-                 },
-                 error: function (xhr) {
-                    alert("کد وارد شده معتبر نمیباشد");
-                 }
+                 }, beforeSend: function() {
+                  Notiflix.Loading.circle('در حال پردازش ...');
+              },
+              error: function (xhr) {
+                  Notiflix.Notify.failure('کد وارد شده معتبر نمیباشد');
+                  showAlertError();
+              },
+              complete: function() {
+                  Notiflix.Loading.remove();
+              }
              });
            }
+             function showAlertSuccess() {
+                 Swal.fire({
+                     title: 'موفق',
+                     text: 'ورود موفقیت آمیز',
+                     icon: 'success',
+                     confirmButtonText: 'بستن'
+                 });
+             }
+             function showAlertError() {
+                 Swal.fire({
+                     title: 'خطا',
+                     text: 'کد وارد شده معتبر نمیباشد',
+                     icon: 'error',
+                     confirmButtonText: 'بستن'
+                 });
+             }
 </script>
 <script src="~/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

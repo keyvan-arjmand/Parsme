@@ -58,9 +58,9 @@ public class AdminController : Controller
             #region ViewBag
 
             ViewBag.FactorPendingCount = await _work.GenericRepository<Factor>().TableNoTracking
-                .CountAsync(x => x.Status == Status.Pending);
+                .CountAsync(x => x.Status == Status.Pending && x.InsertDate.Date == DateTime.Now.Date);
             ViewBag.FactorCount = await _work.GenericRepository<Factor>().TableNoTracking
-                .CountAsync();
+                .CountAsync(x => x.InsertDate.Date == DateTime.Now.Date);
             ViewBag.Users = await _userManager.Users.ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
@@ -282,10 +282,22 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
-            ViewBag.Factors = await _work.GenericRepository<BrandLanding>().TableNoTracking
-                .Include(x => x.Brand)
-                .FirstOrDefaultAsync(x => x.BrandId == id) ?? new();
+            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Factors = await _work.GenericRepository<CatLanding>().TableNoTracking
+                .Include(x => x.Category)
+                .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }    public async Task<ActionResult> SeoIndexPage()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Index = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync()?? new SeoPage();
+
             return View();
         }
         else
@@ -293,69 +305,81 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+    public async Task<ActionResult> SeoFooterPage()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            ViewBag.Footer = await _work.GenericRepository<FooterPage>().TableNoTracking.FirstOrDefaultAsync()?? new FooterPage();
 
+            return View();
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
     public async Task<IActionResult> UpdateLanding(BrandLandingDto request)
     {
         Upload up = new Upload(_webHostEnvironment);
 
         if (request.Id <= 0)
         {
-            var entity = _mapper!.Map<BrandLanding>(request);
-            entity.ImageSlider = up.Uploadfile(request.ImageSlider, "Brand");
-            entity.ImageSlider2 = up.Uploadfile(request.ImageSlider2, "Brand");
-            entity.ImageSlider3 = up.Uploadfile(request.ImageSlider3, "Brand");
-            entity.ImageSlider4 = up.Uploadfile(request.ImageSlider4, "Brand");
-            entity.ImageSlider5 = up.Uploadfile(request.ImageSlider5, "Brand");
+            var entity = _mapper!.Map<CatLanding>(request);
+            entity.ImageSlider = up.Uploadfile(request.ImageSlider, "Category");
+            entity.ImageSlider2 = up.Uploadfile(request.ImageSlider2, "Category");
+            entity.ImageSlider3 = up.Uploadfile(request.ImageSlider3, "Category");
+            entity.ImageSlider4 = up.Uploadfile(request.ImageSlider4, "Category");
+            entity.ImageSlider5 = up.Uploadfile(request.ImageSlider5, "Category");
 
-            entity.BigBanner = up.Uploadfile(request.BigBanner, "Brand");
+            entity.BigBanner = up.Uploadfile(request.BigBanner, "Banner");
 
-            entity.SmallBanner1 = up.Uploadfile(request.SmallBanner1, "Brand");
-            entity.SmallBanner2 = up.Uploadfile(request.SmallBanner2, "Brand");
-            entity.SmallBanner3 = up.Uploadfile(request.SmallBanner3, "Brand");
-            entity.SmallBanner4 = up.Uploadfile(request.SmallBanner4, "Brand");
+            entity.SmallBanner1 = up.Uploadfile(request.SmallBanner1, "Banner");
+            entity.SmallBanner2 = up.Uploadfile(request.SmallBanner2, "Banner");
+            entity.SmallBanner3 = up.Uploadfile(request.SmallBanner3, "Banner");
+            entity.SmallBanner4 = up.Uploadfile(request.SmallBanner4, "Banner");
 
-            await _work.GenericRepository<BrandLanding>()
+            await _work.GenericRepository<CatLanding>()
                 .AddAsync(entity, CancellationToken.None);
         }
         else
         {
-            var footer = await _work.GenericRepository<BrandLanding>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.BrandId == request.BrandId);
-            var entity = _mapper!.Map<BrandLanding>(request);
+            var footer = await _work.GenericRepository<CatLanding>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.CategoryId == request.CategoryId);
+            var entity = _mapper!.Map<CatLanding>(request);
             entity.Id = footer.Id;
             entity.ImageSlider = request.ImageSlider != null
-                ? up.Uploadfile(request.ImageSlider, "Brand")
+                ? up.Uploadfile(request.ImageSlider, "Category")
                 : footer.ImageSlider;
 
             entity.ImageSlider2 = request.ImageSlider2 != null
-                ? up.Uploadfile(request.ImageSlider2, "Brand")
+                ? up.Uploadfile(request.ImageSlider2, "Category")
                 : footer.ImageSlider2;
             entity.ImageSlider3 = request.ImageSlider3 != null
-                ? up.Uploadfile(request.ImageSlider3, "Brand")
+                ? up.Uploadfile(request.ImageSlider3, "Category")
                 : footer.ImageSlider3;
             entity.ImageSlider4 = request.ImageSlider4 != null
-                ? up.Uploadfile(request.ImageSlider4, "Brand")
+                ? up.Uploadfile(request.ImageSlider4, "Category")
                 : footer.ImageSlider4;
             entity.ImageSlider5 = request.ImageSlider5 != null
-                ? up.Uploadfile(request.ImageSlider5, "Brand")
+                ? up.Uploadfile(request.ImageSlider5, "Category")
                 : footer.ImageSlider5;
 
             entity.BigBanner = request.BigBanner != null
-                ? up.Uploadfile(request.BigBanner, "Brand")
+                ? up.Uploadfile(request.BigBanner, "Banner")
                 : footer.BigBanner;
             entity.SmallBanner1 = request.SmallBanner1 != null
-                ? up.Uploadfile(request.SmallBanner1, "Brand")
+                ? up.Uploadfile(request.SmallBanner1, "Banner")
                 : footer.SmallBanner1;
             entity.SmallBanner2 = request.SmallBanner2 != null
-                ? up.Uploadfile(request.SmallBanner2, "Brand")
+                ? up.Uploadfile(request.SmallBanner2, "Banner")
                 : footer.SmallBanner2;
             entity.SmallBanner3 = request.SmallBanner3 != null
-                ? up.Uploadfile(request.SmallBanner3, "Brand")
+                ? up.Uploadfile(request.SmallBanner3, "Banner")
                 : footer.SmallBanner3;
             entity.SmallBanner4 = request.SmallBanner4 != null
-                ? up.Uploadfile(request.SmallBanner4, "Brand")
+                ? up.Uploadfile(request.SmallBanner4, "Banner")
                 : footer.SmallBanner4;
-            await _work.GenericRepository<BrandLanding>().UpdateAsync(entity, CancellationToken.None);
+            await _work.GenericRepository<CatLanding>().UpdateAsync(entity, CancellationToken.None);
         }
 
         return RedirectToAction("ManageBrand");
@@ -559,6 +583,187 @@ public class AdminController : Controller
             }, CancellationToken.None);
             await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
             return RedirectToAction("FactorDetail", "Admin", new { factor.Id });
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> UpdateFeature(int id, string title)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var result = await _work.GenericRepository<Feature>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            result.Title = title;
+            await _work.GenericRepository<Feature>().UpdateAsync(result, CancellationToken.None);
+            return RedirectToAction("ManageCatDetail", "Admin");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }   
+    public async Task<ActionResult> UpdateFooterSeo(FooterPageDto request)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var result = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
+            if (result == null)
+            {
+                await _work.GenericRepository<FooterPage>().AddAsync(new FooterPage
+                {
+                    WhyParsDesc = request.WhyParsDesc,
+                    ParsGoalsDesc = request.ParsGoalsDesc,
+                    ParsRegulationsDesc = request.ParsRegulationsDesc,
+                    ParsWarrantyDesc = request.ParsWarrantyDesc,
+                    ParsBuyingGuideDesc = request.ParsBuyingGuideDesc,
+                    SeoParsProceduresForReturningGoodsTitle = request.SeoParsProceduresForReturningGoodsTitle,
+                    SeoWhyParsTitle = request.SeoWhyParsTitle,
+                    SeoWhyParsDesc = request.SeoWhyParsDesc,
+                    SeoWhyParsCanonical = request.SeoWhyParsCanonical,
+                    ParsDarYekDesc = request.ParsDarYekDesc,
+                    SeoParsDarYekTitle = request.SeoParsDarYekTitle,
+                    SeoParsDarYekDesc = request.SeoParsDarYekDesc,
+                    SeoParsDarYekCanonical = request.SeoParsDarYekCanonical,
+                    SeoParsGoalsTitle = request.SeoParsGoalsTitle,
+                    SeoParsGoalsDesc = request.SeoParsGoalsDesc,
+                    SeoParsGoalsCanonical = request.SeoParsGoalsCanonical,
+                    ParsInstallmentPurchaseDesc = request.ParsInstallmentPurchaseDesc,
+                    SeoParsInstallmentPurchaseTitle = request.SeoParsInstallmentPurchaseTitle,
+                    SeoParsInstallmentPurchaseDesc = request.SeoParsInstallmentPurchaseDesc,
+                    SeoParsInstallmentPurchaseCanonical = request.SeoParsInstallmentPurchaseCanonical,
+                    SeoParsBuyingGuideTitle = request.SeoParsBuyingGuideTitle,
+                    SeoParsBuyingGuideDesc = request.SeoParsBuyingGuideDesc,
+                    SeoParsBuyingGuideCanonical = request.SeoParsBuyingGuideCanonical,
+                    ParsOrganizationalPurchaseDesc = request.ParsOrganizationalPurchaseDesc,
+                    SeoParsOrganizationalPurchaseTitle = request.SeoParsOrganizationalPurchaseTitle,
+                    SeoParsOrganizationalPurchaseDesc = request.SeoParsOrganizationalPurchaseDesc,
+                    SeoParsOrganizationalPurchaseCanonical = request.SeoParsOrganizationalPurchaseCanonical,
+                    SeoParsWarrantyTitle = request.SeoParsWarrantyTitle,
+                    SeoParsWarrantyDesc = request.SeoParsWarrantyDesc,
+                    SeoParsWarrantyCanonical = request.SeoParsWarrantyCanonical,
+                    ParsShippingMethodsDesc = request.ParsShippingMethodsDesc,
+                    SeoParsShippingMethodsTitle = request.SeoParsShippingMethodsTitle,
+                    SeoParsShippingMethodsDesc = request.SeoParsShippingMethodsDesc,
+                    SeoParsShippingMethodsCanonical = request.SeoParsShippingMethodsCanonical,
+                    ParsConsultationBeforePurchaseDesc = request.ParsConsultationBeforePurchaseDesc,
+                    SeoParsConsultationBeforePurchaseTitle = request.SeoParsConsultationBeforePurchaseTitle,
+                    SeoParsConsultationBeforePurchaseDesc = request.SeoParsConsultationBeforePurchaseDesc,
+                    SeoParsConsultationBeforePurchaseCanonical = request.SeoParsConsultationBeforePurchaseCanonical,
+                    ParsProceduresForReturningGoodsDesc = request.ParsProceduresForReturningGoodsDesc,
+                    SeoParsProceduresForReturningGoodsCanonical = request.SeoParsProceduresForReturningGoodsCanonical,
+                    SeoParsProceduresForReturningGoodsDesc = request.SeoParsProceduresForReturningGoodsDesc,
+                    ParsTrackingOrdersDesc = request.ParsTrackingOrdersDesc,
+                    SeoParsTrackingOrdersGoodsTitle = request.SeoParsTrackingOrdersGoodsTitle,
+                    SeoParsTrackingOrdersGoodsDesc = request.SeoParsTrackingOrdersGoodsDesc,
+                    SeoParsTrackingOrdersGoodsCanonical = request.SeoParsTrackingOrdersGoodsCanonical,
+                    ParsOnlineSupportDesc = request.ParsOnlineSupportDesc,
+                    SeoParsOnlineSupportTitle = request.SeoParsOnlineSupportTitle,
+                    SeoParsOnlineSupportDesc = request.SeoParsOnlineSupportDesc,
+                    SeoParsOnlineSupportCanonical = request.SeoParsOnlineSupportCanonical,
+                    SeoParsRegulationsTitle = request.SeoParsRegulationsTitle,
+                    SeoParsRegulationsDesc = request.SeoParsRegulationsDesc,
+                    SeoParsRegulationsCanonical = request.SeoParsRegulationsCanonical,
+                    ParsUserPrivacyDesc = request.ParsUserPrivacyDesc,
+                    SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle,
+                    SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc,
+                    SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical,
+                    
+        
+                }, CancellationToken.None);
+            }
+            else
+            {
+                    result.WhyParsDesc = request.WhyParsDesc;
+                    result.ParsGoalsDesc = request.ParsGoalsDesc;
+                    result.ParsRegulationsDesc = request.ParsRegulationsDesc;
+                    result.ParsWarrantyDesc = request.ParsWarrantyDesc;
+                    result.ParsBuyingGuideDesc = request.ParsBuyingGuideDesc;
+                    result.SeoParsProceduresForReturningGoodsTitle = request.SeoParsProceduresForReturningGoodsTitle;
+                    result.SeoWhyParsTitle = request.SeoWhyParsTitle;
+                    result.SeoWhyParsDesc = request.SeoWhyParsDesc;
+                    result.SeoWhyParsCanonical = request.SeoWhyParsCanonical;
+                    result.ParsDarYekDesc = request.ParsDarYekDesc;
+                    result.SeoParsDarYekTitle = request.SeoParsDarYekTitle;
+                    result.SeoParsDarYekDesc = request.SeoParsDarYekDesc;
+                    result.SeoParsDarYekCanonical = request.SeoParsDarYekCanonical;
+                    result.SeoParsGoalsTitle = request.SeoParsGoalsTitle;
+                    result.SeoParsGoalsDesc = request.SeoParsGoalsDesc;
+                    result.SeoParsGoalsCanonical = request.SeoParsGoalsCanonical;
+                    result.ParsInstallmentPurchaseDesc = request.ParsInstallmentPurchaseDesc;
+                    result.SeoParsInstallmentPurchaseTitle = request.SeoParsInstallmentPurchaseTitle;
+                    result.SeoParsInstallmentPurchaseDesc = request.SeoParsInstallmentPurchaseDesc;
+                    result.SeoParsInstallmentPurchaseCanonical = request.SeoParsInstallmentPurchaseCanonical;
+                    result.SeoParsBuyingGuideTitle = request.SeoParsBuyingGuideTitle;
+                    result.SeoParsBuyingGuideDesc = request.SeoParsBuyingGuideDesc;
+                    result.SeoParsBuyingGuideCanonical = request.SeoParsBuyingGuideCanonical;
+                    result.ParsOrganizationalPurchaseDesc = request.ParsOrganizationalPurchaseDesc;
+                    result.SeoParsOrganizationalPurchaseTitle = request.SeoParsOrganizationalPurchaseTitle;
+                    result.SeoParsOrganizationalPurchaseDesc = request.SeoParsOrganizationalPurchaseDesc;
+                    result.SeoParsOrganizationalPurchaseCanonical = request.SeoParsOrganizationalPurchaseCanonical;
+                    result.SeoParsWarrantyTitle = request.SeoParsWarrantyTitle;
+                    result.SeoParsWarrantyDesc = request.SeoParsWarrantyDesc;
+                    result.SeoParsWarrantyCanonical = request.SeoParsWarrantyCanonical;
+                    result.ParsShippingMethodsDesc = request.ParsShippingMethodsDesc;
+                    result.SeoParsShippingMethodsTitle = request.SeoParsShippingMethodsTitle;
+                    result.SeoParsShippingMethodsDesc = request.SeoParsShippingMethodsDesc;
+                    result.SeoParsShippingMethodsCanonical = request.SeoParsShippingMethodsCanonical;
+                    result.ParsConsultationBeforePurchaseDesc = request.ParsConsultationBeforePurchaseDesc;
+                    result.SeoParsConsultationBeforePurchaseTitle = request.SeoParsConsultationBeforePurchaseTitle;
+                    result.SeoParsConsultationBeforePurchaseDesc = request.SeoParsConsultationBeforePurchaseDesc;
+                    result.SeoParsConsultationBeforePurchaseCanonical = request.SeoParsConsultationBeforePurchaseCanonical;
+                    result.ParsProceduresForReturningGoodsDesc = request.ParsProceduresForReturningGoodsDesc;
+                    result.SeoParsProceduresForReturningGoodsCanonical = request.SeoParsProceduresForReturningGoodsCanonical;
+                    result.SeoParsProceduresForReturningGoodsDesc = request.SeoParsProceduresForReturningGoodsDesc;
+                    result.ParsTrackingOrdersDesc = request.ParsTrackingOrdersDesc;
+                    result.SeoParsTrackingOrdersGoodsTitle = request.SeoParsTrackingOrdersGoodsTitle;
+                    result.SeoParsTrackingOrdersGoodsDesc = request.SeoParsTrackingOrdersGoodsDesc;
+                    result.SeoParsTrackingOrdersGoodsCanonical = request.SeoParsTrackingOrdersGoodsCanonical;
+                    result.ParsOnlineSupportDesc = request.ParsOnlineSupportDesc;
+                    result.SeoParsOnlineSupportTitle = request.SeoParsOnlineSupportTitle;
+                    result.SeoParsOnlineSupportDesc = request.SeoParsOnlineSupportDesc;
+                    result.SeoParsOnlineSupportCanonical = request.SeoParsOnlineSupportCanonical;
+                    result.SeoParsRegulationsTitle = request.SeoParsRegulationsTitle;
+                    result.SeoParsRegulationsDesc = request.SeoParsRegulationsDesc;
+                    result.SeoParsRegulationsCanonical = request.SeoParsRegulationsCanonical;
+                    result.ParsUserPrivacyDesc = request.ParsUserPrivacyDesc;
+                    result.SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle;
+                    result.SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc;
+                    result.SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical;
+                await _work.GenericRepository<FooterPage>().UpdateAsync(result, CancellationToken.None);
+            }
+          
+            return RedirectToAction("SeoFooterPage", "Admin");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc,string SeoIndexCanonical , string SeoIndexTitle)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var result = await _work.GenericRepository<SeoPage>().Table.FirstOrDefaultAsync();
+            if (result == null)
+            {
+                await _work.GenericRepository<SeoPage>().AddAsync(new SeoPage
+                {
+                    SeoIndexCanonical = SeoIndexCanonical,
+                    SeoIndexDesc = SeoIndexDesc,
+                    SeoIndexTitle = SeoIndexTitle
+                }, CancellationToken.None);
+            }
+            else
+            {
+                result.SeoIndexDesc = SeoIndexDesc;
+                result.SeoIndexCanonical = SeoIndexCanonical;
+                result.SeoIndexTitle = SeoIndexTitle;
+                await _work.GenericRepository<SeoPage>().UpdateAsync(result, CancellationToken.None);
+            }
+          
+            return RedirectToAction("SeoIndexPage", "Admin");
         }
         else
         {
@@ -1102,7 +1307,7 @@ public class AdminController : Controller
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
                 .Include(x => x.ProductImages)
                 .Include(x => x.Offer).ThenInclude(q => q.Color)
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
@@ -1139,7 +1344,7 @@ public class AdminController : Controller
                     .Include(x => x.ProductDetails)
                     .Where(x => x.SubCategory.Name.Contains(search) || x.Brand.Title.Contains(search) ||
                                 x.Code.Contains(search) || x.Detail.Contains(search) || x.Strengths.Contains(search) ||
-                                x.FullDesc.Contains(search) || x.MetaDesc.Contains(search) ||
+                                x.FullDesc.Contains(search)  ||
                                 x.MetaKeyword.Contains(search) || x.FullDesc.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.WeakPoints.Contains(search) ||
                                 x.ProductGift.Contains(search) ||
@@ -1188,13 +1393,12 @@ public class AdminController : Controller
     {
         if (!string.IsNullOrWhiteSpace(search))
         {
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
-                .Where(x => x.Title.Contains(search) ||
-                            x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
+                .Where(x => x.Name.Contains(search) ).OrderByDescending(x => x.Id).ToListAsync();
         }
         else
         {
-            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
                 .OrderByDescending(x => x.Id).ToListAsync();
         }
 
@@ -1301,13 +1505,12 @@ public class AdminController : Controller
         }
         else
         {
-            var footer = await _work.GenericRepository<FooterLink>().GetByIdAsync(CancellationToken.None, request.Id);
             var entity = _mapper!.Map<FooterLink>(request);
-            entity.Id = footer.Id;
+            entity.Id = request.Id;
             await _work.GenericRepository<FooterLink>().UpdateAsync(entity, CancellationToken.None);
         }
 
-        return RedirectToAction("ManageFactor");
+        return RedirectToAction("ManageFooterLink");
     }
 
     public async Task<IActionResult> UpdateSlider(BannerDto request)
@@ -1426,6 +1629,14 @@ public class AdminController : Controller
             CityId = request.CityId,
             Sheba = request.Sheba,
             NationalCode = request.NationalCode,
+            AccountType = request.AccountType,
+            Adderss = request.Adderss,
+            EconomicNumber = request.EconomicNumber,
+            NationalId = request.NationalId,
+            OrganizationName = request.OrganizationName,
+            PostCode = request.PostCode,
+            OrganizationNumber = request.OrganizationNumber,
+            RegistrationNumber = request.RegistrationNumber
         };
         if (!await _roleManager.RoleExistsAsync("user"))
         {
@@ -1457,6 +1668,14 @@ public class AdminController : Controller
         user.CityId = request.CityId;
         user.Email = request.Email;
         user.NationalCode = request.NationalCode;
+        user.AccountType = request.AccountType;
+        user.Adderss = request.Adderss;
+        user.EconomicNumber = request.EconomicNumber;
+        user.NationalId = request.NationalId;
+        user.OrganizationName = request.OrganizationName;
+        user.PostCode = request.PostCode;
+        user.OrganizationNumber = request.OrganizationNumber;
+        user.RegistrationNumber = request.RegistrationNumber;
         if (request.Password != user.Password)
         {
             await _userManager.ChangePasswordAsync(user, user.Password, request.Password);
@@ -1709,9 +1928,10 @@ public class AdminController : Controller
                 Count = count,
                 Amount = amount,
                 Code = code,
+                FirstCount = count,
                 IsActive = true
             }, CancellationToken.None);
-            return RedirectToAction("ManageSearchResult");
+            return RedirectToAction("ManageDiscount");
         }
         else
         {
@@ -1819,7 +2039,15 @@ public class AdminController : Controller
                         PhoneNumber = i.PhoneNumber,
                         Email = i.Email ?? string.Empty,
                         CityId = i.CityId,
-                        Roles = a.ToList()
+                        Roles = a.ToList(),
+                        AccountType = i.AccountType,
+                        Adderss = i.Adderss,
+                        EconomicNumber = i.EconomicNumber,
+                        NationalId = i.NationalId,
+                        OrganizationName = i.OrganizationName,
+                        OrganizationNumber = i.OrganizationNumber,
+                        PostCode = i.PostCode,
+                        RegistrationNumber = i.RegistrationNumber
                     });
                 }
 
@@ -1909,7 +2137,6 @@ public class AdminController : Controller
         product.Title = request.Title;
         product.PersianTitle = request.PersianTitle;
         product.Detail = request.Detail;
-        product.MetaDesc = request.MetaDesc;
         product.MetaKeyword = request.MetaKeyword;
         product.FullDesc = request.FullDesc;
         product.ImageUri = !string.IsNullOrWhiteSpace(request.ImageUri)
@@ -1925,6 +2152,10 @@ public class AdminController : Controller
         product.Strengths = request.Strengths;
         product.WeakPoints = request.WeakPoints;
         product.MomentaryOffer = request.MomentaryOffer;
+        product.SeoCanonical = request.SeoCanonical;
+        product.InterestRate = request.InterestRate;
+        product.SeoDesc = request.SeoDesc;
+        product.SeoTitle = request.SeoTitle;
 
         if (product.BrandId != request.BrandId.ToInt())
         {
@@ -2090,19 +2321,19 @@ public class AdminController : Controller
     {
         var detail = await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
-            .Include(x=>x.SubCategory).ThenInclude(x=>x.Category)
+            .Include(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
         List<DetailProdAdmin> detailProdAdmins = new List<DetailProdAdmin>();
         foreach (var i in detail)
-        { 
+        {
             if (detailProdAdmins.Any(x => x.FeatureId == i.FeatureId))
             {
                 var result = detailProdAdmins.FirstOrDefault(x => x.FeatureId == i.FeatureId);
                 result.CategoryDetails.Add(new CategoryDetailDto
                 {
                     Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
-                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId,Id = i.Id
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId, Id = i.Id
                 });
             }
             else
@@ -2112,7 +2343,8 @@ public class AdminController : Controller
                 li.FeatureId = i.FeatureId;
                 li.CategoryDetails.Add(new CategoryDetailDto
                 {
-                    Option = i.Option,DataType = (int)i.DataType,Priority = i.Priority,Title = i.Title,FeatureId = i.FeatureId,ShowInSearch = i.ShowInSearch,SubCategoryId = i.SubCategoryId,Id = i.Id
+                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId, Id = i.Id
                 });
                 detailProdAdmins.Add(li);
             }
@@ -2232,5 +2464,15 @@ public class AdminController : Controller
         {
             return RedirectToAction("Index");
         }
+    }
+
+    public async Task<IActionResult> Logout()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        else return RedirectToAction("Index", "Home");
     }
 }

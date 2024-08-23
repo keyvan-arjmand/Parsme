@@ -7,8 +7,8 @@
 @model Application.Dtos.Client.BrandLandingDto
 @{
     Layout = "_LayoutAdmin";
-    BrandLanding brand = ViewBag.Factors;
-    Brand ogBrand = ViewBag.Brand;
+    CatLanding Category = ViewBag.Factors;
+    Category ogCategory = ViewBag.Category;
 }
 
 @section link
@@ -64,7 +64,7 @@ img{width: fit-content}
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">مشخصات برند</h1>
+                <h1 class="m-0 text-dark">مشخصات دسته بندی</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-left">
@@ -88,7 +88,7 @@ img{width: fit-content}
 <div class="card-header p-2">
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">@ogBrand.Title</a>
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">@ogCategory.Name</a>
         </li>
     </ul>
 </div><!-- /.card-header -->
@@ -119,8 +119,8 @@ img{width: fit-content}
     </div>
     <!-- /.card-header -->
     <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
-        <input id="Id" asp-for="Id" value="@brand.Id" hidden="hidden"/>
-        <input id="BrandId" asp-for="BrandId" value="@ogBrand.Id" hidden="hidden"/>
+        <input id="Id" asp-for="Id" value="@Category.Id" hidden="hidden"/>
+        <input id="CategoryId" asp-for="CategoryId" value="@ogCategory.Id" hidden="hidden"/>
         <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
             <div class=" m-2  p-3 w-50">
                 <div class="d-flex justify-content-between">
@@ -130,22 +130,22 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSlider" value="@brand.HrefSlider" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="HrefSlider" value="@Category.HrefSlider" class="form-control" id="exampleInputPassword1">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.ImageSlider" id="ImageSlider" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.ImageSlider" id="ImageSlider" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
                 <div class="d-flex justify-content-between gap-2">
                     <div class="d-flex flex-column" style="width: 40%">
                         <label for="exampleInputPassword1">عنوان</label>
-                        <input type="text" asp-for="TitleSlider" value="@brand.TitleSlider" id="SmallSideBannerin" title="test" class="form-control">
+                        <input type="text" asp-for="TitleSlider" value="@Category.TitleSlider" id="SmallSideBannerin" title="test" class="form-control">
                     </div>
                     <div class="d-flex flex-column " style="width: 60%">
                         <label for="exampleInputPassword1">توضیحات</label>
-                        <input type="text" asp-for="DescSlider" id="SmallSideBannerin" value="@brand.DescSlider" title="test" class="form-control">
+                        <input type="text" asp-for="DescSlider" id="SmallSideBannerin" value="@Category.DescSlider" title="test" class="form-control">
 
                     </div>
                 </div>
@@ -160,11 +160,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSlider2" value="@brand.HrefSlider2" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="HrefSlider2" value="@Category.HrefSlider2" class="form-control" id="exampleInputPassword1">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.ImageSlider2" id="ImageSlider2" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.ImageSlider2" id="ImageSlider2" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -172,11 +172,11 @@ img{width: fit-content}
                 <div class="d-flex justify-content-between gap-2">
                     <div class="d-flex flex-column" style="width: 40%">
                         <label for="exampleInputPassword1">عنوان</label>
-                        <input type="text" asp-for="TitleSlider2" value="@brand.TitleSlider2" id="SmallSideBannerin" title="test" class="form-control">
+                        <input type="text" asp-for="TitleSlider2" value="@Category.TitleSlider2" id="SmallSideBannerin" title="test" class="form-control">
                     </div>
                     <div class="d-flex flex-column " style="width: 60%">
                         <label for="exampleInputPassword1">توضیحات</label>
-                        <input type="text" asp-for="DescSlider2" id="SmallSideBannerin" value="@brand.DescSlider2" title="test" class="form-control">
+                        <input type="text" asp-for="DescSlider2" id="SmallSideBannerin" value="@Category.DescSlider2" title="test" class="form-control">
 
                     </div>
                 </div>
@@ -191,11 +191,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSlider3" value="@brand.HrefSlider3" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="HrefSlider3" value="@Category.HrefSlider3" class="form-control" id="exampleInputPassword1">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.ImageSlider3" id="ImageSlider3" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.ImageSlider3" id="ImageSlider3" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -203,11 +203,11 @@ img{width: fit-content}
                 <div class="d-flex justify-content-between gap-2">
                     <div class="d-flex flex-column" style="width: 40%">
                         <label for="exampleInputPassword1">عنوان</label>
-                        <input type="text" asp-for="TitleSlider3" value="@brand.TitleSlider3" id="SmallSideBannerin" title="test" class="form-control">
+                        <input type="text" asp-for="TitleSlider3" value="@Category.TitleSlider3" id="SmallSideBannerin" title="test" class="form-control">
                     </div>
                     <div class="d-flex flex-column " style="width: 60%">
                         <label for="exampleInputPassword1">توضیحات</label>
-                        <input type="text" asp-for="DescSlider3" id="SmallSideBannerin" value="@brand.DescSlider3" title="test" class="form-control">
+                        <input type="text" asp-for="DescSlider3" id="SmallSideBannerin" value="@Category.DescSlider3" title="test" class="form-control">
 
                     </div>
                 </div>
@@ -222,11 +222,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSlider4" value="@brand.HrefSlider4" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="HrefSlider4" value="@Category.HrefSlider4" class="form-control" id="exampleInputPassword1">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Banner/@brand.ImageSlider4" id="ImageSlider4" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.ImageSlider4" id="ImageSlider4" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -234,11 +234,11 @@ img{width: fit-content}
                 <div class="d-flex justify-content-between gap-2">
                     <div class="d-flex flex-column" style="width: 40%">
                         <label for="exampleInputPassword1">عنوان</label>
-                        <input type="text" asp-for="TitleSlider4" value="@brand.TitleSlider4" id="SmallSideBannerin" title="test" class="form-control">
+                        <input type="text" asp-for="TitleSlider4" value="@Category.TitleSlider4" id="SmallSideBannerin" title="test" class="form-control">
                     </div>
                     <div class="d-flex flex-column " style="width: 60%">
                         <label for="exampleInputPassword1">توضیحات</label>
-                        <input type="text" asp-for="DescSlider4" id="SmallSideBannerin" value="@brand.DescSlider4" title="test" class="form-control">
+                        <input type="text" asp-for="DescSlider4" id="SmallSideBannerin" value="@Category.DescSlider4" title="test" class="form-control">
 
                     </div>
                 </div>
@@ -253,22 +253,22 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSlider5" value="@brand.HrefSlider5" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="HrefSlider5" value="@Category.HrefSlider5" class="form-control" id="exampleInputPassword1">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.ImageSlider5" id="ImageSlider5" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.ImageSlider5" id="ImageSlider5" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
                 <div class="d-flex justify-content-between gap-2">
                     <div class="d-flex flex-column" style="width: 40%">
                         <label for="exampleInputPassword1">عنوان</label>
-                        <input type="text" asp-for="TitleSlider5" value="@brand.TitleSlider5" id="SmallSideBannerin" title="test" class="form-control">
+                        <input type="text" asp-for="TitleSlider5" value="@Category.TitleSlider5" id="SmallSideBannerin" title="test" class="form-control">
                     </div>
                     <div class="d-flex flex-column " style="width: 60%">
                         <label for="exampleInputPassword1">توضیحات</label>
-                        <input type="text" asp-for="DescSlider5" id="SmallSideBannerin" value="@brand.DescSlider5" title="test" class="form-control">
+                        <input type="text" asp-for="DescSlider5" id="SmallSideBannerin" value="@Category.DescSlider5" title="test" class="form-control">
 
                     </div>
                 </div>
@@ -310,11 +310,11 @@ img{width: fit-content}
                 </div>
                 <div class="d-flex flex-column">
                     <label for="exampleInputPassword1">لینک</label>
-                    <input asp-for="HrefBigBanner" value="@brand.HrefBigBanner" class="form-control">
+                    <input asp-for="HrefBigBanner" value="@Category.HrefBigBanner" class="form-control">
                 </div>
             </div>
             <div class="input-group p-3 " style="justify-content: center;">
-                <img src="/Images/Brand/@brand.BigBanner" id="BigBanner" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                <img src="/Images/Category/@Category.BigBanner" id="BigBanner" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
             </div>
         </div>
         <div class="d-flex justify-content-between w-100 p-2">
@@ -327,11 +327,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSmallBanner1" value="@brand.HrefSmallBanner1" class="form-control">
+                        <input asp-for="HrefSmallBanner1" value="@Category.HrefSmallBanner1" class="form-control">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.SmallBanner1" id="SmallBanner1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.SmallBanner1" id="SmallBanner1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -342,11 +342,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSmallBanner4" value="@brand.HrefSmallBanner4" class="form-control">
+                        <input asp-for="HrefSmallBanner4" value="@Category.HrefSmallBanner4" class="form-control">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.SmallBanner4" id="SmallBanner4" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.SmallBanner4" id="SmallBanner4" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
         </div>
@@ -359,11 +359,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSmallBanner2" value="@brand.HrefSmallBanner2" class="form-control">
+                        <input asp-for="HrefSmallBanner2" value="@Category.HrefSmallBanner2" class="form-control">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.SmallBanner2" id="SmallBanner2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.SmallBanner2" id="SmallBanner2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -374,11 +374,11 @@ img{width: fit-content}
                     </div>
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="HrefSmallBanner3" value="@brand.HrefSmallBanner3" class="form-control">
+                        <input asp-for="HrefSmallBanner3" value="@Category.HrefSmallBanner3" class="form-control">
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Brand/@brand.SmallBanner3" id="SmallBanner3" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Category/@Category.SmallBanner3" id="SmallBanner3" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
 

@@ -58,7 +58,9 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<AboutUsPage> AboutUsPages { set; get; }
     public DbSet<InventoryNotification> InventoryNotifications { set; get; }
     public DbSet<FooterLink> FooterLinks { set; get; }
-    public DbSet<BrandLanding> BrandLandings { set; get; }
+    public DbSet<CatLanding> CatLandings { set; get; }
+    public DbSet<SeoPage> SeoPage { set; get; }
+    public DbSet<FooterPage> FooterPages { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

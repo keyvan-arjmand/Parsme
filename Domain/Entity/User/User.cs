@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entity.Product;
+using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entity.User;
@@ -17,5 +18,13 @@ public class User : IdentityUser<int>
     public string Sheba { get; set; } = string.Empty;
     public DateTime InsertDate { get; set; } = DateTime.Now;
     public DateTime ConfirmCodeExpireTime { get; set; }
+    public AccountType AccountType { get; set; }
+    public string? EconomicNumber { get; set; }
+    public string? OrganizationName { get; set; }
+    public string? NationalId { get; set; }
+    public string? PostCode { get; set; }
+    public string? OrganizationNumber { get; set; }
+    public string?     RegistrationNumber { get; set; }
+    public string? Adderss { get; set; }
 
 }

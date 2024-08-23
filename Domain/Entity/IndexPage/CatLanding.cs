@@ -4,11 +4,11 @@ using Domain.Entity.Product;
 
 namespace Domain.Entity.IndexPage;
 
-public class BrandLanding : BaseEntity
+public class CatLanding : BaseEntity
 {
-    public int BrandId { get; set; }
+    public int CategoryId { get; set; }
 
-    [ForeignKey("BrandId")] public Brand? Brand { get; set; }
+    [ForeignKey("CategoryId")] public Category? Category { get; set; }
 
     //slider
     public string? ImageSlider { get; set; }
@@ -48,4 +48,8 @@ public class BrandLanding : BaseEntity
     public string? HrefSmallBanner3 { get; set; }
     public string? SmallBanner4 { get; set; }
     public string? HrefSmallBanner4 { get; set; }
+    
+    public string SeoTitle { get; set; } = string.Empty;
+    public string SeoDesc { get; set; } = string.Empty;
+    public string SeoCanonical { get; set; } = string.Empty;
 }

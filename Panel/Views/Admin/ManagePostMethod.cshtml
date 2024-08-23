@@ -180,39 +180,4 @@ List<PostMethod> postMethods = ViewBag.PostMethod;
         });
     });
 </script>
-<script>
-
-    function UpdateProduct(){
-        var product = new FormData();
-        product.append("Id",$("#id").val());
-        product.append("Name",$("#Name").val());
-        product.append("Brand",$("#Brand").val());
-        product.append("ImageBanner",$("#ImageBanner")[0].files[0]);
-        product.append("ImageBannerName",$("#ImageBannerName").val());
-        product.append("ImageThumb",$("#ImageThumb")[0].files[0]);
-        product.append("ImageThumbName",$("#ImageThumbName").val());
-        product.append("Image",$("#Image")[0].files[0]);
-        product.append("ImageName",$("#ImageName").val());
-        product.append("Weight",$("#Weight").val());
-        product.append("Wages",$("#Wages").val());
-        product.append("Inventory",$("#Inventory").val());
-        product.append("CategoryId",$("#CategoryIdProd").val());
-        $.ajax({
-            type: "Put",
-            data: product,
-            url: "/Admin/UpdateProduct",
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                window.location.href= "/admin/product";
-            },
-            error: function (xhr) {
-                alert("خطای داخلی در سرور");
-            }
-        });
-    };
-    function softDeleteProduct(){
-        window.location.href= "/admin/SoftDeleteProduct?id="+$("#id").val();
-    }
-</script>
 }

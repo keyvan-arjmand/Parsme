@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
-    List<Brand> brands = ViewBag.Brands;
+    List<Category> Category = ViewBag.Category;
     List<SubCategory> SubCats = ViewBag.SubCats;
 }
 
@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">مدیریت محتوا برند</h1>
+                <h1 class="m-0 text-dark">مدیریت محتوا دسته بندی</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-left">
@@ -41,12 +41,12 @@
                     <div class="card-header p-2 d-flex justify-content-start">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link active show" href="#activity" data-toggle="tab">برندها</a>
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">دسته بندی ها</a>
                             </li>
                         </ul>
                         <div class="list-group list-group-unbordered mb-3 d-flex flex-row justify-content-center gap-5 m-3">
                             <div>
-                                <b class="p-3">تعداد برند</b> <a class="float-left"> @brands.Count()</a>
+                                <b class="p-3">تعداد برند</b> <a class="float-left"> @Category.Count()</a>
                             </div>
                         </div>
                     </div><!-- /.card-header -->
@@ -69,12 +69,11 @@
                                         <tr>
                                             <th class="text-center" style="width: 5%">id</th>
                                             <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 15%">زیر دسته</th>
                                             <th class="text-center" style="width: 25%">لوگو</th>
                                             <th class="text-center" style="width: 10%">#</th>
                                         </tr>
                                         @{
-                                            if (brands.Count < 1)
+                                            if (Category.Count < 1)
                                             {
                                                 <tr>
                                                     <td> </td>
@@ -87,19 +86,17 @@
                                             }
                                             else
                                             {
-                                                foreach (var i in brands)
+                                                foreach (var i in Category)
                                                 {
                                                     <tr>
                                                         <td class="text-center">@i.Id</td>
-                                                        <td class="text-center">@i.Title</td>
-                                                        <td class="text-center">@i.SubCategory.Name</td>
+                                                        <td class="text-center">@i.Name</td>
                                                         <td class="text-center">
                                                             <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/>
                                                         </td>
                                                         <td class="text-center">
                                                             <form>
                                                                 <a class="badge bg-warning text-muted modalProduct" href="@Url.Action("LandingDetail", "Admin", new { @i.Id })">مشاهده</a>
-
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -133,7 +130,7 @@
             $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
             $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
             $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
-            $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
+            $('#LogoEdit').attr("src", '/images/Category/'+(currentrow.find($("input.mLogo[type=text]")).val()));
         });
        
     });
