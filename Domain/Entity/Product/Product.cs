@@ -36,6 +36,7 @@ public class Product : BaseEntity
     public bool IsShowIndex { get; set; }
     public bool MomentaryOffer { get; set; }
     public DateTime InsertDate { get; set; }
+    
     public string SeoTitle { get; set; } = string.Empty;
     public string SeoDesc { get; set; } = string.Empty;
     public string SeoCanonical { get; set; } = string.Empty;
