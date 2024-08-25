@@ -1742,7 +1742,41 @@ public class AdminController : Controller
         await _userManager.AddToRoleAsync(user, "admin");
         await _userManager.UpdateAsync(user);
     }
+    public async Task initAdmin2()
+    {
+        var user = new Domain.Entity.User.User
+        {
+            Family = "k1",
+            Name = "ارجمند",
+            PhoneNumber = "09211129482",
+            Email = "",
+            Password = "1111",
+            InsertDate = DateTime.Now,
+            UserName = "09211129482",
+            SecurityStamp = string.Empty,
+            CityId = 1
+        };
+        if (!await _roleManager.RoleExistsAsync("user"))
+        {
+            await _roleManager.CreateAsync(new Role
+            {
+                Name = "user"
+            });
+        }
 
+        if (!await _roleManager.RoleExistsAsync("admin"))
+        {
+            await _roleManager.CreateAsync(new Role
+            {
+                Name = "admin"
+            });
+        }
+
+        await _userManager.CreateAsync(user, "1111");
+        await _userManager.AddToRoleAsync(user, "user");
+        await _userManager.AddToRoleAsync(user, "admin");
+        await _userManager.UpdateAsync(user);
+    }
     public async Task<ActionResult> LoginCod(string phoneNumber)
     {
         ViewBag.exUser = await _mediator.Send(new LoginCodAdminCommand(phoneNumber));

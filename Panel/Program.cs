@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromMinutes(20); });
+builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromHours(3); });
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
@@ -42,7 +42,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Admin/AccessDenied";
     options.Cookie.Name = "WebAppIdentityCooclie";
-    options.ExpireTimeSpan = TimeSpan.FromHours(2); 
+    options.ExpireTimeSpan = TimeSpan.FromHours(3); 
     options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });

@@ -1403,15 +1403,12 @@ namespace Domain.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SeoCanonical")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoDesc")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoTitle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Strengths")
