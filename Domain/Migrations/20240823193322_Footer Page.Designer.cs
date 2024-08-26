@@ -4,6 +4,7 @@ using Domain.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240823193322_Footer Page")]
+    partial class FooterPage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1154,7 +1157,7 @@ namespace Domain.Migrations
                     b.Property<bool>("ShowInSearch")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SubCategoryId")
+                    b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -1381,6 +1384,10 @@ namespace Domain.Migrations
                     b.Property<bool>("IsShowIndex")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MetaDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MetaKeyword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1403,12 +1410,15 @@ namespace Domain.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SeoCanonical")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoDesc")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoTitle")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Strengths")
@@ -1537,32 +1547,6 @@ namespace Domain.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Product.SubCategoryDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SubCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryDetailId");
-
-                    b.HasIndex("SubCategoryId");
-
-                    b.ToTable("SubCategoryDetails");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.UserFav", b =>
@@ -2068,11 +2052,15 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Product.SubCategory", null)
+                    b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
                         .WithMany("CategoryDetails")
-                        .HasForeignKey("SubCategoryId");
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Feature");
+
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ImageGallery", b =>
@@ -2171,23 +2159,6 @@ namespace Domain.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Product.SubCategoryDetail", b =>
-                {
-                    b.HasOne("Domain.Entity.Product.CategoryDetail", null)
-                        .WithMany("SubCategoryDetails")
-                        .HasForeignKey("CategoryDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entity.Product.SubCategory", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.UserFav", b =>
@@ -2295,11 +2266,6 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>
                 {
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Product.CategoryDetail", b =>
-                {
-                    b.Navigation("SubCategoryDetails");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>

@@ -18,19 +18,19 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Admin");
     }
 
-    public async Task<string> GetTel()
-    {
-        string url = "https://t.me/Bego_Mago_Channel/196?embed=1&mode=tme";
-        using HttpClient client = new HttpClient();
-        HttpResponseMessage response = await client.GetAsync(url);
-
-        // بررسی موفقیت‌آمیز بودن درخواست
-        response.EnsureSuccessStatusCode();
-        // دریافت محتوای HTML صفحه
-        string htmlContent = await response.Content.ReadAsStringAsync();
-        // نمایش HTML در کنسول یا ذخیره کردن آن
-        return htmlContent;
-    }
+    // public async Task<string> GetTel()
+    // {
+    //     string url = "https://t.me/Bego_Mago_Channel/196?embed=1&mode=tme";
+    //     using HttpClient client = new HttpClient();
+    //     HttpResponseMessage response = await client.GetAsync(url);
+    //
+    //     // بررسی موفقیت‌آمیز بودن درخواست
+    //     response.EnsureSuccessStatusCode();
+    //     // دریافت محتوای HTML صفحه
+    //     string htmlContent = await response.Content.ReadAsStringAsync();
+    //     // نمایش HTML در کنسول یا ذخیره کردن آن
+    //     return htmlContent;
+    // }
 
     public IActionResult Privacy()
     {
