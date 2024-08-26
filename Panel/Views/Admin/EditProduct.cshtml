@@ -19,7 +19,7 @@
             result.CategoryDetails.Add(new CategoryDetailDtoEdit
             {
                 Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
-                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = i.CategoryDetail.SubCategoryId, Id = i.Id, Value = i.Value
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = products.SubCategoryId, Id = i.Id, Value = i.Value
             });
         }
         else
@@ -30,7 +30,7 @@
             li.CategoryDetails.Add(new CategoryDetailDtoEdit
             {
                 Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
-                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = i.CategoryDetail.SubCategoryId, Id = i.Id, Value = i.Value
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = products.SubCategoryId, Id = i.Id, Value = i.Value
             });
             catDetail.Add(li);
         }

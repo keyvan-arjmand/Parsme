@@ -157,7 +157,17 @@
                                                         <tr>
                                                             <td class="text-center">@i.Id</td>
                                                             <td class="text-center">@i.Title</td>
-                                                            <td class="text-center">@i.SubCategory.Name</td>
+                                                            @{
+                                                                <td class="text-center">
+
+                                                                @foreach (var q in @i.SubCategoryDetails)
+                                                                {
+                                                                    <span class="badge badge-secondary">
+                                                                        @q.SubCategory.Name
+                                                                    </span>
+                                                                }
+                                                                </td>
+                                                            }
                                                             <td class="text-center">@i.Feature.Title</td>
                                                             <td class="text-center">@i.DataType</td>
                                                             <td class="text-center">
@@ -165,7 +175,23 @@
                                                                     <a class="badge bg-warning text-muted catDetail" data-toggle="modal" data-target="#CatDetail">ویرایش</a>
                                                                     <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                     <input type="text" name="mTitleCatDetail" class="mTitleCatDetail" value="@i.Title" hidden="hidden"/>
-                                                                    <input type="text" name="mSubCatId" class="mSubCatId" value="@i.SubCategoryId" hidden="hidden"/>
+                                                                    @{
+                                                                        var subIds = string.Empty;
+                                                                        int index = 1;
+                                                                        foreach (var q in i.SubCategoryDetails)
+                                                                        {
+                                                                            if (index != i.SubCategoryDetails.Count)
+                                                                            {
+                                                                                subIds += @q.SubCategoryId.ToString()+",";
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                subIds += @q.SubCategoryId.ToString();
+                                                                            }
+                                                                            index++;
+                                                                        }
+                                                                    }
+                                                                    <input type="text" name="mSubCatId" class="mSubCatId" value="@subIds" hidden="hidden"/>
                                                                     <input type="text" name="mFeatureId" class="mFeatureId" value="@i.FeatureId" hidden="hidden"/>
                                                                     <input type="text" name="misSearchCatDetail" class="misSearchCatDetail" value="@i.ShowInSearch.ToString()" hidden="hidden"/>
                                                                     <input type="text" name="mDataType" class="mDataType" value="@i.DataType.GetDataTypeId()" hidden="hidden"/>

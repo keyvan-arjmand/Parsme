@@ -559,7 +559,6 @@ public class HomeController : Controller
         else
         {
             throw new Exception();
-            
         }
     }
 
@@ -1030,7 +1029,7 @@ public class HomeController : Controller
                             x.PersianTitle.Contains(search) ||
                             x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search)  || x.MetaKeyword.Contains(search))
+                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .ToListAsync();
         }
@@ -1144,7 +1143,9 @@ public class HomeController : Controller
         }
 
         ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-            .Where(x => x.SubCategoryId == subCategoryId && x.ShowInSearch).ToListAsync();
+            .Include(x => x.Feature)
+            .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(subCategoryId) &&
+                        x.ShowInSearch).ToListAsync();
         ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
             .Include(x => x.SubCategories)
             .ThenInclude(x => x.Brands)
@@ -1298,7 +1299,8 @@ public class HomeController : Controller
 
 
             CatDetails = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                .Where(x => x.SubCategoryId == prods.FirstOrDefault().SubCategoryId).ToListAsync();
+                .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList()
+                    .Contains(prods.FirstOrDefault().SubCategoryId)).ToListAsync();
             ProdBySubCat = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)

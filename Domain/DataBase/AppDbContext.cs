@@ -61,6 +61,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<CatLanding> CatLandings { set; get; }
     public DbSet<SeoPage> SeoPage { set; get; }
     public DbSet<FooterPage> FooterPages { set; get; }
+    public DbSet<SubCategoryDetail> SubCategoryDetails { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

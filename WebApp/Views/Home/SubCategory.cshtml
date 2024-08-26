@@ -573,9 +573,9 @@
                                                                             @foreach (var i in c.Option.Split(",").ToList())
                                                                             {
                                                                                 
-                                                                                <a class="p-1 m-1" href="@Url.Action("SubCategory", "Home", new { detailId = c.Id, value = @i, subCategoryId = c.SubCategoryId })">
-                                                                                    @i
-                                                                                </a>
+                                                                                @* <a class="p-1 m-1" href="@Url.Action("SubCategory", "Home", new { detailId = c.Id, value = @i, subCategoryId = c.SubCategoryId })"> *@
+                                                                                @*     @i *@
+                                                                                @* </a> *@
                                                                             }
 
                                                                         </ul>

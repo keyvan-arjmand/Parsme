@@ -282,7 +282,8 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Factors = await _work.GenericRepository<CatLanding>().TableNoTracking
                 .Include(x => x.Category)
                 .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
@@ -292,11 +293,14 @@ public class AdminController : Controller
         {
             return RedirectToAction("Login");
         }
-    }    public async Task<ActionResult> SeoIndexPage()
+    }
+
+    public async Task<ActionResult> SeoIndexPage()
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Index = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync()?? new SeoPage();
+            ViewBag.Index = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
 
             return View();
         }
@@ -305,11 +309,13 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+
     public async Task<ActionResult> SeoFooterPage()
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Footer = await _work.GenericRepository<FooterPage>().TableNoTracking.FirstOrDefaultAsync()?? new FooterPage();
+            ViewBag.Footer = await _work.GenericRepository<FooterPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterPage();
 
             return View();
         }
@@ -318,6 +324,7 @@ public class AdminController : Controller
             return RedirectToAction("Login");
         }
     }
+
     public async Task<IActionResult> UpdateLanding(BrandLandingDto request)
     {
         Upload up = new Upload(_webHostEnvironment);
@@ -603,7 +610,8 @@ public class AdminController : Controller
         {
             return View("Login");
         }
-    }   
+    }
+
     public async Task<ActionResult> UpdateFooterSeo(FooterPageDto request)
     {
         if (User.Identity.IsAuthenticated)
@@ -669,71 +677,70 @@ public class AdminController : Controller
                     SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle,
                     SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc,
                     SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical,
-                    
-        
                 }, CancellationToken.None);
             }
             else
             {
-                    result.WhyParsDesc = request.WhyParsDesc;
-                    result.ParsGoalsDesc = request.ParsGoalsDesc;
-                    result.ParsRegulationsDesc = request.ParsRegulationsDesc;
-                    result.ParsWarrantyDesc = request.ParsWarrantyDesc;
-                    result.ParsBuyingGuideDesc = request.ParsBuyingGuideDesc;
-                    result.SeoParsProceduresForReturningGoodsTitle = request.SeoParsProceduresForReturningGoodsTitle;
-                    result.SeoWhyParsTitle = request.SeoWhyParsTitle;
-                    result.SeoWhyParsDesc = request.SeoWhyParsDesc;
-                    result.SeoWhyParsCanonical = request.SeoWhyParsCanonical;
-                    result.ParsDarYekDesc = request.ParsDarYekDesc;
-                    result.SeoParsDarYekTitle = request.SeoParsDarYekTitle;
-                    result.SeoParsDarYekDesc = request.SeoParsDarYekDesc;
-                    result.SeoParsDarYekCanonical = request.SeoParsDarYekCanonical;
-                    result.SeoParsGoalsTitle = request.SeoParsGoalsTitle;
-                    result.SeoParsGoalsDesc = request.SeoParsGoalsDesc;
-                    result.SeoParsGoalsCanonical = request.SeoParsGoalsCanonical;
-                    result.ParsInstallmentPurchaseDesc = request.ParsInstallmentPurchaseDesc;
-                    result.SeoParsInstallmentPurchaseTitle = request.SeoParsInstallmentPurchaseTitle;
-                    result.SeoParsInstallmentPurchaseDesc = request.SeoParsInstallmentPurchaseDesc;
-                    result.SeoParsInstallmentPurchaseCanonical = request.SeoParsInstallmentPurchaseCanonical;
-                    result.SeoParsBuyingGuideTitle = request.SeoParsBuyingGuideTitle;
-                    result.SeoParsBuyingGuideDesc = request.SeoParsBuyingGuideDesc;
-                    result.SeoParsBuyingGuideCanonical = request.SeoParsBuyingGuideCanonical;
-                    result.ParsOrganizationalPurchaseDesc = request.ParsOrganizationalPurchaseDesc;
-                    result.SeoParsOrganizationalPurchaseTitle = request.SeoParsOrganizationalPurchaseTitle;
-                    result.SeoParsOrganizationalPurchaseDesc = request.SeoParsOrganizationalPurchaseDesc;
-                    result.SeoParsOrganizationalPurchaseCanonical = request.SeoParsOrganizationalPurchaseCanonical;
-                    result.SeoParsWarrantyTitle = request.SeoParsWarrantyTitle;
-                    result.SeoParsWarrantyDesc = request.SeoParsWarrantyDesc;
-                    result.SeoParsWarrantyCanonical = request.SeoParsWarrantyCanonical;
-                    result.ParsShippingMethodsDesc = request.ParsShippingMethodsDesc;
-                    result.SeoParsShippingMethodsTitle = request.SeoParsShippingMethodsTitle;
-                    result.SeoParsShippingMethodsDesc = request.SeoParsShippingMethodsDesc;
-                    result.SeoParsShippingMethodsCanonical = request.SeoParsShippingMethodsCanonical;
-                    result.ParsConsultationBeforePurchaseDesc = request.ParsConsultationBeforePurchaseDesc;
-                    result.SeoParsConsultationBeforePurchaseTitle = request.SeoParsConsultationBeforePurchaseTitle;
-                    result.SeoParsConsultationBeforePurchaseDesc = request.SeoParsConsultationBeforePurchaseDesc;
-                    result.SeoParsConsultationBeforePurchaseCanonical = request.SeoParsConsultationBeforePurchaseCanonical;
-                    result.ParsProceduresForReturningGoodsDesc = request.ParsProceduresForReturningGoodsDesc;
-                    result.SeoParsProceduresForReturningGoodsCanonical = request.SeoParsProceduresForReturningGoodsCanonical;
-                    result.SeoParsProceduresForReturningGoodsDesc = request.SeoParsProceduresForReturningGoodsDesc;
-                    result.ParsTrackingOrdersDesc = request.ParsTrackingOrdersDesc;
-                    result.SeoParsTrackingOrdersGoodsTitle = request.SeoParsTrackingOrdersGoodsTitle;
-                    result.SeoParsTrackingOrdersGoodsDesc = request.SeoParsTrackingOrdersGoodsDesc;
-                    result.SeoParsTrackingOrdersGoodsCanonical = request.SeoParsTrackingOrdersGoodsCanonical;
-                    result.ParsOnlineSupportDesc = request.ParsOnlineSupportDesc;
-                    result.SeoParsOnlineSupportTitle = request.SeoParsOnlineSupportTitle;
-                    result.SeoParsOnlineSupportDesc = request.SeoParsOnlineSupportDesc;
-                    result.SeoParsOnlineSupportCanonical = request.SeoParsOnlineSupportCanonical;
-                    result.SeoParsRegulationsTitle = request.SeoParsRegulationsTitle;
-                    result.SeoParsRegulationsDesc = request.SeoParsRegulationsDesc;
-                    result.SeoParsRegulationsCanonical = request.SeoParsRegulationsCanonical;
-                    result.ParsUserPrivacyDesc = request.ParsUserPrivacyDesc;
-                    result.SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle;
-                    result.SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc;
-                    result.SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical;
+                result.WhyParsDesc = request.WhyParsDesc;
+                result.ParsGoalsDesc = request.ParsGoalsDesc;
+                result.ParsRegulationsDesc = request.ParsRegulationsDesc;
+                result.ParsWarrantyDesc = request.ParsWarrantyDesc;
+                result.ParsBuyingGuideDesc = request.ParsBuyingGuideDesc;
+                result.SeoParsProceduresForReturningGoodsTitle = request.SeoParsProceduresForReturningGoodsTitle;
+                result.SeoWhyParsTitle = request.SeoWhyParsTitle;
+                result.SeoWhyParsDesc = request.SeoWhyParsDesc;
+                result.SeoWhyParsCanonical = request.SeoWhyParsCanonical;
+                result.ParsDarYekDesc = request.ParsDarYekDesc;
+                result.SeoParsDarYekTitle = request.SeoParsDarYekTitle;
+                result.SeoParsDarYekDesc = request.SeoParsDarYekDesc;
+                result.SeoParsDarYekCanonical = request.SeoParsDarYekCanonical;
+                result.SeoParsGoalsTitle = request.SeoParsGoalsTitle;
+                result.SeoParsGoalsDesc = request.SeoParsGoalsDesc;
+                result.SeoParsGoalsCanonical = request.SeoParsGoalsCanonical;
+                result.ParsInstallmentPurchaseDesc = request.ParsInstallmentPurchaseDesc;
+                result.SeoParsInstallmentPurchaseTitle = request.SeoParsInstallmentPurchaseTitle;
+                result.SeoParsInstallmentPurchaseDesc = request.SeoParsInstallmentPurchaseDesc;
+                result.SeoParsInstallmentPurchaseCanonical = request.SeoParsInstallmentPurchaseCanonical;
+                result.SeoParsBuyingGuideTitle = request.SeoParsBuyingGuideTitle;
+                result.SeoParsBuyingGuideDesc = request.SeoParsBuyingGuideDesc;
+                result.SeoParsBuyingGuideCanonical = request.SeoParsBuyingGuideCanonical;
+                result.ParsOrganizationalPurchaseDesc = request.ParsOrganizationalPurchaseDesc;
+                result.SeoParsOrganizationalPurchaseTitle = request.SeoParsOrganizationalPurchaseTitle;
+                result.SeoParsOrganizationalPurchaseDesc = request.SeoParsOrganizationalPurchaseDesc;
+                result.SeoParsOrganizationalPurchaseCanonical = request.SeoParsOrganizationalPurchaseCanonical;
+                result.SeoParsWarrantyTitle = request.SeoParsWarrantyTitle;
+                result.SeoParsWarrantyDesc = request.SeoParsWarrantyDesc;
+                result.SeoParsWarrantyCanonical = request.SeoParsWarrantyCanonical;
+                result.ParsShippingMethodsDesc = request.ParsShippingMethodsDesc;
+                result.SeoParsShippingMethodsTitle = request.SeoParsShippingMethodsTitle;
+                result.SeoParsShippingMethodsDesc = request.SeoParsShippingMethodsDesc;
+                result.SeoParsShippingMethodsCanonical = request.SeoParsShippingMethodsCanonical;
+                result.ParsConsultationBeforePurchaseDesc = request.ParsConsultationBeforePurchaseDesc;
+                result.SeoParsConsultationBeforePurchaseTitle = request.SeoParsConsultationBeforePurchaseTitle;
+                result.SeoParsConsultationBeforePurchaseDesc = request.SeoParsConsultationBeforePurchaseDesc;
+                result.SeoParsConsultationBeforePurchaseCanonical = request.SeoParsConsultationBeforePurchaseCanonical;
+                result.ParsProceduresForReturningGoodsDesc = request.ParsProceduresForReturningGoodsDesc;
+                result.SeoParsProceduresForReturningGoodsCanonical =
+                    request.SeoParsProceduresForReturningGoodsCanonical;
+                result.SeoParsProceduresForReturningGoodsDesc = request.SeoParsProceduresForReturningGoodsDesc;
+                result.ParsTrackingOrdersDesc = request.ParsTrackingOrdersDesc;
+                result.SeoParsTrackingOrdersGoodsTitle = request.SeoParsTrackingOrdersGoodsTitle;
+                result.SeoParsTrackingOrdersGoodsDesc = request.SeoParsTrackingOrdersGoodsDesc;
+                result.SeoParsTrackingOrdersGoodsCanonical = request.SeoParsTrackingOrdersGoodsCanonical;
+                result.ParsOnlineSupportDesc = request.ParsOnlineSupportDesc;
+                result.SeoParsOnlineSupportTitle = request.SeoParsOnlineSupportTitle;
+                result.SeoParsOnlineSupportDesc = request.SeoParsOnlineSupportDesc;
+                result.SeoParsOnlineSupportCanonical = request.SeoParsOnlineSupportCanonical;
+                result.SeoParsRegulationsTitle = request.SeoParsRegulationsTitle;
+                result.SeoParsRegulationsDesc = request.SeoParsRegulationsDesc;
+                result.SeoParsRegulationsCanonical = request.SeoParsRegulationsCanonical;
+                result.ParsUserPrivacyDesc = request.ParsUserPrivacyDesc;
+                result.SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle;
+                result.SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc;
+                result.SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical;
                 await _work.GenericRepository<FooterPage>().UpdateAsync(result, CancellationToken.None);
             }
-          
+
             return RedirectToAction("SeoFooterPage", "Admin");
         }
         else
@@ -741,7 +748,8 @@ public class AdminController : Controller
             return View("Login");
         }
     }
-    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc,string SeoIndexCanonical , string SeoIndexTitle)
+
+    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -762,7 +770,7 @@ public class AdminController : Controller
                 result.SeoIndexTitle = SeoIndexTitle;
                 await _work.GenericRepository<SeoPage>().UpdateAsync(result, CancellationToken.None);
             }
-          
+
             return RedirectToAction("SeoIndexPage", "Admin");
         }
         else
@@ -968,7 +976,7 @@ public class AdminController : Controller
                     }
 
                     ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                        .Include(x => x.SubCategory)
+                        .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                         .Include(x => x.Feature)
                         .Where(x => x.Title.Contains(search) || x.DataType == (DataType)dataType)
                         .OrderByDescending(x => x.Id).ToListAsync();
@@ -982,7 +990,7 @@ public class AdminController : Controller
                 else if (index == 1)
                 {
                     ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                        .Include(x => x.SubCategory)
+                        .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                         .Include(x => x.Feature)
                         .OrderByDescending(x => x.Id).ToListAsync();
                     ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -997,7 +1005,7 @@ public class AdminController : Controller
             else
             {
                 ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                    .Include(x => x.SubCategory)
+                    .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                     .Include(x => x.Feature)
                     .OrderByDescending(x => x.Id).ToListAsync();
                 ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -1019,24 +1027,34 @@ public class AdminController : Controller
 
 
     public async Task<ActionResult> InsertDetailCat(string title, bool isActive, string? option, DataType dataType,
-        int subCatId, int featureId)
+        List<int> subCatId, int featureId)
     {
         if (User.Identity.IsAuthenticated)
         {
             var feature = await _work.GenericRepository<Feature>().Table
                 .FirstOrDefaultAsync(x => x.Id == featureId);
-            var sub = await _work.GenericRepository<SubCategory>().Table
-                .FirstOrDefaultAsync(x => x.Id == subCatId);
-            await _work.GenericRepository<CategoryDetail>().AddAsync(new CategoryDetail
+    
+            var entity = new CategoryDetail
             {
                 DataType = dataType,
                 FeatureId = feature!.Id,
                 ShowInSearch = isActive,
                 Priority = 1,
                 Title = title,
-                SubCategoryId = sub!.Id,
                 Option = option ?? string.Empty,
-            }, CancellationToken.None);
+            };
+            await _work.GenericRepository<CategoryDetail>().AddAsync(entity, CancellationToken.None);
+            foreach (var i in subCatId)
+            {
+                var sub = await _work.GenericRepository<SubCategory>().Table
+                    .FirstOrDefaultAsync(x => x.Id == i);
+                await _work.GenericRepository<SubCategoryDetail>().AddAsync(new SubCategoryDetail
+                {
+                    SubCategoryId = sub.Id,
+                    CategoryDetailId = entity.Id
+                }, CancellationToken.None);
+
+            }
             return RedirectToAction("ManageCatDetail");
         }
         else
@@ -1307,7 +1325,7 @@ public class AdminController : Controller
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
                 .Include(x => x.ProductImages)
                 .Include(x => x.Offer).ThenInclude(q => q.Color)
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
@@ -1344,7 +1362,7 @@ public class AdminController : Controller
                     .Include(x => x.ProductDetails)
                     .Where(x => x.SubCategory.Name.Contains(search) || x.Brand.Title.Contains(search) ||
                                 x.Code.Contains(search) || x.Detail.Contains(search) || x.Strengths.Contains(search) ||
-                                x.FullDesc.Contains(search)  ||
+                                x.FullDesc.Contains(search) ||
                                 x.MetaKeyword.Contains(search) || x.FullDesc.Contains(search) ||
                                 x.PersianTitle.Contains(search) || x.WeakPoints.Contains(search) ||
                                 x.ProductGift.Contains(search) ||
@@ -1394,7 +1412,7 @@ public class AdminController : Controller
         if (!string.IsNullOrWhiteSpace(search))
         {
             ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
-                .Where(x => x.Name.Contains(search) ).OrderByDescending(x => x.Id).ToListAsync();
+                .Where(x => x.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
         }
         else
         {
@@ -1742,6 +1760,7 @@ public class AdminController : Controller
         await _userManager.AddToRoleAsync(user, "admin");
         await _userManager.UpdateAsync(user);
     }
+
     public async Task initAdmin2()
     {
         var user = new Domain.Entity.User.User
@@ -1777,6 +1796,7 @@ public class AdminController : Controller
         await _userManager.AddToRoleAsync(user, "admin");
         await _userManager.UpdateAsync(user);
     }
+
     public async Task<ActionResult> LoginCod(string phoneNumber)
     {
         ViewBag.exUser = await _mediator.Send(new LoginCodAdminCommand(phoneNumber));
@@ -2355,9 +2375,10 @@ public class AdminController : Controller
     {
         var detail = await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
-            .Include(x => x.SubCategory).ThenInclude(x => x.Category)
+            .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.Feature)
-            .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
+            .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(subCatId))
+            .OrderByDescending(x => x.Id).ToListAsync();
         List<DetailProdAdmin> detailProdAdmins = new List<DetailProdAdmin>();
         foreach (var i in detail)
         {
@@ -2367,7 +2388,7 @@ public class AdminController : Controller
                 result.CategoryDetails.Add(new CategoryDetailDto
                 {
                     Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
-                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId, Id = i.Id
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = subCatId, Id = i.Id
                 });
             }
             else
@@ -2378,7 +2399,7 @@ public class AdminController : Controller
                 li.CategoryDetails.Add(new CategoryDetailDto
                 {
                     Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
-                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = i.SubCategoryId, Id = i.Id
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = subCatId, Id = i.Id
                 });
                 detailProdAdmins.Add(li);
             }

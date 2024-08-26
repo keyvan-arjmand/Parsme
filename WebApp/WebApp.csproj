@@ -93,6 +93,38 @@
       <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\images.png" />
       <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\photo_2023-10-12_09-00-55.jpg" />
       <_ContentIncludedByDefault Remove="wwwroot\Images\Brand\png-clipart-laptop-msi-micro-star-international-motherboard-logo-nvidia-emblem-electronics.png" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Brand.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Color.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ConfirmCode.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\EditProduct.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Factor.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\FactorDetail.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\IncomeReport.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Invoice.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Login.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\LoginPassword.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageAboutUs.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageBanner.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageCatDetail.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageCategorey.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageContact.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageContactUs.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageDiscount.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageFactor.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageFaq.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageGuarantee.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManagePostMethod.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageReturnedFactor.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageSearchResult.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageState.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ManageUser.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Product.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ProductManage.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\ReturnedFactorDetail.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\SaleServices.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\SalesInvoice.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\User.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
