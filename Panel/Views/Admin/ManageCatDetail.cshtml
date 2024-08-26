@@ -7,7 +7,14 @@
     List<SubCategory> subCategories = ViewBag.SubCat;
     List<Feature> features = ViewBag.Feature;
 }
-
+@section link
+{
+    <style>
+        .select2 select2-container select2-container--default{
+            width: 325px!important;
+        }
+    </style>
+}
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -69,25 +76,7 @@
                                                 }
                                             </select>
                                         </div>
-                                        <div class="form-group p-2 d-flex flex-column">
-                                            <label for="exampleInputPassword1">نوع زیر دسته </label>
-                                            <select style="min-width: 200px;" name="subCatId" class="form-select select2" aria-label="Default select example">
-                                                @{
-                                                    int index1 = 0;
-                                                    foreach (var i in subCategories)
-                                                    {
-                                                        if (index1 == 0)
-                                                        {
-                                                            <option value="@i.Id" selected>@i.Name</option>
-                                                        }
-                                                        else
-                                                        {
-                                                            <option value="@i.Id">@i.Name</option>
-                                                        }
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
+                                     
                                         <div class="form-group d-flex flex-column p-2">
                                             <label for="exampleInputPassword1">نوع اطلاعات</label>
                                             <select style="min-width: 200px;" name="dataType" id="DataTypeInp" class="form-select select2" aria-label="Default select example">
@@ -101,7 +90,20 @@
                                             <label for="exampleInputPassword1">قابلیت ها</label>
                                             <textarea name="option" type="text" class="form-control" id="exampleInputPassword1" style="height: 45px" placeholder="قابلیت ها"></textarea>
                                         </div>
-
+                                        <div class="form-group p-2 d-flex flex-column">
+                                            <label for="exampleInputPassword1">نوع زیر دسته </label>
+                                            <div class="form-group w-100 ">
+                                                <select id="subCatIds" class="form-control select2 w-100" multiple="multiple"
+                                                        style="width: fit-content;min-width: 325px;text-align: right" required="required" name="subCatIds">
+                                                    @{
+                                                    foreach (var i in subCategories)
+                                                    {
+                                                    <option value="@i.Id">@i.Name</option>
+                                                    }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="d-flex flex-column gap2">
                                             <div class="form-group">
                                                 <div class="form-check">
@@ -162,7 +164,7 @@
 
                                                                 @foreach (var q in @i.SubCategoryDetails)
                                                                 {
-                                                                    <span class="badge badge-secondary">
+                                                                    <span class="badge badge-success">
                                                                         @q.SubCategory.Name
                                                                     </span>
                                                                 }
@@ -310,14 +312,16 @@
                     </div>
                     <div class="form-group  d-flex flex-column w-50">
                         <label for="exampleInputPassword1 " class="mb-0">نوع زیر دسته </label>
-                        <select style="min-width: 200px;" name="subCatId" id="SubCatId" class="form-select SubCatId" aria-label="Default select example" readonly disabled="disabled">
+                        <select id="subCatId" class="form-control select2 w-100" multiple="multiple"
+                                style="width: fit-content;min-width: 325px;text-align: right" required="required" name="subCatId">
                             @{
-                                foreach (var i in subCategories)
-                                {
-                                    <option value="@i.Id">@i.Name</option>
-                                }
+                            foreach (var i in subCategories)
+                            {
+                            <option value="@i.Id">@i.Name</option>
+                            }
                             }
                         </select>
+                    
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -432,7 +436,8 @@
 
             $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
             $("#TitleCatDetail").val(currentrow.find($("input.mTitleCatDetail[type=text]")).val());
-            $("#SubCatId").val(currentrow.find($("input.mSubCatId[type=text]")).val());
+            var valuesToSelect = currentrow.find($("input.mSubCatId[type=text]")).val().split(",");
+            $('#subCatId').val(valuesToSelect).trigger('change');
             $('#FeatureId').val(currentrow.find($("input.mFeatureId[type=text]")).val());
             var val = currentrow.find($("input.misSearchCatDetail[type=text]")).val();
             document.getElementById('isSearchCatDetail').checked = val === 'True';

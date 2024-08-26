@@ -21,7 +21,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=185.165.118.72,1433;Initial Catalog=Develop;User ID=key1;Password=7Dwuv15@;Trust Server Certificate=True"
+        optionsBuilder.UseSqlServer("Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"
             );
         base.OnConfiguring(optionsBuilder);
     }

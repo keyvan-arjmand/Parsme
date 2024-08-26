@@ -1027,13 +1027,13 @@ public class AdminController : Controller
 
 
     public async Task<ActionResult> InsertDetailCat(string title, bool isActive, string? option, DataType dataType,
-        List<int> subCatId, int featureId)
+        List<int> subCatIds, int featureId)
     {
         if (User.Identity.IsAuthenticated)
         {
             var feature = await _work.GenericRepository<Feature>().Table
                 .FirstOrDefaultAsync(x => x.Id == featureId);
-    
+
             var entity = new CategoryDetail
             {
                 DataType = dataType,
@@ -1044,7 +1044,7 @@ public class AdminController : Controller
                 Option = option ?? string.Empty,
             };
             await _work.GenericRepository<CategoryDetail>().AddAsync(entity, CancellationToken.None);
-            foreach (var i in subCatId)
+            foreach (var i in subCatIds)
             {
                 var sub = await _work.GenericRepository<SubCategory>().Table
                     .FirstOrDefaultAsync(x => x.Id == i);
@@ -1053,8 +1053,8 @@ public class AdminController : Controller
                     SubCategoryId = sub.Id,
                     CategoryDetailId = entity.Id
                 }, CancellationToken.None);
-
             }
+
             return RedirectToAction("ManageCatDetail");
         }
         else
@@ -1098,7 +1098,7 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateCategoryDetail(int id, string title, int featureId, bool isSearchCatDetail,
-        string option, int dataType)
+        string option, int dataType, List<int> subCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1109,6 +1109,28 @@ public class AdminController : Controller
             catDetail.FeatureId = featureId;
             catDetail.ShowInSearch = isSearchCatDetail;
             await _work.GenericRepository<CategoryDetail>().UpdateAsync(catDetail, CancellationToken.None);
+            
+            var sub = await _work.GenericRepository<SubCategoryDetail>().Table
+                .Where(x => x.CategoryDetailId == catDetail.Id).ToListAsync();
+            
+            foreach (var i in sub)
+            {
+                var dd = await _work.GenericRepository<SubCategoryDetail>().Table
+                    .FirstOrDefaultAsync(x => x.Id == i.Id);
+                await _work.GenericRepository<SubCategoryDetail>().DeleteAsync(dd, CancellationToken.None);
+            }
+
+            foreach (var i in subCatId)
+            {
+                var sub1 = await _work.GenericRepository<SubCategory>().Table
+                    .FirstOrDefaultAsync(x => x.Id == i);
+                await _work.GenericRepository<SubCategoryDetail>().AddAsync(new SubCategoryDetail
+                {
+                    SubCategoryId = sub1.Id,
+                    CategoryDetailId = catDetail.Id
+                }, CancellationToken.None);
+            }
+
             return RedirectToAction("ManageCatDetail");
         }
         else
@@ -2370,14 +2392,13 @@ public class AdminController : Controller
     // string MetaKeyword, string FullDesc, string[] ImageUri, string ProductGift, double DiscountAmount, int BrandId,
     // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,
     //     Offer Offer, ProductStatus ProductStatus, bool IsActive, bool IsOffer
-
     public async Task<List<DetailProdAdmin>> GetCategoryDetailBySubCatId(int subCatId)
     {
         var detail = await _work.GenericRepository<CategoryDetail>()
             .TableNoTracking
             .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.Feature)
-            .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(subCatId))
+            .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == subCatId))
             .OrderByDescending(x => x.Id).ToListAsync();
         List<DetailProdAdmin> detailProdAdmins = new List<DetailProdAdmin>();
         foreach (var i in detail)
