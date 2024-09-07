@@ -293,7 +293,7 @@ header.header-main {
     display: none;
     background-color: #fff;
     padding: 1rem 0;
-    border-radius: 0 0 20px 20px;
+    border-radius: 5px 5px 20px 20px;
     z-index: 9999;
     box-shadow: 1px 5px 6px 1px rgb(72 72 72 / 15%);
     font-size: 14px;
@@ -540,7 +540,7 @@ header.header-main {
 }
 
 .header-main-nav ul.menu-ul li.menu-item:hover a.current-link-menu {
-    color: #3d8f14;
+    color: #FF2D2D;
     transition: 0.2s;
 }
 
@@ -2535,7 +2535,7 @@ header.header-main {
 
 .widget .card-header span.title-one {
     padding-bottom: 10px;
-    color: #3d8f14;
+    color: #0c0c0c;
     border-bottom: 2px solid #3d8f14;
     display: inline-block;
     position: relative;

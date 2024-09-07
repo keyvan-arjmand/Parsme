@@ -1,5 +1,8 @@
-﻿@{
+﻿@using Application.Common.Utilities
+@using Domain.Entity.Product
+@{
     Layout = "";
+    List<Product> newProd = ViewBag.NewProd;
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -31,7 +34,7 @@
                         <h1>صفحه‌ای که دنبال آن بودید پیدا نشد!</h1>
                     </div>
                     <div class="d-404-actions">
-                        <a href="home-1.html" class="d-404-action-primary">صفحه اصلی</a>
+                        <a href="@Url.Action("Index","Home")" class="d-404-action-primary">صفحه اصلی</a>
                     </div>
                     <div class="d-404-image">
                         <img src="/assetsCli/images/404.png">
@@ -39,9 +42,129 @@
                 </div>
             </div>
         </div>
+        <div class="col-12">
+            <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
+                <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
+                    <header class="card-header">
+                        <span class="title-one ">محصولات پارس می</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <div class="owl-stage-outer">
+                            <div class="owl-stage"
+                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1534px;">
+                                @{
+                                foreach (var i in newProd)
+                                {
+                                <div class="owl-item active product-card tab-item"
+                                     style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                    <div class="item">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })"
+                                           class="d-block hover-img-link">
+                                            @if (i.IsOffer)
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                            }
+                                            }
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            {
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
+                                                </div>
+                                            </div>
+                                            <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                 class="img-fluid" alt="">
+                                            }
+                                            else
+                                            {
+                                            <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                 class="img-fluid mt-4" alt="">
+                                            }
+
+
+                                        </a>
+                                        <div class="color-d">
+                                            @foreach (var q in i.ProductColors)
+                                            {
+                                            <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px"
+                                                class="p-2 m-1 ">
+                                            </h1>
+                                            }
+                                        </div>
+                                        <h2 class="post-title">
+                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                @i.PersianTitle
+                                            </a>
+                                        </h2>
+                                        <div class="price">
+                                            @if (i.IsOffer)
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            <del>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </del>
+                                            <ins>
+                                                    <span>
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </ins>
+                                            <div>
+
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                            <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                            </ins>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <ins>
+                                                <span>
+                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                    <span>تومان</span>
+                                                </span>
+                                            </ins>
+                                            }
+                                        </div>
+                                        <div class="actions">
+                                            <ul>
+                                                <li class="action-item like">
+                                                    <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                        <div class="btn btn-light ">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slider-product------------------------>
+            </div>
+            
+        </div>
     </div>
     <!-- 404----------------------------------->
-
 </body>
 <!-- file js---------------------------------------------------->
 <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>

@@ -58,7 +58,7 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">بنر بزرگ کناری 493 * 330</label>
-                                                    <input type="file" asp-for="LargeSideBanner" id="LargeSideBannerin" class="form-control">
+                                                    <input type="file" asp-for="LargeSideBanner" id="LargeSideBannerin" class="form-control" >
                                                 </div>
                                                 <div class="d-flex flex-column">
                                                     <label for="exampleInputPassword1">لینک</label>
@@ -170,7 +170,7 @@
                                                 <div class="d-flex justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">بنر دوم بزرگ وسط 181 * 495</label>
-                                                        <input type="file" asp-for="BigBannerMiddle2" class="form-control">
+                                                        <input type="file" asp-for="BigBannerMiddle2" id="BigBannerMiddle2In" class="form-control">
                                                     </div>
                                                     <div class="d-flex flex-column">
                                                         <label for="exampleInputPassword1">لینک</label>
@@ -352,6 +352,24 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#BigBannerMiddle2Col').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });   $('#SmallBannerMiddle4in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#SmallBannerMiddle4').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });  $('#BigBannerMiddle2In').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#BigBannerMiddle2').attr('src', e.target.result).show();
                 }
                 reader.readAsDataURL(input.files[0]);
             }

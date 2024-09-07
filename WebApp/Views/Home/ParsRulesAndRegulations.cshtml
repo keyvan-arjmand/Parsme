@@ -34,14 +34,14 @@ FooterPage pages = ViewBag.Pages;
 @section meta
 {
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
-<meta name="description" content=@Html.Raw(pages.SeoParsUserPrivacyDesc)/>
-<link rel="canonical" href=@pages.SeoParsUserPrivacyCanonical/>
+<meta name="description" content=@Html.Raw(pages.SeoParsRegulationsDesc)/>
+<link rel="canonical" href=@pages.SeoParsRegulationsCanonical/>
 <meta property="og:locale" content="fa_IR"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content=@Html.Raw(pages.SeoParsUserPrivacyTitle)/>
-<meta property="og:description" content=@Html.Raw(pages.SeoParsUserPrivacyDesc)/>
+<meta property="og:title" content=@Html.Raw(pages.SeoParsRegulationsTitle)/>
+<meta property="og:description" content=@Html.Raw(pages.SeoParsRegulationsDesc)/>
 <meta property="og:url" content="https://parsme.com"/>
-<meta property="og:site_name" content=@Html.Raw(pages.SeoParsUserPrivacyTitle)/>
+<meta property="og:site_name" content=@Html.Raw(pages.SeoParsRegulationsTitle)/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="760"/>
 <meta property="og:image:type" content="image/jpeg"/>
@@ -483,11 +483,11 @@ FooterPage pages = ViewBag.Pages;
             <div class="about">
                 <div class="about-us-head">
                     <div class="about-us-head-inner">
-                        @Html.Raw(pages.SeoParsUserPrivacyTitle)
+                        @Html.Raw(pages.SeoParsRegulationsTitle)
                     </div>
                 </div>
                 <div class="page-content-about">
-                    @Html.Raw(pages.ParsUserPrivacyDesc)
+                    @Html.Raw(pages.ParsRegulationsDesc)
                 </div>
             </div>
         </div>

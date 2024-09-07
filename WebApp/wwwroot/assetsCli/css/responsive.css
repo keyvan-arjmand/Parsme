@@ -120,7 +120,7 @@
     }
 
     .nav-btn {
-        top: 160px;
+        top: 285px;
     }
 
     .btn-h4 {
@@ -420,7 +420,7 @@
 }
 @media (min-width: 998px) {
     #mobile-btn{
-        margin-top: 39px;
+        margin-top: 160px;
     }
 }
 @media (max-width: 710px) {
