@@ -1456,7 +1456,19 @@ public class AdminController : Controller
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         return View();
     }
+    [HttpPost]
+    public  async Task<IActionResult> UploadImage(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file uploaded.");
+        }
+        //
+        Upload up = new Upload(_webHostEnvironment);
 
+        var imageUrl = up.Uploadfile(file, "Editor");
+        return Json(new { url ="https://newdev.parsme.com/Images/Editor/"+ imageUrl });
+    }
 
     public async Task<IActionResult> UpdateBanner(BannerDto request)
     {

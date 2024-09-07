@@ -135,7 +135,7 @@
             <div class="card-header">
                 <h3 class="card-title">محصولات</h3>
 
-                
+
                 <div class="card-tools">
 
                     <form asp-action="ProductManage" asp-controller="Admin" method="post">
@@ -200,7 +200,7 @@
                                     }
                                     <td class="text-center">
                                         <a class="badge bg-warning text-muted " href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
-                                        
+
                                     </td>
                                 </tr>
                             }
@@ -359,7 +359,7 @@
 
             </div>
         </div>
-    
+
         <div>
             <div class="d-flex justify-content-start gap-5">
                 <div class="d-flex flex-column align-items-start p-3 m-3">
@@ -441,54 +441,54 @@
 
     </div>
 </div>
-    <div class="card card-info card-outline mt-4">
-        <div class="card-header">
-            <h3 class="card-title">
-                <small class="h4">محتوا سئو</small>
-            </h3>
-            <!-- tools box -->
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool btn-sm"
-                        data-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool btn-sm"
-                        data-widget="remove"
-                        data-toggle="tooltip"
-                        title="Remove">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-            <!-- /. tools -->
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h4">محتوا سئو</small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
-            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-           
-                <div class="form-group w-50 p-3" id="">
-                    <label>عنوان</label>
-                    <input id="SeoTitle" type="text" class="form-control">
-                </div>
-                <div class="form-group w-50 p-3" id="">
-                    <label>آدرس متعارف</label>
-                    <input id="SeoCanonical" type="text" class="form-control">
-                </div>
-
-            </div>
-            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-
-                <div class="form-group w-50 p-3" id="">
-                    <label>توضیحات</label>
-                    <textarea id="SeoDesc" type="text" class="form-control"></textarea>
-                </div>
-         
-
-            </div>
-      
-        </div>
+        <!-- /. tools -->
     </div>
+    <!-- /.card-header -->
+    <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+            <div class="form-group w-50 p-3" id="">
+                <label>عنوان</label>
+                <input id="SeoTitle" type="text" class="form-control">
+            </div>
+            <div class="form-group w-50 p-3" id="">
+                <label>آدرس متعارف</label>
+                <input id="SeoCanonical" type="text" class="form-control">
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+            <div class="form-group w-50 p-3" id="">
+                <label>توضیحات</label>
+                <textarea id="SeoDesc" type="text" class="form-control"></textarea>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
 <div class="card card-info card-outline mt-4">
     <div class="card-header">
         <h3 class="card-title">
@@ -743,7 +743,7 @@
                 success: function (data) {
                     Notiflix.Notify.success('عملیات با موفقیت انجام شد');
                     showAlertSuccess();
-                    window.location.href= `@Url.Action("ProductManage","Admin")`;
+                    window.location.href= `@Url.Action("ProductManage", "Admin")`;
                 },
                 error: function (xhr) {
                     Notiflix.Notify.error('خطای داخلی');
@@ -976,16 +976,19 @@
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .then(function (editor) {
-                // The editor instance
+            .create(document.querySelector('#editor1'), {
+                ckfinder: {
+                    uploadUrl: 'https://localhost:7273/admin/UploadImage'  // This should point to your server-side upload handler
+                },
+                toolbar: ['mediaEmbed', 'bold', 'italic', 'link', 'undo', 'redo'],
+                mediaEmbed: {
+                    previewsInData: true  // Enables video previews inside the editor
+                }
             })
-            .catch(function (error) {
-                console.error(error)
-            })
-
+            .catch(error => {
+                console.error(error);
+            });
         // bootstrap WYSIHTML5 - text editor
-
         $('.textarea').wysihtml5({
             toolbar: {fa: true}
         })
@@ -1006,5 +1009,6 @@
             confirmButtonText: 'بستن'
         });
     }
+
 </script>
 }
