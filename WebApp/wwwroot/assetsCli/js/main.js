@@ -1,4 +1,37 @@
 $(document).ready(function (e) {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //    hover-menu-overlay--------------------------
     $('li.nav-overlay').hover(function () {
         $('.mega-menu').removeClass('active');

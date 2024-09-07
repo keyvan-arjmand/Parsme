@@ -1,3 +1,40 @@
+
+.sticky-nav {
+    position: fixed !important;
+    top: 0 !important;
+    width: 100% !important;
+    z-index: 995 !important;
+    background-color: white !important;
+    animation: slideDown 0.3s ease-in-out;
+    padding-top: 15px !important;
+    height: 83px !important;;
+    margin-top: 0 !important;
+}
+.sticky-nav-btn {
+    margin-top: 25px;
+    position: fixed !important;
+    top: 0 !important;
+    width: fit-content !important;
+    z-index: 999 !important;
+    background-color: white !important;
+    animation: slideDown 0.3s ease-in-out;
+  
+}
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -3919,16 +3956,19 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     top: 15px;
     left: 15px;
 }
-.desc-product  img{
+
+.desc-product img {
     width: fit-content;
     object-fit: cover;
 }
+
 @media only screen and (max-width: 768px) {
-    .desc-product  img{
+    .desc-product img {
         width: 100% !important;
         object-fit: cover;
     }
 }
+
 .color-d {
     position: absolute;
     width: fit-content;

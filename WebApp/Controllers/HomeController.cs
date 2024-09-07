@@ -948,6 +948,37 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         return View();
     }
+    public async Task<IActionResult> InstallmentPage()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
 
     public async Task<IActionResult> AboutUs()
     {
@@ -1633,4 +1664,262 @@ public class HomeController : Controller
         }
         else return RedirectToAction("Index", "Home");
     }
+    
+    
+    
+    
+    
+    public async Task<IActionResult> WhyParsPage()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+    
+    
+    public async Task<IActionResult> ParsAtGlance()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    } 
+    public async Task<IActionResult> ParsGoals()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }    public async Task<IActionResult> ParsBuyingGuide()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }  public async Task<IActionResult> ParsOrganizationalPurchase()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }public async Task<IActionResult> ParsGuarantee()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }public async Task<IActionResult> ParsShippingMethods()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+    public async Task<IActionResult> ParsConsultationBeforePurchase()
+    {
+        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
+            .Include(x => x.SubCategories)
+            .ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+    
+    
+    
+    
+    
+    
+    
 }
