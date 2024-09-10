@@ -104,6 +104,7 @@
                     <label for="exampleInputPassword1">لینک</label>
                     <input asp-for="Href1Col1" value="@footer.Href1Col1" class="form-control" id="exampleInputPassword1">
                 </div>
+                
             </div>
 
             <div class="d-flex justify-content-between w-100">
@@ -124,7 +125,17 @@
                     <input asp-for="Href3Col1" value="@footer.Href3Col1" class="form-control" id="exampleInputPassword1">
                 </div>
             </div>
-
+            <div class="d-flex justify-content-between  w-50">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان ردیف پنجم</label>
+                    <input type="text" asp-for="Title4Col1" id="SmallSideBannerin" value="@footer.Title4Col1" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input asp-for="Href4Col1" value="@footer.Href4Col1" class="form-control" id="exampleInputPassword1">
+                </div>
+            
+            </div>
         </div>
     </div>
 </div>
@@ -200,7 +211,24 @@
                     <input asp-for="Href3Col2" value="@footer.Href3Col2" class="form-control" id="exampleInputPassword1">
                 </div>
             </div>
-
+            <div class="d-flex justify-content-between w-100">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان ردیف پنجم</label>
+                    <input type="text" asp-for="Title4Col2" id="SmallSideBannerin" value="@footer.Title4Col2" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input asp-for="Href4Col2" value="@footer.Href4Col2" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان ردیف ششم</label>
+                    <input type="text" asp-for="Title5Col2" id="SmallSideBannerin" value="@footer.Title5Col2" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input asp-for="Href5Col2" value="@footer.Href5Col2" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -257,7 +285,7 @@
                     </div>
             </div>
 
-            <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between w-50">
                     <div class="d-flex flex-column">
                         <label for="exampleInputPassword1">عنوان ردیف سوم</label>
                         <input type="text" asp-for="Title2Col3" id="SmallSideBannerin" value="@footer.Title2Col3" title="test" class="form-control">
@@ -266,18 +294,73 @@
                         <label for="exampleInputPassword1">لینک</label>
                         <input asp-for="Href2Col3" value="@footer.Href2Col3" class="form-control" id="exampleInputPassword1">
                     </div>
-                    <div class="d-flex flex-column">
-                        <label for="exampleInputPassword1">عنوان ردیف چهارم</label>
-                        <input type="text" asp-for="Title3Col3" id="SmallSideBannerin" value="@footer.Title3Col1" title="test" class="form-control">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label for="exampleInputPassword1">لینک</label>
-                        <input asp-for="Href3Col3" value="@footer.Href3Col3" class="form-control" id="exampleInputPassword1">
-                    </div>
             </div>
         </div>
     </div>
 </div>
+
+    <div class="card card-info card-outline mt-4">
+        <div class="card-header">
+            <h3 class="card-title">
+                <small class="h5">ستون چهارم</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">عنوان ستون</label>
+                        <input type="text" asp-for="DescCol4" value="@footer.DescCol4" id="LargeSideBannerin" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column w-100 p-3 m-2" style="background-color:	rgb(220,220,220,0.4)">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">عنوان ردیف اول</label>
+                        <input type="text" asp-for="TitleCol4" id="SmallSideBannerin" value="@footer.TitleCol4" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="HrefCol4" value="@footer.HrefCol4" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">عنوان ردیف دوم</label>
+                        <input type="text" asp-for="Title1Col4" id="SmallSideBannerin" value="@footer.Title1Col4" title="test" class="form-control">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label for="exampleInputPassword1">لینک</label>
+                        <input asp-for="Href1Col4" value="@footer.Href1Col4" class="form-control" id="exampleInputPassword1">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between w-100 p-2 m-1">
+                    <div class="d-flex flex-column w-100">
+                        <label for="exampleInputPassword1">توضیحات پاورقی</label>
+                        <textarea  asp-for="DescFooter" id="SmallSideBannerin" value="" title="test" class="form-control w-100">@footer.DescFooter</textarea>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
 
 <div class="w-100">
     <button class="btn btn-success" type="submit"> ثبت</button>

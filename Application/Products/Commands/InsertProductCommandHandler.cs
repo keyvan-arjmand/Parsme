@@ -50,7 +50,7 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
             InterestRate = request.Product.InterestRate,
             SeoDesc = request.Product.SeoDesc,
             SeoTitle = request.Product.SeoTitle,
-            UnicCode = "S"+request.Product.SubCategoryId+"B"+request.Product.BrandId+Guid.NewGuid().ToString().Substring(0, 6)
+            UnicCode = request.Product.UnicCode
         };
         await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
         var productGallery = request.Product.Images.Select(x => new ImageGallery

@@ -1,4 +1,4 @@
-class MyUploadAdapter {
+﻿class MyUploadAdapter {
     constructor(loader) {
         this.loader = loader;
     }

@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="/css/sweetalert.css">
     <!-- Notiflix CSS (CDN) -->
     <link rel="stylesheet" href="/css/notiflix.css">
+    
     @await RenderSectionAsync("link", false)
     <style>
         .nav-color {
@@ -445,9 +446,11 @@
 <script src="/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script src="/plugins/select2/select2.full.min.js"></script>
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="/plugins/ckeditor/ckeditor.js"></script>
 <script src="/dist/js/persian-date.min.js"></script>
 <script src="/dist/js/persian-datepicker.min.js"></script>
+<script src="/js/CkLib.js"></script>
+<script src="/js/Ck.Map.js"></script>
+
 <script>
     $('.select2').select2()
     $('.my-colorpicker1').colorpicker()
@@ -472,6 +475,7 @@
 <script>
     Notiflix.Notify.init();
 </script>
+<script src="/js/ckEditor.js"></script>
 @await RenderSectionAsync("script", false)
 </body>
 </html>

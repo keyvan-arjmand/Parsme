@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
-    List<Brand> brands = ViewBag.Brands;
+    List<Domain.Entity.Product.Brand> brands = ViewBag.Brands;
     List<SubCategory> SubCats = ViewBag.SubCats;
 }
 
@@ -58,7 +58,7 @@
                                       asp-action="InsertBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان برند</label>
-                                        <input name="title" class="form-control" id="exampleInputPassword1">
+                                        <input name="title" class="form-control" id="exampleInputPassword1" required="required">
                                     </div>
 
                                     <div class="form-group">
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="form-group d-flex flex-column ">
                                         <label for="exampleInputPassword1">نوع زیردسته</label>
-                                        <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example">
+                                        <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example" required="required">
                                             @{
                                                 int index = 0;
                                                 foreach (var i in SubCats)

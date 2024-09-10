@@ -114,11 +114,9 @@
 <div class="card-header p-2">
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">رونوشت کالا</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">کد کالا : @products.UnicCode</a>
-        </li>
+     
     </ul>
 </div><!-- /.card-header -->
 <div class="tab-content">
@@ -147,7 +145,6 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
-        <input id="Id" value="@products.Id" hidden="hidden"/>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
             <div class="form-group w-50 p-3">
                 <label>عنوان</label>
@@ -160,7 +157,7 @@
                        class="form-control" required="required">
             </div>
         </div>
-     
+
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
                 <label>تگ ها</label>
@@ -189,7 +186,7 @@
             <div class="form-group w-50 p-3">
                 <label>معرفی کوتاه</label>
                 <textarea id="Detail" class="form-control"
-                          required="required">@products.Detail</textarea>
+                                                      required="required">@products.Detail</textarea>
             </div>
             <div class="form-group w-50 p-3">
                 <label>کد محصول</label>
@@ -234,7 +231,7 @@
                 @{
                     @foreach (var q in catDetail)
                     {
-                       <label  style="display: block;" class="h5">@q.Feature.Title</label>
+                        <label style="display: block;" class="h5">@q.Feature.Title</label>
                         foreach (var x in q.CategoryDetails)
                         {
                             if ((DataType)x.DataType == DataType.SelectBox)
@@ -768,6 +765,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
     <div class="form-input w-50">
@@ -778,24 +776,18 @@
     <div class="form-group w-25">
         <div class="form-check">
             @{
-            if (products.IsActive)
-            {
-            <input type="checkbox" id="IsActive" checked="checked"
-                   class="form-check-input"/>
-            }
-            else
-            {
-            <input type="checkbox" id="IsActive" class="form-check-input"/>
-            }
+                if (products.IsActive)
+                {
+                    <input type="checkbox" id="IsActive" checked="checked"
+                           class="form-check-input"/>
+                }
+                else
+                {
+                    <input type="checkbox" id="IsActive" class="form-check-input"/>
+                }
             }
             <label class="form-check-label">وضعیت فعال</label>
         </div>
-    </div>
-    
-    <div class="form-input w-50">
-        <a  href="@Url.Action("DeleteProd","Admin",new{products.Id})" class="btn btn-danger w-100">
-           حذف محصول
-        </a>
     </div>
 </div>
 
@@ -810,7 +802,7 @@
 @section script{
 
     <script>
-   
+
     document.getElementById('ImageUri').addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
@@ -859,7 +851,7 @@
                 allFilled = false;
                 field.classList.add('is-invalid'); // Add a class to highlight the empty field
             } else {
-                
+
                 field.classList.remove('is-invalid');
             }
         });
@@ -948,7 +940,7 @@
             $.ajax({
                 type: "Post",
                 data: {request},
-                url: "/Admin/UpdateProduct",
+                url: "/Admin/InsertProduct",
                 beforeSend: function() {
                     Notiflix.Loading.circle('در حال پردازش ...');
                 },
@@ -1101,7 +1093,7 @@
             beforeSend: function() {
                 Notiflix.Loading.circle('در حال پردازش ...');
             },
-         
+
             error: function (xhr) {
                 Notiflix.Notify.failure('خطای داخلی');
                 showAlertError();
@@ -1118,33 +1110,33 @@
                     html+=`<label  style="display: block;" class="h5">${item.feature.title}</label>`
                     item.categoryDetails
                         .map(x => {
-                        if (x.dataType == 1) {
-                            html += `
+                            if (x.dataType == 1) {
+                                html += `
                              <div class=" d-flex w-100 form-group detail-form">
                              <div class="input-group-prepend">
                               <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
                               </div>
                               <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
                                   ${x.option.split(",").map(y => {
-                                return `<option value="${y}">${y}</option>`;
-                            }).join('')}
+                                    return `<option value="${y}">${y}</option>`;
+                                }).join('')}
                                </select>
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                        }
+                            }
 
-                        if (x.dataType == 3) {
-                            html += `
+                            if (x.dataType == 3) {
+                                html += `
                              <div class=" d-flex  gap-3 w-100 form-group detail-form" >
                               <span class="">${x.title}</i></span>
                              <input type="checkbox"  name="DetailVal"  class="form-check-input"/>
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                        }
-                        if (x.dataType != 1 && x.dataType != 3) {
-                            html += `
+                            }
+                            if (x.dataType != 1 && x.dataType != 3) {
+                                html += `
                              <div class=" d-flex w-100 form-group detail-form" >
                              <div class="input-group-prepend">
                               <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${x.title}</i></span>
@@ -1153,9 +1145,9 @@
                               <input name="DetailId" value="${x.id}" hidden="hidden">
                              </div>
                              `;
-                        }
+                            }
 
-                    })
+                        })
                 }
                 $("#labelDetail").css("display", "block");
                 document.getElementById("DetailProduct").innerHTML = html;
@@ -1204,6 +1196,6 @@
     $('.datepicker').datepicker({
         format: 'YYYY-MM-DD HH:mm',
     });
- 
+
 </script>
 }

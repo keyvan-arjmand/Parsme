@@ -41,11 +41,11 @@
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-start gap-3 p-2" asp-action="InsertColor" asp-controller="Admin" method="post">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان رنگ</label>
-                                        <input name="title" class="form-control" id="exampleInputPassword1" placeholder="عنوان رنگ را وارد کنید">
+                                        <input name="title" class="form-control" id="exampleInputPassword1" required="required" placeholder="عنوان رنگ را وارد کنید">
                                     </div>
                                     <div class="form-group">
                                         <label>انتخاب رنگ</label>
-                                        <input name="code" type="text" class="form-control my-colorpicker1">
+                                        <input name="code" type="text" required="required" class="form-control my-colorpicker1">
                                     </div>
                                     <div class="d-flex flex-column align-content-center justify-content-end ">
                                         <div class="form-group">

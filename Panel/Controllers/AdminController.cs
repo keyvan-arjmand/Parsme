@@ -18,6 +18,7 @@ using Domain.Entity.User;
 using Domain.Enums;
 using Kavenegar;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -426,7 +427,8 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Contact = await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
+            ViewBag.Contact = await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                              new ContactPage();
 
             #endregion
 
@@ -444,7 +446,8 @@ public class AdminController : Controller
         {
             #region ViewBag
 
-            ViewBag.Contact = await _work.GenericRepository<AboutUsPage>().TableNoTracking.FirstOrDefaultAsync();
+            ViewBag.Contact = await _work.GenericRepository<AboutUsPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                              new AboutUsPage();
 
             #endregion
 
@@ -597,12 +600,13 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateFeature(int id, string title)
+    public async Task<ActionResult> UpdateFeature(int id, string title, int Priority)
     {
         if (User.Identity.IsAuthenticated)
         {
             var result = await _work.GenericRepository<Feature>().Table.FirstOrDefaultAsync(x => x.Id == id);
             result.Title = title;
+            result.Priority = Priority;
             await _work.GenericRepository<Feature>().UpdateAsync(result, CancellationToken.None);
             return RedirectToAction("ManageCatDetail", "Admin");
         }
@@ -749,22 +753,34 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle)
+    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle,
+        IFormFile ImageUri)
     {
         if (User.Identity.IsAuthenticated)
         {
+            Upload up = new Upload(_webHostEnvironment);
             var result = await _work.GenericRepository<SeoPage>().Table.FirstOrDefaultAsync();
             if (result == null)
             {
+                var img = string.Empty;
+                if (ImageUri != null)
+                {
+                    img = up.Uploadfile(ImageUri, "Banner");
+                }
+
                 await _work.GenericRepository<SeoPage>().AddAsync(new SeoPage
                 {
                     SeoIndexCanonical = SeoIndexCanonical,
                     SeoIndexDesc = SeoIndexDesc,
-                    SeoIndexTitle = SeoIndexTitle
+                    SeoIndexTitle = SeoIndexTitle,
+                    TopBanner = img
                 }, CancellationToken.None);
             }
             else
             {
+                result.TopBanner = ImageUri != null
+                    ? up.Uploadfile(ImageUri, "Banner")
+                    : result.TopBanner;
                 result.SeoIndexDesc = SeoIndexDesc;
                 result.SeoIndexCanonical = SeoIndexCanonical;
                 result.SeoIndexTitle = SeoIndexTitle;
@@ -1027,7 +1043,7 @@ public class AdminController : Controller
 
 
     public async Task<ActionResult> InsertDetailCat(string title, bool isActive, string? option, DataType dataType,
-        List<int> subCatIds, int featureId)
+        List<int> subCatIds, int featureId, int Priority)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1039,7 +1055,7 @@ public class AdminController : Controller
                 DataType = dataType,
                 FeatureId = feature!.Id,
                 ShowInSearch = isActive,
-                Priority = 1,
+                Priority = Priority,
                 Title = title,
                 Option = option ?? string.Empty,
             };
@@ -1086,7 +1102,7 @@ public class AdminController : Controller
         {
             await _work.GenericRepository<Feature>().AddAsync(new Feature
             {
-                Priority = 1,
+                Priority = priority,
                 Title = title
             }, CancellationToken.None);
             return RedirectToAction("ManageCatDetail");
@@ -1098,21 +1114,22 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateCategoryDetail(int id, string title, int featureId, bool isSearchCatDetail,
-        string option, int dataType, List<int> subCatId)
+        string option, int dataType, List<int> subCatId, int Priority)
     {
         if (User.Identity.IsAuthenticated)
         {
             var catDetail = await _work.GenericRepository<CategoryDetail>().Table.FirstOrDefaultAsync(x => x.Id == id);
             catDetail.DataType = (DataType)dataType;
             catDetail.Title = title;
+            catDetail.Priority = Priority;
             catDetail.Option = option ?? string.Empty;
             catDetail.FeatureId = featureId;
             catDetail.ShowInSearch = isSearchCatDetail;
             await _work.GenericRepository<CategoryDetail>().UpdateAsync(catDetail, CancellationToken.None);
-            
+
             var sub = await _work.GenericRepository<SubCategoryDetail>().Table
                 .Where(x => x.CategoryDetailId == catDetail.Id).ToListAsync();
-            
+
             foreach (var i in sub)
             {
                 var dd = await _work.GenericRepository<SubCategoryDetail>().Table
@@ -1368,6 +1385,36 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> TranscriptProduct(int id)
+    {
+        if (User.Identity.IsAuthenticated && id > 0)
+        {
+            ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.Brand)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
+                .Include(x => x.ProductImages)
+                .Include(x => x.Offer).ThenInclude(q => q.Color)
+                .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
+            ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
 
     public async Task<ActionResult> ProductManage(string search)
     {
@@ -1456,20 +1503,34 @@ public class AdminController : Controller
         ViewBag.Banner = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         return View();
     }
-    [HttpPost]
-    public  async Task<IActionResult> UploadImage(IFormFile file)
-    {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("No file uploaded.");
-        }
-        //
-        Upload up = new Upload(_webHostEnvironment);
 
-        var imageUrl = up.Uploadfile(file, "Editor");
-        return Json(new { url ="https://newdev.parsme.com/Images/Editor/"+ imageUrl });
+    [HttpPost]
+    [EnableCors("AllowSpecificOrigin")]
+    public IActionResult UploadImage(IFormFile upload)
+    {
+        Response.Headers.Add("Access-Control-Allow-Origin", "http://newdev.parsme.com");
+        Response.Headers.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+        if (upload != null && upload.Length > 0)
+        {
+            try
+            {
+                Upload up = new Upload(_webHostEnvironment);
+                var name = up.Uploadfile(upload, "editor");
+                // Return the URL to the uploaded file.
+                var fileUrl = $"http://newdev.parsme.com/images/editor/{name}";
+                return Json(new { uploaded = true, url = fileUrl });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { uploaded = false, error = ex.Message });
+            }
+        }
+
+        return Json(new { uploaded = false, error = "No file was uploaded." });
     }
 
+    [HttpPost]
     public async Task<IActionResult> UpdateBanner(BannerDto request)
     {
         if (request.Id <= 0)
@@ -1576,12 +1637,18 @@ public class AdminController : Controller
                 SliderImage = up.Uploadfile(request.SliderImage, "Banner"),
                 SliderImage1 = up.Uploadfile(request.SliderImage1, "Banner"),
                 SliderImage2 = up.Uploadfile(request.SliderImage2, "Banner"),
+                SliderImage3 = up.Uploadfile(request.SliderImage3, "Banner"),
+                SliderImage4 = up.Uploadfile(request.SliderImage4, "Banner"),
                 SliderHref = request.SliderHref,
                 SliderHref1 = request.SliderHref1,
                 SliderHref2 = request.SliderHref2,
+                SliderHref4 = request.SliderHref4,
+                SliderHref3 = request.SliderHref3,
                 SliderTitle = request.SliderTitle,
                 SliderTitle1 = request.SliderTitle1,
                 SliderTitle2 = request.SliderTitle2,
+                SliderTitle3 = request.SliderTitle3,
+                SliderTitle4 = request.SliderTitle4,
             }, CancellationToken.None);
         }
         else
@@ -1591,6 +1658,8 @@ public class AdminController : Controller
             banners.SliderHref = request.SliderHref;
             banners.SliderHref1 = request.SliderHref1;
             banners.SliderHref2 = request.SliderHref2;
+            banners.SliderHref3 = request.SliderHref3;
+            banners.SliderHref4 = request.SliderHref4;
             banners.SliderImage = request.SliderImage != null
                 ? up.Uploadfile(request.SliderImage, "Banner")
                 : banners.SliderImage;
@@ -1600,10 +1669,17 @@ public class AdminController : Controller
             banners.SliderImage2 = request.SliderImage2 != null
                 ? up.Uploadfile(request.SliderImage2, "Banner")
                 : banners.SliderImage2;
-
+            banners.SliderImage3 = request.SliderImage3 != null
+                ? up.Uploadfile(request.SliderImage3, "Banner")
+                : banners.SliderImage3;
+            banners.SliderImage4 = request.SliderImage4 != null
+                ? up.Uploadfile(request.SliderImage4, "Banner")
+                : banners.SliderImage4;
             banners.SliderTitle = request.SliderTitle;
             banners.SliderTitle1 = request.SliderTitle1;
             banners.SliderTitle2 = request.SliderTitle2;
+            banners.SliderTitle3 = request.SliderTitle3;
+            banners.SliderTitle4 = request.SliderTitle4;
             await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
         }
 
@@ -2187,6 +2263,8 @@ public class AdminController : Controller
 
     public async Task<ActionResult> InsertProduct(Root request)
     {
+        if (await _work.GenericRepository<Product>().TableNoTracking.AnyAsync(x => x.UnicCode == request.UnicCode))
+            throw new Exception("duplicate");
         Upload up = new Upload(_webHostEnvironment);
         string imageUri = string.Empty;
         List<string> images = new List<string>();
@@ -2216,6 +2294,8 @@ public class AdminController : Controller
 
     public async Task<ActionResult> UpdateProduct(Root request)
     {
+        if (await _work.GenericRepository<Product>().TableNoTracking.AnyAsync(x => x.UnicCode == request.UnicCode&&x.Id!=request.Id))
+            throw new Exception("duplicate");
         var product = await _work.GenericRepository<Product>().Table.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (product == null) throw new Exception();
         Upload up = new Upload(_webHostEnvironment);
@@ -2224,6 +2304,7 @@ public class AdminController : Controller
 
         product.Title = request.Title;
         product.PersianTitle = request.PersianTitle;
+        product.UnicCode = request.UnicCode;
         product.Detail = request.Detail;
         product.MetaKeyword = request.MetaKeyword;
         product.FullDesc = request.FullDesc;
@@ -2283,7 +2364,7 @@ public class AdminController : Controller
                 .ToListAsync();
             foreach (var i in catDetail)
             {
-                var val = request.ProductDetails.FirstOrDefault(x => x.DetailId.ToInt() == i.Id);
+                var val = request.ProductDetails.FirstOrDefault(x => x.DetailId.ToInt() == i.CategoryDetailId);
                 if (val != null)
                 {
                     i.Value = val.DetailName;
@@ -2400,6 +2481,7 @@ public class AdminController : Controller
 
         return RedirectToAction("ProductManage");
     }
+
     // string Title, string PersianTitle, string Detail, string MetaDesc,
     // string MetaKeyword, string FullDesc, string[] ImageUri, string ProductGift, double DiscountAmount, int BrandId,
     // int SubCategoryId, string[] Images, ProductDetail[] ProductDetails, ProductColor[] ProductColors,
@@ -2411,7 +2493,7 @@ public class AdminController : Controller
             .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == subCatId))
-            .OrderByDescending(x => x.Id).ToListAsync();
+            .OrderByDescending(x => x.Feature.Priority).ToListAsync();
         List<DetailProdAdmin> detailProdAdmins = new List<DetailProdAdmin>();
         foreach (var i in detail)
         {
@@ -2447,6 +2529,14 @@ public class AdminController : Controller
             .TableNoTracking
             .Where(x => x.SubCategoryId == subCatId).OrderByDescending(x => x.Id).ToListAsync();
         return a;
+    }
+
+    public async Task<IActionResult> DeleteProd(int id)
+    {
+        var prod = await _work.GenericRepository<Product>().Table.FirstOrDefaultAsync(x => x.Id == id);
+        prod.IsDelete = true;
+        await _work.GenericRepository<Product>().UpdateAsync(prod, CancellationToken.None);
+        return RedirectToAction("ProductManage", "Admin");
     }
 
     public async Task<ActionResult> Product(string search, int catId, int page = 1)

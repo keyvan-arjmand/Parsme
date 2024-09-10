@@ -199,7 +199,8 @@
                                         </td>
                                     }
                                     <td class="text-center">
-                                        <a class="badge bg-warning text-muted " href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
+                                        <a class="badge bg-warning text-muted text-decoration-none" href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
+                                        <a class="badge bg-info text-muted  text-decoration-none" href="@Url.Action("TranscriptProduct", "Admin", new { @i.Id })">رونوشت</a>
 
                                     </td>
                                 </tr>
@@ -256,8 +257,8 @@
                 <textarea id="Detail" class="form-control" required="required"></textarea>
             </div>
             <div class="form-group w-50 p-3">
-                <label>توضیحات Meta</label>
-                <input id="MetaDesc" type="text" class="form-control">
+                <label>کد محصول</label>
+                <input id="UnicCode" type="text" class="form-control">
             </div>
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
@@ -570,7 +571,8 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="mb-3">
-                <textarea id="editor1" name="editor1" style="width: 100%"></textarea>
+            
+                <textarea class="form-control editor" id="editor1" name="editor1" ></textarea>
             </div>
         </div>
     </div>
@@ -599,7 +601,7 @@
 </section>
 
 @section script{
-
+      
     <script>
         document.getElementById('ImageUri').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -718,6 +720,7 @@
                 InterestRate:$("#InterestRate").val(),
                 SeoDesc:$("#SeoDesc").val(),
                 SeoTitle:$("#SeoTitle").val(),
+                UnicCode:$("#UnicCode").val(),
                 IsActive:document.getElementById('IsActive').checked,
                 IsShowIndex:document.getElementById('ShowIndex').checked,
                 Images:data,
@@ -746,13 +749,13 @@
                     window.location.href= `@Url.Action("ProductManage", "Admin")`;
                 },
                 error: function (xhr) {
-                    Notiflix.Notify.error('خطای داخلی');
+                    Notiflix.Notify.failure('خطای داخلی');
                     showAlertError();
                 },
                 complete: function() {
                     Notiflix.Loading.remove();
                 },
-                timeout: 9000
+                timeout: 15000
             });
         }
       
@@ -972,27 +975,8 @@
     $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
     });
-    $(function () {
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
-        ClassicEditor
-            .create(document.querySelector('#editor1'), {
-                ckfinder: {
-                    uploadUrl: 'https://localhost:7273/admin/UploadImage'  // This should point to your server-side upload handler
-                },
-                toolbar: ['mediaEmbed', 'bold', 'italic', 'link', 'undo', 'redo'],
-                mediaEmbed: {
-                    previewsInData: true  // Enables video previews inside the editor
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        // bootstrap WYSIHTML5 - text editor
-        $('.textarea').wysihtml5({
-            toolbar: {fa: true}
-        })
-    })
+  
+   
     function showAlertSuccess() {
         Swal.fire({
             title: 'موفق',

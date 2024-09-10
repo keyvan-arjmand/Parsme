@@ -17,6 +17,7 @@ public class Root
     public string ProductGift { get; set; }
     public string DiscountAmount { get; set; }
     public string BrandId { get; set; }
+    public string UnicCode { get; set; } = string.Empty;
     public string SubCategoryId { get; set; }
     public string ProductStatus { get; set; }
     public bool IsActive { get; set; }

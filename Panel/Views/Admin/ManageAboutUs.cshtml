@@ -53,7 +53,7 @@
                                         <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <textarea id="editor1" name="head" style="width: 100%">
+                                                <textarea id="editor1" name="head" class="form-control editor" style="width: 100%" required="required">
 @about.Head
                                                                                        
 </textarea>
@@ -64,7 +64,7 @@
                                         <label for="exampleInputPassword1">توضیحات صفحه</label>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <textarea id="editor2" name="body" style="width: 100%">
+                                                <textarea id="editor2" name="body" class="form-control editor" style="width: 100%" required="required">
 @about.Body
                                                                                        
 </textarea>
@@ -89,35 +89,93 @@
 </section>
 
 @section script{
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
+        window.addEventListener("load", (e) => {
+            ClassicEditor
+                .create(document.querySelector('#editor2'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
 
-    $(document).ready(function () {
-        ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .then(function (editor) {
-                const htmlString = '@Html.Raw(about.Head)';
-                editor.setData(htmlString);
-            })
-            .catch(function (error) {
-                console.error(error)
-            })
-        ClassicEditor
-            .create(document.querySelector('#editor2'))
-            .then(function (editor) {
-                const htmlString = '@Html.Raw(about.Body)';
-                editor.setData(htmlString);
-            })
-            .catch(function (error) {
-                console.error(error)
-            })
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+        });
 
-        // bootstrap WYSIHTML5 - text editor
-
-        $('.textarea').wysihtml5({
-            toolbar: {fa: true}
-        })
-    });
-</script>
-
+        function handleSampleError(error) {
+            const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
+            const message = [
+                'Oops, something went wrong!',
+                `Please, report the following error on ${issueUrl} with the build id "npwdoukyfz5-3bd6as171pns" and the error stack trace:`
+            ].join('\n');
+            console.error(message);
+            console.error(error);
+        }
+    </script>
 }

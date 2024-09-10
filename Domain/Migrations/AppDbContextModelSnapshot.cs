@@ -311,6 +311,14 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SliderHref3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderHref4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SliderImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -323,6 +331,14 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SliderImage3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderImage4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SliderTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -332,6 +348,14 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SliderTitle2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderTitle3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderTitle4")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -614,6 +638,9 @@ namespace Domain.Migrations
                     b.Property<string>("DescCol3")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DescCol4")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DescFooter")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -625,6 +652,9 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Href1Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href1Col4")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Href2Col1")
@@ -642,7 +672,13 @@ namespace Domain.Migrations
                     b.Property<string>("Href3Col2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Href3Col3")
+                    b.Property<string>("Href4Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href4Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Href5Col2")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HrefCol1")
@@ -652,6 +688,9 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HrefCol3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HrefCol4")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDelete")
@@ -664,6 +703,9 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title1Col3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title1Col4")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title2Col1")
@@ -681,7 +723,13 @@ namespace Domain.Migrations
                     b.Property<string>("Title3Col2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title3Col3")
+                    b.Property<string>("Title4Col1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title4Col2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title5Col2")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TitleCol1")
@@ -691,6 +739,9 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TitleCol3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleCol4")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1038,6 +1089,10 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoIndexTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TopBanner")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

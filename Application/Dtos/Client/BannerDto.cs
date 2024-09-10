@@ -39,4 +39,12 @@ public class BannerDto
     public string SliderTitle2 { get; set; } = string.Empty;
     public IFormFile SliderImage2 { get; set; }
     public string SliderHref2 { get; set; } = string.Empty;
+    
+    public string SliderTitle3 { get; set; } = string.Empty;
+    public IFormFile SliderImage3 { get; set; }
+    public string SliderHref3 { get; set; } = string.Empty;
+
+    public string SliderTitle4 { get; set; } = string.Empty;
+    public IFormFile SliderImage4 { get; set; } 
+    public string SliderHref4 { get; set; } = string.Empty;
 }

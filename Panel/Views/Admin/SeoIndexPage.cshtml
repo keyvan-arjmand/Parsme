@@ -93,6 +93,23 @@ SeoPage seoPage = ViewBag.Index;
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="m-2 p-3 w-100">
+                                                <div class="d-flex flex-column">
+                                                    <div class="form-group w-50 p-3">
+                                                        <label for="exampleInputFile">تصویر بنر</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" name="ImageUri" class="custom-file-input" id="ImageUri">
+                                                                <input type="text" id="Image64" hidden="hidden">
+                                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group w-100  p-1" style="justify-content: center;">
+                                                        <img id="ProdImage" src="/Images/Banner/@seoPage.TopBanner" style="object-fit: cover;text-align: center;width: fit-content" class="imageThreeP" />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -111,4 +128,17 @@ SeoPage seoPage = ViewBag.Index;
 </section>
 
 @section script{
+    <script>
+
+        $('#ImageUri').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ProdImage').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
 }

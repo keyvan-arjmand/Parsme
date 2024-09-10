@@ -53,7 +53,7 @@ ContactPage about = ViewBag.Contact;
                                         <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <textarea id="editor1" name="desc" style="width: 100%">
+                                                <textarea id="editor1" name="desc" required="required" class="form-control editor" style="width: 100%">
 @about.Desc
                                                                                        
 </textarea>
@@ -78,27 +78,6 @@ ContactPage about = ViewBag.Contact;
 </section>
 
 @section script{
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-<script>
 
-    $(document).ready(function () {
-        ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .then(function (editor) {
-                const htmlString = '@Html.Raw(about.Desc)';
-                editor.setData(htmlString);
-            })
-            .catch(function (error) {
-                console.error(error)
-            })
-  
-
-        // bootstrap WYSIHTML5 - text editor
-
-        $('.textarea').wysihtml5({
-            toolbar: {fa: true}
-        })
-    });
-</script>
 
 }

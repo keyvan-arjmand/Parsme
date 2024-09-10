@@ -120,6 +120,48 @@ Banner banner = ViewBag.Banner;
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-between w-100 p-2" >
+                                            <div class=" m-2  p-3 w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر چهارم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage3" class="form-control" id="SliderImage3in">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderHref3" value="@banner.SliderHref3" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان</label>
+                                                        <input asp-for="SliderTitle3" value="@banner.SliderTitle3" class="form-control" >
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage3" id="SliderImage3" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between w-100 p-2" >
+                                            <div class=" m-2  p-3 w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">بنر پنجم اسلایدر</label>
+                                                        <input type="file" asp-for="SliderImage4" class="form-control" id="SliderImage4in">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">لینک</label>
+                                                        <input asp-for="SliderHref4" value="@banner.SliderHref4" class="form-control" id="exampleInputPassword1">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <label for="exampleInputPassword1">عنوان</label>
+                                                        <input asp-for="SliderTitle4" value="@banner.SliderTitle4" class="form-control" >
+                                                    </div>
+                                                </div>
+                                                <div class="input-group p-3 " style="justify-content: center;">
+                                                    <img src="/Images/Banner/@banner.SliderImage4" id="SliderImage4" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="w-100">
                                         <button class="btn btn-success" type="submit"> ثبت</button>
@@ -137,8 +179,27 @@ Banner banner = ViewBag.Banner;
 
 @section script{
 
-<script>
-
+    <script>
+    $('#SliderImage3in').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#SliderImage3').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+    $('#SliderImage4in').on('change', function(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#SliderImage4').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
     $('#SliderImage2in').on('change', function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {

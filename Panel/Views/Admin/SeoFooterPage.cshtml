@@ -37,817 +37,1801 @@
     </div><!-- /.container-fluid -->
 </div>
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- /.col -->
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header p-2">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link active show" href="#activity" data-toggle="tab">پاورقی</a>
-                            </li>
-                        </ul>
-                    </div><!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
-                                      asp-action="UpdateFooterSeo" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <input value="@seoPage.Id" hidden="hidden">
+<div class="container-fluid">
+<div class="row">
+<!-- /.col -->
+<div class="col-md-12">
+<div class="card">
+<div class="card-header p-2">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active show" href="#activity" data-toggle="tab">پاورقی</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+<div class="card-body">
+<div class="tab-content">
+<div class="tab-pane active show" id="activity">
+<form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
+      asp-action="UpdateFooterSeo" asp-controller="Admin" method="post" enctype="multipart/form-data">
+<input value="@seoPage.Id" hidden="hidden">
 
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5"> چرا پارس می؟ </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoWhyParsDesc"  id="Desc" class="form-control">@seoPage.SeoWhyParsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoWhyParsTitle" id="SmallSideBannerin" value="@seoPage.SeoWhyParsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoWhyParsCanonical" value="@seoPage.SeoWhyParsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="WhyParsDesc" style="width: 100%">
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5"> چرا پارس می؟ </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoWhyParsDesc"  id="Desc" class="form-control ">@seoPage.SeoWhyParsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoWhyParsTitle" id="SmallSideBannerin" value="@seoPage.SeoWhyParsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoWhyParsCanonical" value="@seoPage.SeoWhyParsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor1" class="textare2a1 form-control editor" name="WhyParsDesc" style="width: 100%">
                                                             @seoPage.WhyParsDesc
                                                                                                                                                    
                                                             </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5"> پارس می در یک نگاه </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsDarYekDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsDarYekDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsDarYekTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsDarYekTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsDarYekCanonical" value="@seoPage.SeoParsDarYekCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsDarYekDesc" style="width: 100%">
-                                                            @seoPage.ParsDarYekDesc
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5"> اهداف </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsGoalsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsGoalsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsGoalsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsGoalsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsGoalsCanonical" value="@seoPage.SeoParsGoalsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsGoalsDesc" style="width: 100%">
-                                                            @seoPage.ParsGoalsDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5"> خرید اقساطی لپ تاپ و سایر محصولات
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsInstallmentPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsInstallmentPurchaseDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsInstallmentPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsInstallmentPurchaseTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsInstallmentPurchaseCanonical" value="@seoPage.SeoParsInstallmentPurchaseCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsInstallmentPurchaseDesc" style="width: 100%">
-                                                            @seoPage.ParsInstallmentPurchaseDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">راهنمای خرید از پارس می
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsBuyingGuideDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsBuyingGuideDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsBuyingGuideTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsBuyingGuideTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsBuyingGuideCanonical" value="@seoPage.SeoParsBuyingGuideCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsBuyingGuideDesc" style="width: 100%">
-                                                            @seoPage.ParsBuyingGuideDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">خرید سازمانی
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsOrganizationalPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOrganizationalPurchaseDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsOrganizationalPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOrganizationalPurchaseTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsOrganizationalPurchaseCanonical" value="@seoPage.SeoParsOrganizationalPurchaseCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsOrganizationalPurchaseDesc" style="width: 100%">
-                                                            @seoPage.ParsOrganizationalPurchaseDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">ضمانت 7 روزه
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsOrganizationalPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsWarrantyDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsOrganizationalPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsWarrantyTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsOrganizationalPurchaseCanonical" value="@seoPage.SeoParsWarrantyCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsOrganizationalPurchaseDesc" style="width: 100%">
-                                                            @seoPage.ParsWarrantyDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">شیوه ها و هزینه های ارسال
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsShippingMethodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsShippingMethodsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsShippingMethodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsShippingMethodsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsShippingMethodsCanonical" value="@seoPage.SeoParsShippingMethodsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsShippingMethodsDesc" style="width: 100%">
-                                                            @seoPage.ParsShippingMethodsDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">مشاوره قبل از خرید
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsConsultationBeforePurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsConsultationBeforePurchaseDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsConsultationBeforePurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsConsultationBeforePurchaseTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsConsultationBeforePurchaseCanonical" value="@seoPage.SeoParsConsultationBeforePurchaseCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsConsultationBeforePurchaseDesc" style="width: 100%">
-                                                            @seoPage.ParsConsultationBeforePurchaseDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">رویه های بازگرداندن کالا
-
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsProceduresForReturningGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsProceduresForReturningGoodsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsProceduresForReturningGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsProceduresForReturningGoodsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsProceduresForReturningGoodsCanonical" value="@seoPage.SeoParsProceduresForReturningGoodsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsProceduresForReturningGoodsDesc" style="width: 100%">
-                                                            @seoPage.ParsProceduresForReturningGoodsDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">ره گیری سفارش های ارسالی
-
-
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsTrackingOrdersGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsTrackingOrdersGoodsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsTrackingOrdersGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsTrackingOrdersGoodsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsTrackingOrdersGoodsCanonical" value="@seoPage.SeoParsTrackingOrdersGoodsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsTrackingOrdersDesc" style="width: 100%">
-                                                            @seoPage.ParsTrackingOrdersDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">پشتیبانی آنلاین
-
-
-
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsOnlineSupportDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOnlineSupportDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsOnlineSupportTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOnlineSupportTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsOnlineSupportCanonical" value="@seoPage.SeoParsOnlineSupportCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsOnlineSupportDesc" style="width: 100%">
-                                                            @seoPage.ParsOnlineSupportDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">فوانین و مقررات
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsRegulationsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsRegulationsDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsRegulationsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsRegulationsTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsRegulationsCanonical" value="@seoPage.SeoParsRegulationsCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsRegulationsDesc" style="width: 100%">
-                                                            @seoPage.ParsRegulationsDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-info card-outline mt-4">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <small class="h5">حریم خصوصی کاربران
-
-
-                                                </small>
-                                            </h3>
-                                            <!-- tools box -->
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="collapse"
-                                                        data-toggle="tooltip"
-                                                        title="Collapse">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool btn-sm"
-                                                        data-widget="remove"
-                                                        data-toggle="tooltip"
-                                                        title="Remove">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                            <!-- /. tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoParsUserPrivacyDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsUserPrivacyDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text" name="SeoParsUserPrivacyTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsUserPrivacyTitle" title="test" class="form-control">
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">لینک</label>
-                                                        <input name="SeoParsUserPrivacyCanonical" value="@seoPage.SeoParsUserPrivacyCanonical" class="form-control" id="exampleInputPassword1">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group w-100 pt-2">
-                                                    <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                                    <div class="card-body">
-                                                        <div class="mb-3">
-                                                            <textarea id="" class="textare2a1" name="ParsUserPrivacyDesc" style="width: 100%">
-                                                            @seoPage.ParsUserPrivacyDesc
-                                                                                                                                                   
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w-100">
-                                        <button class="btn btn-success" type="submit"> ثبت</button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div><!-- /.card-body -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5"> پارس می در یک نگاه </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsDarYekDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsDarYekDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsDarYekTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsDarYekTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsDarYekCanonical" value="@seoPage.SeoParsDarYekCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor2" class="textare2a1 form-control editor" name="ParsDarYekDesc" style="width: 100%">
+                                                            @seoPage.ParsDarYekDesc
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5"> اهداف </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsGoalsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsGoalsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsGoalsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsGoalsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsGoalsCanonical" value="@seoPage.SeoParsGoalsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor3" class="textare2a1 form-control  editor" name="ParsGoalsDesc" style="width: 100%">
+                                                            @seoPage.ParsGoalsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                خرید اقساطی لپ تاپ و سایر محصولات
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsInstallmentPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsInstallmentPurchaseDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsInstallmentPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsInstallmentPurchaseTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsInstallmentPurchaseCanonical" value="@seoPage.SeoParsInstallmentPurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor4" class="textare2a1 form-control editor" name="ParsInstallmentPurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsInstallmentPurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                راهنمای خرید از پارس می
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsBuyingGuideDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsBuyingGuideDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsBuyingGuideTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsBuyingGuideTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsBuyingGuideCanonical" value="@seoPage.SeoParsBuyingGuideCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor5" class="textare2a1 form-control editor" name="ParsBuyingGuideDesc" style="width: 100%">
+                                                            @seoPage.ParsBuyingGuideDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                خرید سازمانی
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsOrganizationalPurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOrganizationalPurchaseDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsOrganizationalPurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOrganizationalPurchaseTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsOrganizationalPurchaseCanonical" value="@seoPage.SeoParsOrganizationalPurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor6" class="textare2a1 form-control editor form-control editor" name="ParsOrganizationalPurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsOrganizationalPurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                ضمانت 7 روزه
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsWarrantyDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsWarrantyDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsWarrantyTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsWarrantyTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsWarrantyCanonical" value="@seoPage.SeoParsWarrantyCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor7" class="textare2a1 form-control editor" name="ParsWarrantyDesc" style="width: 100%">
+                                                            @seoPage.ParsWarrantyDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                شیوه ها و هزینه های ارسال
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsShippingMethodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsShippingMethodsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsShippingMethodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsShippingMethodsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsShippingMethodsCanonical" value="@seoPage.SeoParsShippingMethodsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor8" class="textare2a1 form-control editor" name="ParsShippingMethodsDesc" style="width: 100%">
+                                                            @seoPage.ParsShippingMethodsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                مشاوره قبل از خرید
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsConsultationBeforePurchaseDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsConsultationBeforePurchaseDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsConsultationBeforePurchaseTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsConsultationBeforePurchaseTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsConsultationBeforePurchaseCanonical" value="@seoPage.SeoParsConsultationBeforePurchaseCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor9" class="textare2a1 form-control editor" name="ParsConsultationBeforePurchaseDesc" style="width: 100%">
+                                                            @seoPage.ParsConsultationBeforePurchaseDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                رویه های بازگرداندن کالا
+
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsProceduresForReturningGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsProceduresForReturningGoodsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsProceduresForReturningGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsProceduresForReturningGoodsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsProceduresForReturningGoodsCanonical" value="@seoPage.SeoParsProceduresForReturningGoodsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor10" class="textare2a1 form-control editor" name="ParsProceduresForReturningGoodsDesc" style="width: 100%">
+                                                            @seoPage.ParsProceduresForReturningGoodsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                ره گیری سفارش های ارسالی
+
+
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsTrackingOrdersGoodsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsTrackingOrdersGoodsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsTrackingOrdersGoodsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsTrackingOrdersGoodsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsTrackingOrdersGoodsCanonical" value="@seoPage.SeoParsTrackingOrdersGoodsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor11" class="textare2a1 form-control editor" name="ParsTrackingOrdersDesc" style="width: 100%">
+                                                            @seoPage.ParsTrackingOrdersDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                پشتیبانی آنلاین
+
+
+
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsOnlineSupportDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsOnlineSupportDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsOnlineSupportTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsOnlineSupportTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsOnlineSupportCanonical" value="@seoPage.SeoParsOnlineSupportCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor12" class="textare2a1 form-control editor" name="ParsOnlineSupportDesc" style="width: 100%">
+                                                            @seoPage.ParsOnlineSupportDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                فوانین و مقررات
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsRegulationsDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsRegulationsDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsRegulationsTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsRegulationsTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsRegulationsCanonical" value="@seoPage.SeoParsRegulationsCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor13" class="textare2a1 form-control editor" name="ParsRegulationsDesc" style="width: 100%">
+                                                            @seoPage.ParsRegulationsDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-info card-outline mt-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <small class="h5">
+                حریم خصوصی کاربران
+
+
+            </small>
+        </h3>
+        <!-- tools box -->
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="collapse"
+                    data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool btn-sm"
+                    data-widget="remove"
+                    data-toggle="tooltip"
+                    title="Remove">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">توضیحات </label>
+                    <textarea type="text" name="SeoParsUserPrivacyDesc"  id="SeoParsDarYekDesc" class="form-control">@seoPage.SeoParsUserPrivacyDesc</textarea>
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">عنوان </label>
+                    <input type="text" name="SeoParsUserPrivacyTitle" id="SeoParsDarYekTitle" value="@seoPage.SeoParsUserPrivacyTitle" title="test" class="form-control">
+                </div>
+                <div class="d-flex flex-column">
+                    <label for="exampleInputPassword1">لینک</label>
+                    <input name="SeoParsUserPrivacyCanonical" value="@seoPage.SeoParsUserPrivacyCanonical" class="form-control" id="exampleInputPassword1">
+                </div>
+            </div>
+            <div class="form-group w-100 pt-2">
+                <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea id="eitor14" class="textare2a1 form-control editor" name="ParsUserPrivacyDesc" style="width: 100%">
+                                                            @seoPage.ParsUserPrivacyDesc
+                                                                                                                                                   
+                                                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-100">
+    <button class="btn btn-success" type="submit"> ثبت</button>
+</div>
+</form>
+
+</div>
+</div>
+</div><!-- /.card-body -->
+</div>
+</div>
+</div>
+</div><!-- /.container-fluid -->
 </section>
 
 @section script{
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-<script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
 
     $(document).ready(function () {
-        ClassicEditor
-            .create(document.querySelector('.textare2a1'))
-        // bootstrap WYSIHTML5 - text editor
-        $('.textarea').wysihtml5({
-            toolbar: {fa: true}
-        })
+        window.addEventListener("load", (e) => {
+            ClassicEditor
+                .create(document.querySelector('#eitor2'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor3'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor4'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor5'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor6'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor7'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor8'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor9'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor10'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor11'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor12'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor13'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#eitor14'), {
+                    // Editor configuration.
+                    //پشتیبانی از تگ های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    //edit toolbar
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
+                            '|', 'link', 'blockQuote', 'codeBlock',
+                            '|', 'alignment',
+                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                            '|', 'htmlEmbed', 'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    //edit heading
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                        ]
+                    },
+                    //edit link
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
+                        ],
+                    },
+                    //edit font color
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    //edit background color
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(handleSampleError);
+        });
+    
     });
+  
 </script>
 }
