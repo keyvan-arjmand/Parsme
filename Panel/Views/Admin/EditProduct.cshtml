@@ -160,7 +160,7 @@
                        class="form-control" required="required">
             </div>
         </div>
-     
+
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
             <div class="form-group w-50 p-3">
                 <label>تگ ها</label>
@@ -234,7 +234,7 @@
                 @{
                     @foreach (var q in catDetail)
                     {
-                       <label  style="display: block;" class="h5">@q.Feature.Title</label>
+                        <label style="display: block;" class="h5">@q.Feature.Title</label>
                         foreach (var x in q.CategoryDetails)
                         {
                             if ((DataType)x.DataType == DataType.SelectBox)
@@ -778,23 +778,23 @@
     <div class="form-group w-25">
         <div class="form-check">
             @{
-            if (products.IsActive)
-            {
-            <input type="checkbox" id="IsActive" checked="checked"
-                   class="form-check-input"/>
-            }
-            else
-            {
-            <input type="checkbox" id="IsActive" class="form-check-input"/>
-            }
+                if (products.IsActive)
+                {
+                    <input type="checkbox" id="IsActive" checked="checked"
+                           class="form-check-input"/>
+                }
+                else
+                {
+                    <input type="checkbox" id="IsActive" class="form-check-input"/>
+                }
             }
             <label class="form-check-label">وضعیت فعال</label>
         </div>
     </div>
-    
+
     <div class="form-input w-50">
-        <a  href="@Url.Action("DeleteProd","Admin",new{products.Id})" class="btn btn-danger w-100">
-           حذف محصول
+        <a href="@Url.Action("DeleteProd", "Admin", new { products.Id })" class="btn btn-danger w-100">
+            حذف محصول
         </a>
     </div>
 </div>
@@ -953,9 +953,17 @@
                     Notiflix.Loading.circle('در حال پردازش ...');
                 },
                 success: function (data) {
+                if (data.isSuccess)
+                {
                     Notiflix.Notify.success('عملیات با موفقیت انجام شد');
                     showAlertSuccess();
                     window.location.href= `@Url.Action("ProductManage", "Admin")`;
+                }else
+                {
+                    Notiflix.Notify.failure('خطا در اجرای عملیات');
+                    showAlertErrorProd(data.message)
+                }
+                
                 },
                 error: function (xhr) {
                     showAlertError();
@@ -1088,6 +1096,14 @@
         Swal.fire({
             title: 'خطا',
             text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
+    function showAlertErrorProd(message) {
+        Swal.fire({
+            title: 'خطا',
+            text: message,
             icon: 'error',
             confirmButtonText: 'بستن'
         });

@@ -1173,11 +1173,16 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MainCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MainCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -1347,6 +1352,33 @@ namespace Domain.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ImageGalleries");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.MainCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MainCategory");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Offer", b =>
@@ -2115,6 +2147,15 @@ namespace Domain.Migrations
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("Domain.Entity.Product.Category", b =>
+                {
+                    b.HasOne("Domain.Entity.Product.MainCategory", "MainCategory")
+                        .WithMany("Categories")
+                        .HasForeignKey("MainCategoryId");
+
+                    b.Navigation("MainCategory");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.CategoryDetail", b =>
                 {
                     b.HasOne("Domain.Entity.Product.Feature", "Feature")
@@ -2355,6 +2396,11 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.Product.CategoryDetail", b =>
                 {
                     b.Navigation("SubCategoryDetails");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.MainCategory", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>

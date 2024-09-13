@@ -744,9 +744,16 @@
                     Notiflix.Loading.circle('در حال پردازش ...');
                 },
                 success: function (data) {
-                    Notiflix.Notify.success('عملیات با موفقیت انجام شد');
-                    showAlertSuccess();
-                    window.location.href= `@Url.Action("ProductManage", "Admin")`;
+                    if (data.isSuccess)
+                    {
+                        Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                        showAlertSuccess();
+                        window.location.href= `@Url.Action("ProductManage", "Admin")`;
+                    }else
+                    {
+                        Notiflix.Notify.failure('خطا در اجرای عملیات');
+                        showAlertErrorProd(data.message)
+                    }
                 },
                 error: function (xhr) {
                     Notiflix.Notify.failure('خطای داخلی');

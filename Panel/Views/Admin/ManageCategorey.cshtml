@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
+    List<MainCategory> mainCategories = ViewBag.MainCats;
     List<Category> categories = ViewBag.Cats;
     List<SubCategory> subCategories = ViewBag.SubCats;
 }
@@ -30,7 +31,10 @@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link active show" href="#activity" data-toggle="tab">دسته بندی ها</a>
+                                <a class="nav-link active show" href="#Main" data-toggle="tab">دسته بندی مادر</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#activity" data-toggle="tab">دسته بندی ها</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " href="#SubCategory" data-toggle="tab">زیردسته ها</a>
@@ -39,12 +43,12 @@
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane active show" id="activity">
+                            <div class="tab-pane active show" id="Main">
                                 <div class="d-flex justify-content-start gap-3">
-                                    <b>تعداد دسته بندی:</b> <a class=""> @categories.Count</a>  
+                                    <b>تعداد دسته بندی:</b> <a class=""> @mainCategories.Count</a>
                                 </div>
-                   
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
+
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertMainCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان دسته بندی</label>
                                         <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
@@ -96,6 +100,130 @@
                                                 <th class="text-center" style="width: 10%">#</th>
                                             </tr>
                                             @{
+                                            if (mainCategories.Count < 1)
+                                            {
+                                            <tr>
+                                                <td class="text-center"></td>
+                                                <td class="text-center">یافت نشد</td>
+                                            </tr>
+                                            }
+                                            else
+                                            {
+                                            foreach (var i in mainCategories)
+                                            {
+                                            <tr>
+
+                                                <td class="text-center">@i.Id</td>
+                                                <td class="text-center">@i.Name</td>
+                                                <td class="text-center">
+                                                    <img src="/Images/Category/@i.LogoUri" width="60"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (i.IsActive)
+                                                    {
+                                                    <span class="badge bg-success ">فعال</span>
+                                                    }
+                                                    else
+                                                    {
+                                                    <span class="badge bg-danger ">غیرفعال</span>
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    <form>
+                                                        <a class="badge bg-warning text-muted modalMainCat" data-toggle="modal" data-target="#MainCatModal">ویرایش</a>
+                                                        <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                        <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
+                                                        <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
+                                                        <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            }
+                                            }
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+                            </div>
+                            <div class="tab-pane " id="activity">
+                                <div class="d-flex justify-content-start gap-3">
+                                    <b>تعداد دسته بندی:</b> <a class=""> @categories.Count</a>
+                                </div>
+
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان دسته بندی</label>
+                                        <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">لوگو</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-flex flex-column">
+                                        <label for="exampleInputPassword1">نوع دسته بندی</label>
+                                        <select name="mainCatId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
+                                            @{
+                                            int index = 0;
+                                            foreach (var i in mainCategories)
+                                            {
+                                            if (index == 0)
+                                            {
+                                            <option selected value="@i.Id">@i.Name</option>
+                                            }
+                                            else
+                                            {
+                                            <option value="@i.Id">@i.Name</option>
+                                            }
+                                            }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                @Html.CheckBox("isActive")
+                                                @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                                                <label class="form-check-label">وضعیت فعال</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="form-input">
+                                                <button type="submit" class="btn btn-primary">ثبت</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="card mt-3">
+                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3 w-25   m-2">
+                                            <input type="text" value="0" name="index" hidden="hidden"/>
+                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+                                        </div>
+                                    </form>
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 25%">لوگو</th>
+                                                <th class="text-center" style="width: 25%">دسته مادر</th>
+                                                <th class="text-center" style="width: 15%">وضعیت</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
                                                 if (categories.Count < 1)
                                                 {
                                                     <tr>
@@ -114,6 +242,7 @@
                                                             <td class="text-center">
                                                                 <img src="/Images/Category/@i.LogoUri" width="60"/>
                                                             </td>
+                                                            <td class="text-center">@i.MainCategory.Name</td>
                                                             <td class="text-center">
                                                                 @if (i.IsActive)
                                                                 {
@@ -131,6 +260,7 @@
                                                                     <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
                                                                     <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
                                                                     <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                                                    <input type="text" name="mIsActive" class="mMainCat" value="@i.MainCategoryId" hidden="hidden"/>
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -268,6 +398,44 @@
 
 
 <!-- Modal -->
+<div class="modal fade exampleModal" id="MainCatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateMainCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش محصول</h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="idPM" required="required" name="Id" hidden="hidden">
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2 w-50">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان</span>
+                        <input type="text" id="nameM" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
+                    </div>
+                    <div class="form-check w-50 mt-4">
+                        @Html.CheckBox("isActiveMCat", new { @name = "isActiveMCat" })
+                        <label class="form-check-label">وضعیت فعال</label>
+                    </div>
+                </div>
+
+                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
+                    <input type="file" id="ImageCat" name="ImageCat" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: center;">
+                        <img id="LogoCatM" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="modal fade exampleModal" id="CatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
@@ -297,7 +465,16 @@
                         <img id="LogoCat" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
                     </div>
                 </div>
-
+                <div class="input-group p-3  m-2 w-50">
+                    <select class="form-select catIdP" id="MainCatIdP" name="MainCatId" required="required">
+                        @{
+                        foreach (var i in mainCategories)
+                        {
+                        <option value="@i.Id">@i.Name</option>
+                        }
+                        }
+                    </select>
+                </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
@@ -350,12 +527,25 @@
 
     <script>
     $(document).ready(function () {
+        $(".modalMainCat").click(function () {
+            var currentrow = $(this).closest("form");
 
+            $("#idPM").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#nameM").val(currentrow.find($("input.mName[type=text]")).val());
+            var isActiveValue = currentrow.find("input.mIsActive[type=text]").val();
+            if (isActiveValue === "True") {
+                $('#isActiveMCat').prop('checked', true);
+            } else {
+                $('#isActiveMCat').prop('checked', false);
+            }
+            $('#LogoCatM').attr("src", '/images/category/'+(currentrow.find($("input.mLogoUri[type=text]")).val()));
+        });
         $(".modalCat").click(function () {
             var currentrow = $(this).closest("form");
 
             $(".idP").val(currentrow.find($("input.mId[type=text]")).val());
             $(".nameP").val(currentrow.find($("input.mName[type=text]")).val());
+            $('#MainCatIdP').val(currentrow.find($("input.mMainCat[type=text]")).val());
             var isActiveValue = currentrow.find("input.mIsActive[type=text]").val();
             if (isActiveValue === "True") {
                 $('#isActiveCat').prop('checked', true);

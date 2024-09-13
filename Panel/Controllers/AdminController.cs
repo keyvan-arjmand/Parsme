@@ -940,18 +940,39 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateCat(int id, string title, IFormFile imageCat, bool isActiveCat)
+    public async Task<ActionResult> UpdateCat(int id, string title, IFormFile imageCat, bool isActiveCat, int mainCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
             Upload up = new Upload(_webHostEnvironment);
             var cat = await _work.GenericRepository<Category>().Table.FirstOrDefaultAsync(x => x.Id == id);
             cat.Name = title;
+            cat.MainCategoryId = mainCatId;
             cat.IsActive = isActiveCat;
             cat.LogoUri = imageCat != null
                 ? up.Uploadfile(imageCat, "Category")
                 : cat.LogoUri;
             await _work.GenericRepository<Category>().UpdateAsync(cat, CancellationToken.None);
+            return RedirectToAction("ManageCategory");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> UpdateMainCat(int id, string title, IFormFile imageCat, bool isActiveMCat)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var cat = await _work.GenericRepository<MainCategory>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            cat.Name = title;
+            cat.IsActive = isActiveMCat;
+            cat.LogoUri = imageCat != null
+                ? up.Uploadfile(imageCat, "Category")
+                : cat.LogoUri;
+            await _work.GenericRepository<MainCategory>().UpdateAsync(cat, CancellationToken.None);
             return RedirectToAction("ManageCategory");
         }
         else
@@ -1191,6 +1212,7 @@ public class AdminController : Controller
                 if (index == 0)
                 {
                     ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking
+                        .Include(x => x.MainCategory)
                         .Where(x => x.Name.Contains(search)).OrderByDescending(x => x.Id)
                         .ToListAsync();
                     ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -1200,6 +1222,7 @@ public class AdminController : Controller
                 else
                 {
                     ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking
+                        .Include(x => x.MainCategory)
                         .OrderByDescending(x => x.Id)
                         .ToListAsync();
                     ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -1210,11 +1233,16 @@ public class AdminController : Controller
             }
             else
             {
-                ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking.OrderByDescending(x => x.Id)
+                ViewBag.Cats = await _work.GenericRepository<Category>().TableNoTracking
+                    .Include(x => x.MainCategory)
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
                 ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.Include(x => x.Category)
                     .OrderByDescending(x => x.Id).ToListAsync();
             }
+
+            ViewBag.MainCats = await _work.GenericRepository<MainCategory>().TableNoTracking.Include(x => x.Categories)
+                .OrderByDescending(x => x.Id).ToListAsync();
 
             #endregion
 
@@ -1257,13 +1285,34 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertCat(string title, bool isActive, IFormFile? logo)
+    public async Task<ActionResult> InsertCat(string title, bool isActive, IFormFile? logo, int mainCatId)
     {
         if (User.Identity.IsAuthenticated)
         {
             Upload up = new Upload(_webHostEnvironment);
             var img = logo != null ? up.Uploadfile(logo, "Category") : string.Empty;
             await _work.GenericRepository<Category>().AddAsync(new Category
+            {
+                Name = title,
+                LogoUri = img,
+                IsActive = isActive,
+                MainCategoryId = mainCatId
+            }, CancellationToken.None);
+            return RedirectToAction("ManageCategory");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> InsertMainCat(string title, bool isActive, IFormFile? logo)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var img = logo != null ? up.Uploadfile(logo, "Category") : string.Empty;
+            await _work.GenericRepository<MainCategory>().AddAsync(new MainCategory
             {
                 Name = title,
                 LogoUri = img,
@@ -1276,7 +1325,6 @@ public class AdminController : Controller
             return View("Login");
         }
     }
-
 
     public async Task<ActionResult> InsertSubCat(string title, bool isActive, int? catId)
     {
@@ -2261,10 +2309,40 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> InsertProduct(Root request)
+    public async Task<ApiAction> InsertProduct(Root request)
     {
         if (await _work.GenericRepository<Product>().TableNoTracking.AnyAsync(x => x.UnicCode == request.UnicCode))
-            throw new Exception("duplicate");
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "کد محصول تکراری میباشد"
+            };
+
+        #region Validate
+
+        var catDetailCount = await _work.GenericRepository<CategoryDetail>().TableNoTracking.Where(x =>
+                x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(request.SubCategoryId.ToInt()))
+            .CountAsync();
+        if (catDetailCount != request.ProductDetails.Count())
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "خطا در پردازش جزئیات محصول"
+            };
+        }
+
+        if (request.ProductColors.Count <= 0)
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "خطا در پردازش رنگ محصول"
+            };
+        }
+
+        #endregion
+
         Upload up = new Upload(_webHostEnvironment);
         string imageUri = string.Empty;
         List<string> images = new List<string>();
@@ -2289,13 +2367,49 @@ public class AdminController : Controller
         {
             Product = request
         });
-        return RedirectToAction("ProductManage");
+
+        return new ApiAction
+        {
+            IsSuccess = true,
+            Message = "محصول با موفقیت ثبت و اضافه شد"
+        };
     }
 
-    public async Task<ActionResult> UpdateProduct(Root request)
+    public async Task<ApiAction> UpdateProduct(Root request)
     {
-        if (await _work.GenericRepository<Product>().TableNoTracking.AnyAsync(x => x.UnicCode == request.UnicCode&&x.Id!=request.Id))
-            throw new Exception("duplicate");
+        if (await _work.GenericRepository<Product>().TableNoTracking
+                .AnyAsync(x => x.UnicCode == request.UnicCode && x.Id != request.Id))
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "کد محصول تکراری میباشد"
+            };
+
+        #region Validate
+
+        var catDetailCount = await _work.GenericRepository<CategoryDetail>().TableNoTracking.Where(x =>
+                x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(request.SubCategoryId.ToInt()))
+            .CountAsync();
+        if (catDetailCount != request.ProductDetails.Count())
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "خطا در پردازش جزئیات محصول"
+            };
+        }
+
+        if (request.ProductColors.Count <= 0)
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "خطا در پردازش رنگ محصول"
+            };
+        }
+
+        #endregion
+
         var product = await _work.GenericRepository<Product>().Table.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (product == null) throw new Exception();
         Upload up = new Upload(_webHostEnvironment);
@@ -2479,7 +2593,11 @@ public class AdminController : Controller
             }
         }
 
-        return RedirectToAction("ProductManage");
+        return new ApiAction
+        {
+            IsSuccess = true,
+            Message = "تغیرات با موفقیت اعمال شد"
+        };
     }
 
     // string Title, string PersianTitle, string Detail, string MetaDesc,

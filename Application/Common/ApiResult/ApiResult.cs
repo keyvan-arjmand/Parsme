@@ -17,7 +17,7 @@ public class ApiResult
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public string Message { get; set; }
-}
+} 
 
 public class ApiResult<T> : ApiResult
 {
