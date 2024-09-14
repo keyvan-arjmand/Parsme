@@ -2320,9 +2320,11 @@ public class AdminController : Controller
 
         #region Validate
 
-        var catDetailCount = await _work.GenericRepository<CategoryDetail>().TableNoTracking.Where(x =>
-                x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(request.SubCategoryId.ToInt()))
+        var catDetailCount = await _work.GenericRepository<CategoryDetail>()
+            .TableNoTracking
+            .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == request.SubCategoryId.ToInt()))
             .CountAsync();
+
         if (catDetailCount != request.ProductDetails.Count())
         {
             return new ApiAction
@@ -2387,9 +2389,11 @@ public class AdminController : Controller
 
         #region Validate
 
-        var catDetailCount = await _work.GenericRepository<CategoryDetail>().TableNoTracking.Where(x =>
-                x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(request.SubCategoryId.ToInt()))
+        var catDetailCount = await _work.GenericRepository<CategoryDetail>()
+            .TableNoTracking
+            .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == request.SubCategoryId.ToInt()))
             .CountAsync();
+
         if (catDetailCount != request.ProductDetails.Count())
         {
             return new ApiAction

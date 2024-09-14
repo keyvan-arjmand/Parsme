@@ -735,6 +735,7 @@
                     Time:datePicker
                 }
             };
+            
             console.dir(request)
             $.ajax({
                 type: "Post",
@@ -762,12 +763,19 @@
                 complete: function() {
                     Notiflix.Loading.remove();
                 },
-                timeout: 15000
+                timeout: 30000
             });
         }
       
     }
-
+        function showAlertErrorProd(message) {
+            Swal.fire({
+                title: 'خطا',
+                text: message,
+                icon: 'error',
+                confirmButtonText: 'بستن'
+            });
+        }
     $(function () {
   
         $('#Colors').change(function (e) {
