@@ -2394,7 +2394,8 @@ public class AdminController : Controller
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == request.SubCategoryId.ToInt()))
             .CountAsync();
 
-        if (catDetailCount != request.ProductDetails.Count())
+        if (
+            catDetailCount != request.ProductDetails.Count())
         {
             return new ApiAction
             {
