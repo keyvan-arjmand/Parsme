@@ -41,9 +41,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var cats = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
         ViewBag.Categories = cats;
         var basketProducts = new List<Product>();
@@ -1502,7 +1501,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Error()
     {
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-            .Include(x => x.SubCategory).ThenInclude(x=>x.Category)
+            .Include(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .OrderBy(x => x.InsertDate).Take(20).ToListAsync();
