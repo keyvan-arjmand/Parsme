@@ -1,6 +1,46 @@
 $(document).ready(function (e) {
-    
-    
+
+    $('#SearchEl').on('input', function() {
+        // Your function code here
+        $.ajax({
+            type: "Get",
+            data: {search: $(this).val()},
+            url: "/Search/SearchProd/",
+            beforeSend: function() {
+            },
+            error: function (xhr) {
+                Notiflix.Notify.failure('خطای داخلی');
+            },
+            complete: function() {
+            },
+            timeout: 40000,
+            success: function (data) {
+                let html = ``;
+                if (data.length>0)
+                { data.map(x =>
+                {
+                    html+=`  <li>
+                                            <a href="/Home/ProductPage/${x.id}">
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/${x.imageUri}" width="30px">
+                                                ${x.persianTitle}
+                                                <a class="btn btn-light btn-continue-search" href="/Home/ProductPage/${x.id}">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </a>
+                                            </a>
+                            </li>`;
+                })}else{
+                    html+=`  <li>
+                                            <a href="">
+                                              نتیجه ای یافت نشد
+                                            </a>
+                            </li>`;
+                }
+
+
+                document.getElementById("SearchResult").innerHTML = html;
+            },
+        });
+    });
     
     
     

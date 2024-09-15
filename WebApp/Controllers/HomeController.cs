@@ -45,6 +45,9 @@ public class HomeController : Controller
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
         ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+        
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -114,8 +117,7 @@ public class HomeController : Controller
         // }
 
         ViewBag.Offer = offer;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         return View();
@@ -207,10 +209,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
             var basketProducts = new List<Product>();
@@ -249,10 +254,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
             ViewBag.User = user;
@@ -294,10 +302,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
             ViewBag.User = user;
@@ -340,10 +351,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
             ViewBag.User = user;
@@ -383,10 +397,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
             ViewBag.User = user;
@@ -431,10 +448,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
             var basketProducts = new List<Product>();
@@ -464,7 +484,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x=>x.Offer)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.FactorId == id);
@@ -481,10 +501,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
             var basketProducts = new List<Product>();
@@ -637,10 +660,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
             var basketProducts = new List<Product>();
@@ -766,10 +792,13 @@ public class HomeController : Controller
 
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Code == code) ?? new DiscountCode();
@@ -818,10 +847,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ProductPage(int id)
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var prodD = await _work.GenericRepository<Product>().TableNoTracking
@@ -833,6 +865,7 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
             .FirstOrDefaultAsync(x => x.Id == id) ?? new Product();
+         prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
         ViewBag.Product = prodD;
         var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
@@ -879,19 +912,37 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> GetByBrand(int id)
+    public async Task<IActionResult> GetByBrand(int id, double min, double max)
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        ViewBag.Id = id;
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
-        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-            .Include(x => x.SubCategory)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .Include(x => x.Offer)
-            .Where(x => x.BrandId == id).ToListAsync();
+        if (max > 0)
+        {
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.Offer)
+                .Where(x => x.BrandId == id)
+                .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                .ToListAsync();
+        }
+        else
+        {
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.Offer)
+                .Where(x => x.BrandId == id)
+                .ToListAsync();
+        }
 
 
         var basketProducts = new List<Product>();
@@ -912,7 +963,9 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
-
+        ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
+            .Include(x => x.Brands)
+            .ToListAsync();
         ViewBag.Landing = await _work.GenericRepository<CatLanding>().TableNoTracking
             .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
         ViewBag.BasketProd = basketProducts;
@@ -921,10 +974,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Faq()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -953,10 +1009,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> InstallmentPage()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -978,17 +1037,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> AboutUs()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+           var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+        
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1017,10 +1079,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ContactUs()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1080,10 +1145,13 @@ public class HomeController : Controller
                             x.Detail.Contains(search) || x.MetaKeyword.Contains(search)).ToListAsync();
         }
 
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -1180,10 +1248,13 @@ public class HomeController : Controller
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList().Contains(subCategoryId) &&
                         x.ShowInSearch).ToListAsync();
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
@@ -1244,10 +1315,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Privacy()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1269,7 +1343,7 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -1336,11 +1410,13 @@ public class HomeController : Controller
             }
         }
 
-
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var prods = new List<Product>();
@@ -1482,10 +1558,13 @@ public class HomeController : Controller
 
         ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking
             .ToListAsync();
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
         ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.Take(4).ToListAsync();
 
@@ -1619,10 +1698,13 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
+
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
             var basketProducts = new List<Product>();
@@ -1703,10 +1785,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> WhyParsPage()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1728,7 +1813,7 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -1736,10 +1821,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsAtGlance()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1761,17 +1849,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsGoals()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1793,17 +1884,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsBuyingGuide()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1825,17 +1919,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsOrganizationalPurchase()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1857,17 +1954,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsGuarantee()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1889,17 +1989,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsShippingMethods()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1921,17 +2024,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsConsultationBeforePurchase()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1953,17 +2059,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ProceduresForReturning()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -1985,17 +2094,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> TrackingOrders()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -2017,7 +2129,7 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -2025,10 +2137,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsOnlineSupport()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -2050,17 +2165,20 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }
 
     public async Task<IActionResult> ParsRulesAndRegulations()
     {
-        ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-            .Include(x => x.SubCategories)
-            .ThenInclude(x => x.Brands)
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();
@@ -2082,7 +2200,7 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.ToListAsync();
+        ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
     }

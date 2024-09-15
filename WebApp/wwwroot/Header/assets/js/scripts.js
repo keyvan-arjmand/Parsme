@@ -1,4 +1,36 @@
 $(function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        // تابعی که منوی کشویی را باز و بسته می‌کند
+        function toggleDropdownMenu() {
+            // فرض بر این است که منوی کشویی با کلاس "dropdown-menu" شناخته می‌شود
+            var dropdownMenu = document.querySelector('.dropdown-menu');
+            if (dropdownMenu) {
+                dropdownMenu.classList.toggle('show'); // تغییر کلاس برای نمایش و مخفی کردن
+            }
+        }
+
+        // به دکمه قبلی یک Event Listener اضافه کنید
+        var droopmenuToggle = document.querySelector('.droopmenu-toggle');
+        if (droopmenuToggle) {
+            droopmenuToggle.addEventListener('click', function(event) {
+                event.preventDefault(); // جلوگیری از عملکرد پیش‌فرض
+                toggleDropdownMenu();
+            });
+        }
+
+        // به دکمه جدید یک Event Listener اضافه کنید
+        var navBtn = document.querySelector('.nav-btn.nav-slider');
+        if (navBtn) {
+            navBtn.addEventListener('click', function(event) {
+                event.preventDefault(); // جلوگیری از عملکرد پیش‌فرض
+                toggleDropdownMenu();
+            });
+        }
+    });
+
+
+
+
     /* Price Range Slider */
     if($('#steps-slider').length) {
         var slider = document.getElementById('steps-slider');

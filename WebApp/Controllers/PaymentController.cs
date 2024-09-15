@@ -145,10 +145,12 @@ public class PaymentController : Controller
                 .FirstOrDefaultAsync(x => x.Id == factor.Id);
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.Categories = await _work.GenericRepository<Category>().TableNoTracking
-                .Include(x => x.SubCategories)
-                .ThenInclude(x => x.Brands)
+            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
+            ViewBag.Categories = cats;
+            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                                 new FooterLink();
             HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(new List<int>()));
             return View();
         }
