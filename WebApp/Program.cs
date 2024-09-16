@@ -10,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromMinutes(20); });
+builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromHours(3);
+    option.IOTimeout = TimeSpan.FromHours(3);
+});
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
