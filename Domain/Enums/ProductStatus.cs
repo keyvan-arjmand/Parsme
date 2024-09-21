@@ -13,4 +13,5 @@ public enum ProductStatus
     ComingSoon=2,
     [Display(Name = "از رده خارج")]
     OutOfDate=3
+    
 }
