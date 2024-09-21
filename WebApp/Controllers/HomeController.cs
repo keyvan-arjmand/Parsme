@@ -859,12 +859,14 @@ public class HomeController : Controller
         var prodD = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
             .Include(x => x.ProductImages)
             .Include(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id) ?? new Product();
+
          prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
         ViewBag.Product = prodD;
         var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)

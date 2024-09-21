@@ -32,6 +32,7 @@ builder.Services.AddIdentity<User, Role>(option =>
         option.Password.RequireUppercase = false;
         option.Password.RequiredLength = 4;
         option.SignIn.RequireConfirmedPhoneNumber = false;
+        option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(3);
     })
     .AddUserManager<UserManager<User>>()
     .AddEntityFrameworkStores<AppDbContext>();

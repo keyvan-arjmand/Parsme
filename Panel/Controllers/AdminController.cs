@@ -1409,12 +1409,13 @@ public class AdminController : Controller
         {
             ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
-                .Include(x => x.SubCategory)
+                .Include(x => x.Offer)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+                .Include(x => x.ProductImages)
+                .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
-                .Include(x => x.ProductImages)
-                .Include(x => x.Offer).ThenInclude(q => q.Color)
+                .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
@@ -1439,12 +1440,13 @@ public class AdminController : Controller
         {
             ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
-                .Include(x => x.SubCategory)
+                .Include(x => x.Offer)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+                .Include(x => x.ProductImages)
+                .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
-                .Include(x => x.ProductImages)
-                .Include(x => x.Offer).ThenInclude(q => q.Color)
+                .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
@@ -1474,9 +1476,13 @@ public class AdminController : Controller
             {
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                     .Include(x => x.Brand)
-                    .Include(x => x.SubCategory)
+                    .Include(x => x.Offer)
+                    .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                     .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                    .Include(x => x.ProductDetails)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                    .AsSplitQuery()
                     .Where(x => x.SubCategory.Name.Contains(search) || x.Brand.Title.Contains(search) ||
                                 x.Code.Contains(search) || x.Detail.Contains(search) || x.Strengths.Contains(search) ||
                                 x.FullDesc.Contains(search) ||
@@ -1492,8 +1498,13 @@ public class AdminController : Controller
             {
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                     .Include(x => x.Brand)
-                    .Include(x => x.SubCategory)
+                    .Include(x => x.Offer)
+                    .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                     .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                    .AsSplitQuery()
                     .OrderByDescending(x => x.Id).ToListAsync();
             }
 
