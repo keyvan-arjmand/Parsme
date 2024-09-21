@@ -16,6 +16,7 @@ builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromHours(
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddDbContext<AppDbContext>(s =>
     s.UseSqlServer(
         "Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"));
