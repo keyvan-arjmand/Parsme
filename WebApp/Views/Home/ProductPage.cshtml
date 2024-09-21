@@ -1606,6 +1606,7 @@
                             <h3 class="content-header ">برسی تخصصی محصول</h3>
                             <div class=" text-center">
                                 @Html.Raw(prod.FullDesc)
+                                
                             </div>
                         </section>
                     </div>
@@ -1727,19 +1728,16 @@
     document.addEventListener("DOMContentLoaded", function () {
         // Select all the list items within the ul with the class 'js-product-variants'
         const variantItems = document.querySelectorAll('.js-product-variants .ui-variant');
-
         // Loop through each item
         variantItems.forEach(function (item) {
             // Find the radio input element within the current item
             const radioInput = item.querySelector('.js-variant-selector');
-
             // Check if the radio input is checked and get its value
             if (radioInput.checked) {
                 // Hide all elements with the class 'color-panel'
                 document.querySelectorAll('.color-panel').forEach(element => {
                     element.classList.add('d-none');
                 });
-
                 // Show the selected element
                 // Assuming `id` is the ID of the element to show
                 const id = radioInput.value; // Assuming the value of the radio button corresponds to the ID

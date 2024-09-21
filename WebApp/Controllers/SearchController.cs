@@ -22,7 +22,9 @@ public class SearchController : Controller
             .Include(x => x.Brand)
             .Include(x => x.SubCategory)
             .Where(x => x.Title.Contains(search) || x.PersianTitle.Contains(search) || x.Brand.Title.Contains(search) ||
-                        x.Detail.Contains(search)).Take(5).Select(x => new SearchProd
+                        x.Detail.Contains(search))
+            .Where(x=>x.)
+            .Take(5).Select(x => new SearchProd
             {
                 PersianTitle = x.PersianTitle,
                 Id = x.Id,

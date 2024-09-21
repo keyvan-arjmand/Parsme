@@ -1374,8 +1374,10 @@ public class HomeController : Controller
                 if (comparison.Count() > 0)
                 {
                     var pp = await _work.GenericRepository<Product>().TableNoTracking
+                        .AsQueryable()
                         .FirstOrDefaultAsync(x => x.Id == comparison.First());
                     var a = await _work.GenericRepository<Product>().TableNoTracking
+                        .AsQueryable()
                         .FirstOrDefaultAsync(x => x.Id == id);
                     if (a.SubCategoryId == pp.SubCategoryId)
                     {
@@ -1414,6 +1416,7 @@ public class HomeController : Controller
 
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
+            .AsSplitQuery()
             .ToListAsync();
         ViewBag.Categories = cats;
         ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
@@ -1434,16 +1437,19 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .AsSplitQuery()
                 .Where(x => comparison.Contains(x.Id)).ToListAsync();
 
 
             CatDetails = await _work.GenericRepository<CategoryDetail>().TableNoTracking
-                .Where(x => x.SubCategoryDetails.Select(q => q.SubCategoryId).ToList()
-                    .Contains(prods.FirstOrDefault().SubCategoryId)).ToListAsync();
+                .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == prods.FirstOrDefault().SubCategoryId))
+                .ToListAsync();
+
             ProdBySubCat = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.Offer)
+                .AsSplitQuery()
                 .Where(x => x.SubCategoryId == prods.FirstOrDefault().SubCategoryId).Take(10).ToListAsync();
         }
 
@@ -1463,6 +1469,7 @@ public class HomeController : Controller
                 var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                     .ThenInclude(x => x.Color)
                     .Include(x => x.Offer)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
 
                 prod.ProductColors = new List<ProductColor>() { prodColor };
