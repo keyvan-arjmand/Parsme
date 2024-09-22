@@ -284,7 +284,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
+            ViewBag.Category = await _work.GenericRepository<BrandTag>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Factors = await _work.GenericRepository<BrandLanding>().TableNoTracking
                 .Include(x => x.BrandTag)
@@ -353,7 +353,7 @@ public class AdminController : Controller
         else
         {
             var footer = await _work.GenericRepository<BrandLanding>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.BrandTagId == request.CategoryId);
+                .FirstOrDefaultAsync(x => x.BrandTagId == request.BrandTagId);
             var entity = _mapper!.Map<BrandLanding>(request);
             entity.Id = footer.Id;
             entity.ImageSlider = request.ImageSlider != null
@@ -1614,12 +1614,12 @@ public class AdminController : Controller
     {
         if (!string.IsNullOrWhiteSpace(search))
         {
-            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
-                .Where(x => x.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+            ViewBag.Category = await _work.GenericRepository<BrandTag>().TableNoTracking
+                .Where(x => x.Title.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
         }
         else
         {
-            ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
+            ViewBag.Category = await _work.GenericRepository<BrandTag>().TableNoTracking
                 .OrderByDescending(x => x.Id).ToListAsync();
         }
 

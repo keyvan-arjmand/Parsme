@@ -6,7 +6,7 @@ public class BrandLandingDto
 {
     public int Id { get; set; }
 
-    public int CategoryId { get; set; }
+    public int BrandTagId { get; set; }
 
     //slider
     public IFormFile? ImageSlider { get; set; }

@@ -8,7 +8,7 @@
 @{
     Layout = "_LayoutAdmin";
     BrandLanding Category = ViewBag.Factors;
-    Category ogCategory = ViewBag.Category;
+    BrandTag ogCategory = ViewBag.Category;
 }
 
 @section link
@@ -88,7 +88,7 @@ img{width: fit-content}
 <div class="card-header p-2">
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">@ogCategory.Name</a>
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">@ogCategory.Title</a>
         </li>
     </ul>
 </div><!-- /.card-header -->
@@ -120,7 +120,7 @@ img{width: fit-content}
     <!-- /.card-header -->
     <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
         <input id="Id" asp-for="Id" value="@Category.Id" hidden="hidden"/>
-        <input id="CategoryId" asp-for="CategoryId" value="@ogCategory.Id" hidden="hidden"/>
+        <input id="CategoryId" asp-for="BrandTagId" value="@ogCategory.Id" hidden="hidden"/>
         <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
             <div class=" m-2  p-3 w-50">
                 <div class="d-flex justify-content-between">
@@ -314,7 +314,7 @@ img{width: fit-content}
                 </div>
             </div>
             <div class="input-group p-3 " style="justify-content: center;">
-                <img src="/Images/Category/@Category.BigBanner" id="BigBanner" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
+                <img src="/Images/Banner/@Category.BigBanner" id="BigBanner" style="object-fit: cover;border-radius: 8px;width: 100%" class="imageOneP"/>
             </div>
         </div>
         <div class="d-flex justify-content-between w-100 p-2">
@@ -331,7 +331,7 @@ img{width: fit-content}
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Category/@Category.SmallBanner1" id="SmallBanner1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Banner/@Category.SmallBanner1" id="SmallBanner1" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -346,7 +346,7 @@ img{width: fit-content}
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Category/@Category.SmallBanner4" id="SmallBanner4" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Banner/@Category.SmallBanner4" id="SmallBanner4" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
         </div>
@@ -363,7 +363,7 @@ img{width: fit-content}
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Category/@Category.SmallBanner2" id="SmallBanner2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
+                    <img src="/Images/Banner/@Category.SmallBanner2" id="SmallBanner2" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                 </div>
             </div>
             <div class=" m-2  p-3 w-50">
@@ -378,7 +378,7 @@ img{width: fit-content}
                     </div>
                 </div>
                 <div class="input-group p-3 " style="justify-content: center;">
-                    <img src="/Images/Category/@Category.SmallBanner3" id="SmallBanner3" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
+                    <img src="/Images/Banner/@Category.SmallBanner3" id="SmallBanner3" style="object-fit: cover;border-radius: 8px;" class="imageOneP"/>
                 </div>
             </div>
 
@@ -439,7 +439,17 @@ img{width: fit-content}
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    $('#BigBanner').attr('src', e.target.result).show();
+                    $('#ImageSlider4').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#ImageSlider5in').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#ImageSlider5').attr('src', e.target.result).show();
                 }
                 reader.readAsDataURL(input.files[0]);
             }
