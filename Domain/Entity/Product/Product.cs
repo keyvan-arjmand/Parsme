@@ -22,6 +22,8 @@ public class Product : BaseEntity
 
     public int BrandId { get; set; }
     [ForeignKey(nameof(BrandId))] public Brand Brand { get; set; } = default!;
+    public int? BrandTagId { get; set; }
+    [ForeignKey(nameof(BrandTagId))] public BrandTag? BrandTag { get; set; } 
     public int? OfferId { get; set; }
     [ForeignKey(nameof(OfferId))] public Offer? Offer { get; set; }
     public int SubCategoryId { get; set; }

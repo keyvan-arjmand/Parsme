@@ -68,6 +68,7 @@ function MyCustomUploadAdapterPlugin(editor) {
 window.addEventListener("load", (e) => {
     ClassicEditor
         .create(document.querySelector('.editor'), {
+            language: 'en',
             // Editor configuration.
             //پشتیبانی از تگ های HTML
             htmlSupport: {
@@ -139,6 +140,11 @@ window.addEventListener("load", (e) => {
         })
         .then(editor => {
             window.editor = editor;
+
+            // اعمال استایل مستقیم برای اطمینان از نمایش اعداد انگلیسی
+            const rootElement = editor.editing.view.document.getRoot();
+            rootElement.setStyle('direction', 'ltr');
+            rootElement.setStyle('unicode-bidi', 'embed');
         })
         .catch(handleSampleError);
 });

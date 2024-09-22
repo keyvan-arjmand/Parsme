@@ -62,11 +62,12 @@ public class AdminController : Controller
                 .CountAsync(x => x.Status == Status.Pending && x.InsertDate.Date == DateTime.Now.Date);
             ViewBag.FactorCount = await _work.GenericRepository<Factor>().TableNoTracking
                 .CountAsync(x => x.InsertDate.Date == DateTime.Now.Date);
-            ViewBag.Users = await _userManager.Users.ToListAsync();
+            ViewBag.Users = await _userManager.Users.Take(12).OrderByDescending(x => x.InsertDate).ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
                 .Include(x => x.Brand)
                 .OrderByDescending(x => x.InsertDate)
+                .Take(8)
                 .ToListAsync();
 
             #endregion
@@ -285,9 +286,9 @@ public class AdminController : Controller
         {
             ViewBag.Category = await _work.GenericRepository<Category>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Id == id);
-            ViewBag.Factors = await _work.GenericRepository<CatLanding>().TableNoTracking
-                .Include(x => x.Category)
-                .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
+            ViewBag.Factors = await _work.GenericRepository<BrandLanding>().TableNoTracking
+                .Include(x => x.BrandTag)
+                .FirstOrDefaultAsync(x => x.BrandTagId == id) ?? new();
             return View();
         }
         else
@@ -332,7 +333,7 @@ public class AdminController : Controller
 
         if (request.Id <= 0)
         {
-            var entity = _mapper!.Map<CatLanding>(request);
+            var entity = _mapper!.Map<BrandLanding>(request);
             entity.ImageSlider = up.Uploadfile(request.ImageSlider, "Category");
             entity.ImageSlider2 = up.Uploadfile(request.ImageSlider2, "Category");
             entity.ImageSlider3 = up.Uploadfile(request.ImageSlider3, "Category");
@@ -346,14 +347,14 @@ public class AdminController : Controller
             entity.SmallBanner3 = up.Uploadfile(request.SmallBanner3, "Banner");
             entity.SmallBanner4 = up.Uploadfile(request.SmallBanner4, "Banner");
 
-            await _work.GenericRepository<CatLanding>()
+            await _work.GenericRepository<BrandLanding>()
                 .AddAsync(entity, CancellationToken.None);
         }
         else
         {
-            var footer = await _work.GenericRepository<CatLanding>().TableNoTracking
-                .FirstOrDefaultAsync(x => x.CategoryId == request.CategoryId);
-            var entity = _mapper!.Map<CatLanding>(request);
+            var footer = await _work.GenericRepository<BrandLanding>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.BrandTagId == request.CategoryId);
+            var entity = _mapper!.Map<BrandLanding>(request);
             entity.Id = footer.Id;
             entity.ImageSlider = request.ImageSlider != null
                 ? up.Uploadfile(request.ImageSlider, "Category")
@@ -387,7 +388,7 @@ public class AdminController : Controller
             entity.SmallBanner4 = request.SmallBanner4 != null
                 ? up.Uploadfile(request.SmallBanner4, "Banner")
                 : footer.SmallBanner4;
-            await _work.GenericRepository<CatLanding>().UpdateAsync(entity, CancellationToken.None);
+            await _work.GenericRepository<BrandLanding>().UpdateAsync(entity, CancellationToken.None);
         }
 
         return RedirectToAction("ManageBrand");
@@ -754,7 +755,7 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle,
-        IFormFile ImageUri)
+        IFormFile ImageUri,string TopBannerHref)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -773,7 +774,8 @@ public class AdminController : Controller
                     SeoIndexCanonical = SeoIndexCanonical,
                     SeoIndexDesc = SeoIndexDesc,
                     SeoIndexTitle = SeoIndexTitle,
-                    TopBanner = img
+                    TopBanner = img,
+                    TopBannerHref = TopBannerHref
                 }, CancellationToken.None);
             }
             else
@@ -784,6 +786,7 @@ public class AdminController : Controller
                 result.SeoIndexDesc = SeoIndexDesc;
                 result.SeoIndexCanonical = SeoIndexCanonical;
                 result.SeoIndexTitle = SeoIndexTitle;
+                result.TopBannerHref = TopBannerHref;
                 await _work.GenericRepository<SeoPage>().UpdateAsync(result, CancellationToken.None);
             }
 
@@ -833,6 +836,36 @@ public class AdminController : Controller
             else
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                    .OrderByDescending(x => x.Id).ToListAsync();
+            }
+
+            ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            #endregion
+
+            return View();
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> BrandTag(string search)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            #region ViewBag
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                ViewBag.Brands = await _work.GenericRepository<BrandTag>().TableNoTracking
+                    .Where(x => x.Title.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+            }
+            else
+            {
+                ViewBag.Brands = await _work.GenericRepository<BrandTag>().TableNoTracking
                     .OrderByDescending(x => x.Id).ToListAsync();
             }
 
@@ -918,6 +951,25 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> UpdateBrandTag(int id, string title, IFormFile image)
+    {
+        if (User.Identity.IsAuthenticated && id > 0)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var brand = await _work.GenericRepository<BrandTag>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            brand.Title = title;
+            brand.LogoUri = image != null
+                ? up.Uploadfile(image, "Brand")
+                : brand.LogoUri;
+            await _work.GenericRepository<BrandTag>().UpdateAsync(brand, CancellationToken.None);
+            return RedirectToAction("BrandTag");
+        }
+        else
+        {
+            return RedirectToAction("Index");
+        }
+    }
+
     public async Task<ActionResult> InsertBrand(string title, IFormFile? logo, int subCatId)
     {
         if (User.Identity.IsAuthenticated)
@@ -933,6 +985,25 @@ public class AdminController : Controller
                 SubCategoryId = subCat.Id
             }, CancellationToken.None);
             return RedirectToAction("Brand");
+        }
+        else
+        {
+            return View("Login");
+        }
+    }
+
+    public async Task<ActionResult> InsertBrandTag(string title, IFormFile? logo)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var img = logo != null ? up.Uploadfile(logo, "Brand") : string.Empty;
+            await _work.GenericRepository<BrandTag>().AddAsync(new BrandTag
+            {
+                Title = title ?? string.Empty,
+                LogoUri = img,
+            }, CancellationToken.None);
+            return RedirectToAction("BrandTag");
         }
         else
         {
@@ -1064,7 +1135,7 @@ public class AdminController : Controller
 
 
     public async Task<ActionResult> InsertDetailCat(string title, bool isActive, string? option, DataType dataType,
-        List<int> subCatIds, int featureId, int Priority)
+        List<int> subCatIds, int featureId, int Priority,bool isShow)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1079,6 +1150,7 @@ public class AdminController : Controller
                 Priority = Priority,
                 Title = title,
                 Option = option ?? string.Empty,
+                IsActive = isShow
             };
             await _work.GenericRepository<CategoryDetail>().AddAsync(entity, CancellationToken.None);
             foreach (var i in subCatIds)
@@ -1135,7 +1207,7 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateCategoryDetail(int id, string title, int featureId, bool isSearchCatDetail,
-        string option, int dataType, List<int> subCatId, int Priority)
+        string option, int dataType, List<int> subCatId, int Priority,bool isActive)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1146,6 +1218,7 @@ public class AdminController : Controller
             catDetail.Option = option ?? string.Empty;
             catDetail.FeatureId = featureId;
             catDetail.ShowInSearch = isSearchCatDetail;
+            catDetail.IsActive = isActive;
             await _work.GenericRepository<CategoryDetail>().UpdateAsync(catDetail, CancellationToken.None);
 
             var sub = await _work.GenericRepository<SubCategoryDetail>().Table
@@ -1410,7 +1483,7 @@ public class AdminController : Controller
             ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.Offer)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
                 .Include(x => x.ProductImages)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -1418,6 +1491,8 @@ public class AdminController : Controller
                 .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.BrandTags = await _work.GenericRepository<BrandTag>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
 
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
@@ -1441,7 +1516,7 @@ public class AdminController : Controller
             ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.Offer)
-                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+                .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
                 .Include(x => x.ProductImages)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -1449,6 +1524,8 @@ public class AdminController : Controller
                 .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
+            ViewBag.BrandTags = await _work.GenericRepository<BrandTag>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
 
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
@@ -1466,51 +1543,49 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> ProductManage(string search)
+    public async Task<ActionResult> ProductManage(string search, int page = 1)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
+            ViewBag.productsPage = page;
+            var productsQuery = _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.Brand)
+                .Include(x => x.BrandTag)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .AsSplitQuery()
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.Brand)
-                    .Include(x => x.Offer)
-                    .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
-                    .Include(x => x.ProductImages)
-                    .Include(x => x.SubCategory).ThenInclude(x => x.Category)
-                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                    .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                    .AsSplitQuery()
-                    .Where(x => x.SubCategory.Name.Contains(search) || x.Brand.Title.Contains(search) ||
-                                x.Code.Contains(search) || x.Detail.Contains(search) || x.Strengths.Contains(search) ||
-                                x.FullDesc.Contains(search) ||
-                                x.MetaKeyword.Contains(search) || x.FullDesc.Contains(search) ||
-                                x.PersianTitle.Contains(search) || x.WeakPoints.Contains(search) ||
-                                x.ProductGift.Contains(search) ||
-                                x.ProductColors.Select(t => t.Color).FirstOrDefault().ColorCode.Contains(search) ||
-                                x.ProductColors.Select(t => t.Color).FirstOrDefault().Title.Contains(search) ||
-                                x.ProductDetails.Select(q => q).FirstOrDefault().Value.Contains(search))
-                    .OrderByDescending(x => x.Id).ToListAsync();
+                productsQuery = productsQuery
+                    .Where(x => x.SubCategory.Name.Contains(search) || 
+                                x.Brand.Title.Contains(search) || 
+                                x.Code.Contains(search) || 
+                                x.Detail.Contains(search) || 
+                                x.Strengths.Contains(search) || 
+                                x.FullDesc.Contains(search) || 
+                                x.MetaKeyword.Contains(search) || 
+                                x.FullDesc.Contains(search) || 
+                                x.PersianTitle.Contains(search) || 
+                                x.WeakPoints.Contains(search) || 
+                                x.ProductGift.Contains(search) || 
+                                x.ProductColors.Any(t => t.Color.ColorCode.Contains(search) || 
+                                                         t.Color.Title.Contains(search)) || 
+                                x.ProductDetails.Any(q => q.Value.Contains(search)));
             }
-            else
-            {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.Brand)
-                    .Include(x => x.Offer)
-                    .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
-                    .Include(x => x.ProductImages)
-                    .Include(x => x.SubCategory).ThenInclude(x => x.Category)
-                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                    .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                    .AsSplitQuery()
-                    .OrderByDescending(x => x.Id).ToListAsync();
-            }
+
+            ViewBag.Products = await productsQuery
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * 10)
+                .Take(10)
+                .ToListAsync();
+
 
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
-
+            ViewBag.BrandTags = await _work.GenericRepository<BrandTag>().TableNoTracking.OrderByDescending(x => x.Id)
+                .ToListAsync();
             ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
             ViewBag.Colors = await _work.GenericRepository<Color>().TableNoTracking.OrderByDescending(x => x.Id)
@@ -2018,14 +2093,18 @@ public class AdminController : Controller
             if (!string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking
+                    .Include(x => x.FaqCat)
                     .Where(x => x.Title.Contains(search) || x.Desc.Contains(search))
                     .ToListAsync();
             }
             else
             {
-                ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking.ToListAsync();
+                ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking
+                    .Include(x => x.FaqCat)
+                    .ToListAsync();
             }
 
+            ViewBag.FaqCats = await _work.GenericRepository<FaqCat>().TableNoTracking.ToListAsync();
             return View();
         }
         else
@@ -2034,13 +2113,14 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateFaq(int id, string title, string desc)
+    public async Task<ActionResult> UpdateFaq(int id, string title, string desc, int catId)
     {
         if (User.Identity.IsAuthenticated)
         {
             var faq = await _work.GenericRepository<Faq>().Table.FirstOrDefaultAsync(x => x.Id == id);
             faq.Title = title;
             faq.Desc = desc;
+            faq.FaqCatId = catId;
             await _work.GenericRepository<Faq>().UpdateAsync(faq, CancellationToken.None);
             return RedirectToAction("ManageFaq");
         }
@@ -2050,7 +2130,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertFaq(string title, string desc)
+    public async Task<ActionResult> InsertFaq(string title, string desc, int catId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -2058,6 +2138,7 @@ public class AdminController : Controller
             {
                 Desc = desc,
                 Title = title,
+                FaqCatId = catId
             }, CancellationToken.None);
             return RedirectToAction("ManageFaq");
         }
@@ -2067,6 +2148,46 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<ActionResult> InsertCatFaq(string title, IFormFile logo)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            string img = up.Uploadfile(logo, "Logo") ?? string.Empty;
+            await _work.GenericRepository<FaqCat>().AddAsync(new FaqCat
+            {
+                Title = title,
+                LogoUri = img,
+            }, CancellationToken.None);
+            return RedirectToAction("ManageFaq");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
+
+    public async Task<ActionResult> UpdateCatFaq(int id, string title, IFormFile logo)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            Upload up = new Upload(_webHostEnvironment);
+            var faq = await _work.GenericRepository<FaqCat>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            string img = up.Uploadfile(logo, "Logo");
+            faq.Title = title;
+            if (!string.IsNullOrEmpty(img))
+            {
+                faq.LogoUri = img;
+            }
+
+            await _work.GenericRepository<FaqCat>().UpdateAsync(faq, CancellationToken.None);
+            return RedirectToAction("ManageFaq");
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }
+    }
 
     public async Task<ActionResult> ManageSearchResult(string search, int page = 1)
     {
@@ -2455,6 +2576,7 @@ public class AdminController : Controller
         product.InterestRate = request.InterestRate;
         product.SeoDesc = request.SeoDesc;
         product.SeoTitle = request.SeoTitle;
+        product.BrandTagId = request.BrandTagId.ToInt();
 
         if (product.BrandId != request.BrandId.ToInt())
         {

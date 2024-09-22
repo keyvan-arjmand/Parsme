@@ -404,7 +404,7 @@ namespace Domain.Migrations
                     b.ToTable("Banners");
                 });
 
-            modelBuilder.Entity("Domain.Entity.IndexPage.CatLanding", b =>
+            modelBuilder.Entity("Domain.Entity.IndexPage.BrandLanding", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -415,7 +415,7 @@ namespace Domain.Migrations
                     b.Property<string>("BigBanner")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("BrandTagId")
                         .HasColumnType("int");
 
                     b.Property<string>("DescSlider")
@@ -522,9 +522,9 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("BrandTagId");
 
-                    b.ToTable("CatLandings");
+                    b.ToTable("BrandLandings");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.ContactPage", b =>
@@ -609,6 +609,9 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("FaqCatId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
@@ -618,7 +621,33 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FaqCatId");
+
                     b.ToTable("Faqs");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.FaqCat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FaqCats");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.FooterLink", b =>
@@ -1096,6 +1125,10 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TopBannerHref")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("SeoPage");
@@ -1155,6 +1188,35 @@ namespace Domain.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("Domain.Entity.Product.BrandTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BrandLandingId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandLandingId");
+
+                    b.ToTable("BrandTags");
+                });
+
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -1200,6 +1262,9 @@ namespace Domain.Migrations
 
                     b.Property<int>("FeatureId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -1293,6 +1358,9 @@ namespace Domain.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -1431,6 +1499,9 @@ namespace Domain.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BrandTagId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1520,6 +1591,8 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("BrandTagId");
 
                     b.HasIndex("OfferId");
 
@@ -2127,15 +2200,22 @@ namespace Domain.Migrations
                     b.Navigation("Factor");
                 });
 
-            modelBuilder.Entity("Domain.Entity.IndexPage.CatLanding", b =>
+            modelBuilder.Entity("Domain.Entity.IndexPage.BrandLanding", b =>
                 {
-                    b.HasOne("Domain.Entity.Product.Category", "Category")
+                    b.HasOne("Domain.Entity.Product.BrandTag", "BrandTag")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BrandTagId");
 
-                    b.Navigation("Category");
+                    b.Navigation("BrandTag");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.Faq", b =>
+                {
+                    b.HasOne("Domain.Entity.IndexPage.FaqCat", "FaqCat")
+                        .WithMany("Faqs")
+                        .HasForeignKey("FaqCatId");
+
+                    b.Navigation("FaqCat");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
@@ -2145,6 +2225,15 @@ namespace Domain.Migrations
                         .HasForeignKey("SubCategoryId");
 
                     b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.BrandTag", b =>
+                {
+                    b.HasOne("Domain.Entity.IndexPage.BrandLanding", "BrandLanding")
+                        .WithMany()
+                        .HasForeignKey("BrandLandingId");
+
+                    b.Navigation("BrandLanding");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Category", b =>
@@ -2199,6 +2288,10 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entity.Product.BrandTag", "BrandTag")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandTagId");
+
                     b.HasOne("Domain.Entity.Product.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId");
@@ -2210,6 +2303,8 @@ namespace Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
+
+                    b.Navigation("BrandTag");
 
                     b.Navigation("Offer");
 
@@ -2385,6 +2480,16 @@ namespace Domain.Migrations
                 {
                     b.Navigation("Logs");
 
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entity.IndexPage.FaqCat", b =>
+                {
+                    b.Navigation("Faqs");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.BrandTag", b =>
+                {
                     b.Navigation("Products");
                 });
 

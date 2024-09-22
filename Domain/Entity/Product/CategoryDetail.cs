@@ -12,7 +12,7 @@ public class CategoryDetail : BaseEntity
     public DataType DataType { get; set; }
     public string Option { get; set; } = string.Empty;
     public bool ShowInSearch { get; set; }
+    public bool IsActive { get; set; }
     public int Priority { get; set; }
     public ICollection<SubCategoryDetail> SubCategoryDetails { get; set; } = default!;
-
 }

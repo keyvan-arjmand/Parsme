@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+
 //"Data Source=185.165.118.72,1433;Initial Catalog=Develop;User ID=key1;Password=7Dwuv15@;Trust Server Certificate=True"
 //"Data Source=DESKTOP-M202FR8\KEY1;Initial Catalog=Parsme;Integrated Security=True;Trust Server Certificate=True"
     public AppDbContext()
@@ -21,8 +22,9 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"
-            );
+        optionsBuilder.UseSqlServer(
+            "Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"
+        );
         base.OnConfiguring(optionsBuilder);
     }
 
@@ -58,10 +60,12 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<AboutUsPage> AboutUsPages { set; get; }
     public DbSet<InventoryNotification> InventoryNotifications { set; get; }
     public DbSet<FooterLink> FooterLinks { set; get; }
-    public DbSet<CatLanding> CatLandings { set; get; }
+    public DbSet<BrandLanding> BrandLandings { set; get; }
     public DbSet<SeoPage> SeoPage { set; get; }
     public DbSet<FooterPage> FooterPages { set; get; }
     public DbSet<SubCategoryDetail> SubCategoryDetails { set; get; }
+    public DbSet<FaqCat> FaqCats { set; get; }
+    public DbSet<BrandTag> BrandTags { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -80,7 +84,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
         modelBuilder.Entity<SubCategory>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<State>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<City>().HasQueryFilter(x => !x.IsDelete);
-      
+
         base.OnModelCreating(modelBuilder);
     }
 }

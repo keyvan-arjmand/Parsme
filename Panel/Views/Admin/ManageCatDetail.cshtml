@@ -115,7 +115,12 @@
                                                     <label class="form-check-label">نمایش در جستجو</label>
                                                 </div>
                                             </div>
-
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    @Html.CheckBox("isShow")
+                                                    <label class="form-check-label">فعال</label>
+                                                </div>
+                                            </div>
                                             <div class="form-group">
                                                 <div class="form-input">
                                                     <button type="submit" class="btn btn-primary">ثبت</button>
@@ -202,6 +207,7 @@
                                                                     <input type="text" name="mSubCatId" class="mSubCatId" value="@subIds" hidden="hidden"/>
                                                                     <input type="text" name="mFeatureId" class="mFeatureId" value="@i.FeatureId" hidden="hidden"/>
                                                                     <input type="text" name="misSearchCatDetail" class="misSearchCatDetail" value="@i.ShowInSearch.ToString()" hidden="hidden"/>
+                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
                                                                     <input type="text" name="mDataType" class="mDataType" value="@i.DataType.GetDataTypeId()" hidden="hidden"/>
                                                                     <input type="text" name="mOption" class="mOption" value="@i.Option" hidden="hidden"/>
                                                                     <input type="text" name="mPriority1" class="mPriority1" value="@i.Priority" hidden="hidden"/>
@@ -358,6 +364,11 @@
                     <div class="form-check w-50 mt-4">
                         @Html.CheckBox("isSearchCatDetail", new { @name = "isSearchCatDetail" })
                         <label class="form-check-label">نمایش در جستجو</label>
+                    </div> 
+                    <div class="form-check w-50 mt-4">
+                        @Html.CheckBox("isActive1", new { @name = "isActive" })
+                        <label class="form-check-label">فعال</label>
+                       
                     </div>
                 </div>
 
@@ -466,6 +477,9 @@
             $('#Priority1').val(currentrow.find($("input.mPriority1[type=text]")).val());
             var val = currentrow.find($("input.misSearchCatDetail[type=text]")).val();
             document.getElementById('isSearchCatDetail').checked = val === 'True';
+
+            var value = currentrow.find($("input.mIsActive[type=text]")).val();
+            document.getElementById('isActive1').checked = value === 'True';
             
             $("#DataType").val(currentrow.find($("input.mDataType[type=text]")).val());
             var dataType=currentrow.find($("input.mDataType[type=text]")).val();

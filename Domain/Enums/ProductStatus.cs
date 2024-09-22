@@ -11,7 +11,7 @@ public enum ProductStatus
     NotAvailable=1,
     [Display(Name = "به زودی")]
     ComingSoon=2,
-    [Display(Name = "از رده خارج")]
+    [Display(Name = "پیش فروش")]
     OutOfDate=3
     
 }

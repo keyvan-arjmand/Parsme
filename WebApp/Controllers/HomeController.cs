@@ -589,16 +589,16 @@ public class HomeController : Controller
 
     public async Task CastLanding()
     {
-        var brand = await _work.GenericRepository<CatLanding>().TableNoTracking
-            .FirstOrDefaultAsync(x => x.CategoryId == 8);
-        var brands = await _work.GenericRepository<Brand>().TableNoTracking.Where(x => x.Id != 9)
+        var brand = await _work.GenericRepository<BrandLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.BrandTagId == 8);
+        var brands = await _work.GenericRepository<BrandTag>().TableNoTracking.Where(x => x.Id != 9)
             .ToListAsync();
         foreach (var i in brands)
         {
-            await _work.GenericRepository<CatLanding>().AddAsync(new CatLanding
+            await _work.GenericRepository<BrandLanding>().AddAsync(new BrandLanding
             {
                 SmallBanner1 = brand.SmallBanner1,
-                CategoryId = i.Id,
+                BrandTagId = i.Id,
                 BigBanner = brand.BigBanner,
                 DescSlider = brand.DescSlider,
                 DescSlider2 = brand.DescSlider2,
@@ -968,8 +968,8 @@ public class HomeController : Controller
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
             .Include(x => x.Brands)
             .ToListAsync();
-        ViewBag.Landing = await _work.GenericRepository<CatLanding>().TableNoTracking
-            .FirstOrDefaultAsync(x => x.CategoryId == id) ?? new();
+        ViewBag.Landing = await _work.GenericRepository<BrandLanding>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.BrandTagId == id) ?? new();
         ViewBag.BasketProd = basketProducts;
         return View("ProductByBrand");
     }

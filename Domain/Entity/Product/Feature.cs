@@ -6,4 +6,5 @@ public class Feature:BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public int Priority { get; set; }
+    public bool IsActive { get; set; }
 }

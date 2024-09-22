@@ -138,6 +138,10 @@ window.addEventListener("load", (e) => {
 
         })
         .then(editor => {
+            const editorElement = editor.editing.view.document.getRoot();
+            editorElement.setStyle('direction', 'ltr');
+            editorElement.setStyle('unicode-bidi', 'embed');
+
             window.editor = editor;
         })
         .catch(handleSampleError);

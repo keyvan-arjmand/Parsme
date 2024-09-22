@@ -1,13 +1,14 @@
 ﻿@using Domain.Entity.IndexPage
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-Layout = "_LayoutAdmin";
-List<Faq> faqs = ViewBag.Faqs;
+    Layout = "_LayoutAdmin";
+    List<Faq> faqs = ViewBag.Faqs;
+    List<FaqCat> faqCats = ViewBag.FaqCats;
 }
 
 @section link
 {
-<style>
+    <style>
     .modal{
         top: 80px;
     }
@@ -42,8 +43,11 @@ List<Faq> faqs = ViewBag.Faqs;
                             <li class="nav-item">
                                 <a class="nav-link active show" href="#activity" data-toggle="tab">پرسش و پاسخ</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#cats" data-toggle="tab">دسته بندی</a>
+                            </li>
                         </ul>
-                   
+
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
@@ -58,69 +62,173 @@ List<Faq> faqs = ViewBag.Faqs;
                                         <label for="exampleInputPassword1">پاسخ</label>
                                         <textarea name="desc" style="height: 0" required="required"  class="form-control"></textarea>
                                     </div>
+                                    <div class="form-group d-flex flex-column">
+                                        <label for="exampleInputPassword1">نوع دسته بندی</label>
+                                        <select name="catId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
+                                            @{
+                                            int index = 0;
+                                            foreach (var i in faqCats)
+                                            {
+                                            if (index == 0)
+                                            {
+                                            <option selected value="@i.Id">@i.Title</option>
+                                            }
+                                            else
+                                            {
+                                            <option value="@i.Id">@i.Title</option>
+                                            }
+
+                                            index++;
+                                            }
+                                            }
+                                        </select>
+                                    </div>
                                     <div class="d-flex flex-column align-content-center justify-content-center ">
                                         <div class="form-input">
                                             <button type="submit" class="btn btn-primary">ثبت</button>
                                         </div>
                                     </div>
                                 </form>
+                                <div class="card mt-3">
+                                    <form asp-action="ManageFaq" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3  m-2 w-50">
+                                            <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                        </div>
+                                    </form>
 
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 25%">توضیحات</th>
+                                                <th class="text-center" style="width: 25%">دسته بندی</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (faqs.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td> </td>
+                                                        <td> </td>
+                                                        <td class="text-center">
+                                                            یافت نشد
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in faqs)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Title</td>
+                                                            <td class="text-center">@i.Desc</td>
+                                                            <td class="text-center">@i.FaqCat.Title</td>
+
+                                                            <td class="text-center">
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                                    <input type="text" name="mDesc" class="mDesc" value="@i.Desc" hidden="hidden"/>
+                                                                    <input type="text" name="mDesc" class="mCatId" value="@i.FaqCatId" hidden="hidden"/>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
                             </div>
-                            <div class="card mt-3">
-                                <form asp-action="ManageFaq" asp-controller="Admin" method="post">
-                                    <div class="input-group p-3  m-2 w-50">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                            <div class="tab-pane " id="cats">
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
+                                      asp-action="InsertCatFaq" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان </label>
+                                        <input name="title" class="form-control" required="required" id="exampleInputPassword1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">لوگو</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column align-content-center justify-content-center ">
+                                        <div class="form-input">
+                                            <button type="submit" class="btn btn-primary">ثبت</button>
+                                        </div>
                                     </div>
                                 </form>
+                                <div class="card mt-3">
+                                    <form asp-action="ManageFaq" asp-controller="Admin" method="post">
+                                        <div class="input-group p-3  m-2 w-50">
+                                            <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                        </div>
+                                    </form>
 
-                                <div class="card-body p-0">
-                                    <table class="table table-condensed">
-                                        <tbody>
-                                        <tr>
-                                            <th class="text-center" style="width: 5%">id</th>
-                                            <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 25%">توضیخات</th>
-                                            <th class="text-center" style="width: 10%">#</th>
-                                        </tr>
-                                        @{
-                                        if (faqs.Count < 1)
-                                        {
-                                        <tr>
-                                            <td> </td>
-                                            <td> </td>
-                                            <td class="text-center">
-                                                یافت نشد
+                                    <div class="card-body p-0">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                            <tr>
+                                                <th class="text-center" style="width: 5%">id</th>
+                                                <th class="text-center" style="width: 20%">عنوان</th>
+                                                <th class="text-center" style="width: 25%">لوگو</th>
+                                                <th class="text-center" style="width: 10%">#</th>
+                                            </tr>
+                                            @{
+                                                if (faqs.Count < 1)
+                                                {
+                                                    <tr>
+                                                        <td> </td>
+                                                        <td> </td>
+                                                        <td class="text-center">
+                                                            یافت نشد
 
-                                            </td>
-                                        </tr>
-                                        }
-                                        else
-                                        {
-                                        foreach (var i in faqs)
-                                        {
-                                        <tr>
-                                            <td class="text-center">@i.Id</td>
-                                            <td class="text-center">@i.Title</td>
-                                            <td class="text-center">@i.Desc</td>
-                                      
-                                            <td class="text-center">
-                                                <form>
-                                                    <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
-                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
-                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
-                                                    <input type="text" name="mDesc" class="mDesc" value="@i.Desc" hidden="hidden"/>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        }
-                                        }
-                                        }
-                                        </tbody>
-                                    </table>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var i in faqCats)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@i.Id</td>
+                                                            <td class="text-center">@i.Title</td>
+                                                            <td class="text-center">
+                                                                <img src="/Images/Logo/@i.LogoUri" width="45"/>
+                                                            </td>
+
+                                                            <td class="text-center">
+                                                                <form>
+                                                                    <a class="badge bg-warning text-muted modalFaq" data-toggle="modal" data-target="#exampleModal1">ویرایش</a>
+                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                                    <input type="text" name="mDesc" class="mLogo" value="@i.LogoUri" hidden="hidden"/>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
-                                <!-- /.card-body -->
                             </div>
+
                         </div>
                     </div><!-- /.card-body -->
                 </div>
@@ -153,10 +261,62 @@ List<Faq> faqs = ViewBag.Faqs;
                         <textarea type="text" id="DescEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control brandP" required="required"  name="desc"></textarea>
                     </div>
                 </div>
+                <div class="form-group d-flex flex-column">
+                    <label for="exampleInputPassword1">نوع دسته بندی</label>
+                    <select name="catId" class="form-select select2 w-100 p-3" id="FaqCat" required="required" aria-label="Default select example">
+                        @{
+                        int index = 0;
+                        foreach (var i in faqCats)
+                        {
+                        if (index == 0)
+                        {
+                        <option selected value="@i.Id">@i.Title</option>
+                        }
+                        else
+                        {
+                        <option value="@i.Id">@i.Title</option>
+                        }
+
+                        index++;
+                        }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade exampleModal1" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdateCatFaq" asp-controller="Admin" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش </h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="idP" id="id" required="required" name="Id" hidden="hidden">
+                <div class="d-flex flex-column">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان </span>
+                        <input type="text" id="Title" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
+                    </div>
+                    <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
+                        <input type="file" id="Logo" name="logo" title="" class="form-control">
+                        <div class="input-group  p-1" style="justify-content: center;">
+                            <img id="LogoIn" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
-                <button type="submit" class="btn btn-primary " >ذخیره تغیرات</button>
+                <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
     </div>
@@ -164,7 +324,7 @@ List<Faq> faqs = ViewBag.Faqs;
 
 @section script{
 
-<script>
+    <script>
 
     $(document).ready(function () {
 
@@ -174,8 +334,26 @@ List<Faq> faqs = ViewBag.Faqs;
             $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
             $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
             $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
+            $("#FaqCat").val(currentrow.find($("input.mCatId[type=text]")).val());
         });
+        $(".modalFaq").click(function () {
+            var currentrow = $(this).closest("form");
 
+            $("#id").val(currentrow.find($("input.mId[type=text]")).val());
+            $("#Title").val(currentrow.find($("input.mTitle[type=text]")).val());
+            $('#LogoIn').attr("src", '/images/Logo/'+(currentrow.find($("input.mLogo[type=text]")).val()));
+            
+        });
+        $('#Logo').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#LogoIn').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
     });
  
 </script>

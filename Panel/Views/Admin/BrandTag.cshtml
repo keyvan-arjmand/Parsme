@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
-    List<Domain.Entity.Product.Brand> brands = ViewBag.Brands;
+    List<BrandTag> brands = ViewBag.Brands;
     List<SubCategory> SubCats = ViewBag.SubCats;
 }
 
@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">مدیریت زیر گروه</h1>
+                <h1 class="m-0 text-dark">مدیریت برند</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-left">
@@ -41,7 +41,7 @@
                     <div class="card-header p-2 d-flex justify-content-start">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link active show" href="#activity" data-toggle="tab">زیرگروه ها</a>
+                                <a class="nav-link active show" href="#activity" data-toggle="tab">برندها</a>
                             </li>
                         </ul>
                         <div class="list-group list-group-unbordered mb-3 d-flex flex-row justify-content-center gap-5 m-3">
@@ -54,39 +54,20 @@
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
-                                      asp-action="InsertBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                                      asp-action="InsertBrandTag" asp-controller="Admin" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان </label>
                                         <input name="title" class="form-control" id="exampleInputPassword1" required="required">
                                     </div>
 
-                                    @* <div class="form-group"> *@
-                                    @*     <label for="exampleInputFile">لوگو</label> *@
-                                    @*     <div class="input-group"> *@
-                                    @*         <div class="custom-file"> *@
-                                    @*             <input name="logo" type="file" class="custom-file-input" id="exampleInputFile"> *@
-                                    @*             <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label> *@
-                                    @*         </div> *@
-                                    @*     </div> *@
-                                    @* </div> *@
-                                    <div class="form-group d-flex flex-column ">
-                                        <label for="exampleInputPassword1">نوع زیردسته</label>
-                                        <select name="subCatId" style="min-width: 200px;" class="form-select select2" aria-label="Default select example" required="required">
-                                            @{
-                                                int index = 0;
-                                                foreach (var i in SubCats)
-                                                {
-                                                    if (index == 0)
-                                                    {
-                                                        <option selected value="@i.Id">@i.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@i.Id">@i.Name</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">لوگو</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
+                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="d-flex flex-column align-content-center justify-content-center ">
                                         <div class="form-input">
@@ -108,11 +89,10 @@
                                     <table class="table table-condensed">
                                         <tbody>
                                         <tr>
-                                            <th class="text-center" style="width: 5%">id</th>
-                                            <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 15%">زیر دسته</th>
-                                            @* <th class="text-center" style="width: 25%">لوگو</th> *@
-                                            <th class="text-center" style="width: 10%">#</th>
+                                            <th class="text-center"> id</th>
+                                            <th class="text-center">عنوان</th>
+                                            <th class="text-center">لوگو</th>
+                                            <th class="text-center">#</th>
                                         </tr>
                                         @{
                                             if (brands.Count < 1)
@@ -133,17 +113,15 @@
                                                     <tr>
                                                         <td class="text-center">@i.Id</td>
                                                         <td class="text-center">@i.Title</td>
-                                                        <td class="text-center">@i.SubCategory.Name</td>
-                                                        @* <td class="text-center"> *@
-                                                        @*     <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/> *@
-                                                        @* </td> *@
+                                                        <td class="text-center">
+                                                            <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/>
+                                                        </td>
                                                         <td class="text-center">
                                                             <form>
                                                                 <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
                                                                 <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                 <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
                                                                 <input type="text" name="mLogo" class="mLogo" value="@i.LogoUri" hidden="hidden"/>
-                                                                <input type="text" name="mSubCategoryId" class="mSubCategoryId" value="@i.SubCategoryId" hidden="hidden"/>
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -168,7 +146,7 @@
 <div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" style="max-width: 700px !important;">
-        <form class="modal-content" asp-action="UpdateBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <form class="modal-content" asp-action="UpdateBrandTag" asp-controller="Admin" method="post" enctype="multipart/form-data">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">ویرایش </h5>
                 <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
@@ -182,24 +160,15 @@
                         <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان </span>
                         <input type="text" id="TitleEdit" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="title">
                     </div>
-                    <div class="input-group p-3  m-2 w-50">
-                        <select class="form-select catIdP" id="SubCatIdEdit" name="subCategoryId" required="required">
-                            @{
-                                foreach (var i in SubCats)
-                                {
-                                    <option value="@i.Id">@i.Name</option>
-                                }
-                            }
-                        </select>
-                    </div>
+
                 </div>
 
-                @* <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)"> *@
-                @*     <input type="file" id="Image" name="image" title="test" class="form-control"> *@
-                @*     <div class="input-group  p-1" style="justify-content: center;"> *@
-                @*         <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/> *@
-                @*     </div> *@
-                @* </div> *@
+                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
+                    <input type="file" id="Image" name="image" title="test" class="form-control">
+                    <div class="input-group  p-1" style="justify-content: center;">
+                        <img id="LogoEdit" src="" style="object-fit: cover;text-align: center" class="imageThreeP" width="130"/>
+                    </div>
+                </div>
 
 
             </div>
@@ -213,7 +182,7 @@
 @section script{
 
     <script>
- 
+
     $(document).ready(function () {
 
         $(".modalProduct").click(function () {
@@ -225,7 +194,7 @@
             $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
             $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
         });
-       
+
     });
     $('#Image').on('change', function(event) {
         var input = event.target;

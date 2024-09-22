@@ -11,17 +11,29 @@ public class Upload
 
     public string Uploadfile(IFormFile? file, string directory)
     {
-        if (file == null) return "";
-        if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\Images\\" + directory))
+        if (file == null) return string.Empty;
+    
+        var fullDirectoryPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", directory);
+    
+        if (!Directory.Exists(fullDirectoryPath))
         {
-            Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\Images\\" + directory);
+            Directory.CreateDirectory(fullDirectoryPath);
         }
 
-        var path = _webHostEnvironment.WebRootPath + "\\Images\\" + directory + "\\" + file.FileName;
-        using var f = System.IO.File.Create(path);
+        var filePath = Path.Combine(fullDirectoryPath, file.FileName);
+    
+        // بررسی اینکه آیا فایلی با نام مشابه وجود دارد
+        if (System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath); // حذف فایل در صورت وجود
+        }
+
+        using var f = System.IO.File.Create(filePath);
         file.CopyTo(f);
+
         return file.FileName;
     }
+
     public string AddImage(string imageFile, string path, string imageName)
     {
         if (string.IsNullOrEmpty(imageFile))

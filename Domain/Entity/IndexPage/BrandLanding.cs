@@ -4,11 +4,11 @@ using Domain.Entity.Product;
 
 namespace Domain.Entity.IndexPage;
 
-public class CatLanding : BaseEntity
+public class BrandLanding : BaseEntity
 {
-    public int CategoryId { get; set; }
+    public int? BrandTagId { get; set; }
 
-    [ForeignKey("CategoryId")] public Category? Category { get; set; }
+    [ForeignKey("BrandTagId")] public BrandTag? BrandTag { get; set; }
 
     //slider
     public string? ImageSlider { get; set; }
