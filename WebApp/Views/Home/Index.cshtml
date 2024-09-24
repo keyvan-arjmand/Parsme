@@ -31,12 +31,13 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-xs-12">
-
+                    <div class="col-lg-6 col-md-6 col-xs-12 fw-bold">
+                        @seoPage.NavNameComp
                     </div>
                 </div>
             </div>
         </section>
+    
         <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
             <div class="container-fluid">
                 <div class="col-12">
@@ -47,28 +48,28 @@
                                     <div class="row">
                                         <section class="footer-links-col">
                                             <div class="headline-links">
-                                                <a href="#">
+                                                <a href="#" class="text-decoration-none">
                                                     @footerLink.DescCol
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li >
-                                                    <a href="@footerLink.HrefCol1">
+                                                    <a href="@footerLink.HrefCol1" class="text-decoration-none">
                                                         @footerLink.TitleCol1
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href1Col1">
+                                                    <a href="@footerLink.Href1Col1" class="text-decoration-none">
                                                         @footerLink.Title1Col1
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href2Col1">
+                                                    <a href="@footerLink.Href2Col1" class="text-decoration-none">
                                                         @footerLink.Title2Col1
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href3Col1">
+                                                    <a href="@footerLink.Href3Col1" class="text-decoration-none">
                                                         @footerLink.Title3Col1
                                                     </a>
                                                 </li>
@@ -80,28 +81,28 @@
                                     <div class="row">
                                         <section class="footer-links-col">
                                             <div class="headline-links">
-                                                <a href="#">
+                                                <a href="#" class="text-decoration-none">
                                                     @footerLink.DescCol2
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li >
-                                                    <a href="@footerLink.HrefCol2">
+                                                    <a href="@footerLink.HrefCol2" class="text-decoration-none">
                                                         @footerLink.TitleCol2
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href1Col2">
+                                                    <a href="@footerLink.Href1Col2" class="text-decoration-none">
                                                         @footerLink.Title1Col2
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href2Col2">
+                                                    <a href="@footerLink.Href2Col2" class="text-decoration-none">
                                                         @footerLink.Title2Col2
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href3Col2">
+                                                    <a href="@footerLink.Href3Col2" class="text-decoration-none">
                                                         @footerLink.Title3Col2
                                                     </a>
                                                 </li>
@@ -113,24 +114,55 @@
                                     <div class="row">
                                         <section class="footer-links-col">
                                             <div class="headline-links">
-                                                <a href="#">
+                                                <a href="#" class="text-decoration-none">
                                                     @footerLink.DescCol3
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li >
-                                                    <a href="@footerLink.HrefCol3">
+                                                    <a href="@footerLink.HrefCol3" class="text-decoration-none">
                                                         @footerLink.TitleCol3
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href1Col3">
+                                                    <a href="@footerLink.Href1Col3" class="text-decoration-none">
                                                         @footerLink.Title1Col3
                                                     </a>
                                                 </li>
                                                 <li >
-                                                    <a href="@footerLink.Href2Col3">
+                                                    <a href="@footerLink.Href2Col3" class="text-decoration-none">
                                                         @footerLink.Title2Col3
+                                                    </a>
+                                                </li>
+                                                <li >
+
+                                                </li>
+                                            </ul>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                    <div class="row">
+                                        <section class="footer-links-col">
+                                            <div class="headline-links">
+                                                <a href="#" class="text-decoration-none">
+                                                 درباره پارس می
+                                                </a>
+                                            </div>
+                                            <ul class="footer-menu-ul">
+                                                <li >
+                                                    <a href="@Url.Action("ContactUs","Home")" class="text-decoration-none">
+                                                        تماس با ما
+                                                    </a>
+                                                </li>
+                                                <li >
+                                                    <a href="@Url.Action("Faq","Home")" class="text-decoration-none">
+                                                        سوالات متداول
+                                                    </a>
+                                                </li>
+                                                <li >
+                                                    <a href="@Url.Action("AboutUs","Home")" class="text-decoration-none">
+                                                        درباره ما
                                                     </a>
                                                 </li>
                                                 <li >
@@ -268,7 +300,7 @@
                         </a>
                     </div>
                     <div>
-                        <p class="text-muted" style="    margin: 0;
+                        <p class="text-muted fw-bold" style="    margin: 0;
     font-size: 14px;
     margin-top: 17px;">
                             @seoPage.NavNameComp
@@ -346,7 +378,7 @@
                                     foreach (var i in categories)
                                     {
                                         <li >
-                                            <a href="#">
+                                            <a href="#" class="fw-bold">
                                                 @i.Name <img src="https://newdev.parsme.com/Images/Category/@i.LogoUri" width="22px"/>
                                             </a>
                                             <div class="dm-arrow"></div>
@@ -445,7 +477,7 @@
                                 @*     </a> *@
                                 @* </li> *@
                                 <li>
-                                    <a href="@Url.Action("InstallmentPage")" class="current-link-menu ">
+                                    <a href="@Url.Action("InstallmentPage")" class="current-link-menu fw-bold">
                                         <img src="/Images/Logo/credit.png" alt="menu" width="22px">
 
                                         خرید اقساطی
@@ -1367,19 +1399,17 @@
 
 <!-- tabs---------------------------------->
 <div class="tab-count-product">
-    <section class="section-header-tab">
-        <div class="tab-scroll text-start">
-            <ul class="tabs nav text-start" style="text-align: start" id="myTab" role="tablist">
-                <li class="tab-item nav-item text-start">
-                    <a class="tab-link active text-start" id="camera-tab" data-toggle="tab" href="#camera"
-                       role="tab"
-                       aria-controls="camera" aria-selected="true">
-                        کالاهای پیشنهادی
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <header class="card-header">
+        <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">کالاهای پیشنهادی</span>
+        <h3 class="card-title"></h3>
+    </header>
     <div class="tab-content" id="myTabContent">
         <div class="tab camera tab-pane fade show active" id="camera" role="tabpanel"
              aria-labelledby="camera-tab">

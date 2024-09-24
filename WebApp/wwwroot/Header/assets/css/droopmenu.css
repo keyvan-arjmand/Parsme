@@ -209,7 +209,7 @@
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
-    font-weight: 300;
+    font-weight: 700;
     font-size: 15px;
     color: #71818C
 }
@@ -676,7 +676,7 @@
     display: block;
     padding: 5px 0;
     border-bottom: 0;
-    font-weight: 300;
+    font-weight: 600;
     font-size: 13px
 }
 
@@ -1827,7 +1827,7 @@
     }
 
     .droopmenu .droopmenu-tabnav a.droopmenu-tab-active {
-        font-weight: 400
+        font-weight: 500
     }
 
     .droopmenu .droopmenu-tabnav a:after {

@@ -1,4 +1,5 @@
 /*!
+/*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
@@ -161,7 +162,7 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: #0c0c0c;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;

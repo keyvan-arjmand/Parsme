@@ -2534,7 +2534,9 @@ header.header-main {
     margin-bottom: 15px;
     font-size: 14px;
 }
-
+.fw-bold{
+    font-weight: bold;
+}
 .black-color-text-pars {
     color: #0c0c0c;
 }
