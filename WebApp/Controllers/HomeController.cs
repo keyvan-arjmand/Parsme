@@ -95,7 +95,7 @@ public class HomeController : Controller
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .AsSplitQuery()
-            .OrderByDescending(x=>x.InterestRate)
+            .OrderByDescending(x => x.InterestRate)
             .Take(10).ToListAsync();
         ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking
@@ -116,7 +116,9 @@ public class HomeController : Controller
         var offer = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.ProductColors)
             .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).AsSplitQuery().Where(x => x.IsOffer)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+            .AsSplitQuery()
+            .Where(x => x.IsOffer && x.IsActive && !x.IsDelete)
             .Take(7)
             .ToListAsync();
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
@@ -876,7 +878,7 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
             .AsSplitQuery()
-            .FirstOrDefaultAsync(x => x.Id == id) ;
+            .FirstOrDefaultAsync(x => x.Id == id);
         if (prodD == null) throw new Exception();
         prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
         ViewBag.Product = prodD;

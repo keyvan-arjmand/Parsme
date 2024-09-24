@@ -53,12 +53,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseExceptionHandler("/Home/Error");
-app.UseHsts();
+
 
  if (!app.Environment.IsDevelopment())
  {
-     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+     app.UseExceptionHandler("/Home/Error");
+     app.UseHsts();
  }
 
 

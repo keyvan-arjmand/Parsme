@@ -71,17 +71,17 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     {
         modelBuilder.Entity<Brand>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<UserAddress>().HasQueryFilter(x => !x.IsDelete);
-        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDelete);
-        modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => !x.IsDelete);
+        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDelete&&x.IsActive);
+        modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => !x.IsDelete&&x.IsActive);
         modelBuilder.Entity<Color>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<DiscountCode>().HasQueryFilter(x => !x.IsDelete);
-        modelBuilder.Entity<Feature>().HasQueryFilter(x => !x.IsDelete);
+        modelBuilder.Entity<Feature>().HasQueryFilter(x => !x.IsDelete&&x.IsActive);
         modelBuilder.Entity<Guarantee>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<ImageGallery>().HasQueryFilter(x => !x.IsDelete);
-        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDelete);
+        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDelete&&x.IsActive);
         modelBuilder.Entity<ProductColor>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<ProductDetail>().HasQueryFilter(x => !x.IsDelete);
-        modelBuilder.Entity<SubCategory>().HasQueryFilter(x => !x.IsDelete);
+        modelBuilder.Entity<SubCategory>().HasQueryFilter(x => !x.IsDelete&&x.IsActive);
         modelBuilder.Entity<State>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<City>().HasQueryFilter(x => !x.IsDelete);
 
