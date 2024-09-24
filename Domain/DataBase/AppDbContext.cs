@@ -85,11 +85,11 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
         modelBuilder.Entity<State>().HasQueryFilter(x => !x.IsDelete);
         modelBuilder.Entity<City>().HasQueryFilter(x => !x.IsDelete);
 
-        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsActive);
-        modelBuilder.Entity<SubCategory>().HasQueryFilter(x => !x.IsActive);
-        modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => !x.IsActive);
-        modelBuilder.Entity<Feature>().HasQueryFilter(x => !x.IsActive);
-        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsActive);
+        modelBuilder.Entity<Category>().HasQueryFilter(x => x.IsActive);
+        modelBuilder.Entity<SubCategory>().HasQueryFilter(x => x.IsActive);
+        modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => x.IsActive);
+        modelBuilder.Entity<Feature>().HasQueryFilter(x => x.IsActive);
+        modelBuilder.Entity<Product>().HasQueryFilter(x => x.IsActive);
         base.OnModelCreating(modelBuilder);
     }
 }

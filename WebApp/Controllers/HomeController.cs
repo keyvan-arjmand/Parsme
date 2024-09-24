@@ -72,16 +72,17 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
 
         ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-            .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+            .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .AsSplitQuery()
+            .Where(x => x.IsShowIndex)
             .Take(20).ToListAsync();
         var otherProd = new List<Product>();
         foreach (var i in cats.Select(x => x.Id).ToList())
         {
             otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-                .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+                .Include(x => x.SubCategory)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .AsSplitQuery()
@@ -90,18 +91,20 @@ public class HomeController : Controller
 
         ViewBag.OtherParsme = otherProd;
         ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-            .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .AsSplitQuery()
-            .Take(10).ToListAsync();
-        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
-        ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .AsSplitQuery()
-            .OrderBy(x => x.InsertDate).Take(20).ToListAsync();
+            .OrderByDescending(x=>x.InterestRate)
+            .Take(10).ToListAsync();
+        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
+        ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking
+            .Include(x => x.ProductColors)
+            .Include(x => x.SubCategory)
+            .Include(x => x.Offer)
+            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .AsSplitQuery()
+            .OrderByDescending(x => x.InsertDate).Take(20).ToListAsync();
         ViewBag.OfferMoments =
             await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Offer)

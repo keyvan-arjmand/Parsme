@@ -12,16 +12,14 @@
     <link rel="stylesheet" href="/Header/assets/css/highlight.css">
     <link rel="stylesheet" href="/Header/assets/css/nouislider.min.css">
     <link rel="stylesheet" href="/Header/assets/css/style.css">
-    @await RenderSectionAsync("link",false)
-    @await RenderSectionAsync("meta",false)
+    @await RenderSectionAsync("link", false)
+    @await RenderSectionAsync("meta", false)
 </head>
 
 <body>
 <!-- header-------------------------------->
 @await RenderSectionAsync("Header")
 <!-- Modal -->
-
-
 
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -67,11 +65,11 @@
 @await RenderSectionAsync("footer")
 <!-- footer------------------------------------------->
 <!-- scroll_Progress------------------------->
-<div class="progress-wrap">
-    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-    </svg>
-</div>
+@* <div class="progress-wrap"> *@
+@*     <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102"> *@
+@*         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/> *@
+@*     </svg> *@
+@* </div> *@
 <!-- scroll_Progress------------------------->
 <!-- Page Loader----------------------------->
 <div class="P-loader">
@@ -87,10 +85,17 @@
 <!-- Page Loader----------------------------->
 </body>
 <!-- file js---------------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
-@await RenderSectionAsync("script",false)
+<script src="/assetsCli/js/main.js"></script>s
+@await RenderSectionAsync("script", false)
 <script src="/Header/assets/js/droopmenu.js"></script>
 <script src="/Header/assets/js/nouislider.min.js"></script>
 <script src="/Header/assets/js/pagination.js"></script>
 <script src="/Header/assets/js/scripts.js"></script>
+
+<script type="text/javascript">
+    !function(){var i="rJEXFp",a=window,d=document;function g(){var g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);g.async=!0,g.src=l?s+"?o="+l:s;d.getElementsByTagName("head")[0].appendChild(g);}"complete"===d.readyState?g():a.attachEvent?a.attachEvent("onload",g):a.addEventListener("load",g,!1);}();
+</script>
+<script>
+   
+</script>
 </html>

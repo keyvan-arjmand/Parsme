@@ -28,7 +28,13 @@ $(function() {
         }
     });
 
-
+    const scrollToTopBtn = document.getElementById('backtotop');
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 
 
     /* Price Range Slider */
