@@ -185,7 +185,7 @@
 
 .droopmenu li li {
     position: relative;
-    padding: 5px;
+    padding: 0.5px;
 }
 
 .droopmenu li li > ul {
@@ -677,7 +677,7 @@
     padding: 5px 0;
     border-bottom: 0;
     font-weight: 300;
-    font-size: 15px
+    font-size: 13px
 }
 
 .droopmenu .droopmenu-col li:last-child a {

@@ -225,7 +225,7 @@ header.header-main {
     border: none;
     display: block;
     outline: none;
-    background: #333;
+    background: #ff0000;
     z-index: 999;
     border-radius: 50px;
     float: left;
@@ -233,11 +233,11 @@ header.header-main {
 }
 
 .header-search .header-search-box .form-search .action-btns .btn-search:hover {
-    background-color: #3d8f14;
+    background-color: #ff5a5a;
 }
 
 .header-search .header-search-box .form-search .action-btns .btn-search i {
-    color: #4a4a4a !important;
+    color: #ab2e2e !important;
     font-size: 20px;
     margin: auto;
     display: block;
@@ -358,7 +358,7 @@ header.header-main {
 }
 
 .account-box {
-    width: auto;
+    width: 127px;
     height: 50px;
     border-radius: 10px;
     background-color: #fff;
@@ -837,7 +837,7 @@ header.header-main {
 }
 
 .header-main-nav .divider-space-card .header-cart-basket {
-    width: 180px;
+    width: 46px;
     position: relative;
 }
 
@@ -898,7 +898,7 @@ header.header-main {
     left: 10px;
     line-height: 20px;
     text-align: center;
-    top: 10px;
+    top: 17px;
     border-radius: 50px;
     font-size: 12px;
 }
@@ -2209,23 +2209,23 @@ header.header-main {
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .price del {
     display: inline-block;
     margin-left: 7px;
-    font-size: 16px;
-    color: #FF2D2D;
+    font-size: 19px;
+    color: #0c0c0c;
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .price del span span {
-    font-size: 12px;
+    font-size: 19px;
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .price ins {
-    color: #3d8f14;
-    font-size: 27px;
+    color: #e70005 ;
+    font-size: 31px;
     font-weight: 500;
     text-decoration: none;
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .price ins span span {
-    font-size: 12px;
+    font-size: 31px;
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .discount {
@@ -2289,7 +2289,7 @@ header.header-main {
     border: none;
     padding: 0;
     text-align: center;
-    font-size: 13px;
+    font-size: 15px;
     color: #999999;
     font-weight: 300;
     line-height: 2;
@@ -2382,7 +2382,7 @@ header.header-main {
 .countdown.text-md .countdown-label,
 .countdown.text-sm .countdown-label,
 .countdown.text-xs .countdown-label {
-    font-size: 0.625rem;
+    font-size: 0.925rem;
 }
 
 .countdown-style-1 .countdown-item {
@@ -2522,7 +2522,9 @@ header.header-main {
     background: #fff;
     border-radius: 20px;
 }
-
+.product-card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)
+}
 .widget,
 .brand-slider {
     border-radius: 5px;
@@ -2762,7 +2764,7 @@ header.header-main {
 }
 
 .widget-product .product-carousel .item .post-title a {
-    font-size: 13px;
+    font-size: 16px;
     color: #535353;
     text-decoration: none;
 }
@@ -2776,6 +2778,7 @@ header.header-main {
     background-color: #ffffff;
     opacity: 0;
     transition: all 0.2s;
+    border-radius: 20px;
 }
 
 .widget-product .product-carousel .item:hover .actions {
@@ -2886,8 +2889,8 @@ header.header-main {
 
 .widget-product .product-carousel .item ins,
 .brand-slider .product-carousel .item ins {
-    color: #3d8f14 !important;
-    font-size: 20px;
+    color: #0c0c0c  !important;
+    font-size: 25px;
     height: auto;
     display: block;
     text-decoration: none;
@@ -3280,20 +3283,20 @@ header.header-main {
     text-decoration: none;
     color: #535353;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 16px;
     margin-top: 25px;
 }
 
 .slider-moments #suggestion-slider .item .price {
-    color: #3d8f14;
+    color: #0c0c0c ;
     height: auto;
-    font-size: 20px;
+    font-size: 22px;
     text-align: center;
     margin-top: 20px;
 }
 
 .slider-moments #suggestion-slider .item .price span.amount span {
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .list-group {
@@ -3415,8 +3418,8 @@ header.header-main {
 
 .slider-moments .widget-product .product-carousel .item ins,
 .brand-slider .product-carousel .item ins {
-    color: #3d8f14;
-    font-size: 20px;
+    color: #0c0c0c;
+    font-size: 25px;
     height: 64px;
     display: block;
     text-decoration: none;
@@ -3980,7 +3983,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .color-d {
     position: absolute;
     width: fit-content;
-    top: 80px;
+    top: 5px;
+    padding: 5px;
 }
 
 .discount-d span {
@@ -4534,8 +4538,8 @@ span.shipping-destination {
     min-width: 161px;
     margin: 10px 19.5px 46px;
     text-decoration: none;
-    background-color: #3d8f14;
-    border: 1px solid #3e00c7;
+    background-color: #ff0000;
+    border: 1px solid #ff2828;
     transition: all 400ms ease;
 }
 

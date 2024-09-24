@@ -9,4 +9,7 @@ public class SeoPage:BaseEntity
     public string SeoIndexCanonical { get; set; } = string.Empty;
     public string TopBanner { get; set; } = string.Empty;
     public string TopBannerHref { get; set; } = string.Empty;
+    public string NavNameComp { get; set; } = string.Empty;
+    public string HeaderNumber { get; set; } = string.Empty;
+    public string HeaderLogo { get; set; } = string.Empty;
 }

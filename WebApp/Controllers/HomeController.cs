@@ -43,11 +43,12 @@ public class HomeController : Controller
     {
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
+            .AsSplitQuery()
             .ToListAsync();
         ViewBag.Categories = cats;
         ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
                              new FooterLink();
-        
+
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -60,6 +61,7 @@ public class HomeController : Controller
                 var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
                     .ThenInclude(x => x.Color)
                     .Include(x => x.Offer)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
 
                 prod.ProductColors = new List<ProductColor>() { prodColor };
@@ -73,6 +75,7 @@ public class HomeController : Controller
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .AsSplitQuery()
             .Take(20).ToListAsync();
         var otherProd = new List<Product>();
         foreach (var i in cats.Select(x => x.Id).ToList())
@@ -81,6 +84,7 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .AsSplitQuery()
                 .Take(4).ToListAsync());
         }
 
@@ -89,24 +93,28 @@ public class HomeController : Controller
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .AsSplitQuery()
             .Take(10).ToListAsync();
         ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .AsSplitQuery()
             .OrderBy(x => x.InsertDate).Take(20).ToListAsync();
         ViewBag.OfferMoments =
             await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .AsSplitQuery()
                 .Where(x => x.MomentaryOffer).Take(7).ToListAsync();
 
 
         var offer = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.ProductColors)
             .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).Where(x => x.IsOffer).Take(7)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).AsSplitQuery().Where(x => x.IsOffer)
+            .Take(7)
             .ToListAsync();
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
@@ -484,7 +492,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x=>x.Offer)
+                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Offer)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.FactorId == id);
@@ -859,15 +867,15 @@ public class HomeController : Controller
         var prodD = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x=>x.Feature)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
             .Include(x => x.ProductImages)
             .Include(x => x.SubCategory).ThenInclude(x => x.Category)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
             .AsSplitQuery()
-            .FirstOrDefaultAsync(x => x.Id == id) ?? new Product();
-
-         prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
+            .FirstOrDefaultAsync(x => x.Id == id) ;
+        if (prodD == null) throw new Exception();
+        prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
         ViewBag.Product = prodD;
         var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
@@ -965,6 +973,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
             .Include(x => x.Brands)
             .ToListAsync();
@@ -1046,13 +1055,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> AboutUs()
     {
-           var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
         ViewBag.Categories = cats;
         ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
                              new FooterLink();
-        
+
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
         var basketProducts = new List<Product>();

@@ -68,7 +68,7 @@
                             </p>
                             <p class="d-flex flex-column text-right">
                                 <span class="font-weight-bold text-center">
-                                    <i class="fa fa-arrow-up text-success"></i> @factors.Count
+                                    <i class="fa fa-arrow-up text-success"></i> @factors.Where(x => x.InsertDate.Month == DateTime.Now.Month).ToList().Count
                                 </span>
                                 <span class="text-muted">سفارشات کل</span>
                             </p>

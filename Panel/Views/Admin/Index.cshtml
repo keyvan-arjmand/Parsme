@@ -1,12 +1,15 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Product
 @using Domain.Entity.User
+@using Panel.Models
 @{
     Layout = "_LayoutAdmin";
     List<User> users = ViewBag.Users;
     List<Product> products = ViewBag.Products;
     int factorCount = ViewBag.FactorCount;
     int factorPendingCount = ViewBag.FactorPendingCount;
+    ReportIndexModel productReport = ViewBag.ProductReport;
+    ReportIndexModel factorReport = ViewBag.FactorReport;
 }
 
 @section link
@@ -72,7 +75,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3> @users.Where(x=>x.InsertDate>=DateTime.Now.AddDays(-15)).ToList().Count</h3>
+                <h3> @users.Where(x => x.InsertDate >= DateTime.Now.AddDays(-15)).ToList().Count</h3>
                 <p>کاربران جدید</p>
             </div>
             <div class="icon">
@@ -136,18 +139,24 @@
 
                         <div class="progress-group">
                             موجودی کالا
-                            <span class="float-left"><b> 123</b>/ 3</span>
+                            <span class="float-left"><b> @productReport.First</b>/ @productReport.Second</span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                @{
+                                var per1centage = (productReport.First / (double)productReport.Second) * 100;
+                                }
+                                <div class="progress-bar bg-primary" style="width: @per1centage%"></div>
                             </div>
                         </div>
                         <!-- /.progress-group -->
 
                         <div class="progress-group">
                             خرید های موفق
-                            <span class="float-left"><b> 1</b>/ 22</span>
+                            <span class="float-left"><b> @factorReport.First</b>/ @factorReport.Second</span>
                             <div class="progress progress-sm">
-                                <div class="progress-bar bg-success" style="width: 75%"></div>
+                                @{
+                                var percentage = (factorReport.First / (double)factorReport.Second) * 100;
+                                }
+                                <div class="progress-bar bg-success" style="width: @percentage%"></div>
                             </div>
                         </div>
 
@@ -165,7 +174,7 @@
                             <span class="description-percentage text-success">
                                 <i class="fa fa-caret-up"></i>
                             </span>
-                            <h5 class="description-header">تومان 35,210.43</h5>
+                            <h5 class="description-header">تومان @ViewBag.Sale.ToString("N0")</h5>
                             <span class="description-text">کل گردش حساب</span>
                         </div>
                         <!-- /.description-block -->
@@ -174,7 +183,7 @@
                     <div class="col-sm-3 col-6">
                         <div class="description-block border-right">
                             <span class="description-percentage text-warning"><i class="fa fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">تومان 10,390.90</h5>
+                            <h5 class="description-header">تومان @ViewBag.SaleMonth.ToString("N0")</h5>
                             <span class="description-text">فروش ماه</span>
                         </div>
                         <!-- /.description-block -->
@@ -182,8 +191,8 @@
                     <!-- /.col -->
                     <div class="col-sm-3 col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-success"><i class="fa fa-caret-up"></i> 20%</span>
-                            <h5 class="description-header">تومان 24,813.53</h5>
+                            <span class="description-percentage text-success"><i class="fa fa-caret-up"></i> 23%</span>
+                            <h5 class="description-header">تومان @ViewBag.profit.ToString("N0")</h5>
                             <span class="description-text">سود ماه</span>
                         </div>
                         <!-- /.description-block -->
@@ -191,8 +200,8 @@
                     <!-- /.col -->
                     <div class="col-sm-3 col-6">
                         <div class="description-block">
-                            <span class="description-percentage text-danger"><i class="fa fa-caret-down"></i> 18%</span>
-                            <h5 class="description-header">1200</h5>
+                            <span class="description-percentage text-danger"><i class="fa fa-caret-down"></i> 10%</span>
+                            <h5 class="description-header">@ViewBag.Tax.ToString("N0")تومان  </h5>
                             <span class="description-text">مالیات</span>
                         </div>
                         <!-- /.description-block -->
@@ -272,7 +281,7 @@
                                     <img src="/Images/ProductImage/@i.ImageUri" alt="Product Image" class="img-size-50">
                                 </div>
                                 <div class="product-info">
-                                    <a href="@Url.Action("ProductManage")" class="product-title">
+                                    <a href="@Url.Action("EditProduct","Admin",new{i.Id})" class="product-title">
                                         @i.SubCategory.Name
                                         <span class="badge badge-warning float-left">@i.Brand.Title</span>
                                     </a>
@@ -292,7 +301,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-center">
-                <a href="@Url.Action("Product", "Admin")" class="uppercase fs-5">نمایش همه محصولات</a>
+                <a href="@Url.Action("ProductManage", "Admin")" class="uppercase fs-5">نمایش همه محصولات</a>
             </div>
             <!-- /.card-footer -->
         </div>

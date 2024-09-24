@@ -97,30 +97,30 @@
             <div class="card-body box-profile">
                 <p class="text-muted text-center">خلاصه وضعیت</p>
                 <div class="d-flex justify-content-between gap-4 w-100">
-                    <div class="w-50">
+                    <div class="w-50 p-1 m-1">
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>تعداد محصول</b> <a class="float-left"> @products.Count</a>
+                                <b>تعداد محصول</b> <a class="float-left"> @ViewBag.AllProd</a>
                             </li>
                             <li class="list-group-item">
-                                <b>موجودی</b> <a class="float-left"> @products.Count(x => x.ProductColors.Select(x => x.Inventory).Count() > 0)</a>
+                                <b>موجودی</b> <a class="float-left"> @ViewBag.AllInvProd</a>
                             </li>
                             <li class="list-group-item">
-                                <b>محصول جدید</b> <a class="float-left"> @products.Count(x => x.InsertDate <= DateTime.Now.AddDays(-15))</a>
+                                <b>محصول جدید</b> <a class="float-left"> @ViewBag.AllNewProd</a>
                             </li>
 
                         </ul>
                     </div>
-                    <div class="w-50">
+                    <div class="w-50 p-1 m-1">
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b> محصولات ویژه</b> <a class="float-left"> @products.Count(x => x.IsOffer)</a>
+                                <b> محصولات ویژه</b> <a class="float-left"> @ViewBag.AllIsOfferProd</a>
                             </li>
                             <li class="list-group-item">
-                                <b>محصولات لحظه ای</b> <a class="float-left"> @products.Count(x => x.MomentaryOffer)</a>
+                                <b>محصولات لحظه ای</b> <a class="float-left"> @ViewBag.AllIsMomentProd</a>
                             </li>
                             <li class="list-group-item">
-                                <b>اتمام موجودی</b> <a class="float-left"> @products.Count(x => x.ProductColors.Select(x => x.Inventory).Count() < 1)</a>
+                                <b>اتمام موجودی</b> <a class="float-left"> @ViewBag.AllInvLowProd</a>
                             </li>
 
                         </ul>
@@ -203,7 +203,7 @@
                                     <td class="text-center">
                                         <a class="badge bg-warning text-muted text-decoration-none" href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
                                         <a class="badge bg-info text-muted  text-decoration-none" href="@Url.Action("TranscriptProduct", "Admin", new { @i.Id })">رونوشت</a>
-
+                                        <a class="badge bg-danger text-muted  text-decoration-none" href="@Url.Action("DeleteProd", "Admin", new { @i.Id })">حذف</a>
                                     </td>
                                 </tr>
                             }
