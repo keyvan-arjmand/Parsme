@@ -67,8 +67,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication(); // باید قبل از UseAuthorization فراخوانی شود
 app.UseAuthorization();
-app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

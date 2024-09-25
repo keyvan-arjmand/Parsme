@@ -169,7 +169,7 @@ a {
 }
 
 a:hover {
-  color: #0056b3;
+  color: #e70005 ;
   text-decoration: underline;
 }
 
@@ -4715,8 +4715,8 @@ tbody.collapse.show {
 
 .breadcrumb-item + .breadcrumb-item::before {
   display: inline-block;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
   color: #6c757d;
   content: "/";
 }

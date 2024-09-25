@@ -430,9 +430,7 @@
         height: auto;
     }
 
-    footer.footer-main-site .footer-shopping-social .logo{
-        display: none;
-    }
+ 
 }
 @media (min-width: 998px) {
     #mobile-btn{

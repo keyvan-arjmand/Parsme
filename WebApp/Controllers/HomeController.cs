@@ -872,15 +872,17 @@ public class HomeController : Controller
         var prodD = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
+            .Include(x=>x.BrandTag)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(q=>q.Feature)
             .Include(x => x.ProductImages)
-            .Include(x => x.SubCategory).ThenInclude(x => x.Category)
+            .Include(x => x.SubCategory).ThenInclude(x => x.Category).ThenInclude(x => x!.MainCategory)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
         if (prodD == null) throw new Exception();
-        prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority);
+
+        prodD.ProductDetails = prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority).ToList();
         ViewBag.Product = prodD;
         var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
             .Include(x => x.SubCategory).Where(x => x.IsShowIndex)

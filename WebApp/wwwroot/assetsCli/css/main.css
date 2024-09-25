@@ -2364,7 +2364,18 @@ header.header-main {
     font-size: 17px;
     border: 1px solid #cdcdcd;
 }
-
+.countdown.h6 .countdown-value {
+    font-family: "IRANSans";
+    font-weight: 500;
+    width: 25px;
+    height: 25px;
+    background: #fff;
+    border-radius: 50px;
+    line-height: 35px;
+    color: #6d6c6c;
+    font-size: 15px;
+    border: 1px solid #cdcdcd;
+}
 .countdown .countdown-label {
     padding-top: 0.25rem;
     color: #3b3a3a;
@@ -2375,7 +2386,6 @@ header.header-main {
 
 .countdown.h4 .countdown-label,
 .countdown.h5 .countdown-label,
-.countdown.h6 .countdown-label,
 .countdown.lead .countdown-label,
 .countdown.text-xl .countdown-label,
 .countdown.text-lg .countdown-label,
@@ -2384,7 +2394,9 @@ header.header-main {
 .countdown.text-xs .countdown-label {
     font-size: 0.925rem;
 }
-
+.countdown.h6 .countdown-label{
+    font-size: 10px !important;
+}
 .countdown-style-1 .countdown-item {
     margin-right: 0.6em;
     margin-bottom: 0.5em;
@@ -3790,13 +3802,13 @@ aside.main-row-bg .card-product-horizontal .card-product-horizontal-content {
 .noUi-horizontal .noUi-handle.noUi-handle-lower {
     background-color: #fff;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-    border: 3px solid #3d8f14;
+    border: 3px solid #ff0000;
 }
 
 .noUi-horizontal .noUi-handle.noUi-handle-upper {
     background-color: #fff;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-    border: 3px solid #3d8f14;
+    border: 3px solid #ff0000;
 }
 
 .noUi-horizontal .noUi-handle:focus {
@@ -3840,7 +3852,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .noUi-connect {
-    background: #3d8f14 !important;
+    background: #e70005  !important;
 }
 
 .filter-range {
@@ -3850,9 +3862,9 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .btn-range {
-    background-color: #651ff6;
+    background-color: #e70005 ;
     color: #fff;
-    font-size: 12px;
+    font-size: 17px;
     transition: all 300ms ease-out;
     border-radius: 20px;
     padding: 4px 15px;
@@ -3909,7 +3921,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .sort-tabs-options .nav-link.active {
-    color: #3d8f14 !important;
+    color: #ff0000 !important;
 }
 
 .shop-archive-content .product-items {
@@ -3930,7 +3942,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .shop-archive-content .product-items .product-box .thumb .promotion-badge {
-    color: #3d8f14;
+    color: #ff3f3f;
     width: 100%;
     border-bottom: 1px solid #3d8f14;
     font-weight: 400;
@@ -4013,13 +4025,13 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .shop-archive-content .product-items .product-box .title a {
-    font-size: 13px;
+    font-size: 16px;
     color: #666;
 }
 
 .shop-archive-content .product-items .product-box .price {
     text-align: center;
-    font-size: 12px;
+    font-size: 18px;
     color: #aaa;
     margin-bottom: 10px;
 }
@@ -4033,12 +4045,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .pagination-product .pagination .page-item .page-link {
     border: none;
     margin-left: 5px;
-    border-radius: 50px;
+    border-radius: 11px;
     color: #666;
 }
 
 .pagination-product .pagination .page-item .page-link.active {
-    background: #3d8f14;
+    background: #ff0000;
     color: #fff !important;
 }
 
@@ -5962,7 +5974,6 @@ span.shipping-destination {
 .product .product-gallery .gallery .gallery-item ul.gallery-actions {
     float: right;
     margin-bottom: 0;
-    margin-top: -40px;
 }
 
 .product .product-gallery .gallery .gallery-item ul.gallery-actions li {
@@ -5988,7 +5999,7 @@ span.shipping-destination {
 }
 
 .product .product-gallery .gallery .gallery-item ul.gallery-actions li a.btn-option:hover {
-    background-color: #3d8f14;
+    background-color: #ff2828;
     color: #ffffff !important;
     transition: 0.2s;
 }
@@ -6602,16 +6613,18 @@ main.single-product .product .gallery-items li img:hover {
     float: left;
     color: #666666;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .product-name span.amount {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 25px;
+    font-weight: bold;
     color: #3d8f14;
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .product-name span.amount span {
-    font-size: 14px;
+    font-size: 17px;
+font-weight: bold;
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .product-name span.unavailable {
@@ -6623,11 +6636,12 @@ main.single-product .product .gallery-items li img:hover {
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .btn-add-to-cart {
     width: 100%;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 20px;
     margin-top: 10px;
     border-color: #f5f5f5;
-    background-color: #3d8f14;
+    background-color: #ef4343;
     transition: all .2s ease;
+    font-weight: bolder;
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .btn-add-to-cart:hover {
@@ -6690,9 +6704,10 @@ main.single-product .product .gallery-items li img:hover {
 .tabs .tab-box ul.tab {
     margin: 10px;
     border-radius: 0;
-    text-align: center;
+    text-align: start;
     border-bottom: none;
     display: block;
+    padding-right: 35px;
 }
 
 .tabs .tab-box ul.tab li {
@@ -6706,16 +6721,21 @@ main.single-product .product .gallery-items li img:hover {
     border: none;
     background: transparent;
     margin: 0 auto;
+    font-size: 15px; font-weight: bold;
+    
 }
-
+.promotion-badge{
+    align-self: self-end;
+    color: #ff0000;
+}
 .tabs .tab-box ul.tab li a i {
     vertical-align: middle;
     margin-left: 5px;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .nav-tabs .nav-link.active {
-    color: #3d8f14 !important;
+    color: #ff0000 !important;
 }
 
 .tabs .tabs-content {
@@ -6725,6 +6745,12 @@ main.single-product .product .gallery-items li img:hover {
     border-radius: 20px;
     margin-bottom: 20px;
     float: right;
+}
+.owl-prev{
+    display: none !important; 
+}
+.owl-next{
+    display: none !important;
 }
 
 .tabs .tabs-content h2.params-headline {
@@ -6739,7 +6765,7 @@ main.single-product .product .gallery-items li img:hover {
     font-size: 15px;
     line-height: 2.25;
     padding: 0 30px 27px 25px;
-    min-height: 256px;
+    min-height: 135px;
     position: relative;
     margin-right: 0;
     margin-left: 0;
