@@ -2328,7 +2328,7 @@ header.header-main {
 .countdown-timer {
     width: 100%;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px;
     display: block;
     position: relative;
 }
@@ -3932,7 +3932,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .shop-archive-content .product-items .product-box {
     width: 100%;
     height: auto;
-    padding: 40px 15px 15px;
+    padding: 10px 15px 15px;
     border-radius: 20px;
     border: 1px solid #eee;
     box-shadow: 0px 2px 4px rgba(126, 142, 177, 0.12);
@@ -3942,18 +3942,16 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .shop-archive-content .product-items .product-box .thumb .promotion-badge {
-    color: #ff3f3f;
+    align-self: self-end;
+    color: #ff0000;
+    padding: 2px;
     width: 100%;
-    border-bottom: 1px solid #3d8f14;
     font-weight: 400;
     margin-bottom: 0;
     text-align: center;
     font-size: 13px;
-    height: 24px;
-    line-height: 7px;
-    position: absolute;
-    top: 13px;
-    right: 0;
+    height: 30px;
+    line-height: 14px;
 }
 
 .product-rate {
@@ -4031,8 +4029,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .shop-archive-content .product-items .product-box .price {
     text-align: center;
-    font-size: 18px;
-    color: #aaa;
+    font-size: 22px;
+    color: #0c0c0c;
     margin-bottom: 10px;
 }
 
@@ -6727,6 +6725,14 @@ font-weight: bold;
 .promotion-badge{
     align-self: self-end;
     color: #ff0000;
+    padding: 2px;
+    width: 100%;
+    font-weight: 400;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 15px;
+    height: 30px;
+    line-height: 14px;
 }
 .tabs .tab-box ul.tab li a i {
     vertical-align: middle;

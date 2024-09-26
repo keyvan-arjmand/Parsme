@@ -20,9 +20,13 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
+
+// Configure DbContext
 builder.Services.AddDbContext<AppDbContext>(s =>
     s.UseSqlServer(
         "Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"));
+
+// Configure Identity
 builder.Services.AddIdentity<User, Role>(option =>
     {
         option.Password.RequireDigit = false;
@@ -35,32 +39,34 @@ builder.Services.AddIdentity<User, Role>(option =>
     })
     .AddUserManager<UserManager<User>>()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddCors(options =>
+
+// Configure SecurityStampValidator to prevent frequent logouts
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 {
-    options.AddPolicy("CorsPolicy",
-        builder => builder
-            .SetIsOriginAllowed((host) => true)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+    options.ValidationInterval = TimeSpan.FromHours(3); // بررسی کوکی هر 3 ساعت یک بار
 });
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.AccessDeniedPath = "/Admin/AccessDenied";
-    options.Cookie.Name = "WebAppIdentityCooclie";
-    options.ExpireTimeSpan = TimeSpan.FromHours(3); 
-    options.LoginPath = "/Admin/Login";
-    options.SlidingExpiration = true;
-});
+
+// Configure CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://127.0.0.1:5500") // دامنه‌های مجاز
-                .AllowAnyHeader() // مجوز همه‌ی هدرها
-                .AllowAnyMethod(); // مجوز همه‌ی متدها (GET, POST, PUT, etc.)
+            builder.WithOrigins("http://127.0.0.1:5500")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
+});
+
+// Configure cookie settings
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Admin/AccessDenied";
+    options.Cookie.Name = "webappPanel";
+    options.ExpireTimeSpan = TimeSpan.FromHours(3); 
+    options.LoginPath = "/Admin/Login";
+    options.SlidingExpiration = true;
 });
 
 var app = builder.Build();
@@ -69,9 +75,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -82,11 +88,11 @@ app.UseSession();
 app.UseAuthentication(); // باید قبل از UseAuthorization فراخوانی شود
 app.UseAuthorization();
 
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
 app.Run();

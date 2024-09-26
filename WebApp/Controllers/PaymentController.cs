@@ -152,6 +152,8 @@ public class PaymentController : Controller
             ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
                                  new FooterLink();
             HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(new List<int>()));
+            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                              new SeoPage();
             return View();
         }
         else

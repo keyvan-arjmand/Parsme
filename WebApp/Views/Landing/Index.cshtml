@@ -3,14 +3,14 @@
 @using Domain.Entity.Product
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WebApp.Models
-
 @{
     Layout = "_Layout";
-    List<MainCategory> categories = ViewBag.Categories;
+    ViewData["Title"] = "Home Page";
+    List<Product> products = ViewBag.Products;
     List<Product> basket = ViewBag.BasketProd;
-    Domain.Entity.User.User user = ViewBag.User;
-    List<SearchResult> searchResults = ViewBag.Search as List<SearchResult>;
-    FooterPage pages = ViewBag.Pages;
+    List<MainCategory> categories = ViewBag.Categories;
+    List<SearchResult> searchResults = ViewBag.Search;
+    BrandLanding landing = ViewBag.Landing;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
 }
@@ -994,53 +994,545 @@
 
 @section link
 {
-    <!-- font---------------------------------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin------------------/assetsCli-------------->
+    <!-- plugin-----------------"a-------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/lightgallery.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style--------------/assetsCli-------------->
+    <!-- main-style-------------"a-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
-
+    <style>   
+          .countdown .countdown-value {   
+              font-family: "IRANSans";   
+              font-weight: 500;   
+              width: 29px !important;   
+              height: 30px!important;   
+              background: #fff;   
+              border-radius: 25px;   
+              line-height: 35px;   
+              color: #6d6c6c;   
+              font-size: 11px;   
+              border: 1px solid #cdcdcd;   
+          }   
+          .countdown-timer {   
+              width: 100%;   
+              text-align: center;   
+              margin-top: 0px !important;    
+              display: block;   
+              position: relative;   
+          }   
+      </style>
 }
-
-@section meta
-{
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
-    <meta name="description" content=@Html.Raw(pages.SeoWhyParsDesc)/>
-    <link rel="canonical" href=@pages.SeoWhyParsCanonical/>
-    <meta property="og:locale" content="fa_IR"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:title" content=@Html.Raw(pages.SeoWhyParsTitle)/>
-    <meta property="og:description" content=@Html.Raw(pages.SeoWhyParsDesc)/>
-    <meta property="og:url" content="https://parsme.com"/>
-    <meta property="og:site_name" content=@Html.Raw(pages.SeoWhyParsTitle)/>
-    <meta property="og:image:width" content="1200"/>
-    <meta property="og:image:height" content="760"/>
-    <meta property="og:image:type" content="image/jpeg"/>
-}
-
 
 <div class="container-main">
-    <div class="col-12">
-        <div id="content">
-            <div class="about">
-                <div class="about-us-head">
-                    <div class="about-us-head-inner">
-                        @Html.Raw(pages.SeoWhyParsTitle)
-                    </div>
-                </div>
-                <div class="page-content-about">
-                    @Html.Raw(pages.WhyParsDesc)
+<div class="d-block">
+    <div class="col-lg-12 col-xs-12 pr mb-4">
+        <div class="slider-main-container d-block">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider2))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider3))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider4))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider5))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider))
+                    {
+                        <div class="carousel-item carousel-item-h4 active">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.ImageSlider" class="d-block w-100 h-four-img"
+                                 alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h3>@landing.TitleSlider</h3>
+                                <p>@landing.DescSlider</p>
+                                <a href="@landing.HrefSlider" class="btn btn-warning btn-buy mt-4">خرید کنید</a>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider2))
+                    {
+                        <div class="carousel-item carousel-item-h4 ">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.ImageSlider2" class="d-block w-100 h-four-img"
+                                 alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h3>@landing.TitleSlider2</h3>
+                                <p>@landing.DescSlider2</p>
+                                <a href="@landing.HrefSlider2" class="btn btn-warning btn-buy mt-4">خرید کنید</a>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider3))
+                    {
+                        <div class="carousel-item carousel-item-h4 ">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.ImageSlider3" class="d-block w-100 h-four-img"
+                                 alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h3>@landing.TitleSlider3</h3>
+                                <p>@landing.DescSlider3</p>
+                                <a href="@landing.HrefSlider3" class="btn btn-warning btn-buy mt-4">خرید کنید</a>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider4))
+                    {
+                        <div class="carousel-item carousel-item-h4 ">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.ImageSlider4" class="d-block w-100 h-four-img"
+                                 alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h3>@landing.TitleSlider4</h3>
+                                <p>@landing.DescSlider4</p>
+                                <a href="@landing.HrefSlider4" class="btn btn-warning btn-buy mt-4">خرید کنید</a>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(landing.ImageSlider5))
+                    {
+                        <div class="carousel-item carousel-item-h4 ">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.ImageSlider5" class="d-block w-100 h-four-img"
+                                 alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h3>@landing.TitleSlider5</h3>
+                                <p>@landing.DescSlider5</p>
+                                <a href="@landing.HrefSlider5" class="btn btn-warning btn-buy mt-4">خرید کنید</a>
+                            </div>
+                        </div>
+                    }
+
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                       data-slide="prev">
+                        <span class="fa fa-angle-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                       data-slide="next">
+                        <span class="fa fa-angle-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- adplacement--------------------------->
+<div class="container-main">
+<div class="d-block">
+    <div class="adplacement-container-row">
+        <div class="col-12">
+            <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
+                <div class="adplacement-sponsored_box">
+                    <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="d-block">
+<!-- slider-moment------------------------->
+<div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+    <div class="slider-widget-products">
+        <div class="widget widget-product card">
+            <header class="card-header">
+                <span class="title-one">پیشنهادی های ما</span>
+                <h3 class="card-title"></h3>
+            </header>
+            <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                        @{
+                            foreach (var i in products)
+                            {
+                                <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                    <div class="item">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                }
+                                            }
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            {
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
+                                                </div>
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                            }
+                                            else
+                                            {
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                            }
+
+
+                                        </a>
+
+                                        <div class="color-d">
+                                            @foreach (var q in i.ProductColors)
+                                            {
+                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            }
+                                        </div>
+                                        <h2 class="post-title">
+                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                @i.PersianTitle
+                                            </a>
+                                        </h2>
+                                        <div class="price">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <del>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </del>
+                                                    <ins>
+                                                        <span>
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                    <div>
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <ins>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
+                                        </div>
+                                        <div class="actions">
+                                            <ul>
+                                                <li class="action-item like">
+                                                    <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                        <div class="btn btn-light ">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--slider-amazing------------------------->
+
+<!--slider-amazing------------------------->
+<!-- adplacement--------------------------->
+<div class="container-fluid">
+    <div class="row pr">
+        <div class="adplacement-container-row">
+            <div class="col-6 col-lg-3 pr">
+                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                    <div class="adplacement-sponsored_box">
+                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner1">
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3 pr">
+                <a href="@landing.HrefSmallBanner2" class="adplacement-item">
+                    <div class="adplacement-sponsored_box">
+                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner2">
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3 pr">
+                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                    <div class="adplacement-sponsored_box">
+                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-3 pr">
+                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                    <div class="adplacement-sponsored_box">
+                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- adplacement--------------------------->
+<div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+    <div class="slider-widget-products">
+        <div class="widget widget-product card">
+            <header class="card-header">
+                <span class="title-one">  پرفروش ها</span>
+                <h3 class="card-title"></h3>
+            </header>
+            <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                        @{
+                            foreach (var i in products)
+                            {
+                                <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                    <div class="item">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                }
+                                            }
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            {
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
+                                                </div>
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                            }
+                                            else
+                                            {
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                            }
+
+
+                                        </a>
+
+                                        <div class="color-d">
+                                            @foreach (var q in i.ProductColors)
+                                            {
+                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            }
+                                        </div>
+                                        <h2 class="post-title">
+                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                @i.PersianTitle
+                                            </a>
+                                        </h2>
+                                        <div class="price">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <del>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </del>
+                                                    <ins>
+                                                        <span>
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                    <div>
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <ins>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
+                                        </div>
+                                        <div class="actions">
+                                            <ul>
+                                                <li class="action-item like">
+                                                    <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                        <div class="btn btn-light ">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- adplacement--------------------------->
+        <div class="container-main">
+            <div class="d-block">
+                <div class="adplacement-container-row">
+                    <div class="col-12">
+                        <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
+                            <div class="adplacement-sponsored_box">
+                                <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
+                            </div>
+                        </a>
+                    </div>÷
+                </div>
+            </div>
+        </div>
+        <!-- adplacement--------------------------->
+
+        <div class="widget widget-product card">
+            <header class="card-header">
+                <span class="title-one">دیگر محصولات</span>
+                <h3 class="card-title"></h3>
+            </header>
+            <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                        @{
+                            foreach (var i in products)
+                            {
+                                <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                    <div class="item">
+                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                }
+                                            }
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            {
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
+                                                </div>
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                            }
+                                            else
+                                            {
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
+                                            }
+
+
+                                        </a>
+
+                                        <div class="color-d">
+                                            @foreach (var q in i.ProductColors)
+                                            {
+                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            }
+                                        </div>
+                                        <h2 class="post-title">
+                                            <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                @i.PersianTitle
+                                            </a>
+                                        </h2>
+                                        <div class="price">
+                                            @if (i.IsOffer)
+                                            {
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    <del>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </del>
+                                                    <ins>
+                                                        <span>
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                    <div>
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <ins>
+                                                        <span>
+                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                        </span>
+                                                    </ins>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <ins>
+                                                    <span>
+                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                    </span>
+                                                </ins>
+                                            }
+                                        </div>
+                                        <div class="actions">
+                                            <ul>
+                                                <li class="action-item like">
+                                                    <a href="@Url.Action("AddToFav", "Home", new { @i.Id })">
+                                                        <div class="btn btn-light ">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 </div>
 
 @section script
@@ -1050,8 +1542,10 @@
     <!-- plugin--/assetsCli--------------------------------------------->
     <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
     <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/lightgallery-all.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
+    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+    <script src="/assetsCli/js/vendor/wNumb.js"></script>
+    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <!-- main js-/assetsCli--------------------------------------------->
     <script src="/assetsCli/js/main.js"></script>

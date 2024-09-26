@@ -36,7 +36,7 @@
                 <div class="header-search text-right">
                     <div class="header-search-box">
                         <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                            <input type="search" class="header-search-input" name="search"
+                            <input type="search" class="header-search-input" name="search" id="SearchEl2"
                                    placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                             <div class="action-btns">
                                 <button class="btn btn-search" type="submit">
@@ -44,6 +44,11 @@
                                 </button>
                             </div>
                         </form>
+                        <div class="search-result">
+                            <ul class="search-result-list mb-0" id="SearchResult2">
+                            </ul>
+                            <div class="localSearchSimple"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,6 +101,46 @@
     !function(){var i="rJEXFp",a=window,d=document;function g(){var g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);g.async=!0,g.src=l?s+"?o="+l:s;d.getElementsByTagName("head")[0].appendChild(g);}"complete"===d.readyState?g():a.attachEvent?a.attachEvent("onload",g):a.addEventListener("load",g,!1);}();
 </script>
 <script>
-   
+    $('#SearchEl2').on('input', function() {
+        // Your function code here
+        $.ajax({
+            type: "Get",
+            data: {search: $(this).val()},
+            url: "/Search/SearchProd/",
+            beforeSend: function() {
+            },
+            error: function (xhr) {
+                Notiflix.Notify.failure('خطای داخلی');
+            },
+            complete: function() {
+            },
+            timeout: 40000,
+            success: function (data) {
+                let html = ``;
+                if (data.length>0)
+                { data.map(x =>
+                {
+                    html+=`  <li>
+                                            <a href="/Home/ProductPage/${x.id}">
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/${x.imageUri}" width="30px">
+                                                ${x.persianTitle}
+                                                <a class="btn btn-light btn-continue-search" href="/Home/ProductPage/${x.id}">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </a>
+                                            </a>
+                            </li>`;
+                })}else{
+                    html+=`  <li>
+                                            <a href="">
+                                              نتیجه ای یافت نشد
+                                            </a>
+                            </li>`;
+                }
+
+
+                document.getElementById("SearchResult2").innerHTML = html;
+            },
+        });
+    });
 </script>
 </html>

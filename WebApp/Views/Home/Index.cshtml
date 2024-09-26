@@ -14,8 +14,8 @@
     List<MainCategory> categories = ViewBag.Categories;
     List<SearchResult> searchResults = ViewBag.Search;
     Banner banners = ViewBag.Banners;
-    SeoPage seoPage = ViewBag.SeoPage;
     FooterLink footerLink = ViewBag.FooterLink;
+    SeoPage seoPage = ViewBag.SeoPage;
 }
 
 @section footer
@@ -52,28 +52,28 @@
                 <div class="row">
                     <section class="footer-links-col">
                         <div class="headline-links">
-                            <a href="#" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none fw-bold">
                                 @footerLink.DescCol
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
-                                <a href="@footerLink.HrefCol1" class="text-decoration-none">
+                                <a href="@footerLink.HrefCol1" class="text-decoration-none fw-bold">
                                     @footerLink.TitleCol1
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href1Col1" class="text-decoration-none">
+                                <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
                                     @footerLink.Title1Col1
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href2Col1" class="text-decoration-none">
+                                <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
                                     @footerLink.Title2Col1
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href3Col1" class="text-decoration-none">
+                                <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
                                     @footerLink.Title3Col1
                                 </a>
                             </li>
@@ -85,28 +85,28 @@
                 <div class="row">
                     <section class="footer-links-col">
                         <div class="headline-links">
-                            <a href="#" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none fw-bold">
                                 @footerLink.DescCol2
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
-                                <a href="@footerLink.HrefCol2" class="text-decoration-none">
+                                <a href="@footerLink.HrefCol2" class="text-decoration-none fw-bold">
                                     @footerLink.TitleCol2
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href1Col2" class="text-decoration-none">
+                                <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
                                     @footerLink.Title1Col2
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href2Col2" class="text-decoration-none">
+                                <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
                                     @footerLink.Title2Col2
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href3Col2" class="text-decoration-none">
+                                <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
                                     @footerLink.Title3Col2
                                 </a>
                             </li>
@@ -118,23 +118,23 @@
                 <div class="row">
                     <section class="footer-links-col">
                         <div class="headline-links">
-                            <a href="#" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none fw-bold">
                                 @footerLink.DescCol3
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
-                                <a href="@footerLink.HrefCol3" class="text-decoration-none">
+                                <a href="@footerLink.HrefCol3" class="text-decoration-none fw-bold">
                                     @footerLink.TitleCol3
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href1Col3" class="text-decoration-none">
+                                <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
                                     @footerLink.Title1Col3
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@footerLink.Href2Col3" class="text-decoration-none">
+                                <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
                                     @footerLink.Title2Col3
                                 </a>
                             </li>
@@ -149,23 +149,23 @@
                 <div class="row">
                     <section class="footer-links-col">
                         <div class="headline-links">
-                            <a href="#" class="text-decoration-none">
+                            <a href="#" class="text-decoration-none fw-bold">
                                 درباره پارس می
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
-                                <a href="@Url.Action("ContactUs", "Home")" class="text-decoration-none">
+                                <a href="@Url.Action("ContactUs", "Home")" class="text-decoration-none fw-bold">
                                     تماس با ما
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@Url.Action("Faq", "Home")" class="text-decoration-none">
+                                <a href="@Url.Action("Faq", "Home")" class="text-decoration-none fw-bold">
                                     سوالات متداول
                                 </a>
                             </li>
                             <li class="p-2">
-                                <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none">
+                                <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
                                     درباره ما
                                 </a>
                             </li>
@@ -181,7 +181,7 @@
     <div class="col-lg-4 d-flex flex-column pl">
         <div class="footer-populated text-right p-2">
             <div class="footer-social d-flex justify-content-between">
-                <h5 class="footer-populated-title">ما را دنبال کنید</h5>
+                <h5 class="footer-populated-title fw-bold">ما را دنبال کنید</h5>
                 <ul style="    display: flex;
     justify-content: space-between;
     gap: 11px;
@@ -189,21 +189,21 @@
     padding: 5px;">
                     <li>
                         <a href="#">
-                            <i class="fa fa-whatsapp"></i>
+                            <i class="fa fa-whatsapp" style="font-size: 30px"></i>
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-telegram"></i>
+                            <i class="fa fa-telegram" style="font-size: 30px"></i>
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-instagram"></i>
+                            <i class="fa fa-instagram" style="font-size: 30px"></i>
                         </a>
                     </li>
                     <li>
-                        <button type="button" id="backtotop" class="btn btn-outline-danger">
+                        <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
                             بازگشت به
                             بالا
                         </button>
@@ -230,8 +230,8 @@
         <div class="col-lg-10 pr">
             <div class="footer-content d-block">
                 <div class="text pr-1 p-2">
-                    <h2 class="title">فروشگاه اینترنتی پارس می</h2>
-                    <p class="desc">@footerLink.DescFooter</p>
+                    <h2 class="title fw-bold">فروشگاه اینترنتی پارس می</h2>
+                    <p class="desc fw-bold">@footerLink.DescFooter</p>
                 </div>
             </div>
         </div>
@@ -276,7 +276,7 @@
         </div>
         <div class="footer-copyright">
             <div class="footer-copyright-text">
-                <p class="p-3">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
+                <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
             </div>
         </div>
     </div>
@@ -439,7 +439,9 @@
                                                                                     {
                                                                                         <ul class="droopmenu-col droopmenu-col3">
                                                                                             <li>
-                                                                                                <h4>@s.Name</h4>
+                                                                                                <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
+                                                                                                    <h4>@s.Name</h4>
+                                                                                                </a>
                                                                                             </li>
                                                                                             @foreach (var b in s.Brands)
                                                                                             {
@@ -474,7 +476,9 @@
                                                                                     {
                                                                                         <ul class="droopmenu-col droopmenu-col3">
                                                                                             <li>
-                                                                                                <h4>@s.Name</h4>
+                                                                                                <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
+                                                                                                    <h4>@s.Name</h4>
+                                                                                                </a>
                                                                                             </li>
                                                                                             @foreach (var b in s.Brands)
                                                                                             {
@@ -1350,7 +1354,7 @@
                                                 </ins>
                                             </div>
                                             <ul class="list-group">
-                                                @foreach (var d in i.ProductDetails.Where(x=>x.CategoryDetail.ShowInSearch).Take(5))
+                                                @foreach (var d in i.ProductDetails.Where(x => x.CategoryDetail.ShowInSearch).Take(5))
                                                 {
                                                     if (d.CategoryDetail.DataType == DataType.CheckBox)
                                                     {
@@ -1404,7 +1408,6 @@
                                                         }
                                                     }
                                                 }
-                                            
                                             }
 
                                         </div>
@@ -1457,7 +1460,7 @@
                                                 </ins>
                                             </div>
                                             <ul class="list-group">
-                                                @foreach (var d in i.ProductDetails.Where(x=>x.CategoryDetail.ShowInSearch).Take(5))
+                                                @foreach (var d in i.ProductDetails.Where(x => x.CategoryDetail.ShowInSearch).Take(5))
                                                 {
                                                     if (d.CategoryDetail.DataType == DataType.CheckBox)
                                                     {
@@ -1492,26 +1495,25 @@
                                                 </div>
                                             </div>
                                             @{
-                                            if (i.IsOffer)
-                                            {
-                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                            {
-                                            <div class="text-center">
-                                                <del>
+                                                if (i.IsOffer)
+                                                {
+                                                    if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                    {
+                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                        {
+                                                            <div class="text-center">
+                                                                <del>
                                                                     <span class="p-3 text-muted">
                                                                         تخفیفات
                                                                     </span>
-                                                </del>
-                                                <span>
+                                                                </del>
+                                                                <span>
                                                                     تمام شد
                                                                 </span>
-                                            </div>
-                                            }
-                                            }
-                                            }
-
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
                                             }
                                         </div>
                                     </div>
@@ -1603,37 +1605,35 @@
                                              style="width: 296.75px; margin-left: 10px; min-height: 378px">
                                             <div class="item  shadow-card">
                                                 <div class="thumb" style="min-height: 265px">
-                                                    <a href="@Url.Action("ProductPage", "Home", new { i.Id })"
-                                                       class="d-block">
+                                                    <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                         @if (i.IsOffer)
                                                         {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                            {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                                {
-                                                                    <div class="d-flex justify-content-between gap-3">
-                                                                        <div class="promotion-badge w-25">فروش ویژه</div>
-                                                                        <div class="countdown-timer w-75">
-                                                                            <div class="countdown h6"
-                                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                }
-                                                            }
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                        {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                        }
                                                         }
                                                         @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                         {
-                                                            <div class="p-3">
-                                                                <div class="discount-d">
-                                                                    <span>ناموجود</span>
-                                                                </div>
+                                                        <div class="p-3">
+                                                            <div class="discount-d">
+                                                                <span>ناموجود</span>
                                                             </div>
+                                                        </div>
                                                         }
-                                                        <img
-                                                            src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                            class="img-fluid" alt="">
+                                                        <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                             class="img-fluid" alt="">
                                                     </a>
                                                 </div>
 
@@ -1739,29 +1739,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                            {
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <div class="promotion-badge w-25">فروش ویژه</div>
+                                                <div class="countdown-timer w-75">
+                                                    <div class="countdown h6"
+                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -1864,29 +1864,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                            {
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <div class="promotion-badge w-25">فروش ویژه</div>
+                                                <div class="countdown-timer w-75">
+                                                    <div class="countdown h6"
+                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -2008,29 +2008,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                            {
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <div class="promotion-badge w-25">فروش ویژه</div>
+                                                <div class="countdown-timer w-75">
+                                                    <div class="countdown h6"
+                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">

@@ -21,8 +21,11 @@ public class SearchController : Controller
         return await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.SubCategory)
+            .Include(x => x.BrandTag)
             .Where(x => x.Title.Contains(search) || x.PersianTitle.Contains(search) || x.Brand.Title.Contains(search) ||
-                        x.Detail.Contains(search))
+                        x.Detail.Contains(search) || x.MetaKeyword.Contains(search) || x.Code.Contains(search) ||
+                        x.BrandTag.Title.Contains(search) || x.SeoTitle.Contains(search) ||
+                        x.UnicCode.Contains(search) || x.SubCategory.Name.Contains(search))
             .Take(5).Select(x => new SearchProd
             {
                 PersianTitle = x.PersianTitle,
