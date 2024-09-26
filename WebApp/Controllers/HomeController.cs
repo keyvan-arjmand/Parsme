@@ -872,8 +872,8 @@ public class HomeController : Controller
         var prodD = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.Brand)
             .Include(x => x.Offer)
-            .Include(x=>x.BrandTag)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(q=>q.Feature)
+            .Include(x => x.BrandTag)
+            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(q => q.Feature)
             .Include(x => x.ProductImages)
             .Include(x => x.SubCategory).ThenInclude(x => x.Category).ThenInclude(x => x!.MainCategory)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -1498,21 +1498,16 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> SignUp(string phoneNumber, string pass)
+    public async Task<IActionResult> SignUp(string phoneNumber)
     {
-        if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == phoneNumber))
+        if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == phoneNumber) ||
+            !phoneNumber.IsValidIranianPhoneNumber())
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
-            if (user.Password == pass)
-            {
-                await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
-                return RedirectToAction("Profile");
-            }
-
-            return RedirectToAction("Login");
+            return RedirectToAction("Register");
         }
         else
         {
+            string pass = Guid.NewGuid().ToString().Substring(0, 9) + "!";
             var user = new Domain.Entity.User.User
             {
                 Family = string.Empty,

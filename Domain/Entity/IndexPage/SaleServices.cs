@@ -14,4 +14,8 @@ public class SaleServices : BaseEntity
     public string Desc4Logo { get; set; } = string.Empty;
     public string Desc5 { get; set; } = string.Empty;
     public string Desc5Logo { get; set; } = string.Empty;
+
+
+    public string DescShippingToday { get; set; } = string.Empty;
+    public string DescReceivePerson { get; set; } = string.Empty;
 }

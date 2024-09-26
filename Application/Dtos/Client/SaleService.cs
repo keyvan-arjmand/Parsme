@@ -14,5 +14,8 @@ public class SaleService
     public string Desc4 { get; set; } = string.Empty;
     public IFormFile Desc4Logo { get; set; }
     public string Desc5 { get; set; } = string.Empty;
+ 
     public IFormFile Desc5Logo { get; set; }
+    public string DescReceivePerson { get; set; } = string.Empty;
+    public string DescShippingToday { get; set; } = string.Empty;
 }

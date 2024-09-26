@@ -1905,6 +1905,8 @@ public class AdminController : Controller
         service.Desc5Logo = request.Desc5Logo != null
             ? up.Uploadfile(request.Desc5Logo, "Logo")
             : service.Desc5Logo;
+        service.DescReceivePerson = request.DescReceivePerson;
+        service.DescShippingToday = request.DescShippingToday;
         await _work.GenericRepository<SaleServices>().UpdateAsync(service, CancellationToken.None);
         return RedirectToAction("SaleServices");
     }
