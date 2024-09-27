@@ -100,6 +100,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
          //modelBuilder.Entity<SubCategory>().HasQueryFilter(x => !x.IsDelete );
          //modelBuilder.Entity<State>().HasQueryFilter(x => !x.IsDelete);
          //modelBuilder.Entity<City>().HasQueryFilter(x => !x.IsDelete);
+         
         base.OnModelCreating(modelBuilder);
     }
 }
