@@ -1141,6 +1141,9 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ShowTopBanner")
+                        .HasColumnType("bit");
+
                     b.Property<string>("TopBanner")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

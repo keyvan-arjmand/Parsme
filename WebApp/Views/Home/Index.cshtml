@@ -319,7 +319,7 @@
     <section class="h-main-row" style="margin-top: 0">
         <div class="col-12 p-0">
             <img style="width: 100%;    height: 100px;    object-fit: cover"
-                 src="/Images/Banner/@seoPage.TopBanner"/>
+                 src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
         </div>
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
             <div class="header-right">
@@ -327,7 +327,7 @@
                     class="col-lg-3 pr d-flex flex-md-row flex-row flex-lg-column flex-sm-row gap-2 justify-content-between align-content-start">
                     <div class="header-logo row text-right">
                         <a href="@Url.Action("Index")">
-                            <img src="/Images/Banner/parsme-logo.png" alt="پارس می">
+                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
                         </a>
                     </div>
                     <div>
@@ -1608,29 +1608,29 @@
                                                     <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                         @if (i.IsOffer)
                                                         {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                        {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                        {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        }
-                                                        }
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                                {
+                                                                    <div class="d-flex justify-content-between gap-3">
+                                                                        <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                        <div class="countdown-timer w-75">
+                                                                            <div class="countdown h6"
+                                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
                                                         }
                                                         @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                         {
-                                                        <div class="p-3">
-                                                            <div class="discount-d">
-                                                                <span>ناموجود</span>
+                                                            <div class="p-3">
+                                                                <div class="discount-d">
+                                                                    <span>ناموجود</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
                                                         }
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                              class="img-fluid" alt="">
@@ -1739,29 +1739,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                            {
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <div class="promotion-badge w-25">فروش ویژه</div>
-                                                <div class="countdown-timer w-75">
-                                                    <div class="countdown h6"
-                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            }
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                            <div class="p-3">
-                                                <div class="discount-d">
-                                                    <span>ناموجود</span>
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -1864,29 +1864,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                            {
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <div class="promotion-badge w-25">فروش ویژه</div>
-                                                <div class="countdown-timer w-75">
-                                                    <div class="countdown h6"
-                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            }
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                            <div class="p-3">
-                                                <div class="discount-d">
-                                                    <span>ناموجود</span>
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -2008,29 +2008,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                            {
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <div class="promotion-badge w-25">فروش ویژه</div>
-                                                <div class="countdown-timer w-75">
-                                                    <div class="countdown h6"
-                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            }
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                            <div class="p-3">
-                                                <div class="discount-d">
-                                                    <span>ناموجود</span>
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
