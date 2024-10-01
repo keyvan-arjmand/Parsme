@@ -17,6 +17,7 @@ public class ConfirmPasswordAdminCommandHandler : IRequestHandler<ConfirmPasswor
     {
         var user = await _userManager.FindByNameAsync(request.PhoneNumber);
         var userRoles = await _userManager.GetRolesAsync(user);
+        
         if (user == null && userRoles.Any(x => !x.Equals("admin")))
             throw new Exception("User not Exist");
         return user;
