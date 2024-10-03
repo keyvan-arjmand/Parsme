@@ -26,12 +26,13 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
             "Data Source=185.165.118.72;Initial Catalog=NewPars;User ID=pars;Password=I$w225am;Trust Server Certificate=True"
         );
         base.OnConfiguring(optionsBuilder);
+        
     }
 
     public DbSet<Brand> Brands { set; get; }
     public DbSet<Category> Categories { set; get; }
     public DbSet<CategoryDetail> CategoryDetails { set; get; }
-    public DbSet<Color> Colors { set; get; }
+    public DbSet<Color> Colors { set; get; }          
     public DbSet<DiscountCode> DiscountCodes { set; get; }
     public DbSet<Feature> Features { set; get; }
     public DbSet<Guarantee> Guarantees { set; get; }
