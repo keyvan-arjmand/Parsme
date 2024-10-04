@@ -998,14 +998,14 @@
 @section meta
 {
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
-    <meta name="description" content=@Html.Raw(prod.SeoDesc)/>
-    <link rel="canonical" href=@prod.SeoCanonical/>
+    <meta name="description" content=@Html.Raw(prod.SeoDesc).ToString()/>
+    <link rel="canonical" href=@Html.Raw(prod.SeoCanonical).ToString()/>
     <meta property="og:locale" content="fa_IR"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:title" content=@Html.Raw(prod.SeoTitle)/>
-    <meta property="og:description" content=@Html.Raw(prod.SeoDesc)/>
+    <meta property="og:title" content=@Html.Raw(prod.SeoTitle).ToString()/>
+    <meta property="og:description" content=@Html.Raw(prod.SeoDesc).ToString()/>
     <meta property="og:url" content="https://parsme.com"/>
-    <meta property="og:site_name" content=@Html.Raw(prod.SeoTitle)/>
+    <meta property="og:site_name" content=@Html.Raw(prod.SeoTitle).ToString()/>
     <meta property="og:image:width" content="1200"/>
     <meta property="og:image:height" content="760"/>
     <meta property="og:image:type" content="image/jpeg"/>
@@ -1395,7 +1395,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> قیمت:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: black">
+                                        <span class="amount" style="color: black;font-size:20px">
                                             @i.Price.ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1404,7 +1404,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> تخفیف:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: black">
+                                        <span class="amount" style="color: black;font-size:20px ">
                                             @prod.Offer.OfferAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1413,7 +1413,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> قیمت نهایی:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color:  #2dff11">
+                                        <span class="amount" style="color:  #ff0000">
                                             @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1488,7 +1488,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> قیمت:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: black">
+                                        <span class="amount" style="color: black;font-size:20px">
                                             @i.Price.ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1497,7 +1497,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> تخفیف:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: black">
+                                        <span class="amount" style="color: black;font-size:20px">
                                             @prod.Offer.OfferAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1506,7 +1506,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> قیمت نهایی:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color:  #2dff11">
+                                        <span class="amount" style="color:  #ff0000">
                                             @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1581,7 +1581,7 @@
                             <div class="product-seller-row price">
                                 <span class="title"> قیمت:</span>
                                 <a href="#" class="product-name">
-                                    <span class="amount" style="color: black">
+                                    <span class="amount" style="color: black;font-size:20px">
                                         @i.Price.ToString("N0")
                                         <span>تومان</span>
                                     </span>
@@ -1592,7 +1592,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> تخفیف:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: black">
+                                        <span class="amount" style="color: black;font-size:20px">
                                             @prod.DiscountAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1601,7 +1601,7 @@
                                 <div class="product-seller-row price">
                                     <span class="title"> قیمت نهایی:</span>
                                     <a href="#" class="product-name">
-                                        <span class="amount" style="color: #2dff11">
+                                        <span class="amount" style="color: #ff0000">
                                             @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
                                             <span>تومان</span>
                                         </span>
@@ -1677,7 +1677,7 @@
                         <div class="product-seller-row price">
                             <span class="title"> قیمت:</span>
                             <a href="#" class="product-name">
-                                <span class="amount" style="color: black">
+                                <span class="amount" style="color: black;font-size:20px">
                                     @i.Price.ToString("N0")
                                     <span>تومان</span>
                                 </span>
@@ -1688,7 +1688,7 @@
                             <div class="product-seller-row price">
                                 <span class="title"> تخفیف:</span>
                                 <a href="#" class="product-name">
-                                    <span class="amount" style="color: black">
+                                    <span class="amount" style="color: black;font-size:20px">
                                         @prod.DiscountAmount.ToString("N0")
                                         <span>تومان</span>
                                     </span>
@@ -1697,7 +1697,7 @@
                             <div class="product-seller-row price">
                                 <span class="title"> قیمت نهایی:</span>
                                 <a href="#" class="product-name">
-                                    <span class="amount" style="color: #2dff11">
+                                    <span class="amount" style="color: #ff0000">
                                         @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
                                         <span>تومان</span>
                                     </span>
@@ -1756,13 +1756,28 @@
 </div>
 </section>
 </div>
-<div class="col-lg-7 col-xs-12 pl mt-1 d-flex flex-column p-3">
-    <a class="p-1" style="cursor: pointer">
+<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12 pl mt-1 d-flex flex-column p-3 text-center ">
+    <a class="p-1" style="cursor: pointer" data-toggle="modal" data-target="#btn-deli2">
         <img class="" src="/Images/Banner/image.png"/>
     </a>
-    <a class="p-1" style="cursor: pointer">
+    <a class="p-1" style="cursor: pointer" data-toggle="modal" data-target="#btn-deli">
         <img src="/Images/Banner/image2..png"/>
     </a>
+    <!-- Modal-option-alarm -->
+    <div class="modal fade show" id="btn-deli2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="padding: 15px">
+                @Html.Raw(services.DescReceivePerson)
+            </div>
+        </div>
+    </div>
+    <div class="modal fade show" id="btn-deli" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="padding: 15px">
+                @Html.Raw(services.DescShippingToday)
+            </div>
+        </div>
+    </div>
 </div>
 <div class="product-usp">
     <div class="product-feature">
@@ -2120,93 +2135,111 @@
 <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1 fixed-bar" style="height: 90px;align-content: center">
     <div class="footer-shopping-social">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-xs-12 align-content-center">
-                <div class="logo align-self-center">
-                    <h6 class="text-center">
-                        @prod.PersianTitle
-                    </h6>
-                </div>
+            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-6 align-content-center text-center p-3">
+      
+                @{
+                int inde1x = 0;
+                foreach (var i in prod.ProductColors)
+                {
+                var id = "n" + i.ColorId;
+                if (index == 0)
+                {
+                <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="nprice shadow">
+                    <div class="product-seller-row">
+                        <div class="btn-add-to-cart btn btn-primary " style="    background-color: #ff2828;
+    border-color: #ff2828;
+    border-radius: 15px;
+    padding: 10px;">
+                                        <span class="">
+                                            <h6 class="fw-bold ">
+                                                افزودن به سبد خرید
+
+                                            </h6>
+                                        </span>
+                        </div>
+                    </div>
+                </a>
+
+                }
+                else
+                {
+                <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="d-none nprice">
+                    <div class="product-seller-row">
+                        <div class="btn-add-to-cart btn btn-primary shadow" style="    background-color: #ff2828;
+    border-color: #ff2828;
+    border-radius: 15px;
+    padding: 10px;">
+                                        <span class="">
+                                            <h6 class="fw-bold ">
+                                                افزودن به سبد خرید
+                                                
+                                            </h6>
+                                        </span>
+                        </div>
+                    </div>
+                </a>
+                }
+
+                index++;
+                }
+                }
             </div>
-            <div class="col-lg-6 col-md-6 col-xs-12 text-center align-content-center" style="bottom: 7px">
+            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-6 text-center align-content-center">
 
                 @{
-                    int inde1x = 0;
-                    foreach (var i in prod.ProductColors)
+                int inde2x = 0;
+
+                foreach (var i in prod.ProductColors)
+                {
+                string id = "p" + i.ColorId;
+                if (inde2x == 0)
+                {
+                <span class="amount p-1 fw-bold nprice  " id="@id" style="color: #0c0c0c;font-size: 22px">
+                              @{
+                    if (prod.IsOffer)
                     {
-                        var id = "n" + i.ColorId;
-                        if (index == 0)
-                        {
-                            <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="nprice shadow">
-                                <div class="product-seller-row">
-                                    <div class="btn-add-to-cart btn btn-primary " style="background-color: #ff2828;border-color: #ff2828;border-radius: 40px">
-                                        <span class="">
-                                            <h6 class="fw-bold p-2">
-                                                افزودن به سبد خرید
-                                                <span class="amount p-1 fw-bold" style="color: #0c0c0c">
-                                                    @{
-                                                        if (prod.IsOffer)
-                                                        {
-                                                            if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
-                                                            {
-                                                                @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
-                                                            }
-                                                            else
-                                                            {
-                                                                @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                                                        }
-                                                    }
-                                                    <span class="text-center fw-bold">تومان</span>
-                                                </span>
-
-                                            </h6>
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="d-none nprice">
-                                <div class="product-seller-row">
-                                    <div class="btn-add-to-cart btn btn-primary shadow" style="background-color: #ff2828;border-color: #ff2828;border-radius: 40px">
-                                        <span class="">
-                                            <h6 class="fw-bold p-2">
-                                                افزودن به سبد خرید
-                                                <span class="amount p-1 fw-bold" style="color: #0c0c0c">
-                                                    @{
-                                                        if (prod.IsOffer)
-                                                        {
-                                                            if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
-                                                            {
-                                                                @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
-                                                            }
-                                                            else
-                                                            {
-                                                                @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                                                        }
-                                                    }
-                                                    <span class="text-center fw-bold">تومان</span>
-                                                </span>
-
-                                            </h6>
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-
-                        index++;
+                    if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
+                    {
+                    @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
                     }
+                    else
+                    {
+                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                    }
+                    }
+                    else
+                    {
+                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                    }
+                    }
+                    <span class="text-center fw-bold">تومان</span>
+                          </span>
+                }
+                else
+                {
+                <span class="amount p-1 fw-bold nprice d-none" id="@id" style="color: #0c0c0c;font-size: 22px">
+                              @{
+                    if (prod.IsOffer)
+                    {
+                    if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
+                    {
+                    @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
+                    }
+                    else
+                    {
+                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                    }
+                    }
+                    else
+                    {
+                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                    }
+                    }
+                    <span class="text-center fw-bold">تومان</span>
+                          </span>
+                }
+                inde2x++;
+                }
                 }
             </div>
         </div>
@@ -2238,6 +2271,7 @@
                     const id = radioInput.value; // Assuming the value of the radio button corresponds to the ID
                     document.getElementById(id).classList.remove('d-none');
                     document.getElementById(`n${id}`).classList.remove('d-none');
+                    document.getElementById(`p${id}`).classList.remove('d-none');
                 }
             });
             $('.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline')
@@ -2255,6 +2289,7 @@
             // Show the selected element
             document.getElementById(id).classList.remove('d-none');
             document.getElementById(`n${id}`).classList.remove('d-none');
+            document.getElementById(`p${id}`).classList.remove('d-none');
         }
 
     </script>

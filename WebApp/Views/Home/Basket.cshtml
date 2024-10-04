@@ -6,7 +6,7 @@
 @using WebApp.Models
 
 @{
-    Layout = "_Layout";  
+    Layout = "_Layout";
     List<Product> basket = ViewBag.BasketProd;
     List<MainCategory> categories = ViewBag.Categories;
     List<UserAddress> userAddresses = ViewBag.Address;
@@ -75,6 +75,7 @@
             });
         }
     }
+
     SeoPage seoPage = ViewBag.SeoPage;
 }
 
@@ -889,14 +890,14 @@
                                                         </div>
                                                         <div class="quantity">
                                                             <span
-                                                                class="quantity-Price-amount">
+                                                                class="quantity-Price-amount fw-bold">
 
                                                                 <span> تعداد:@i.Count</span>
                                                             </span>
                                                         </div>
                                                         <div class="quantity">
                                                             <span
-                                                                class="quantity-Price-amount">
+                                                                class="quantity-Price-amount fw-bold">
                                                                 @{
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
@@ -1088,7 +1089,7 @@
                                     <div class="cart-empty-img mb-4 mt-4">
                                         <img src="/assetsCli/images/shopping-cart.png">
                                     </div>
-                                    <p class="cart-empty-title">سبد خرید شما در حال حاضر خالی است.</p>
+                                    <p class="cart-empty-title p-3">سبد خرید شما در حال حاضر خالی است.</p>
                                     @if (!User.Identity.IsAuthenticated)
                                     {
                                         <a href="@Url.Action("Login", "Home")" class="btn account-btn btn-primary">ورود به حساب کاربری</a>
@@ -1174,21 +1175,24 @@ else
                                                         string pr = "price" + i.Id;
                                                     }
                                                     <td class="product-cart-price">
-                                                        <span class="amount" id="@pr">
-                                                               @if (i.IsOffer)
+                                                        <span class="amount fw-bold" id="@pr">
+                                                            @if (i.IsOffer)
                                                             {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                            {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0");
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                {
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    ;
+                                                                }
+                                                                else
+                                                                {
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                    ;
+                                                                }
                                                             }
                                                             else
                                                             {
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0");
-                                                            }
-                                                            }
-                                                            else
-                                                            {
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0");
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                ;
                                                             }
                                                             <span>تومان</span>
                                                         </span>
@@ -1202,7 +1206,7 @@ else
                                                         </div>
                                                     </td>
                                                     <td class="product-cart-total" style=" vertical-align: middle;">
-                                                        <span class="amount" id="@tl">
+                                                        <span class="amount fw-bold" id="@tl">
                                                             @{
                                                                 var price = new double();
                                                                 if (i.IsOffer)
@@ -1240,7 +1244,7 @@ else
                                         <div class="checkout-summary">
                                             <ul class="checkout-summary-summary">
                                                 <li class="cart-subtotal">
-                                                    <span class="amount">قیمت کل</span>
+                                                    <span class="amount fw-bold">قیمت کل</span>
                                                     @{
                                                         <span> @price.ToString("N0") تومان</span>
                                                     }
@@ -1249,15 +1253,17 @@ else
                                                     if (User.Identity.IsAuthenticated)
                                                     {
                                                         <li class="shipping-totals">
-                                                            <span class="amount">حمل و نقل</span>
+                                                            <h6 class="amount fw-bold ">حمل و نقل</h6>
                                                             <div class="shipping-totals-item">
                                                                 @{
                                                                     foreach (var i in postMethods)
                                                                     {
                                                                         if (i.Id == selectPostMethod.Id)
                                                                         {
-                                                                            <div class="shipping-totals-outline">
-                                                                                <label for="#" class="outline-radio">
+                                                                            <div class="shipping-totals-outline" style="display: flex;
+    justify-content: space-between;
+    align-items: center;">
+                                                                                <label for="#" class="outline-radio"  >
                                                                                     <input type="radio" value="@i.Id" checked="checked" name="payment_method"
                                                                                            id="@i.Id">
                                                                                     <span class="outline-radio-check"></span>
@@ -1278,8 +1284,10 @@ else
                                                                         }
                                                                         else
                                                                         {
-                                                                            <div class="shipping-totals-outline">
-                                                                                <label for="#" class="outline-radio">
+                                                                            <div class="shipping-totals-outline" style="display: flex;
+    justify-content: space-between;
+    align-items: center;">
+                                                                                <label for="#" class="outline-radio" >
                                                                                     <input type="radio" value="@i.Id" name="payment_method"
                                                                                            id="@i.Id">
                                                                                     <span class="outline-radio-check"></span>
@@ -1305,7 +1313,7 @@ else
                                                         @if (selectPostMethod.Price >= 0)
                                                         {
                                                             <li class="order-total">
-                                                                <span class="amount">ارسال</span>
+                                                                <span class="amount fw-bold">ارسال</span>
                                                                 <span> @selectPostMethod.Price.ToString("N0") تومان</span>
                                                             </li>
                                                         }
@@ -1313,13 +1321,13 @@ else
                                                         @if (discountCode.Amount > 0)
                                                         {
                                                             <li class="order-total">
-                                                                <span class="amount"> کد تخفیف</span>
+                                                                <span class="amount fw-bold"> کد تخفیف</span>
                                                                 <span> @discountCode.Amount.ToString("N0") تومان</span>
                                                             </li>
                                                         }
 
                                                         <li class="order-total">
-                                                            <span class="amount"> مجموع</span>
+                                                            <span class="amount fw-bold"> مجموع</span>
                                                             @{
                                                                 var totalPrice = price;
                                                                 if (discountCode != null)

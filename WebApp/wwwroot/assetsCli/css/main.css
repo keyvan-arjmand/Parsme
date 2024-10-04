@@ -4410,7 +4410,7 @@ input[type="number"] {
 
 .outline-radio input[type="radio"]:checked + .outline-radio-check {
     background-color: #fff;
-    border: 1px solid #3d8f14;
+    border: 1px solid #ff0000;
 }
 
 .outline-radio .outline-radio-check:before {
@@ -4433,7 +4433,7 @@ input[type="number"] {
     right: 7px;
     -webkit-transform: translate(50%, -50%);
     transform: translate(50%, -50%);
-    background-color: #3d8f14;
+    background-color: #ff0000;
     width: 10px;
     height: 10px;
 }
@@ -4460,7 +4460,7 @@ span.shipping-destination {
 .post-item-cart .content-page .cart-collaterals .checkout-summary ul.checkout-summary-summary li .btn-coupon {
     width: 20%;
     height: 40px;
-    background-color: #3d8f14;
+    background-color: #ff0000;
     border-radius: 20px;
     font-size: 14px;
     color: #fff;
@@ -4474,7 +4474,7 @@ span.shipping-destination {
 
 .post-item-cart .content-page .cart-collaterals .checkout-summary ul.checkout-summary-summary li .proceed-to-checkout {
     padding: 6px 15px;
-    background-color: #3d8f14;
+    background-color: #ff0000;
     border-radius: 20px;
     text-align: center;
     transition: 0.2s;
@@ -5872,7 +5872,7 @@ span.shipping-destination {
 
 .checkout .content-checkout .checkout-review-order ul.checkout-payment-methods > li.checkout-payment-method-item > .outline-radio input[type="radio"]:checked + .outline-radio-check {
     background-color: #fff;
-    border: 1px solid #3d8f14;
+    border: 1px solid #ff0000;
 }
 
 .checkout .content-checkout .checkout-review-order ul.checkout-payment-methods > li.checkout-payment-method-item > .outline-radio .outline-radio-check:before {
@@ -5895,7 +5895,7 @@ span.shipping-destination {
     right: 7px;
     -webkit-transform: translate(50%, -50%);
     transform: translate(50%, -50%);
-    background-color: #3d8f14;
+    background-color: #ff0000;
     width: 10px;
     height: 10px;
 }
