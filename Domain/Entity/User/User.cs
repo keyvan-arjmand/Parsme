@@ -24,7 +24,6 @@ public class User : IdentityUser<int>
     public string? NationalId { get; set; }
     public string? PostCode { get; set; }
     public string? OrganizationNumber { get; set; }
-    public string?     RegistrationNumber { get; set; }
+    public string? RegistrationNumber { get; set; }
     public string? Adderss { get; set; }
-
 }
