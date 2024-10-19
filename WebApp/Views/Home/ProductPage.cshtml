@@ -15,6 +15,33 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
+
+    var catDetail = new List<CatDetailEdit>();
+    foreach (var i in prod.ProductDetails)
+    {
+        if (catDetail.Any(x => x.FeatureId == i.CategoryDetail.FeatureId))
+        {
+            var result = catDetail.FirstOrDefault(x => x.FeatureId == i.CategoryDetail.FeatureId);
+
+            result.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = prod.SubCategoryId, Id = i.CategoryDetailId, Value = i.Value
+            });
+        }
+        else
+        {
+            var li = new CatDetailEdit();
+            li.Feature = i.CategoryDetail.Feature;
+            li.FeatureId = i.CategoryDetail.FeatureId;
+            li.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = prod.SubCategoryId, Id = i.CategoryDetailId, Value = i.Value
+            });
+            catDetail.Add(li);
+        }
+    }
 }
 
 @section footer
@@ -1929,40 +1956,43 @@
                     <section>
                         <ul class="params-list">
                             @{
-                                foreach (var i in prod.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority))
+                                foreach (var i in catDetail)
                                 {
-                                    if (!string.IsNullOrWhiteSpace(i.Value))
+                                    <h5 class="block fw-bold p-4 m-1 align-content-center">@i.Feature.Title</h5>
+                                    foreach (var d in i.CategoryDetails.OrderBy(x => x.Priority))
                                     {
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block fw-bold">@i.CategoryDetail.Title</span>
-                                            </div>
-                                            <div class="params-list-value">
-
-                                                @if (i.CategoryDetail.DataType == DataType.CheckBox)
-                                                {
-                                                    if (i.Value == "true")
+                                        if (!string.IsNullOrWhiteSpace(d.Value))
+                                        {
+                                            <li class="params-list-item">
+                                                <div class="params-list-key">
+                                                    <span class="block fw-bold">@d.Title</span>
+                                                </div>
+                                                <div class="params-list-value">
+                                                    @if ((DataType)d.DataType == DataType.CheckBox)
                                                     {
-                                                        <span class="block fw-bold">
-                                                            دارد
-                                                        </span>
+                                                        if (d.Value == "true")
+                                                        {
+                                                            <span class="block fw-bold">
+                                                                دارد
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="block fw-bold">
+                                                                ندارد
+                                                            </span>
+                                                        }
                                                     }
                                                     else
                                                     {
                                                         <span class="block fw-bold">
-                                                            ندارد
+                                                            @d.Value
                                                         </span>
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <span class="block fw-bold">
-                                                        @i.Value
-                                                    </span>
-                                                }
 
-                                            </div>
-                                        </li>
+                                                </div>
+                                            </li>
+                                        }
                                     }
                                 }
                             }
@@ -2136,17 +2166,17 @@
     <div class="footer-shopping-social">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-6 align-content-center text-center p-3">
-      
+
                 @{
-                int inde1x = 0;
-                foreach (var i in prod.ProductColors)
-                {
-                var id = "n" + i.ColorId;
-                if (index == 0)
-                {
-                <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="nprice shadow">
-                    <div class="product-seller-row">
-                        <div class="btn-add-to-cart btn btn-primary " style="    background-color: #ff2828;
+                    int inde1x = 0;
+                    foreach (var i in prod.ProductColors)
+                    {
+                        var id = "n" + i.ColorId;
+                        if (index == 0)
+                        {
+                            <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="nprice shadow">
+                                <div class="product-seller-row">
+                                    <div class="btn-add-to-cart btn btn-primary " style="    background-color: #ff2828;
     border-color: #ff2828;
     border-radius: 15px;
     padding: 10px;">
@@ -2156,90 +2186,90 @@
 
                                             </h6>
                                         </span>
-                        </div>
-                    </div>
-                </a>
-
-                }
-                else
-                {
-                <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="d-none nprice">
-                    <div class="product-seller-row">
-                        <div class="btn-add-to-cart btn btn-primary shadow" style="    background-color: #ff2828;
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("AddToBasket", "Home", new { id = @i.Id })" id="@id" class="d-none nprice">
+                                <div class="product-seller-row">
+                                    <div class="btn-add-to-cart btn btn-primary shadow" style="    background-color: #ff2828;
     border-color: #ff2828;
     border-radius: 15px;
     padding: 10px;">
                                         <span class="">
                                             <h6 class="fw-bold ">
                                                 افزودن به سبد خرید
-                                                
+
                                             </h6>
                                         </span>
-                        </div>
-                    </div>
-                </a>
-                }
+                                    </div>
+                                </div>
+                            </a>
+                        }
 
-                index++;
-                }
+                        index++;
+                    }
                 }
             </div>
             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-6 text-center align-content-center">
 
                 @{
-                int inde2x = 0;
+                    int inde2x = 0;
 
-                foreach (var i in prod.ProductColors)
-                {
-                string id = "p" + i.ColorId;
-                if (inde2x == 0)
-                {
-                <span class="amount p-1 fw-bold nprice  " id="@id" style="color: #0c0c0c;font-size: 22px">
-                              @{
-                    if (prod.IsOffer)
+                    foreach (var i in prod.ProductColors)
                     {
-                    if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
-                    {
-                    @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
+                        string id = "p" + i.ColorId;
+                        if (inde2x == 0)
+                        {
+                            <span class="amount p-1 fw-bold nprice  " id="@id" style="color: #0c0c0c;font-size: 22px">
+                                @{
+                                    if (prod.IsOffer)
+                                    {
+                                        if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
+                                        {
+                                            @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
+                                        }
+                                        else
+                                        {
+                                            @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                                    }
+                                }
+                                <span class="text-center fw-bold">تومان</span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="amount p-1 fw-bold nprice d-none" id="@id" style="color: #0c0c0c;font-size: 22px">
+                                @{
+                                    if (prod.IsOffer)
+                                    {
+                                        if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
+                                        {
+                                            @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
+                                        }
+                                        else
+                                        {
+                                            @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
+                                    }
+                                }
+                                <span class="text-center fw-bold">تومان</span>
+                            </span>
+                        }
+
+                        inde2x++;
                     }
-                    else
-                    {
-                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                    }
-                    }
-                    else
-                    {
-                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                    }
-                    }
-                    <span class="text-center fw-bold">تومان</span>
-                          </span>
-                }
-                else
-                {
-                <span class="amount p-1 fw-bold nprice d-none" id="@id" style="color: #0c0c0c;font-size: 22px">
-                              @{
-                    if (prod.IsOffer)
-                    {
-                    if (i.ColorId == prod.Offer.ColorId && prod.Offer.StartDate.CalcOffer(prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
-                    {
-                    @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Days, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
-                    }
-                    else
-                    {
-                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                    }
-                    }
-                    else
-                    {
-                    @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
-                    }
-                    }
-                    <span class="text-center fw-bold">تومان</span>
-                          </span>
-                }
-                inde2x++;
-                }
                 }
             </div>
         </div>
