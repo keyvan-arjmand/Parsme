@@ -1099,6 +1099,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.BasketProd = basketProducts;
@@ -1135,6 +1136,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.BasketProd = basketProducts;
@@ -1206,6 +1208,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.BasketProd = basketProducts;
@@ -1274,6 +1277,7 @@ public class HomeController : Controller
                     .ToListAsync();
             }
         }
+
         ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == id) &&
@@ -1311,6 +1315,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.BasketProd = basketProducts;
@@ -1374,6 +1379,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -1473,6 +1479,7 @@ public class HomeController : Controller
 
 
             CatDetails = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+                .Include(x => x.Feature)
                 .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == prods.FirstOrDefault().SubCategoryId))
                 .ToListAsync();
 
@@ -1851,6 +1858,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -1888,6 +1896,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -1924,6 +1933,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -1960,6 +1970,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -1996,6 +2007,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2032,6 +2044,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2068,6 +2081,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2104,6 +2118,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2140,6 +2155,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2176,6 +2192,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2213,6 +2230,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
@@ -2249,6 +2267,7 @@ public class HomeController : Controller
                 basketProducts.Add(prod!);
             }
         }
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();

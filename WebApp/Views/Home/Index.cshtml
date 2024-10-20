@@ -25,7 +25,7 @@
         <div class="footer-shopping-social">
             <div class="row">
                 <div
-                    class="col-12 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
+                    class="col-9 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
                             <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
@@ -37,7 +37,12 @@
                         </h6>
                     </div>
                 </div>
-
+                <div class="col-3 align-content-center text-end" style="text-align: end">
+                    <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
+                        بازگشت به
+                        بالا
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -202,12 +207,7 @@
                             <i class="fa fa-instagram" style="font-size: 30px"></i>
                         </a>
                     </li>
-                    <li>
-                        <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
-                            بازگشت به
-                            بالا
-                        </button>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -317,12 +317,16 @@
     <header class="header-main">
     <div class="d-block">
     <section class="h-main-row" style="margin-top: 0">
-        <div class="col-12 p-0">
-            <img style="width: 100%;    height: 100px;    object-fit: cover"
-                 src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
-        </div>
+        @if (seoPage.ShowTopBanner)
+        {
+            <div class="col-12 p-0">
+                <img style="width: 100%;    height: 100px;    object-fit: cover"
+                     src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+            </div>
+        }
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
             <div class="header-right">
+
                 <div
                     class="col-lg-3 pr d-flex flex-md-row flex-row flex-lg-column flex-sm-row gap-2 justify-content-between align-content-start">
                     <div class="header-logo row text-right">
@@ -1171,30 +1175,81 @@
 <div class="slider-main-container d-none d-sm-none d-md-block d-lg-block">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators carousel-indicators-ul">
-            <li class="carousel-indicators-item active" data-target="#carouselExampleIndicators"
-                data-slide-to="0" class="active">
-                <span>@banners.SliderTitle</span>
-            </li>
-            <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="1">
-                <span>@banners.SliderTitle1</span>
-            </li>
-            <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="2">
-                <span>@banners.SliderTitle2</span>
-            </li>
+            @if (!string.IsNullOrEmpty(banners.SliderImage))
+            {
+                <li class="carousel-indicators-item active" data-target="#carouselExampleIndicators"
+                    data-slide-to="0" class="active">
+                    <span>@banners.SliderTitle</span>
+                </li>
+            }
+
+            @if (!string.IsNullOrEmpty(banners.SliderImage1))
+            {
+                <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="1">
+                    <span>@banners.SliderTitle1</span>
+                </li>
+            }
+
+            @if (!string.IsNullOrEmpty(banners.SliderImage2))
+            {
+                <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="2">
+                    <span>@banners.SliderTitle2</span>
+                </li>
+            }
+
+            @if (!string.IsNullOrEmpty(banners.SliderImage3))
+            {
+                <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="3">
+                    <span>@banners.SliderTitle3</span>
+                </li>
+            }
+
+            @if (!string.IsNullOrEmpty(banners.SliderImage4))
+            {
+                <li class="carousel-indicators-item" data-target="#carouselExampleIndicators" data-slide-to="4">
+                    <span>@banners.SliderTitle4</span>
+                </li>
+            }
+
         </ol>
         <div class="carousel-inner">
-            <a href="@banners.SliderHref" class="carousel-item active">
-                <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage" class="d-block w-100"
-                     alt="...">
-            </a>
-            <a href="@banners.SliderHref1" class="carousel-item">
-                <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage1" class="d-block w-100"
-                     alt="...">
-            </a>
-            <a href="@banners.SliderHref2" class="carousel-item">
-                <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage2" class="d-block w-100"
-                     alt="...">
-            </a>
+            @if (!string.IsNullOrEmpty(banners.SliderImage))
+            {
+                <a href="@banners.SliderHref" class="carousel-item active">
+                    <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage" class="d-block w-100"
+                         alt="...">
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(banners.SliderImage1))
+            {
+                <a href="@banners.SliderHref1" class="carousel-item">
+                    <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage1" class="d-block w-100"
+                         alt="...">
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(banners.SliderImage2))
+            {
+                <a href="@banners.SliderHref2" class="carousel-item">
+                    <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage2" class="d-block w-100"
+                         alt="...">
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(banners.SliderImage3))
+            {
+                <a href="@banners.SliderHref3" class="carousel-item">
+                    <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage3" class="d-block w-100"
+                         alt="...">
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(banners.SliderImage4))
+            {
+                <a href="@banners.SliderHref4" class="carousel-item">
+                    <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage4" class="d-block w-100"
+                         alt="...">
+                </a>
+            }
+
+
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="fa fa-angle-left" aria-hidden="true"></span>
@@ -1210,7 +1265,7 @@
 <div class="slider-widget-products slider-content-tabs slider-amazing-product pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
         <header class="card-header text-start">
-            <span class="title-one text-start black-color-text-pars">تخفیفات شگفت انگیز</span>
+            <span class="title-one text-start black-color-text-pars fw-bold" style="font-size: 23px">تخفیفات شگفت انگیز</span>
             <h3 class="card-title"></h3>
         </header>
         <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
@@ -1316,8 +1371,8 @@
                                            href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @if (i.IsOffer)
                                             {
-                                                <div class="promotion-badge p-2 text-start  black-color-text-pars">
-                                                    <h6 style="font-size: 23px;color: #ff2828">
+                                                <div class="promotion-badge text-start  black-color-text-pars">
+                                                    <h6 style="font-size: 23px;color: #ff2828" class="fw-bold">
                                                         تخفیفات شگفت
                                                         انگیز
                                                     </h6>
@@ -1424,9 +1479,11 @@
                                            href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                             @if (i.IsOffer)
                                             {
-                                                <div class="promotion-badge p-2 text-start  black-color-text-pars fw-bold">
-                                                    تخفیفات شگفت
-                                                    انگیز
+                                                <div class="promotion-badge  text-start  black-color-text-pars fw-bold">
+                                                    <h6 style="font-size: 23px;color: #ff2828" class="fw-bold">
+                                                        تخفیفات شگفت
+                                                        انگیز
+                                                    </h6>
                                                 </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"

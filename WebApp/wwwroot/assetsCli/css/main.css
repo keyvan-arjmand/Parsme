@@ -21,6 +21,7 @@
     animation: slideDown 0.3s ease-in-out;
 
 }
+
 .sticky-nav-banner {
     margin-top: 120px !important;
     position: fixed !important;
@@ -29,6 +30,7 @@
     z-index: 8 !important;
     animation: slideDown 0.3s ease-in-out;
 }
+
 @keyframes slideDown {
     from {
         transform: translateY(-100%);
@@ -59,7 +61,7 @@ ul {
 
 a {
     text-decoration: none;
-    font-family: IRANSans;
+    font-family: iranyekan;
 }
 
 a:hover {
@@ -74,7 +76,18 @@ h5,
 h6,
 span,
 div {
-    font-family: IRANSans;
+    font-family: iranyekan;
+}
+
+@font-face {
+    font-family: "iranyekan";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/assetsCli/fonts/Yekan/iranyekanwebmedium.eot");
+    src: url("/assetsCli/fonts/Yekan/iranyekanwebmedium.eot?#iefix") format("embedded-opentype"),
+        /* IE6-8 */ url("/assetsCli/fonts/Yekan/iranyekanwebmedium.woff") format("woff2"),
+        /* FF39+,Chrome36+, Opera24+*/ url("/assetsCli/fonts/Yekan/iranyekanwebmedium.woff") format("woff"),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url("/assetsCli/fonts/Yekan/iranyekanwebmedium.ttf") format("truetype");
 }
 
 @font-face {
@@ -1834,7 +1847,7 @@ header.header-main {
     padding: 10px 0px;
     margin-right: 0;
     box-shadow: none;
-    width: 32.9%;
+    width: 19%;
     margin-left: 0;
 }
 
@@ -2218,7 +2231,7 @@ header.header-main {
 }
 
 .content-widget-amazing #amazing-slider .carousel-inner .carousel-item .row .price ins {
-    color: #e70005 ;
+    color: #e70005;
     font-size: 31px;
     font-weight: 500;
     text-decoration: none;
@@ -2364,6 +2377,7 @@ header.header-main {
     font-size: 17px;
     border: 1px solid #cdcdcd;
 }
+
 .countdown.h6 .countdown-value {
     font-family: "IRANSans";
     font-weight: 500;
@@ -2376,6 +2390,7 @@ header.header-main {
     font-size: 15px;
     border: 1px solid #cdcdcd;
 }
+
 .countdown .countdown-label {
     padding-top: 0.25rem;
     color: #3b3a3a;
@@ -2394,9 +2409,11 @@ header.header-main {
 .countdown.text-xs .countdown-label {
     font-size: 0.925rem;
 }
-.countdown.h6 .countdown-label{
+
+.countdown.h6 .countdown-label {
     font-size: 10px !important;
 }
+
 .countdown-style-1 .countdown-item {
     margin-right: 0.6em;
     margin-bottom: 0.5em;
@@ -2534,9 +2551,11 @@ header.header-main {
     background: #fff;
     border-radius: 20px;
 }
+
 .product-card:hover {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)
 }
+
 .widget,
 .brand-slider {
     border-radius: 5px;
@@ -2546,9 +2565,11 @@ header.header-main {
     margin-bottom: 15px;
     font-size: 14px;
 }
-.fw-bold{
+
+.fw-bold {
     font-weight: bold;
 }
+
 .black-color-text-pars {
     color: #0c0c0c;
 }
@@ -2768,13 +2789,14 @@ header.header-main {
 .brand-slider .product-carousel .item .post-title {
     font-size: 13px;
     display: block;
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
     letter-spacing: -0.3px;
     line-height: 25px;
     padding-top: 40px;
+    max-height: 90px;
 }
 
 .widget-product .product-carousel .item .post-title a {
@@ -2903,7 +2925,7 @@ header.header-main {
 
 .widget-product .product-carousel .item ins,
 .brand-slider .product-carousel .item ins {
-    color: #0c0c0c  !important;
+    color: #0c0c0c !important;
     font-size: 25px;
     height: auto;
     display: block;
@@ -3302,7 +3324,7 @@ header.header-main {
 }
 
 .slider-moments #suggestion-slider .item .price {
-    color: #0c0c0c ;
+    color: #0c0c0c;
     height: auto;
     font-size: 22px;
     text-align: center;
@@ -3852,7 +3874,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .noUi-connect {
-    background: #e70005  !important;
+    background: #e70005 !important;
 }
 
 .filter-range {
@@ -3862,7 +3884,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .btn-range {
-    background-color: #e70005 ;
+    background-color: #e70005;
     color: #fff;
     font-size: 17px;
     transition: all 300ms ease-out;
@@ -3947,7 +3969,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     padding: 2px;
     width: 100%;
     font-weight: 400;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     text-align: center;
     font-size: 13px;
     height: 30px;
@@ -6622,7 +6644,7 @@ main.single-product .product .gallery-items li img:hover {
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .product-name span.amount span {
     font-size: 17px;
-font-weight: bold;
+    font-weight: bold;
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row .product-name span.unavailable {
@@ -6719,10 +6741,12 @@ font-weight: bold;
     border: none;
     background: transparent;
     margin: 0 auto;
-    font-size: 15px; font-weight: bold;
-    
+    font-size: 15px;
+    font-weight: bold;
+
 }
-.promotion-badge{
+
+.promotion-badge {
     align-self: self-end;
     color: #ff0000;
     padding: 2px;
@@ -6734,6 +6758,7 @@ font-weight: bold;
     height: 30px;
     line-height: 14px;
 }
+
 .tabs .tab-box ul.tab li a i {
     vertical-align: middle;
     margin-left: 5px;
@@ -6752,10 +6777,12 @@ font-weight: bold;
     margin-bottom: 20px;
     float: right;
 }
-.owl-prev{
-    display: none !important; 
+
+.owl-prev {
+    display: none !important;
 }
-.owl-next{
+
+.owl-next {
     display: none !important;
 }
 
@@ -7823,7 +7850,7 @@ span.show-less {
 }
 
 .comparison .bg-cs-table-tr {
-    background-color: #edeafb;
+    background-color: #ff7979;
     font-size: 16px;
 }
 

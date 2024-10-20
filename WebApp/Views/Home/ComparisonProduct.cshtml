@@ -2,6 +2,7 @@
 @using Application.Common.Utilities
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
+@using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using WebApp.Models
 @model WebApp.Views.Home.ProductPage
@@ -15,6 +16,33 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
+
+    var catDetail = new List<CatDetailEdit>();
+    foreach (var i in categoryDetails)
+    {
+        if (catDetail.Any(x => x.FeatureId == i.FeatureId))
+        {
+            var result = catDetail.FirstOrDefault(x => x.FeatureId == i.FeatureId);
+
+            result.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = 0, Id = i.Id,
+            });
+        }
+        else
+        {
+            var li = new CatDetailEdit();
+            li.Feature = i.Feature;
+            li.FeatureId = i.FeatureId;
+            li.CategoryDetails.Add(new CategoryDetailDtoEdit
+            {
+                Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = 0, Id = i.Id
+            });
+            catDetail.Add(li);
+        }
+    }
 }
 
 @section footer
@@ -1017,233 +1045,256 @@
 }
 
 <div class="container-main">
-    <div class="col-12">
-        <div id="breadcrumb">
-            <i class="mdi mdi-home"></i>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index")">خانه</a>
-                    </li>
-                    @{
-                        if (prods.Count() > 0)
-                        {
-                            <li class="breadcrumb-item">
-                                <a href="#">@prods.FirstOrDefault().SubCategory.Category.Name</a>
-                            </li>
-                            <li class="breadcrumb-item active open"
-                                aria-current="page">
-                                <a href="@Url.Action("SubCategory", "Home", new { SubCategoryId = prods.FirstOrDefault().SubCategory.Id })">@prods.FirstOrDefault().SubCategory.Name</a>
-                            </li>
-                        }
-                    }
-
-                </ol>
-            </nav>
-        </div>
-        <div class="comparison">
+<div class="col-12">
+<div id="breadcrumb">
+    <i class="mdi mdi-home"></i>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index")">خانه</a>
+            </li>
             @{
-                if (prods.Count() < 1)
+                if (prods.Count() > 0)
                 {
-                    <div class="p-4 ">
-
-                        <h5> محصولی یافت نشد</h5>
-                    </div>
+                    <li class="breadcrumb-item">
+                        <a href="#">@prods.FirstOrDefault().SubCategory.Category.Name</a>
+                    </li>
+                    <li class="breadcrumb-item active open"
+                        aria-current="page">
+                        <a href="@Url.Action("SubCategory", "Home", new { SubCategoryId = prods.FirstOrDefault().SubCategory.Id })">@prods.FirstOrDefault().SubCategory.Name</a>
+                    </li>
                 }
-                else
-                {
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <td class="align-middle">
-                                <a href="#" class="btn-option btn-option-social p-3 m-3"
-                                   data-toggle="modal" data-target="#option-social">
-                                    <i class="mdi mdi-plus-box-outline"></i>
-                                    <span>افزودن</span>
-                                </a>
-                                <!-- Modal-option-social -->
-                                <div class="modal fade " id="option-social" tabindex="-1"
-                                     role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modalComp"
-                                         role="document" style="max-width: 600px ;width: 1000px">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title"
-                                                    id="exampleModalCenterTitle">
-                                                    محصولات مشابه
-                                                </h5>
-                                                <button type="button" class="close"
-                                                        data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
+            }
+
+        </ol>
+    </nav>
+</div>
+<div class="comparison">
+    @{
+        if (prods.Count() < 1)
+        {
+            <div class="p-4 ">
+
+                <h5> محصولی یافت نشد</h5>
+            </div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                    <td class="align-middle">
+                        <a href="#" class="btn-option btn-option-social p-3 m-3"
+                           data-toggle="modal" data-target="#option-social">
+                            <i class="mdi mdi-plus-box-outline"></i>
+                            <span>افزودن</span>
+                        </a>
+                        <!-- Modal-option-social -->
+                        <div class="modal fade " id="option-social" tabindex="-1"
+                             role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modalComp"
+                                 role="document" style="max-width: 600px ;width: 1000px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"
+                                            id="exampleModalCenterTitle">
+                                            محصولات مشابه
+                                        </h5>
+                                        <button type="button" class="close"
+                                                data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-outline p-2 m-1 d-flex" data-mdb-input-init>
+                                            <input type="search" id="searchInput" class="form-control"
+                                                   placeholder="جستجو کنید" aria-label="Search"/>
+                                            @{
+                                                int subId = prods.Count > 0 ? prods.FirstOrDefault().SubCategoryId : 0;
+                                                <input value="@subId" hidden="hidden" id="SubId"/>
+                                            }
+                                            <div class="input-group-append">
+                                                <button class="btn  clear-btn" type="button"
+                                                        id="clearBtn" onclick="clearSearch()">
+                                                    &times;
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                <div class="form-outline p-2 m-1 d-flex" data-mdb-input-init>
-                                                    <input type="search" id="searchInput" class="form-control"
-                                                           placeholder="جستجو کنید" aria-label="Search"/>
-                                                    @{
-                                                        int subId = prods.Count > 0 ? prods.FirstOrDefault().SubCategoryId : 0;
-                                                        <input value="@subId" hidden="hidden" id="SubId"/>
-                                                    }
-                                                    <div class="input-group-append">
-                                                        <button class="btn  clear-btn" type="button"
-                                                                id="clearBtn" onclick="clearSearch()">
-                                                            &times;
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
-                                                    <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-                                                        <div
-                                                            class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-                                                            <div class="owl-stage-outer">
-                                                                <div class="owl-stage" id="prodcomp"
-                                                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 500px;">
-                                                                    @{
-                                                                        foreach (var i in prodBySubCat)
-                                                                        {
-                                                                            <div class="owl-item active tab-item"
-                                                                                 style="width: 296.75px; margin-left: 10px;">
-                                                                                <div class="item">
-                                                                                    <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })"
-                                                                                       class="d-block hover-img-link">
-                                                                                        <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                                                             class="img-fluid" alt="">
-                                                                                    </a>
-                                                                                    <h2 class="post-title">
-                                                                                        <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })">
-                                                                                            @i.PersianTitle
-                                                                                        </a>
+                                        </div>
+                                        <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
+                                            <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
+                                                <div
+                                                    class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                                                    <div class="owl-stage-outer">
+                                                        <div class="owl-stage" id="prodcomp"
+                                                             style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 500px;">
+                                                            @{
+                                                                foreach (var i in prodBySubCat)
+                                                                {
+                                                                    <div class="owl-item active tab-item"
+                                                                         style="width: 296.75px; margin-left: 10px;">
+                                                                        <div class="item">
+                                                                            <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })"
+                                                                               class="d-block hover-img-link">
+                                                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                                                     class="img-fluid" alt="">
+                                                                            </a>
+                                                                            <h2 class="post-title">
+                                                                                <a href="@Url.Action("ComparisonProduct", "Home", new { @i.Id })">
+                                                                                    @i.PersianTitle
+                                                                                </a>
 
-                                                                                    </h2>
-                                                                                    <div class="price">
+                                                                            </h2>
+                                                                            <div class="price">
 
-                                                                                        @if (i.IsOffer)
-                                                                                        {
-                                                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                                                            {
-                                                                                                <del>
-                                                                                                    <span>
-                                                                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
-                                                                                                    </span>
-                                                                                                </del>
-                                                                                                <ins>
-                                                                                                    <span>
-                                                                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                                                                        <span>تومان</span>
-                                                                                                    </span>
-                                                                                                </ins>
-                                                                                                <div>
+                                                                                @if (i.IsOffer)
+                                                                                {
+                                                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                                    {
+                                                                                        <del>
+                                                                                            <span>
+                                                                                                @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
+                                                                                            </span>
+                                                                                        </del>
+                                                                                        <ins>
+                                                                                            <span>
+                                                                                                @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                                                <span>تومان</span>
+                                                                                            </span>
+                                                                                        </ins>
+                                                                                        <div>
 
-                                                                                                </div>
-                                                                                            }
-                                                                                            else
-                                                                                            {
-                                                                                                <ins>
-                                                                                                    <span>
-                                                                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                                                                    </span>
-                                                                                                </ins>
-                                                                                            }
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <ins>
-                                                                                                <span>
-                                                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                                                                </span>
-                                                                                            </ins>
-                                                                                        }
-                                                                                    </div>
-                                                                                </div>
+                                                                                        </div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <ins>
+                                                                                            <span>
+                                                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                                                            </span>
+                                                                                        </ins>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <ins>
+                                                                                        <span>
+                                                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                                                                        </span>
+                                                                                    </ins>
+                                                                                }
                                                                             </div>
-                                                                        }
-                                                                    }
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
 
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <!-- slider-product------------------------>
                                                 </div>
                                             </div>
+                                            <!-- slider-product------------------------>
                                         </div>
                                     </div>
                                 </div>
-                            </td>
-                            @{
-                                foreach (var i in prods)
-                                {
-                                    <td>
-                                        <div class="comparison-item">
-                                            <a class="remove-item" href="@Url.Action("RemoveInComparison", "Home", new { i.Id })">
-                                                <i class="mdi mdi-close"></i>
-                                            </a>
-                                            <a class="comparison-item-thumb" href="@Url.Action("ProductPage", "Home", new { i.Id })">
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                     alt="Samsung-S10Plus">
-                                            </a>
-                                            <a class="comparison-item-title" href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            <span class="amount">
-                                                @if (i.IsOffer)
-                                                {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                        <span>تومان</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                }
-                                            </span>
-                                        </div>
-                                    </td>
-                                }
-                            }
-
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="bg-cs-table-tr">
-                            <th class="text-uppercase">عنوان</th>
-                            @{
-                                foreach (var i in prods)
-                                {
-                                    <td class="d-flex justify-content-start gap-3">
-                                        <span class="text-medium">&nbsp;@i.Title&nbsp;</span>
-                                        
-                                    </td>
-                                }
-                            }
-
-                        </tr>
-                        <tr class="">
-                            <th class="text-uppercase">رنگ بندی</th>
-                            @{
-                                foreach (var i in prods)
-                                {
-                                    <td class="d-flex justify-content-start gap-3">
-                                        @{
-                                            foreach (var q in i.ProductColors)
+                            </div>
+                        </div>
+                    </td>
+                    @{
+                        foreach (var i in prods)
+                        {
+                            <td>
+                                <div class="comparison-item">
+                                    <a class="remove-item" href="@Url.Action("RemoveInComparison", "Home", new { i.Id })">
+                                        <i class="mdi mdi-close"></i>
+                                    </a>
+                                    <a class="comparison-item-thumb" href="@Url.Action("ProductPage", "Home", new { i.Id })">
+                                        <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                             alt="Samsung-S10Plus">
+                                    </a>
+                                    <a class="comparison-item-title" href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
+                                    <span class="amount">
+                                        @if (i.IsOffer)
+                                        {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                             {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;" class="p-3 m-1"></h1>
+                                                @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                <span>تومان</span>
+                                            }
+                                            else
+                                            {
+                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
                                             }
                                         }
-                                    </td>
-                                }
-                            }
+                                        else
+                                        {
+                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                        }
+                                    </span>
+                                </div>
+                            </td>
+                        }
+                    }
 
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="bg-cs-table-tr">
+                    <th class="text-uppercase">عنوان</th>
+                    @{
+                        foreach (var i in prods)
+                        {
+                            <td class="">
+                                <span class="text-medium">&nbsp;@i.Title&nbsp;</span>
+                            </td>
+                        }
+                    }
+
+                </tr>
+                <tr class="">
+                    <th class="text-uppercase">رنگ بندی</th>
+                    @{
+                        foreach (var i in prods)
+                        {
+                            foreach (var q in i.ProductColors)
+                            {
+                                <td class="">
+                                    <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-3 m-1"></h1>
+                                </td>
+                            }
+                        }
+                    }
+
+                </tr>
+                @{
+                    foreach (var q in catDetail)
+                    {
+                        <tr >
+                            <th>
+                                <h5 class="fw-bold">@q.Feature.Title</h5>
+                            </th>
                         </tr>
-                        @{
-                            foreach (var i in categoryDetails)
+                        foreach (var i in q.CategoryDetails.OrderBy(x => x.Priority))
+                        {
+                            if ((DataType)i.DataType == DataType.CheckBox)
+                            {
+                                <tr>
+                                    <th>@i.Title</th>
+                                    @foreach (var p in prods)
+                                    {
+                                        if (p.ProductDetails.FirstOrDefault(x => x.CategoryDetailId == i.Id).Value.Contains("true"))
+                                        {
+                                            <td>دارد</td>
+                                        }
+                                        else
+                                        {
+                                            <td>ندارد</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                            else
                             {
                                 <tr>
                                     <th>@i.Title</th>
@@ -1254,80 +1305,82 @@
                                 </tr>
                             }
                         }
-                        <tr>
-                            <th>قیمت</th>
-                            @{
-                                foreach (var i in prods)
-                                {
-                                    <td>
-                                        <span class="amount">
-
-
-                                            @if (i.IsOffer)
-                                            {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                    <span>تومان</span>
-                                                }
-                                                else
-                                                {
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                            }
-                                        </span>
-                                    </td>
-                                }
-                            }
-                        </tr>
-
-                        <tr>
-                            <th>امتیاز</th>
-                            @{
-                                foreach (var p in prods)
-                                {
-                                    <td>
-                                        <div class="product-rate">
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                            <i class="fa fa-star active"></i>
-                                        </div>
-                                    </td>
-                                }
-                            }
-
-                        </tr>
-                        <tr>
-                            <th></th>
-                            @{
-                                foreach (var i in prods)
-                                {
-                                    <td>
-                                        <a class="btn btn-primary btn-add-to-cart btn-block"
-                                           href="@Url.Action("AddToBasket", "Home", new { id = i.ProductColors.FirstOrDefault().Id })"
-                                           data-toast=""
-                                           data-toast-type="success" data-toast-position="topRight"
-                                           data-toast-icon="fe-icon-check-circle" data-toast-title="محصول"
-                                           data-toast-message="با موفقیت به سبد خرید اضافه شد!">
-                                            افزودن به سبد خرید
-                                        </a>
-                                    </td>
-                                }
-                            }
-
-                        </tr>
-                        </tbody>
-                    </table>
+                    }
                 }
-            }
-        </div>
-    </div>
+                <tr class="p-2">
+                    <th class="fw-bold">قیمت</th>
+                    @{
+                        foreach (var i in prods)
+                        {
+                            <td>
+                                <span class="amount fw-bold">
+
+
+                                    @if (i.IsOffer)
+                                    {
+                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                        {
+                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                            <span>تومان</span>
+                                        }
+                                        else
+                                        {
+                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
+                                    }
+                                </span>
+                            </td>
+                        }
+                    }
+                </tr>
+
+                @* <tr> *@
+                @*     <th>امتیاز</th> *@
+                @*     @{ *@
+                @*         foreach (var p in prods) *@
+                @*         { *@
+                @*             <td> *@
+                @*                 <div class="product-rate"> *@
+                @*                     <i class="fa fa-star active"></i> *@
+                @*                     <i class="fa fa-star active"></i> *@
+                @*                     <i class="fa fa-star active"></i> *@
+                @*                     <i class="fa fa-star active"></i> *@
+                @*                     <i class="fa fa-star active"></i> *@
+                @*                 </div> *@
+                @*             </td> *@
+                @*         } *@
+                @*     } *@
+                @* *@
+                @* </tr> *@
+                @* <tr> *@
+                @*     <th></th> *@
+                @*     @{ *@
+                @*         foreach (var i in prods) *@
+                @*         { *@
+                @*             <td> *@
+                @*                 <a class="btn btn-primary btn-add-to-cart btn-block" *@
+                @*                    href="@Url.Action("AddToBasket", "Home", new { id = i.ProductColors.FirstOrDefault().Id })" *@
+                @*                    data-toast="" *@
+                @*                    data-toast-type="success" data-toast-position="topRight" *@
+                @*                    data-toast-icon="fe-icon-check-circle" data-toast-title="محصول" *@
+                @*                    data-toast-message="با موفقیت به سبد خرید اضافه شد!"> *@
+                @*                     افزودن به سبد خرید *@
+                @*                 </a> *@
+                @*             </td> *@
+                @*         } *@
+                @*     } *@
+                @* *@
+                @* </tr> *@
+                </tbody>
+            </table>
+        }
+    }
+</div>
+</div>
 </div>
 
 

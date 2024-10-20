@@ -1183,7 +1183,7 @@
                                      role="document">
                                     <div class="modal-content">
                                         <div class="modal-body">
-                                            <div id="custom-events">
+                                            <div id="custom-events1">
                                                 @{
                                                     foreach (var i in prod.ProductImages)
                                                     {
@@ -1197,7 +1197,7 @@
                                                     }
 
                                                     <a
-                                                        href="/Images/ProductImage/@prod.ImageUri">
+                                                        href="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri">
                                                         <img
                                                             src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
                                                             width="145px"
@@ -1221,40 +1221,38 @@
                 </div>
             </div>
             <div class="gallery-item">
-                <div class="gallery-img" id="custom-events">
-                    <a href="#" data-toggle="modal" data-target="#more-product">
-                        <img id="img-product-zoom"
-                             src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
-                             width="411"/>
-                        <div id="gallery_01f" style="width:420px;float:right;">
-                    </a>
-                    <ul class="gallery-items owl-carousel owl-theme" id="gallery-slider">
-                        @{
-                            foreach (var i in prod.ProductImages)
-                            {
-                                <li class="item">
-                                    <a href="#" class="elevatezoom-gallery active" data-update=""
-                                       data-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri">
-                                        <img
-                                            src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                            width="145px" style="max-height: 150px"/>
-                                    </a>
-                                </li>
+                <div class="gallery-img">
+                    <div id="">
+                        <a href="#">
+                            <img class="zoom-img" id="img-product-zoom"
+                                 src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
+                                 data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
+                                 width="411"/>
+                            <div id="gallery_01f" style="width:420px;float:right;">
+                        </a>
+
+                        <ul class="gallery-items owl-carousel owl-theme"
+                            id="gallery-slider">
+                            @{
+                                foreach (var i in prod.ProductImages)
+                                {
+                                    <li class="item">
+                                        <a href="#" class="elevatezoom-gallery "
+                                           data-update=""
+                                           data-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                           data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri">
+                                            <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                 width="100"/>
+                                        </a>
+                                    </li>
+                                }
                             }
 
-                            <li class="item">
-                                <a href="#" class="elevatezoom-gallery active" data-update=""
-                                   data-image="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri">
-                                    <img
-                                        src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
-                                        width="145px" style="max-height: 150px"/>
-                                </a>
-                            </li>
-                        }
-
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
+          
         </div>
     </div>
     </section>
@@ -2279,50 +2277,7 @@
 
 
 @section script{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Select all the list items within the ul with the class 'js-product-variants'
-            const variantItems = document.querySelectorAll('.js-product-variants .ui-variant');
-            // Loop through each item
-            variantItems.forEach(function (item) {
-                // Find the radio input element within the current item
-                const radioInput = item.querySelector('.js-variant-selector');
-                // Check if the radio input is checked and get its value
-                if (radioInput.checked) {
-                    // Hide all elements with the class 'color-panel'
-                    document.querySelectorAll('.color-panel').forEach(element => {
-                        element.classList.add('d-none');
-                    });
-                    document.querySelectorAll('.nprice').forEach(element => {
-                        element.classList.add('d-none');
-                    });
-                    // Show the selected element
-                    // Assuming `id` is the ID of the element to show
-                    const id = radioInput.value; // Assuming the value of the radio button corresponds to the ID
-                    document.getElementById(id).classList.remove('d-none');
-                    document.getElementById(`n${id}`).classList.remove('d-none');
-                    document.getElementById(`p${id}`).classList.remove('d-none');
-                }
-            });
-            $('.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline')
-                .removeAttr('contenteditable');
-        });
 
-        function showElement(id) {
-            // Hide all elements
-            document.querySelectorAll('.color-panel').forEach(element => {
-                element.classList.add('d-none');
-            });
-            document.querySelectorAll('.nprice').forEach(element => {
-                element.classList.add('d-none');
-            });
-            // Show the selected element
-            document.getElementById(id).classList.remove('d-none');
-            document.getElementById(`n${id}`).classList.remove('d-none');
-            document.getElementById(`p${id}`).classList.remove('d-none');
-        }
-
-    </script>
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
     <script src="/assetsCli/js/vendor/bootstrap.js"></script>
     <!-- plugin------------------------------------------------->
@@ -2367,6 +2322,50 @@
                 }
             }
         });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all the list items within the ul with the class 'js-product-variants'
+            const variantItems = document.querySelectorAll('.js-product-variants .ui-variant');
+            // Loop through each item
+            variantItems.forEach(function (item) {
+                // Find the radio input element within the current item
+                const radioInput = item.querySelector('.js-variant-selector');
+                // Check if the radio input is checked and get its value
+                if (radioInput.checked) {
+                    // Hide all elements with the class 'color-panel'
+                    document.querySelectorAll('.color-panel').forEach(element => {
+                        element.classList.add('d-none');
+                    });
+                    document.querySelectorAll('.nprice').forEach(element => {
+                        element.classList.add('d-none');
+                    });
+                    // Show the selected element
+                    // Assuming `id` is the ID of the element to show
+                    const id = radioInput.value; // Assuming the value of the radio button corresponds to the ID
+                    document.getElementById(id).classList.remove('d-none');
+                    document.getElementById(`n${id}`).classList.remove('d-none');
+                    document.getElementById(`p${id}`).classList.remove('d-none');
+                }
+            });
+            $('.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-blurred.ck-editor__editable_inline')
+                .removeAttr('contenteditable');
+        });
+
+        function showElement(id) {
+            // Hide all elements
+            document.querySelectorAll('.color-panel').forEach(element => {
+                element.classList.add('d-none');
+            });
+            document.querySelectorAll('.nprice').forEach(element => {
+                element.classList.add('d-none');
+            });
+            // Show the selected element
+            document.getElementById(id).classList.remove('d-none');
+            document.getElementById(`n${id}`).classList.remove('d-none');
+            document.getElementById(`p${id}`).classList.remove('d-none');
+        }
 
     </script>
 }
