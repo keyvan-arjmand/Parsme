@@ -13,4 +13,5 @@ public class SeoPage : BaseEntity
     public string NavNameComp { get; set; } = string.Empty;
     public string HeaderNumber { get; set; } = string.Empty;
     public string HeaderLogo { get; set; } = string.Empty;
+    public string EmailComp { get; set; } = string.Empty;
 }

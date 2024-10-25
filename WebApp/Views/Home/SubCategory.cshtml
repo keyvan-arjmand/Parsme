@@ -23,6 +23,8 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
+    int pageSize = ViewBag.Page;
+    int id = ViewBag.Id;
 }
 
 @section footer
@@ -1088,90 +1090,65 @@
             @*         </div> *@
             @*     </div> *@
             @* </section> *@
+
             <section class="widget-product-categories">
                 <header class="cat-header">
                     <h2 class="mb-0">
                         <button class="btn btn-block text-right" data-toggle="collapse"
                                 href="#headingTwo" role="button" aria-expanded="false"
                                 aria-controls="headingTwo">
-                            براساس مشخصات
+                            بر اساس مشخصات
                             <i class="mdi mdi-chevron-down"></i>
                         </button>
                     </h2>
                 </header>
-                @{
-                    if (categoryDetails.Any())
-                    {
-                        <div class="product-filter">
-                            <div class="card">
-                                <div class="collapse show" id="headingTwo">
-                                    <div class="card-main mb-0">
-                                        <div class="sidebar-menu-widget-area">
-                                            <section class="megamenu-widget">
-                                                <div class="header-main-menu">
-                                                    <div class="toggle-box" style="border: none">
-                                                        <div class="toggle-box-active">
-                                                            <ul>
-                                                                @{
-                                                                    foreach (var c in categoryDetails)
-                                                                    {
-                                                                        <li class="has-sub">
-                                                                            <a>@c.Title</a>
-                                                                            <ul style="display: none;">
-                                                                                @foreach (var i in c.Option.Split(",").ToList())
-                                                                                {
-                                                                                    <a class="p-1 m-1" href="@Url.Action("SubCategory", "Home", new { detailId = c.Id, value = @i, subCategoryId =  ViewBag.Id })">
-                                                                                        @i
-                                                                                    </a>
-                                                                                }
-
-                                                                            </ul>
-                                                                        </li>
-                                                                    }
+                <div class="product-filter">
+                    <div class="card">
+                        <div class="collapse show" id="headingTwo">
+                            <div class="card-main mb-0">
+                                <div class="form-auth-row">
+                                    @{
+                                        foreach (var i in categoryDetails)
+                                        {
+                                            var idCollapse = "heading" + i.Id;
+                                            <section class="widget-product-categories">
+                                                <header class="cat-header">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-block text-right"
+                                                                data-toggle="collapse" href="#@idCollapse"
+                                                                role="button" aria-expanded="false"
+                                                                aria-controls="@idCollapse">
+                                                            @i.Title
+                                                            <i class="mdi mdi-chevron-down"></i>
+                                                        </button>
+                                                    </h2>
+                                                </header>
+                                                <div class="product-filter">
+                                                    <div class="card">
+                                                        <div class="collapse " id="@idCollapse">
+                                                            <div class="card-main mb-0">
+                                                                @foreach (var c in i.Option.Split(","))
+                                                                {
+                                                                    <div class="form-auth-row">
+                                                                        <a href="@Url.Action("SubCategory", "Home", new { id,detailId = i.Id, value = c })"
+                                                                           class="remember-me">
+                                                                            @c
+                                                                        </a>
+                                                                    </div>
                                                                 }
 
-
-                                                            </ul>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="accordion" id="accordionExample">
-
-
-                                                    </div>
-                                                    <div class="accordion" id="accordionExample">
-
                                                     </div>
                                                 </div>
                                             </section>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="product-filter">
-                            <div class="card">
-                                <div class="collapse show" id="headingTwo">
-                                    <div class="card-main mb-0">
-                                        @{
-                                            foreach (var i in brands)
-                                            {
-                                                <div style="cursor:pointer;" class="form-auth-row SubCat">
-                                                    <a class="text-decoration-none " style="color: black;cursor: pointer" href="@Url.Action("GetByBrand", "Home", new { @i.Id })">
-                                                        @i.Title
-                                                    </a>
-                                                </div>
-                                            }
                                         }
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
-                    }
-                }
+                    </div>
+                </div>
             </section>
             <section class="widget-product-categories">
                 <header class="cat-header">
@@ -1263,49 +1240,52 @@
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
                                                     {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
-                                                        <div class="countdown-timer w-75">
-                                                            <div class="countdown h6"
-                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
                                                     }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
+                                                        <div class="p-3">
+                                                            <div class="discount-d">
+                                                                <span>ناموجود</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     }
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1340,49 +1320,52 @@
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
                                                     {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
-                                                        <div class="countdown-timer w-75">
-                                                            <div class="countdown h6"
-                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
                                                     }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
+                                                        <div class="p-3">
+                                                            <div class="discount-d">
+                                                                <span>ناموجود</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     }
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1417,49 +1400,52 @@
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
                                                     {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
-                                                        <div class="countdown-timer w-75">
-                                                            <div class="countdown h6"
-                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
                                                     }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
+                                                        <div class="p-3">
+                                                            <div class="discount-d">
+                                                                <span>ناموجود</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     }
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1487,21 +1473,27 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize - 1, id })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
+                    @for (var i = pageSize; i <= pageSize + 2; i++)
+                    {
+                        if (i == pageSize)
+                        {
+                            <li class="page-item">
+                                <a class="page-link active" href="@Url.Action("SubCategory", "Home", new { page = i, id })">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link " href="@Url.Action("SubCategory", "Home", new { page = i, id })">@i</a>
+                            </li>
+                        }
+                    }
                     <li class="page-item">
-                        <a class="page-link active" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize + 1, id })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

@@ -23,6 +23,8 @@
     FooterLink footerLink = ViewBag.FooterLink;
     int BrandCount = ViewBag.BrandCount ?? 0;
     SeoPage seoPage = ViewBag.SeoPage;
+    int pageSize = ViewBag.Page;
+    int id = ViewBag.Id;
 }
 
 @section footer
@@ -1212,15 +1214,17 @@
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1289,15 +1293,17 @@
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1366,15 +1372,17 @@
                                                     <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1402,21 +1410,27 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("GetByBrand", "Home", new { page = pageSize - 1, id })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
+                    @for (var i = pageSize; i <= pageSize + 2; i++)
+                    {
+                    if (i == pageSize)
+                    {
                     <li class="page-item">
-                        <a class="page-link active" href="#">1</a>
+                        <a class="page-link active" href="@Url.Action("GetByBrand", "Home", new { page = i, id })">@i</a>
                     </li>
+                    }
+                    else
+                    {
                     <li class="page-item">
-                        <a class="page-link" href="#">2</a>
+                        <a class="page-link " href="@Url.Action("GetByBrand", "Home", new { page = i, id })">@i</a>
                     </li>
+                    }
+                    }
                     <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("GetByBrand", "Home", new { page = pageSize + 1, id })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

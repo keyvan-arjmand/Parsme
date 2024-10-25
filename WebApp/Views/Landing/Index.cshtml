@@ -1133,17 +1133,20 @@
 </div>
 <!-- adplacement--------------------------->
 <div class="container-main">
-<div class="d-block">
-    <div class="adplacement-container-row">
-        <div class="col-12">
-            <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
-                <div class="adplacement-sponsored_box">
-                    <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
-                </div>
-            </a>
+@if (!string.IsNullOrWhiteSpace(landing.BigBanner))
+{
+    <div class="d-block">
+        <div class="adplacement-container-row">
+            <div class="col-12">
+                <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
+                    <div class="adplacement-sponsored_box">
+                        <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-</div>
+}
 <div class="d-block">
 <!-- slider-moment------------------------->
 <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
@@ -1161,36 +1164,45 @@
                             foreach (var i in products)
                             {
                                 <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
-                                    <div class="item">
-                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
-                                            @if (i.IsOffer)
-                                            {
+                                    <div class="item  shadow-card">
+                                        <div class="thumb" style="min-height: 265px">
+                                            <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                                @if (i.IsOffer)
+                                                {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                {
+                                                <div class="d-flex justify-content-between gap-3">
+                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                    <div class="countdown-timer w-75">
+                                                        <div class="countdown h6"
+                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 }
-                                            }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
-                                            {
+                                                }
+                                                }
+                                                @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                                {
                                                 <div class="p-3">
                                                     <div class="discount-d">
                                                         <span>ناموجود</span>
                                                     </div>
                                                 </div>
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-                                            }
-                                            else
-                                            {
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
-                                            }
-
-
-                                        </a>
-
+                                                }
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                     class="img-fluid" alt="">
+                                            </a>
+                                        </div>
                                         <div class="color-d">
                                             @foreach (var q in i.ProductColors)
                                             {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px !important;"
+                                                class=" m-1 ">
+                                            </h1>
                                             }
                                         </div>
                                         <h2 class="post-title">
@@ -1201,39 +1213,42 @@
                                         <div class="price">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    <del>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </del>
-                                                    <ins>
-                                                        <span>
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                    <div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            <del>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </del>
+                                            <ins>
+                                                                <span>
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            <div>
 
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <ins>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                }
+                                            </div>
                                             }
                                             else
                                             {
-                                                <ins>
-                                                    <span>
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                    </span>
-                                                </ins>
+                                            <ins>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <ins>
+                                                            <span>
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                            </ins>
                                             }
                                         </div>
                                         <div class="actions">
@@ -1264,34 +1279,48 @@
 <div class="container-fluid">
     <div class="row pr">
         <div class="adplacement-container-row">
-            <div class="col-6 col-lg-3 pr">
-                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
-                    <div class="adplacement-sponsored_box">
-                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner1">
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-lg-3 pr">
-                <a href="@landing.HrefSmallBanner2" class="adplacement-item">
-                    <div class="adplacement-sponsored_box">
-                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner2">
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-lg-3 pr">
-                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
-                    <div class="adplacement-sponsored_box">
-                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-lg-3 pr">
-                <a href="@landing.HrefSmallBanner1" class="adplacement-item">
-                    <div class="adplacement-sponsored_box">
-                        <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
-                    </div>
-                </a>
-            </div>
+            @if (!string.IsNullOrWhiteSpace(landing.SmallBanner1))
+            {
+                <div class="col-6 col-lg-3 pr">
+                    <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner1">
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(landing.SmallBanner2))
+            {
+                <div class="col-6 col-lg-3 pr">
+                    <a href="@landing.HrefSmallBanner2" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner2">
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(landing.SmallBanner3))
+            {
+                <div class="col-6 col-lg-3 pr">
+                    <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(landing.SmallBanner3))
+            {
+                <div class="col-6 col-lg-3 pr">
+                    <a href="@landing.HrefSmallBanner1" class="adplacement-item">
+                        <div class="adplacement-sponsored_box">
+                            <img src="https://newdev.parsme.com/Images/Brand/@landing.SmallBanner3">
+                        </div>
+                    </a>
+                </div>
+            }
+
+
         </div>
     </div>
 </div>
@@ -1300,7 +1329,7 @@
     <div class="slider-widget-products">
         <div class="widget widget-product card">
             <header class="card-header">
-                <span class="title-one">  پرفروش ها</span>
+                <span class="title-one"> پرفروش ها</span>
                 <h3 class="card-title"></h3>
             </header>
             <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
@@ -1311,36 +1340,45 @@
                             foreach (var i in products)
                             {
                                 <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
-                                    <div class="item">
-                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
-                                            @if (i.IsOffer)
-                                            {
+                                    <div class="item  shadow-card">
+                                        <div class="thumb" style="min-height: 265px">
+                                            <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                                @if (i.IsOffer)
+                                                {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                {
+                                                <div class="d-flex justify-content-between gap-3">
+                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                    <div class="countdown-timer w-75">
+                                                        <div class="countdown h6"
+                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 }
-                                            }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
-                                            {
+                                                }
+                                                }
+                                                @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                                {
                                                 <div class="p-3">
                                                     <div class="discount-d">
                                                         <span>ناموجود</span>
                                                     </div>
                                                 </div>
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-                                            }
-                                            else
-                                            {
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
-                                            }
-
-
-                                        </a>
-
+                                                }
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                     class="img-fluid" alt="">
+                                            </a>
+                                        </div>
                                         <div class="color-d">
                                             @foreach (var q in i.ProductColors)
                                             {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px !important;"
+                                                class=" m-1 ">
+                                            </h1>
                                             }
                                         </div>
                                         <h2 class="post-title">
@@ -1351,39 +1389,42 @@
                                         <div class="price">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    <del>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </del>
-                                                    <ins>
-                                                        <span>
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                    <div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            <del>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </del>
+                                            <ins>
+                                                                <span>
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            <div>
 
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <ins>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                }
+                                            </div>
                                             }
                                             else
                                             {
-                                                <ins>
-                                                    <span>
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                    </span>
-                                                </ins>
+                                            <ins>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <ins>
+                                                            <span>
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                            </ins>
                                             }
                                         </div>
                                         <div class="actions">
@@ -1408,17 +1449,20 @@
 
         <!-- adplacement--------------------------->
         <div class="container-main">
-            <div class="d-block">
-                <div class="adplacement-container-row">
-                    <div class="col-12">
-                        <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
-                            <div class="adplacement-sponsored_box">
-                                <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
-                            </div>
-                        </a>
-                    </div>÷
-                </div>
-            </div>
+           @if (!string.IsNullOrWhiteSpace(landing.BigBanner))
+           {
+               <div class="d-block">
+                   <div class="adplacement-container-row">
+                       <div class="col-12">
+                           <a href="@landing.HrefBigBanner" class="adplacement-item mb-4">
+                               <div class="adplacement-sponsored_box">
+                                   <img src="https://newdev.parsme.com/Images/Brand/@landing.BigBanner">
+                               </div>
+                           </a>
+                       </div>÷
+                   </div>
+               </div>
+           }
         </div>
         <!-- adplacement--------------------------->
 
@@ -1435,36 +1479,45 @@
                             foreach (var i in products)
                             {
                                 <div class="owl-item active product-card tab-item" style="width: 296.75px; margin-left: 10px; min-height: 378px">
-                                    <div class="item">
-                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })" class="d-block hover-img-link">
-                                            @if (i.IsOffer)
-                                            {
+                                    <div class="item  shadow-card">
+                                        <div class="thumb" style="min-height: 265px">
+                                            <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                                @if (i.IsOffer)
+                                                {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    <div class="promotion-badge p-2"> شگفت انگیز</div>
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                {
+                                                <div class="d-flex justify-content-between gap-3">
+                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                    <div class="countdown-timer w-75">
+                                                        <div class="countdown h6"
+                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                             data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 }
-                                            }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
-                                            {
+                                                }
+                                                }
+                                                @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                                {
                                                 <div class="p-3">
                                                     <div class="discount-d">
                                                         <span>ناموجود</span>
                                                     </div>
                                                 </div>
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-                                            }
-                                            else
-                                            {
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid mt-4" alt="">
-                                            }
-
-
-                                        </a>
-
+                                                }
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                     class="img-fluid" alt="">
+                                            </a>
+                                        </div>
                                         <div class="color-d">
                                             @foreach (var q in i.ProductColors)
                                             {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                            <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px !important;"
+                                                class=" m-1 ">
+                                            </h1>
                                             }
                                         </div>
                                         <h2 class="post-title">
@@ -1475,39 +1528,42 @@
                                         <div class="price">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    <del>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </del>
-                                                    <ins>
-                                                        <span>
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                            <span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                    <div>
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            <del>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </del>
+                                            <ins>
+                                                                <span>
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            <div>
 
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <ins>
-                                                        <span>
-                                                            @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                        </span>
-                                                    </ins>
-                                                }
+                                            </div>
                                             }
                                             else
                                             {
-                                                <ins>
-                                                    <span>
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")<span>تومان</span>
-                                                    </span>
-                                                </ins>
+                                            <ins>
+                                                                <span>
+                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                    <span>تومان</span>
+                                                                </span>
+                                            </ins>
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <ins>
+                                                            <span>
+                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                <span>تومان</span>
+                                                            </span>
+                                            </ins>
                                             }
                                         </div>
                                         <div class="actions">

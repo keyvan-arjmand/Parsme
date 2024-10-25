@@ -213,15 +213,11 @@
         </div>
         <div class="footer-populated text-right p-2">
             <div class="footer-social d-flex flex-column">
-                <h6 class="fw-bold p-2">
-                    آدرس: میدان ولیعصر، خیابان ولیعصر، نبش خیابان ولدی، مجتمع تجاری ولیعصر، برج اداری
-                    شمالی، طبقه ششم، واحد 33
-                </h6>
-                <a class="fw-bold p-2" href="@seoPage.HeaderNumber">
+                <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
                     تماس: @seoPage.HeaderNumber
                 </a>
-                <a href="#" class="fw-bold p-2">
-                    ایمیل: info[at]Parsme.com
+                <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
+                    ایمیل: @seoPage.EmailComp
                 </a>
             </div>
         </div>
@@ -238,6 +234,25 @@
         <div class="col-lg-2 pl">
             <div class="footer-safety-partner">
                 <div class="widget widget-product card mb-0">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a referrerpolicy="origin" target="_blank"
+                               href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
+                                <img referrerpolicy="origin"
+                                     src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
+                                     alt="" style="cursor:pointer"
+                                     code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
+                            </a>
+                        </div>
+                        <div>
+                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                 style='cursor:pointer'
+                                 onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
+                                 alt='logo-samandehi'
+                                 src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                        </div>
+                    </div>
                     <div
                         class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
                         <div class="owl-stage-outer">
@@ -246,13 +261,7 @@
                                 <div class="owl-item active"
                                      style="width: 300.75px; margin-left: 10px;">
                                     <div class="item">
-                                        <a referrerpolicy="origin" target="_blank"
-                                           href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
-                                            <img referrerpolicy="origin"
-                                                 src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                                 alt="" style="cursor:pointer"
-                                                 code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
-                                        </a>
+
 
                                     </div>
                                 </div>
@@ -260,11 +269,6 @@
                                      style="width: 300.75px; margin-left: 10px;">
                                     <div class="item">
 
-                                        <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                             style='cursor:pointer'
-                                             onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
-                                             alt='logo-samandehi'
-                                             src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq'/>
 
                                     </div>
                                 </div>
@@ -346,7 +350,7 @@
                     <div class="header-search row text-right">
                         <div class="header-search-box">
                             <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                <input id="SearchEl" type="search" class="header-search-input" name="search"
+                                <input id="SearchEl" type="search" class="header-search-input EnFont" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
@@ -414,9 +418,9 @@
                                     {
                                         <li>
                                             <a href="#" class="fw-bold">
-                                                <img
-                                                    src="https://newdev.parsme.com/Images/Category/@i.LogoUri"
-                                                    width="22px"/>
+                                                @* <img *@
+                                                @*     src="https://newdev.parsme.com/Images/Category/@i.LogoUri" *@
+                                                @*     width="22px"/> *@
                                                 @i.Name
                                             </a>
                                             <div class="dm-arrow"></div>
@@ -1001,18 +1005,19 @@
 
 @section meta
 {
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
-    <meta name="description" content=@Html.Raw(seoPage.SeoIndexDesc).ToString()/>
-    <link rel="canonical" href=@seoPage.SeoIndexCanonical.ToString()/>
-    <meta property="og:locale" content="fa_IR"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:title" content=@Html.Raw(seoPage.SeoIndexTitle).ToString()/>
-    <meta property="og:description" content=@Html.Raw(seoPage.SeoIndexDesc).ToString()/>
-    <meta property="og:url" content="https://kasracomputer.com/"/>
-    <meta property="og:site_name" content=@Html.Raw(seoPage.SeoIndexTitle).ToString()/>
-    <meta property="og:image:width" content="1200"/>
-    <meta property="og:image:height" content="760"/>
-    <meta property="og:image:type" content="image/jpeg"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
+<link rel="canonical" href="@Html.Raw(seoPage.SeoIndexCanonical)"/>
+<meta property="og:locale" content="fa_IR"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
+<meta property="og:description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
+<meta property="og:url" content="https://kasracomputer.com/"/>
+<meta property="og:site_name" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="760"/>
+<meta property="og:image:type" content="image/jpeg"/>
+
 }
 
 @section link
@@ -1665,35 +1670,34 @@
                                                     <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                         @if (i.IsOffer)
                                                         {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                            {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                                {
-                                                                    <div class="d-flex justify-content-between gap-3">
-                                                                        <div class="promotion-badge w-25">فروش ویژه</div>
-                                                                        <div class="countdown-timer w-75">
-                                                                            <div class="countdown h6"
-                                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                }
-                                                            }
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                        {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                        }
                                                         }
                                                         @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                         {
-                                                            <div class="p-3">
-                                                                <div class="discount-d">
-                                                                    <span>ناموجود</span>
-                                                                </div>
+                                                        <div class="p-3">
+                                                            <div class="discount-d">
+                                                                <span>ناموجود</span>
                                                             </div>
+                                                        </div>
                                                         }
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                              class="img-fluid" alt="">
                                                     </a>
                                                 </div>
-
                                                 <div class="color-d">
                                                     @foreach (var q in i.ProductColors)
                                                     {
@@ -1796,29 +1800,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            {
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                            {
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <div class="promotion-badge w-25">فروش ویژه</div>
+                                                <div class="countdown-timer w-75">
+                                                    <div class="countdown h6"
+                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -2184,8 +2188,6 @@
     <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <script src="/assetsCli/js/vendor/jquery.jqZoom.js"></script>
-    <!-- main js-/--------------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
 
     <script>
     window.onscroll = function () {

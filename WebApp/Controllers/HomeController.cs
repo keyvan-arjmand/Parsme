@@ -932,9 +932,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> GetByBrand(int id, double min, double max)
+    public async Task<IActionResult> GetByBrand(int id, double min, double max,int page =1)
     {
         ViewBag.Id = id;
+        ViewBag.Page = page;
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
@@ -952,6 +953,8 @@ public class HomeController : Controller
                 .Include(x => x.Offer)
                 .Where(x => x.BrandId == id)
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                .Skip((page - 1) * 10)
+                .Take(10)
                 .ToListAsync();
         }
         else
@@ -961,6 +964,8 @@ public class HomeController : Controller
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.Offer)
                 .Where(x => x.BrandId == id)
+                .Skip((page - 1) * 10)
+                .Take(10)
                 .ToListAsync();
         }
 
@@ -1144,9 +1149,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Search(string search, double min, double max)
+    public async Task<IActionResult> Search(string search, double min, double max, int page = 1)
     {
         ViewBag.SearchR = search;
+        ViewBag.Page = page;
         if (max > 0)
         {
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
@@ -1162,6 +1168,8 @@ public class HomeController : Controller
                             x.Brand.Title.Contains(search) ||
                             x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                .Skip((page - 1) * 10)
+                .Take(10)
                 .ToListAsync();
         }
         else
@@ -1174,7 +1182,10 @@ public class HomeController : Controller
                 .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
                             x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
                             x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search)).ToListAsync();
+                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
+                .Skip((page - 1) * 10)
+                .Take(10)
+                .ToListAsync();
         }
 
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
@@ -1215,10 +1226,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> SubCategory(int id, double min, double max, int detailId, string value)
+    public async Task<IActionResult> SubCategory(int id, double min, double max, int detailId, string value,int page =1)
     {
         ViewBag.Id = id;
-
+        ViewBag.Page = page;
         if (max > 0)
         {
             if (detailId > 0)
@@ -1230,11 +1241,15 @@ public class HomeController : Controller
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.ProductDetails)
                     .Include(x => x.Offer)
+                    .AsSplitQuery()
+                    .OrderBy(x=>x.Id)
                     .Where(x => x.SubCategoryId == id)
-                    .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value == value)
+                    .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .Skip((page - 1) * 10)
+                    .Take(10)
                     .ToListAsync();
+
             }
             else
             {
@@ -1244,9 +1259,14 @@ public class HomeController : Controller
                     .Include(x => x.SubCategory)
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
+                    .AsSplitQuery()
+                    .OrderBy(x=>x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .Skip((page - 1) * 10)
+                    .Take(10)
                     .ToListAsync();
+
             }
         }
         else
@@ -1260,10 +1280,14 @@ public class HomeController : Controller
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
                     .Include(x => x.ProductDetails)
+                    .AsSplitQuery()
+                    .OrderBy(x=>x.Id)
                     .Where(x => x.SubCategoryId == id)
-                    .Where(x =>
-                        x.ProductDetails.FirstOrDefault(q => q.CategoryDetailId == detailId)!.Value == value)
+                    .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
+                    .Skip((page - 1) * 10)
+                    .Take(10)
                     .ToListAsync();
+
             }
             else
             {
@@ -1273,8 +1297,13 @@ public class HomeController : Controller
                     .Include(x => x.SubCategory)
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
+                    .AsSplitQuery()
+                    .OrderBy(x=>x.Id)
                     .Where(x => x.SubCategoryId == id)
+                    .Skip((page - 1) * 10)
+                    .Take(10)
                     .ToListAsync();
+
             }
         }
 

@@ -21,8 +21,9 @@
     List<Brand> brands = ViewBag.Brand;
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
-
     SeoPage seoPage = ViewBag.SeoPage;
+    string search = ViewBag.SearchR;
+    int pageSize = ViewBag.Page;
 }
 
 @section footer
@@ -1078,7 +1079,7 @@
                                     foreach (var i in subCategories)
                                     {
                                         <div style="cursor:pointer;" class="form-auth-row SubCat">
-                                            <a class="text-decoration-none remember-me" style="color: black;cursor: pointer" href="@Url.Action("SubCategory", "Home", new { subCategoryId = @i.Id })">
+                                            <a class="text-decoration-none remember-me" style="color: black;cursor: pointer" href="@Url.Action("SubCategory", "Home", new {  i.Id })">
                                                 @i.Name
                                             </a>
                                         </div>
@@ -1214,9 +1215,10 @@
                                                             if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="d-flex justify-content-between gap-3">
-                                                                    <div class="promotion-badge">فروش ویژه</div>
-                                                                    <div class="countdown-timer">
-                                                                        <div class="countdown h4" data-date-time="@i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
                                                                              data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                                         </div>
                                                                     </div>
@@ -1232,25 +1234,28 @@
                                                             </div>
                                                         </div>
                                                     }
-                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-
+                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                         class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                                    <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1279,7 +1284,7 @@
                             {
                                 foreach (var i in minPrice)
                                 {
-                                  <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
                                         <section class="product-box product product-type-simple">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
@@ -1290,9 +1295,10 @@
                                                             if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="d-flex justify-content-between gap-3">
-                                                                    <div class="promotion-badge">فروش ویژه</div>
-                                                                    <div class="countdown-timer">
-                                                                        <div class="countdown h4" data-date-time="@i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
                                                                              data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                                         </div>
                                                                     </div>
@@ -1308,25 +1314,28 @@
                                                             </div>
                                                         </div>
                                                     }
-                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-
+                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                         class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                                    <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1355,7 +1364,7 @@
                             {
                                 foreach (var i in maxPrice)
                                 {
-                                  <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
                                         <section class="product-box product product-type-simple">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
@@ -1366,9 +1375,10 @@
                                                             if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="d-flex justify-content-between gap-3">
-                                                                    <div class="promotion-badge">فروش ویژه</div>
-                                                                    <div class="countdown-timer">
-                                                                        <div class="countdown h4" data-date-time="@i.InsertDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                    <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-75">
+                                                                        <div class="countdown h6"
+                                                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
                                                                              data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                                         </div>
                                                                     </div>
@@ -1384,25 +1394,28 @@
                                                             </div>
                                                         </div>
                                                     }
-                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
-
+                                                    <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                         class="img-fluid" alt="">
                                                 </a>
                                             </div>
+
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
-                                                <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px" class="p-2 m-1 "></h1>
+                                                    <h1 style="background-color: @q.Color.ColorCode ;border-radius: 30px ;width: 1px;padding: 5px!important;" class="p-2 m-1 "></h1>
                                                 }
                                             </div>
-                                            <div class="title">
-                                                <a href="@Url.Action("ProductPage", "Home", new { i.Id })">@i.PersianTitle</a>
-                                            </div>
+                                            <h2 class="post-title">
+                                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                                    @i.PersianTitle
+                                                </a>
+                                            </h2>
                                             <div class="price">
                                                 <span class="amount">
                                                     @{
                                                         if (i.IsOffer)
                                                         {
-                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
+                                                            @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         }
                                                         else
                                                         {
@@ -1428,23 +1441,30 @@
         </div>
         <div class="pagination-product">
             <nav aria-label="Page navigation example">
+
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize - 1, search = search })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
+                    @for (var i = pageSize; i <= pageSize + 2; i++)
+                    {
+                        if (i == pageSize)
+                        {
+                            <li class="page-item">
+                                <a class="page-link active" href="@Url.Action("Search", "Home", new { page = i, search = search })">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link " href="@Url.Action("Search", "Home", new { page = i, search = search })">@i</a>
+                            </li>
+                        }
+                    }
                     <li class="page-item">
-                        <a class="page-link active" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize + 1, search = search })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

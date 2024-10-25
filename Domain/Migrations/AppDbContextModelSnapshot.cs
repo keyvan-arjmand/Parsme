@@ -1114,6 +1114,10 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("EmailComp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HeaderLogo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
