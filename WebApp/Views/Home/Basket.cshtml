@@ -1180,18 +1180,18 @@ else
                                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                 {
                                                                     @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                                    ;
+                                                                    
                                                                 }
                                                                 else
                                                                 {
                                                                     @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                                    ;
+                                                                    
                                                                 }
                                                             }
                                                             else
                                                             {
                                                                 @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                                ;
+                                                                
                                                             }
                                                             <span>تومان</span>
                                                         </span>

@@ -1088,7 +1088,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                         @{
                                             if (factors.Count > 0)
                                             {
-                                                foreach (var i in factors)
+                                                foreach (var i in factors.OrderByDescending(x=>x.InsertDate))
                                                 {
                                                     var price = i.Amount - i.DiscountAmount;
                                                     <tr>

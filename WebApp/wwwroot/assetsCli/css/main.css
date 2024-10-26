@@ -4343,7 +4343,7 @@ input[type="number"] {
 }
 
 .quantity-button.quantity-up:hover {
-    background: #3d8f14;
+    background: #fd3a3a;
     color: #fff;
     transition: 0.2s;
 }
@@ -5983,8 +5983,8 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .checkout-review-order .btn-Order {
-    background-color: #3d8f14;
-    border-color: #3d8f14;
+    background-color: #ff1414;
+    border-color: #ff5252;
     border-radius: 20px;
     font-size: 14px;
     outline: none !important;
