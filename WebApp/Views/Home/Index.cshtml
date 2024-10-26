@@ -964,15 +964,6 @@
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <div class="nav-btn nav-slider">
-                        <i class="mdi mdi-menu" aria-hidden="true"></i>
-                    </div>
-
-                    دسته بندی ها
-                </a>
-            </li>
-            <li>
                 <a href="@Url.Action("Basket")">
                     <i class="mdi mdi-cart"></i>
                     سبد خرید
@@ -1005,18 +996,18 @@
 
 @section meta
 {
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
-<meta name="description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
-<link rel="canonical" href="@Html.Raw(seoPage.SeoIndexCanonical)"/>
-<meta property="og:locale" content="fa_IR"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
-<meta property="og:description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
-<meta property="og:url" content="https://kasracomputer.com/"/>
-<meta property="og:site_name" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
-<meta property="og:image:width" content="1200"/>
-<meta property="og:image:height" content="760"/>
-<meta property="og:image:type" content="image/jpeg"/>
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+    <meta name="description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
+    <link rel="canonical" href="@Html.Raw(seoPage.SeoIndexCanonical)"/>
+    <meta property="og:locale" content="fa_IR"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
+    <meta property="og:description" content="@Html.Raw(seoPage.SeoIndexDesc)"/>
+    <meta property="og:url" content="https://kasracomputer.com/"/>
+    <meta property="og:site_name" content="@Html.Raw(seoPage.SeoIndexTitle)"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="760"/>
+    <meta property="og:image:type" content="image/jpeg"/>
 
 }
 
@@ -1640,8 +1631,9 @@
 
 <!-- tabs---------------------------------->
 <div class="tab-count-product">
-    <header class="card-header">
-        <span class="title-one text-start" style="padding-bottom: 10px;
+    <header class="card-header d-flex justify-content-between">
+        <div>
+            <span class="title-one text-start" style="padding-bottom: 10px;
     color: #0c0c0c;
     border-bottom: 2px solid #FF2D2D;
     display: inline-block;
@@ -1649,7 +1641,19 @@
     top: 2px;
     font-weight: 600;
     font-size: 14px;">کالاهای پیشنهادی</span>
-        <h3 class="card-title"></h3>
+            <h3 class="card-title"></h3>
+        </div>
+        <a href="@Url.Action("ShowAll", "Home",new{q="کالاهای پیشنهادی"})">
+            <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">نمایش همه</span>
+            <h3 class="card-title"></h3>
+        </a>
     </header>
     <div class="tab-content" id="myTabContent">
         <div class="tab camera tab-pane fade show active" id="camera" role="tabpanel"
@@ -1670,29 +1674,29 @@
                                                     <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                         @if (i.IsOffer)
                                                         {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                        {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                        {
-                                                        <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
-                                                                <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        }
-                                                        }
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                                {
+                                                                    <div class="d-flex justify-content-between gap-3">
+                                                                        <div class="promotion-badge w-25">فروش ویژه</div>
+                                                                        <div class="countdown-timer w-75">
+                                                                            <div class="countdown h6"
+                                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
                                                         }
                                                         @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                                         {
-                                                        <div class="p-3">
-                                                            <div class="discount-d">
-                                                                <span>ناموجود</span>
+                                                            <div class="p-3">
+                                                                <div class="discount-d">
+                                                                    <span>ناموجود</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
                                                         }
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                              class="img-fluid" alt="">
@@ -1782,9 +1786,23 @@
 <!-- slider-product------------------------>
 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-        <header class="card-header">
-            <span class="title-one text-start">محصولات جدید</span>
-            <h3 class="card-title"></h3>
+        <header class="card-header d-flex justify-content-between">
+            <div>
+                <span class="title-one text-start">محصولات جدید</span>
+                <h3 class="card-title"></h3>
+
+            </div>
+            <a href="@Url.Action("ShowAll", "Home",new{q="محصولات جدید"})">
+                <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">نمایش همه</span>
+                <h3 class="card-title"></h3>
+            </a>
         </header>
         <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
             <div class="owl-stage-outer p-2">
@@ -1800,29 +1818,29 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                            {
-                                            <div class="d-flex justify-content-between gap-3">
-                                                <div class="promotion-badge w-25">فروش ویژه</div>
-                                                <div class="countdown-timer w-75">
-                                                    <div class="countdown h6"
-                                                         data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                         data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            }
-                                            }
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                {
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="countdown-timer w-75">
+                                                                <div class="countdown h6"
+                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0))
                                             {
-                                            <div class="p-3">
-                                                <div class="discount-d">
-                                                    <span>ناموجود</span>
+                                                <div class="p-3">
+                                                    <div class="discount-d">
+                                                        <span>ناموجود</span>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -1907,9 +1925,22 @@
 </div>
 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-        <header class="card-header">
-            <span class="title-one text-start">محصولات پرفروش</span>
-            <h3 class="card-title"></h3>
+        <header class="card-header d-flex justify-content-between">
+            <div>
+                <span class="title-one text-start">محصولات پرفروش</span>
+                <h3 class="card-title"></h3>
+            </div>
+            <a href="@Url.Action("ShowAll", "Home",new{q="محصولات پرفروش"})">
+                <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">نمایش همه</span>
+                <h3 class="card-title"></h3>
+            </a>
         </header>
         <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag ">
             <div class="owl-stage-outer p-2">
@@ -2051,9 +2082,22 @@
 
 <div class="slider-widget-products slider-content-tabs pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-        <header class="card-header">
-            <span class="title-one ">دیگر محصولات پارس می</span>
-            <h3 class="card-title"></h3>
+        <header class="card-header d-flex justify-content-between">
+            <div>
+                <span class="title-one ">دیگر محصولات پارس می</span>
+                <h3 class="card-title"></h3>
+            </div>
+            <a href="@Url.Action("ShowAll", "Home",new{q="دیگر محصولات پارس می"})">
+                <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">نمایش همه</span>
+                <h3 class="card-title"></h3>
+            </a>
         </header>
         <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag ">
             <div class="owl-stage-outer p-2">

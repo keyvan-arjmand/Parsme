@@ -86,7 +86,7 @@
         <div class="footer-shopping-social">
             <div class="row">
                 <div
-                    class="col-12 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
+                    class="col-9 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
                             <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
@@ -98,7 +98,12 @@
                         </h6>
                     </div>
                 </div>
-
+                <div class="col-3 align-content-center text-end" style="text-align: end">
+                    <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
+                        بازگشت به
+                        بالا
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -263,26 +268,17 @@
                             <i class="fa fa-instagram" style="font-size: 30px"></i>
                         </a>
                     </li>
-                    <li>
-                        <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
-                            بازگشت به
-                            بالا
-                        </button>
-                    </li>
+
                 </ul>
             </div>
         </div>
         <div class="footer-populated text-right p-2">
             <div class="footer-social d-flex flex-column">
-                <h6 class="fw-bold p-2">
-                    آدرس: میدان ولیعصر، خیابان ولیعصر، نبش خیابان ولدی، مجتمع تجاری ولیعصر، برج اداری
-                    شمالی، طبقه ششم، واحد 33
-                </h6>
-                <a class="fw-bold p-2" href="@seoPage.HeaderNumber">
+                <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
                     تماس: @seoPage.HeaderNumber
                 </a>
-                <a href="#" class="fw-bold p-2">
-                    ایمیل: info[at]Parsme.com
+                <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
+                    ایمیل: @seoPage.EmailComp
                 </a>
             </div>
         </div>
@@ -299,6 +295,25 @@
         <div class="col-lg-2 pl">
             <div class="footer-safety-partner">
                 <div class="widget widget-product card mb-0">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a referrerpolicy="origin" target="_blank"
+                               href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
+                                <img referrerpolicy="origin"
+                                     src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
+                                     alt="" style="cursor:pointer"
+                                     code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
+                            </a>
+                        </div>
+                        <div>
+                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                 style='cursor:pointer'
+                                 onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
+                                 alt='logo-samandehi'
+                                 src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                        </div>
+                    </div>
                     <div
                         class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
                         <div class="owl-stage-outer">
@@ -307,13 +322,7 @@
                                 <div class="owl-item active"
                                      style="width: 300.75px; margin-left: 10px;">
                                     <div class="item">
-                                        <a referrerpolicy="origin" target="_blank"
-                                           href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
-                                            <img referrerpolicy="origin"
-                                                 src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                                 alt="" style="cursor:pointer"
-                                                 code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
-                                        </a>
+
 
                                     </div>
                                 </div>
@@ -321,11 +330,6 @@
                                      style="width: 300.75px; margin-left: 10px;">
                                     <div class="item">
 
-                                        <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                             style='cursor:pointer'
-                                             onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
-                                             alt='logo-samandehi'
-                                             src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq'/>
 
                                     </div>
                                 </div>
@@ -378,12 +382,16 @@
     <header class="header-main">
     <div class="d-block">
     <section class="h-main-row" style="margin-top: 0">
-        <div class="col-12 p-0">
-            <img style="width: 100%;    height: 100px;    object-fit: cover"
-                 src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
-        </div>
+        @if (seoPage.ShowTopBanner)
+        {
+            <div class="col-12 p-0">
+                <img style="width: 100%;    height: 100px;    object-fit: cover"
+                     src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+            </div>
+        }
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
             <div class="header-right">
+
                 <div
                     class="col-lg-3 pr d-flex flex-md-row flex-row flex-lg-column flex-sm-row gap-2 justify-content-between align-content-start">
                     <div class="header-logo row text-right">
@@ -403,7 +411,7 @@
                     <div class="header-search row text-right">
                         <div class="header-search-box">
                             <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                <input id="SearchEl" type="search" class="header-search-input" name="search"
+                                <input id="SearchEl" type="search" class="header-search-input EnFont" name="search"
                                        placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                 <div class="action-btns">
                                     <button class="btn btn-search" type="submit">
@@ -471,10 +479,10 @@
                                     {
                                         <li>
                                             <a href="#" class="fw-bold">
+                                                @* <img *@
+                                                @*     src="https://newdev.parsme.com/Images/Category/@i.LogoUri" *@
+                                                @*     width="22px"/> *@
                                                 @i.Name
-                                                <img
-                                                    src="https://newdev.parsme.com/Images/Category/@i.LogoUri"
-                                                    width="22px"/>
                                             </a>
                                             <div class="dm-arrow"></div>
                                             <ul class="droopmenu-grid droopmenu-grid-10">
@@ -890,14 +898,14 @@
                                                         </div>
                                                         <div class="quantity">
                                                             <span
-                                                                class="quantity-Price-amount fw-bold">
+                                                                class="quantity-Price-amount">
 
                                                                 <span> تعداد:@i.Count</span>
                                                             </span>
                                                         </div>
                                                         <div class="quantity">
                                                             <span
-                                                                class="quantity-Price-amount fw-bold">
+                                                                class="quantity-Price-amount">
                                                                 @{
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
@@ -1014,15 +1022,6 @@
                 <a href="@Url.Action("Index")">
                     <i class="mdi mdi-home"></i>
                     صفحه اصلی
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="nav-btn nav-slider">
-                        <i class="mdi mdi-menu" aria-hidden="true"></i>
-                    </div>
-
-                    دسته بندی ها
                 </a>
             </li>
             <li>
@@ -1242,7 +1241,7 @@ else
                                     <div class="totals d-block">
                                         <h3 class="Total-cart-total">مجموع کل سبد خرید</h3>
                                         <div class="checkout-summary">
-                                            <ul class="checkout-summary-summary">
+                                            <ul class="checkout-summary-summary" style="display: flex;justify-content: space-between;flex-wrap: wrap ;gap: 5px">
                                                 <li class="cart-subtotal">
                                                     <span class="amount fw-bold">قیمت کل</span>
                                                     @{
@@ -1263,11 +1262,6 @@ else
                                                                             <div class="shipping-totals-outline" style="display: flex;
     justify-content: space-between;
     align-items: center;">
-                                                                                <label for="#" class="outline-radio"  >
-                                                                                    <input type="radio" value="@i.Id" checked="checked" name="payment_method"
-                                                                                           id="@i.Id">
-                                                                                    <span class="outline-radio-check"></span>
-                                                                                </label>
                                                                                 <label for="#" class="shipping-totals-title-row">
                                                                                     <div class="shipping-totals-title">
                                                                                         @if (i.Price > 0)
@@ -1280,6 +1274,12 @@ else
                                                                                         }
                                                                                     </div>
                                                                                 </label>
+                                                                                <label for="#" class="outline-radio">
+                                                                                    <input type="radio" value="@i.Id" checked="checked" name="payment_method"
+                                                                                           id="@i.Id">
+                                                                                    <span class="outline-radio-check"></span>
+                                                                                </label>
+
                                                                             </div>
                                                                         }
                                                                         else
@@ -1287,11 +1287,6 @@ else
                                                                             <div class="shipping-totals-outline" style="display: flex;
     justify-content: space-between;
     align-items: center;">
-                                                                                <label for="#" class="outline-radio" >
-                                                                                    <input type="radio" value="@i.Id" name="payment_method"
-                                                                                           id="@i.Id">
-                                                                                    <span class="outline-radio-check"></span>
-                                                                                </label>
                                                                                 <label for="#" class="shipping-totals-title-row">
                                                                                     <div class="shipping-totals-title">
                                                                                         @if (i.Price > 0)
@@ -1304,6 +1299,12 @@ else
                                                                                         }
                                                                                     </div>
                                                                                 </label>
+                                                                                <label for="#" class="outline-radio">
+                                                                                    <input type="radio" value="@i.Id" name="payment_method"
+                                                                                           id="@i.Id">
+                                                                                    <span class="outline-radio-check"></span>
+                                                                                </label>
+
                                                                             </div>
                                                                         }
                                                                     }
@@ -1342,44 +1343,47 @@ else
                                                             }
                                                             <span> @totalPrice.ToString("N0") تومان</span>
                                                         </li>
-                                                        <li class="discount-code">
-                                                            <div class=" align-items-center">
-                                                                <div class="col-md-7 pr mt-5">
-                                                                    <div class="coupon">
-                                                                        <form >
-                                                                            <input type="text" name="input-coupon"
-                                                                                   class="input-coupon-code" value="@discountCode.Code" id="DiscountCode"
-                                                                                   placeholder="كد تخفیف:">
-                                                                            <button class="btn btn-coupon"
-                                                                                    type="button" onclick="CheckCode()">
-                                                                                اعمال
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-2 pl mt-5">
-                                                                    <div class="proceed-to-checkout">
-                                                                        <a onclick="CheckOut()" class="checkout-button d-block">
-                                                                            تسویه
-                                                                            حساب
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    }
-                                                    else
-                                                    {
-                                                        <li class="shipping-totals d-flex justify-content-start gap-4 " style="gap: 10px">
-                                                            <a href="@Url.Action("Login", "Home")" class="btn account-btn btn-warning">ورود به حساب کاربری</a>
-                                                            <div class="return-to-shop">
-                                                                <a href="@Url.Action("Index", "Home")" class="backward btn btn-info">بازگشت به صفحه اصلی</a>
-                                                            </div>
-                                                        </li>
                                                     }
                                                 }
 
                                             </ul>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="discount-code">
+                                                    <div class=" align-items-center">
+                                                        <div class="col-md-7 pr mt-5">
+                                                            <div class="coupon">
+                                                                <form >
+                                                                    <input type="text" name="input-coupon"
+                                                                           class="input-coupon-code" value="@discountCode.Code" id="DiscountCode"
+                                                                           placeholder="كد تخفیف:">
+                                                                    <button class="btn btn-coupon"
+                                                                            type="button" onclick="CheckCode()">
+                                                                        اعمال
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 pl mt-5">
+                                                            <div class="proceed-to-checkout text-white">
+                                                                <a onclick="CheckOut()" class="checkout-button d-block">
+                                                                    تسویه
+                                                                    حساب
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="shipping-totals d-flex justify-content-start gap-4 " style="gap: 10px">
+                                                    <a href="@Url.Action("Login", "Home")" class="btn account-btn btn-warning">ورود به حساب کاربری</a>
+                                                    <div class="return-to-shop">
+                                                        <a href="@Url.Action("Index", "Home")" class="backward btn btn-info">بازگشت به صفحه اصلی</a>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

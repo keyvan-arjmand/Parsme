@@ -10,7 +10,41 @@
     height: 83px !important;;
     margin-top: 0 !important;
 }
-
+ .input-coupon-code {
+    width: 75%;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    outline: none;
+    padding: 0 10px;
+    font-size: 13px;
+    color: #666666;
+}
+ .proceed-to-checkout:hover {
+    opacity: 0.7;
+    transition: 0.2s;
+}
+.proceed-to-checkout {
+    padding: 6px 15px;
+    background-color: #ff0000;
+    border-radius: 20px;
+    text-align: center;
+    transition: 0.2s;
+    cursor: pointer;
+}
+ .btn-coupon:hover {
+    opacity: 0.7;
+    transition: 0.2s;
+}
+ .btn-coupon {
+    width: 20%;
+    height: 40px;
+    background-color: #ff0000;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #fff;
+    transition: 0.2s;
+}
 .sticky-nav-btn {
     margin-top: 25px !important;
     position: fixed !important;
@@ -5737,8 +5771,8 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .notices-wrapper .form-coupon-toggle .info {
-    color: #666666;
-    background: #f1fbfd;
+    color: #ffffff;
+    background: #f32a2a;
     padding: 7px 20px 7px 10px;
     margin: 10px 0;
     position: relative;
@@ -5831,7 +5865,7 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .checkout-review-order table.checkout-review-order-table tbody .checkout-cart-item .product-price span.amount {
-    font-size: 7px;
+    font-size: 15px;
     font-weight: 500;
 }
 
@@ -5848,8 +5882,8 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .checkout-review-order table.checkout-review-order-table tfoot .price ins {
-    color: #3d8f14 !important;
-    font-size: 20px;
+    color: #ff3e3e  !important;
+    font-size: 22px;
     height: auto;
     display: block;
     text-decoration: none;
@@ -6356,7 +6390,6 @@ main.single-product .product .gallery-items li img:hover {
     right: 0;
     display: block;
     margin: 0 auto;
-    float: none !important;
 }
 
 .product .product-info .product-headline {

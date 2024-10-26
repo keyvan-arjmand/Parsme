@@ -26,7 +26,7 @@
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <a href="#" class="account-box-logo">Parsme</a>
+                        <a href="@Url.Action("Index","Home")" class="account-box-logo">Parsme</a>
                         <div class="account-box">
                             <div class="account-box-headline">
                                 <a href="@Url.Action("Login", "Home")" class="login-ds active">
@@ -41,15 +41,10 @@
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
                                     <h4>ثبت نام در پارس می</h4>
-                                    <form class="form-account text-right" asp-action="UserLogin" asp-controller="Home" method="post">
+                                    <div class=" text-right" >
                                         <div class="form-account-title">
-                                            <label for="phoneNumber">شماره موبایل</label>
-                                            <input type="text" class="number-email-input" id="phoneNumber" name="phoneNumber" required="required">
-                                        </div>
-                                        <div class="form-account-title">
-                                            <label for="password">رمز عبور</label>
-                                            <a href="" class="account-link-password">رمز خود را فراموش کرده ام</a>
-                                            <input id="password" type="password" class="password-input" name="password" required="required">
+                                            <label for="Phone">شماره موبایل</label>
+                                            <input type="text" class="number-email-input" id="Phone" name="phoneNumber" required="required">
                                         </div>
                                         <div class="form-auth-row">
                                             <label for="#" class="ui-checkbox mt-1">
@@ -60,13 +55,10 @@
                                         </div>
                                         <div class="d-flex justify-content-between gap-2">
                                             <div class="form-row-account">
-                                                <button class="btn btn-primary btn-register" type="submit">ورود به حساب</button>
-                                            </div>
-                                            <div class="form-row-account">
-                                                <button class="btn btn-primary"><a href="@Url.Action("LoginPhone", "Home")" class="text-decoration-none text-white">ورود با کد یکبار مصرف</a></button>
+                                                <button  onclick="Login()" class="btn btn-primary" type="button"><a class="text-decoration-none text-white">ورود با کد یکبار مصرف</a></button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,19 +93,26 @@
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
 <script>
+ 
     function Login(){
+        if ($('#Phone').val()!=='')
+        {
+            $.ajax({
+                type: "Post",
+                data: {phoneNumber:$('#Phone').val()},
+                url: "/Home/SendLoginCode/",
+                success: function (data) {
+                    var phoneNumber = $('#Phone').val();
+                    var confirmCodeUrl = '@Url.Action("ConfirmCode", "Home")';
+                    window.location.href = confirmCodeUrl + '?phoneNumber=' + encodeURIComponent(phoneNumber);
+                },
+                error: function (xhr) {
+                    alert("شماره وارد شده معتبر نمیباشد");
+                }
+            });
+        }else{
+            alert("شماره تلفن را وارد کنید")}
 
-        $.ajax({
-            type: "Post",
-            data: {password: $('#password').val(),phoneNumber:$('#phoneNumber').val()},
-            url: "/Home/UserLogin",
-            success: function (data) {
-                window.location.href= "/admin/index";
-            },
-            error: function (xhr) {
-                alert("نام کاربری یا رمز عبور معتبر نمیباشد");
-            }
-        });
     }
 </script>
 </html>

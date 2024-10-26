@@ -2,6 +2,7 @@
 using Application.Admin.V1.Commands.ConfirmCodAdmin;
 using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
+using Application.Dtos.Products;
 using Application.Interfaces;
 using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
@@ -658,7 +659,7 @@ public class HomeController : Controller
                 Number = number, UserId = user.Id
             }, CancellationToken.None);
 
-            return RedirectToAction("ProfileDetail");
+            return RedirectToAction("UserAddress");
         }
         else
         {
@@ -932,7 +933,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> GetByBrand(int id, double min, double max,int page =1)
+    public async Task<IActionResult> GetByBrand(int id, double min, double max, int page = 1)
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
@@ -1149,6 +1150,58 @@ public class HomeController : Controller
         return View();
     }
 
+    public async Task<IActionResult> ShowAll(string q, int page = 1)
+    {
+        ViewBag.q = q;
+        ViewBag.Page = page;
+
+        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+            .Include(x => x.ProductColors)
+            .Include(x => x.SubCategory)
+            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+            .Include(x => x.Offer)
+            .Skip((page - 1) * 10)
+            .Take(10)
+            .ToListAsync();
+
+        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
+            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Categories = cats;
+        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                             new FooterLink();
+
+        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+
+        ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
+            .Include(x => x.Brands)
+            .ToListAsync();
+        ViewBag.Brand = await _work.GenericRepository<Brand>().TableNoTracking.Take(7).ToListAsync();
+        var basketProducts = new List<Product>();
+        if (HttpContext.Session.GetString("basket") != null)
+        {
+            var basketList = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            foreach (var i in basketList)
+            {
+                var prodColor = await _work.GenericRepository<ProductColor>().TableNoTracking.Include(x => x.Color)
+                    .FirstOrDefaultAsync(x => x.Id == i);
+
+                var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+                    .ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .FirstOrDefaultAsync(x => x.Id == prodColor.ProductId);
+
+                prod.ProductColors = new List<ProductColor>() { prodColor };
+                basketProducts.Add(prod!);
+            }
+        }
+
+        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                          new SeoPage();
+        ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+
     public async Task<IActionResult> Search(string search, double min, double max, int page = 1)
     {
         ViewBag.SearchR = search;
@@ -1226,7 +1279,8 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> SubCategory(int id, double min, double max, int detailId, string value,int page =1)
+    public async Task<IActionResult> SubCategory(int id, double min, double max, int detailId, string value,
+        int page = 1)
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
@@ -1242,14 +1296,13 @@ public class HomeController : Controller
                     .Include(x => x.ProductDetails)
                     .Include(x => x.Offer)
                     .AsSplitQuery()
-                    .OrderBy(x=>x.Id)
+                    .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .Skip((page - 1) * 10)
                     .Take(10)
                     .ToListAsync();
-
             }
             else
             {
@@ -1260,13 +1313,12 @@ public class HomeController : Controller
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
                     .AsSplitQuery()
-                    .OrderBy(x=>x.Id)
+                    .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .Skip((page - 1) * 10)
                     .Take(10)
                     .ToListAsync();
-
             }
         }
         else
@@ -1281,13 +1333,12 @@ public class HomeController : Controller
                     .Include(x => x.Offer)
                     .Include(x => x.ProductDetails)
                     .AsSplitQuery()
-                    .OrderBy(x=>x.Id)
+                    .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
                     .Skip((page - 1) * 10)
                     .Take(10)
                     .ToListAsync();
-
             }
             else
             {
@@ -1298,12 +1349,11 @@ public class HomeController : Controller
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
                     .AsSplitQuery()
-                    .OrderBy(x=>x.Id)
+                    .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Skip((page - 1) * 10)
                     .Take(10)
                     .ToListAsync();
-
             }
         }
 
@@ -1416,16 +1466,24 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<List<Product>> GetProdComparison(int subCatId, string search)
+    public async Task<IActionResult> GetProdComparison(int subCatId, string search)
     {
         var prods = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.ProductColors)
             .Where(x => x.SubCategoryId == subCatId)
-            .Where(x =>
-                x.PersianTitle.Contains(search) ||
-                x.Title.Contains(search) ||
-                x.Detail.Contains(search)).ToListAsync();
-        return prods;
+            .Where(x => x.SubCategory.Name.Contains(search) ||
+                        x.SubCategory.Category.Name.Contains(search) ||
+                        x.PersianTitle.Contains(search) ||
+                        x.Title.Contains(search) ||
+                        x.Brand.Title.Contains(search) ||
+                        x.Detail.Contains(search) || x.MetaKeyword.Contains(search)).Select(x => new ProductDto
+            {
+                ProductColors = x.ProductColors,
+                Id = x.Id,
+                PersianTitle = x.PersianTitle,
+                ImageUri = x.ImageUri
+            }).ToListAsync();
+        return Ok(prods);
     }
 
     public async Task<IActionResult> ComparisonProduct(int id)
@@ -1751,7 +1809,8 @@ public class HomeController : Controller
         return Ok();
     }
 
-    public async Task<ActionResult> SendLoginCode(string phoneNumber)
+    [HttpPost]
+    public async Task<IActionResult> SendLoginCode(string phoneNumber)
     {
         var user = await _userManager.FindByNameAsync(phoneNumber);
         var userRoles = await _userManager.GetRolesAsync(user);
@@ -1761,10 +1820,9 @@ public class HomeController : Controller
         user.ConfirmCode = Helpers.GetConfirmCode();
         user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
         await _userManager.UpdateAsync(user);
-        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
-            "VerifyCodeFaani");
-        return Ok(
-        );
+        // var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+        //     "VerifyCodeFaani");
+        return Ok();
     }
 
     public async Task<ActionResult> ProfileDetail()
@@ -2301,6 +2359,18 @@ public class HomeController : Controller
                           new SeoPage();
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
+        return View();
+    }
+
+    public async Task<IActionResult> ShowFactor(int id)
+    {
+        var factor = await _work.GenericRepository<Factor>().TableNoTracking.Include(x => x.Products)
+            .ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product).ThenInclude(x => x.Offer)
+            .Include(x => x.User)
+            .Include(x => x.UserAddress)
+            .Include(x => x.PostMethod)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        ViewBag.Factor = factor;
         return View();
     }
 }
