@@ -1820,8 +1820,8 @@ public class HomeController : Controller
         user.ConfirmCode = Helpers.GetConfirmCode();
         user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
         await _userManager.UpdateAsync(user);
-        // var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
-        //     "VerifyCodeFaani");
+        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+            "VerifyCodeFaani");
         return Ok();
     }
 
