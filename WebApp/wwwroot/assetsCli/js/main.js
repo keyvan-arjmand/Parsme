@@ -705,4 +705,18 @@ $(document).ready(function (e) {
         $('.lg-outer').css('background-color', colours[index])
     });
     // product-img-----------------------------
+
+    window.onscroll = function () {
+        stickyNavbar();
+    };
+    var navbar = document.querySelector('.header-main-nav');
+    var sticky = navbar.offsetTop;
+    function stickyNavbar() {
+
+        if (window.pageYOffset > sticky) {
+            navbar.classList.add("sticky-nav");
+        } else {
+            navbar.classList.remove("sticky-nav");
+        }
+    }
 });

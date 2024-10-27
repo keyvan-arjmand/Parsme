@@ -17,6 +17,7 @@ FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
 }
 
+
 @section footer
 {
     <footer style="z-index: 10;" class="footer-main-site">
@@ -24,7 +25,7 @@ FooterLink footerLink = ViewBag.FooterLink;
         <div class="footer-shopping-social">
             <div class="row">
                 <div
-                    class="col-9 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
+                    class="col-7 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
                             <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
@@ -36,7 +37,7 @@ FooterLink footerLink = ViewBag.FooterLink;
                         </h6>
                     </div>
                 </div>
-                <div class="col-3 align-content-center text-end" style="text-align: end">
+                <div class="col-5 align-content-center text-end" style="text-align: end">
                     <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
                         بازگشت به
                         بالا

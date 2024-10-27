@@ -9846,8 +9846,13 @@ body.light .progress-wrap::after {
 body.light .progress-wrap svg.progress-circle path {
     stroke: var(--black-blue);
 }
+@media (min-width: 760px) {
+    .thumb {
 
+        max-height: 265px;
+    }
+}
 .thumb {
     min-height: 265px;
-    max-height: 265px;
+
 }

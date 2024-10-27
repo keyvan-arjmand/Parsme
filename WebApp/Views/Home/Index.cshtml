@@ -25,7 +25,7 @@
         <div class="footer-shopping-social">
             <div class="row">
                 <div
-                    class="col-9 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
+                    class="col-7 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
                             <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
@@ -37,7 +37,7 @@
                         </h6>
                     </div>
                 </div>
-                <div class="col-3 align-content-center text-end" style="text-align: end">
+                <div class="col-5 align-content-center text-end" style="text-align: end">
                     <button type="button" id="backtotop" class="btn btn-outline-danger fw-bold">
                         بازگشت به
                         بالا
@@ -1440,22 +1440,38 @@
                                                 </div>
                                             </div>
                                             @{
-                                                if (i.IsOffer)
+                                                if (i.ProductStatus != ProductStatus.Available||!i.ProductColors.Any(x=>x.Inventory>0))
                                                 {
-                                                    if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                        {
-                                                            <div class="text-center">
-                                                                <del>
-                                                                    <span class="p-3 text-muted">
-                                                                        تخفیفات
+                                                    <div class="text-center">
+                                                        <del>
+                                                            <span class="p-3 text-muted">
+                                                                تخفیفات
+                                                            </span>
+                                                        </del>
+                                                        <span class="text-danger">
+                                                                        اتمام موجودی
                                                                     </span>
-                                                                </del>
-                                                                <span>
-                                                                    تمام شد
-                                                                </span>
-                                                            </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    if (i.IsOffer)
+                                                    {
+                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="text-center">
+                                                                    <del>
+                                                                        <span class="p-3 text-muted">
+                                                                            تخفیفات
+                                                                        </span>
+                                                                    </del>
+                                                                    <span class="text-danger">
+                                                                        تمام شد
+                                                                    </span>
+                                                                </div>
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -1548,22 +1564,38 @@
                                                 </div>
                                             </div>
                                             @{
-                                                if (i.IsOffer)
+                                                if (i.ProductStatus != ProductStatus.Available||!i.ProductColors.Any(x=>x.Inventory>0))
                                                 {
-                                                    if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                        {
-                                                            <div class="text-center">
-                                                                <del>
-                                                                    <span class="p-3 text-muted">
-                                                                        تخفیفات
+                                                    <div class="text-center">
+                                                        <del>
+                                                            <span class="p-3 text-muted">
+                                                                تخفیفات
+                                                            </span>
+                                                        </del>
+                                                        <span class="text-danger">
+                                                                        اتمام موجودی
                                                                     </span>
-                                                                </del>
-                                                                <span>
-                                                                    تمام شد
-                                                                </span>
-                                                            </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    if (i.IsOffer)
+                                                    {
+                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="text-center">
+                                                                    <del>
+                                                                        <span class="p-3 text-muted">
+                                                                            تخفیفات
+                                                                        </span>
+                                                                    </del>
+                                                                    <span class="text-danger">
+                                                                        تمام شد
+                                                                    </span>
+                                                                </div>
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -1643,7 +1675,7 @@
     font-size: 14px;">کالاهای پیشنهادی</span>
             <h3 class="card-title"></h3>
         </div>
-        <a href="@Url.Action("ShowAll", "Home",new{q="کالاهای پیشنهادی"})">
+        <a href="@Url.Action("ShowAll", "Home", new { q = "کالاهای پیشنهادی" })">
             <span class="title-one text-start" style="padding-bottom: 10px;
     color: #0c0c0c;
     border-bottom: 2px solid #FF2D2D;
@@ -1690,7 +1722,7 @@
                                                                 }
                                                             }
                                                         }
-                                                        @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                                        @if (!i.ProductColors.Any(x => x.Inventory > 0)||i.ProductStatus!=ProductStatus.Available)
                                                         {
                                                             <div class="p-3">
                                                                 <div class="discount-d">
@@ -1792,7 +1824,7 @@
                 <h3 class="card-title"></h3>
 
             </div>
-            <a href="@Url.Action("ShowAll", "Home",new{q="محصولات جدید"})">
+            <a href="@Url.Action("ShowAll", "Home", new { q = "محصولات جدید" })">
                 <span class="title-one text-start" style="padding-bottom: 10px;
     color: #0c0c0c;
     border-bottom: 2px solid #FF2D2D;
@@ -1834,13 +1866,13 @@
                                                     }
                                                 }
                                             }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0)||i.ProductStatus!=ProductStatus.Available)
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
@@ -1930,7 +1962,7 @@
                 <span class="title-one text-start">محصولات پرفروش</span>
                 <h3 class="card-title"></h3>
             </div>
-            <a href="@Url.Action("ShowAll", "Home",new{q="محصولات پرفروش"})">
+            <a href="@Url.Action("ShowAll", "Home", new { q = "محصولات پرفروش" })">
                 <span class="title-one text-start" style="padding-bottom: 10px;
     color: #0c0c0c;
     border-bottom: 2px solid #FF2D2D;
@@ -2001,42 +2033,29 @@
                                     <div class="price">
                                         @if (i.IsOffer)
                                         {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                            {
-                                                <del>
-                                                    <span>
-                                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId)!.Price.ToString("N0")
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </del>
-                                                <ins>
-                                                    <span>
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </ins>
-                                                <div>
-
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <ins>
-                                                    <span>
-                                                        @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </ins>
-                                            }
-                                        }
-                                        else
+                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                         {
-                                            <ins>
-                                                <span>
-                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                    <span>تومان</span>
-                                                </span>
-                                            </ins>
+                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                        {
+                                        <div class="d-flex justify-content-between gap-3">
+                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                            <div class="countdown-timer w-75">
+                                                <div class="countdown h6"
+                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        }
+                                        }
+                                        @if (!i.ProductColors.Any(x => x.Inventory > 0)||i.ProductStatus!=ProductStatus.Available)
+                                        {
+                                        <div class="p-3">
+                                            <div class="discount-d">
+                                                <span>ناموجود</span>
+                                            </div>
+                                        </div>
                                         }
                                     </div>
                                     <div class="actions">
@@ -2087,7 +2106,7 @@
                 <span class="title-one ">دیگر محصولات پارس می</span>
                 <h3 class="card-title"></h3>
             </div>
-            <a href="@Url.Action("ShowAll", "Home",new{q="دیگر محصولات پارس می"})">
+            <a href="@Url.Action("ShowAll", "Home", new { q = "دیگر محصولات پارس می" })">
                 <span class="title-one text-start" style="padding-bottom: 10px;
     color: #0c0c0c;
     border-bottom: 2px solid #FF2D2D;
@@ -2129,13 +2148,13 @@
                                                     }
                                                 }
                                             }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0))
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0)||i.ProductStatus!=ProductStatus.Available)
                                             {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
+                                            <div class="p-3">
+                                                <div class="discount-d">
+                                                    <span>ناموجود</span>
                                                 </div>
+                                            </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
