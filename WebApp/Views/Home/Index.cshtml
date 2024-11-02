@@ -324,8 +324,9 @@
         @if (seoPage.ShowTopBanner)
         {
             <div class="col-12 p-0">
-                <img style="width: 100%;    height: 100px;    object-fit: cover"
-                     src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+                <a href="@seoPage.TopBannerHref">  <img style="width: 100%;    height: 100px;    object-fit: cover"
+                                                        src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/></a>
+              
             </div>
         }
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
@@ -1715,7 +1716,7 @@
                                                                         <div class="countdown-timer w-75">
                                                                             <div class="countdown h6"
                                                                                  data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                                 data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1844,7 +1845,7 @@
                         foreach (var i in newProd)
                         {
                             <div class="owl-item active product-card tab-item "
-                                 style="width: 296.75px; margin-left: 10px; min-height: 378px">
+                                 style="width: 296.75px; margin-left: 10px; min-height: 433px;max-height: 433px">
                                 <div class="item shadow-card">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
@@ -1855,16 +1856,38 @@
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
-                                                            <div class="countdown-timer w-75">
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px">فروش ویژه</div>
+                                                            <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 <div class="countdown h6"
                                                                      data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                     data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    }   else
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                            <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                            </div>
+                                                        </div>
                                                     }
+                                                }   else
+                                                {
+                                                    <div class="d-flex justify-content-between gap-3">
+                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                        </div>
+                                                    </div>
                                                 }
+                                            }
+                                            else
+                                            {
+                                                <div class="d-flex justify-content-between gap-3">
+                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                    </div>
+                                                </div>
                                             }
                                             @if (!i.ProductColors.Any(x => x.Inventory > 0)||i.ProductStatus!=ProductStatus.Available)
                                             {

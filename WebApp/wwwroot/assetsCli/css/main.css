@@ -2418,17 +2418,16 @@ header.header-main {
 
 .countdown.h6 .countdown-value {
     font-family: "IRANSans";
-    font-weight: 500;
-    width: 25px;
-    height: 25px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
     background: #fff;
     border-radius: 50px;
     line-height: 35px;
-    color: #6d6c6c;
-    font-size: 15px;
-    border: 1px solid #cdcdcd;
+    color: #ff3434 !important;
+    font-size: 15px !important;
+    border: none !important;
 }
-
 .countdown .countdown-label {
     padding-top: 0.25rem;
     color: #3b3a3a;
@@ -4048,7 +4047,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .discount-d {
     position: absolute;
-    top: 15px;
+    top: 5px;
     left: 15px;
 }
 
@@ -6801,7 +6800,7 @@ main.single-product .product .gallery-items li img:hover {
     align-self: self-end;
     color: #ff0000;
     width: 100%;
-    font-weight: 400;
+    font-weight: bold;
     margin-bottom: 0;
     text-align: center;
     font-size: 15px;
