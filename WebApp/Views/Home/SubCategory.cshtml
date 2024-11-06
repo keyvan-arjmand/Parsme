@@ -1234,8 +1234,8 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                             {
                                 foreach (var i in products)
                                 {
-                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
-                                        <section class="product-box product product-type-simple">
+                                     <div class="col-lg-4 col-md-6 col-xs-12 order-1 d-block mb-3">
+                                        <section class="product-box product product-type-simple shadow-card">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
@@ -1245,11 +1245,12 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                     <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
+                                                        <div class="promotion-badge w-25"  style="    margin: 0;
+    font-weight: bold;">فروش ویژه</div>
                                                         <div class="countdown-timer w-75">
                                                             <div class="countdown h6"
                                                                  data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                 data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1268,7 +1269,6 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
-
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
@@ -1314,8 +1314,8 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                             {
                                 foreach (var i in minPrice)
                                 {
-                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
-                                        <section class="product-box product product-type-simple">
+                                     <div class="col-lg-4 col-md-6 col-xs-12 order-1 d-block mb-3">
+                                        <section class="product-box product product-type-simple shadow-card">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
@@ -1325,11 +1325,12 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                     <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
+                                                        <div class="promotion-badge w-25"  style="    margin: 0;
+    font-weight: bold;">فروش ویژه</div>
                                                         <div class="countdown-timer w-75">
                                                             <div class="countdown h6"
                                                                  data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                 data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1348,7 +1349,6 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
-
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
@@ -1394,8 +1394,8 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                             {
                                 foreach (var i in maxPrice)
                                 {
-                                    <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
-                                        <section class="product-box product product-type-simple">
+                                  <div class="col-lg-4 col-md-6 col-xs-12 order-1 d-block mb-3">
+                                        <section class="product-box product product-type-simple shadow-card">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                     @if (i.IsOffer)
@@ -1405,11 +1405,12 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                     <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-25">فروش ویژه</div>
+                                                        <div class="promotion-badge w-25"  style="    margin: 0;
+    font-weight: bold;">فروش ویژه</div>
                                                         <div class="countdown-timer w-75">
                                                             <div class="countdown h6"
                                                                  data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                 data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                 data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1428,7 +1429,6 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                          class="img-fluid" alt="">
                                                 </a>
                                             </div>
-
                                             <div class="color-d">
                                                 @foreach (var q in i.ProductColors)
                                                 {
@@ -1456,7 +1456,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                 </span>
                                             </div>
                                         </section>
-                                    </div>
+                                    </div> 
                                 }
                             }
                             else

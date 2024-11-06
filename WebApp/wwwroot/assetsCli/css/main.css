@@ -4066,7 +4066,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .color-d {
     position: absolute;
     width: fit-content;
-    top: 5px;
+    top: 40px;
     padding: 5px;
 }
 

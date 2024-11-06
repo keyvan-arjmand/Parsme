@@ -161,11 +161,11 @@ $(document).ready(function (e) {
                 slideBy: 1
             },
             768: {
-                items: 3,
+                items: 2,
                 slideBy: 2
             },
             992: {
-                items: 4,
+                items: 3,
                 slideBy: 2
             },
             1400: {
