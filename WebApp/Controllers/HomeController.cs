@@ -1279,26 +1279,26 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> SubCategory(int id, double min, double max, int detailId, string value,
+    public async Task<IActionResult> SubCategory(int id, double min, double max, List<string> values,
         int page = 1)
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
+        ViewBag.Values = values;
         if (max > 0)
         {
-            if (detailId > 0)
+            if (values.Count > 0)
             {
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                     .Include(x => x.ProductColors)
                     .ThenInclude(x => x.Color)
                     .Include(x => x.SubCategory)
                     .ThenInclude(sc => sc.Category)
-                    .Include(x => x.ProductDetails)
                     .Include(x => x.Offer)
                     .AsSplitQuery()
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
-                    .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
+                    .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .Skip((page - 1) * 10)
                     .Take(10)
@@ -1323,7 +1323,7 @@ public class HomeController : Controller
         }
         else
         {
-            if (detailId > 0)
+            if (values.Count > 0)
             {
                 ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                     .Include(x => x.ProductColors)
@@ -1335,7 +1335,7 @@ public class HomeController : Controller
                     .AsSplitQuery()
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
-                    .Where(x => x.ProductDetails.Any(q => q.CategoryDetailId == detailId && q.Value == value))
+                    .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Skip((page - 1) * 10)
                     .Take(10)
                     .ToListAsync();
@@ -1348,6 +1348,7 @@ public class HomeController : Controller
                     .Include(x => x.SubCategory)
                     .ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
+                    .Include(x => x.ProductDetails)
                     .AsSplitQuery()
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
