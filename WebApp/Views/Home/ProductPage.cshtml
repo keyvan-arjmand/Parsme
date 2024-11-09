@@ -1315,7 +1315,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                 <div
                     class="d-flex justify-content-between justify-content-sm-between justify-content-md-start justify-content-lg-start gap-5 ">
                     <div class="promotion-badge align-self-center badge badge-danger p-2"
-                         style=" width: 83px ;color: white !important;">
+                         style=" width: 83px ;color: white !important;height: 30px!important;">
                         فروش ویژه
                     </div>
                     <div class="countdown-timer text-start"
@@ -2051,7 +2051,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                         if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                         {
                                                         <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-25">فروش ویژه</div>
+                                                            <div class="promotion-badge w-25" >فروش ویژه</div>
                                                             <div class="countdown-timer w-75">
                                                                 <div class="countdown h6"
                                                                      data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
