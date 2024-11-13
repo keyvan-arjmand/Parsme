@@ -67,6 +67,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<SubCategoryDetail> SubCategoryDetails { set; get; }
     public DbSet<FaqCat> FaqCats { set; get; }
     public DbSet<BrandTag> BrandTags { set; get; }
+    public DbSet<BankTransaction> BankTransactions { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

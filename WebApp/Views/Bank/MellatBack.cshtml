@@ -6,18 +6,19 @@
 @using WebApp.Models
 
 @{
-    Layout = "_Layout";
-    List<Product> basket = ViewBag.BasketProd;
-    List<MainCategory> categories = ViewBag.Categories;
-    List<SearchResult> searchResults = ViewBag.Search;
-    Factor factor = ViewBag.Factor;
-    FooterLink footerLink = ViewBag.FooterLink;
-    SeoPage seoPage = ViewBag.SeoPage;
+Layout = "_Layout";
+List<Product> basket = ViewBag.BasketProd;
+List<MainCategory> categories = ViewBag.Categories;
+List<SearchResult> searchResults = ViewBag.Search;
+Factor factor = ViewBag.Factor;
+FooterLink footerLink = ViewBag.FooterLink;
+
+SeoPage seoPage = ViewBag.SeoPage;
 }
 
 @section footer
 {
-    <footer style="z-index: 10;" class="footer-main-site">
+<footer style="z-index: 10;" class="footer-main-site">
     <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
         <div class="footer-shopping-social">
             <div class="row">
@@ -45,247 +46,247 @@
     </section>
 
     <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
-    <div class="container-fluid">
-    <div class="col-12">
-    <div class="footer-middlebar">
-    <div class="col-lg-8 d-block pr">
-        <div class="footer-links">
-            <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                <div class="row">
-                    <section class="footer-links-col">
-                        <div class="headline-links">
-                            <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol
-                            </a>
-                        </div>
-                        <ul class="footer-menu-ul">
-                            <li class="p-2">
-                                <a href="@footerLink.HrefCol1" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol1
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col1
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col1
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title3Col1
-                                </a>
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                <div class="row">
-                    <section class="footer-links-col">
-                        <div class="headline-links">
-                            <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol2
-                            </a>
-                        </div>
-                        <ul class="footer-menu-ul">
-                            <li class="p-2">
-                                <a href="@footerLink.HrefCol2" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol2
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col2
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col2
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title3Col2
-                                </a>
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                <div class="row">
-                    <section class="footer-links-col">
-                        <div class="headline-links">
-                            <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol3
-                            </a>
-                        </div>
-                        <ul class="footer-menu-ul">
-                            <li class="p-2">
-                                <a href="@footerLink.HrefCol3" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol3
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col3
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col3
-                                </a>
-                            </li>
-                            <li>
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="footer-middlebar">
+                    <div class="col-lg-8 d-block pr">
+                        <div class="footer-links">
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#" class="text-decoration-none fw-bold">
+                                                @footerLink.DescCol
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="p-2">
+                                                <a href="@footerLink.HrefCol1" class="text-decoration-none fw-bold">
+                                                    @footerLink.TitleCol1
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title1Col1
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title2Col1
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title3Col1
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#" class="text-decoration-none fw-bold">
+                                                @footerLink.DescCol2
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="p-2">
+                                                <a href="@footerLink.HrefCol2" class="text-decoration-none fw-bold">
+                                                    @footerLink.TitleCol2
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title1Col2
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title2Col2
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title3Col2
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#" class="text-decoration-none fw-bold">
+                                                @footerLink.DescCol3
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="p-2">
+                                                <a href="@footerLink.HrefCol3" class="text-decoration-none fw-bold">
+                                                    @footerLink.TitleCol3
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title1Col3
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
+                                                    @footerLink.Title2Col3
+                                                </a>
+                                            </li>
+                                            <li>
 
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-xs-12 pr">
-                <div class="row">
-                    <section class="footer-links-col">
-                        <div class="headline-links">
-                            <a href="#" class="text-decoration-none fw-bold">
-                                درباره پارس می
-                            </a>
-                        </div>
-                        <ul class="footer-menu-ul">
-                            <li class="p-2">
-                                <a href="@Url.Action("ContactUs", "Home")" class="text-decoration-none fw-bold">
-                                    تماس با ما
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@Url.Action("Faq", "Home")" class="text-decoration-none fw-bold">
-                                    سوالات متداول
-                                </a>
-                            </li>
-                            <li class="p-2">
-                                <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
-                                    درباره ما
-                                </a>
-                            </li>
-                            <li>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#" class="text-decoration-none fw-bold">
+                                                درباره پارس می
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="p-2">
+                                                <a href="@Url.Action("ContactUs", "Home")" class="text-decoration-none fw-bold">
+                                                    تماس با ما
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@Url.Action("Faq", "Home")" class="text-decoration-none fw-bold">
+                                                    سوالات متداول
+                                                </a>
+                                            </li>
+                                            <li class="p-2">
+                                                <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
+                                                    درباره ما
+                                                </a>
+                                            </li>
+                                            <li>
 
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 d-flex flex-column pl">
-        <div class="footer-populated text-right p-2">
-            <div class="footer-social d-flex justify-content-between">
-                <h5 class="footer-populated-title fw-bold">ما را دنبال کنید</h5>
-                <ul style="    display: flex;
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-flex flex-column pl">
+                        <div class="footer-populated text-right p-2">
+                            <div class="footer-social d-flex justify-content-between">
+                                <h5 class="footer-populated-title fw-bold">ما را دنبال کنید</h5>
+                                <ul style="    display: flex;
     justify-content: space-between;
     gap: 11px;
     margin: 3px;
     padding: 5px;">
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-whatsapp" style="font-size: 30px"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-telegram" style="font-size: 30px"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-instagram" style="font-size: 30px"></i>
-                        </a>
-                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-whatsapp" style="font-size: 30px"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-telegram" style="font-size: 30px"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-instagram" style="font-size: 30px"></i>
+                                        </a>
+                                    </li>
 
-                </ul>
-            </div>
-        </div>
-        <div class="footer-populated text-right p-2">
-            <div class="footer-social d-flex flex-column">
-                <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
-                    تماس: @seoPage.HeaderNumber
-                </a>
-                <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
-                    ایمیل: @seoPage.EmailComp
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="footer-more-info">
-        <div class="col-lg-10 pr">
-            <div class="footer-content d-block">
-                <div class="text pr-1 p-2">
-                    <h2 class="title fw-bold">فروشگاه اینترنتی پارس می</h2>
-                    <p class="desc fw-bold">@footerLink.DescFooter</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-2 pl">
-            <div class="footer-safety-partner">
-                <div class="widget widget-product card mb-0">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <a referrerpolicy="origin" target="_blank"
-                               href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
-                                <img referrerpolicy="origin"
-                                     src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                     alt="" style="cursor:pointer"
-                                     code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
-                            </a>
+                                </ul>
+                            </div>
                         </div>
-                        <div>
-                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                 style='cursor:pointer'
-                                 onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
-                                 alt='logo-samandehi'
-                                 src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
-
+                        <div class="footer-populated text-right p-2">
+                            <div class="footer-social d-flex flex-column">
+                                <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
+                                    تماس: @seoPage.HeaderNumber
+                                </a>
+                                <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
+                                    ایمیل: @seoPage.EmailComp
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div
-                        class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
-                        <div class="owl-stage-outer">
-                            <div class="owl-stage"
-                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
-                                <div class="owl-item active"
-                                     style="width: 300.75px; margin-left: 10px;">
-                                    <div class="item">
+                    <div class="footer-more-info">
+                        <div class="col-lg-10 pr">
+                            <div class="footer-content d-block">
+                                <div class="text pr-1 p-2">
+                                    <h2 class="title fw-bold">فروشگاه اینترنتی پارس می</h2>
+                                    <p class="desc fw-bold">@footerLink.DescFooter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 pl">
+                            <div class="footer-safety-partner">
+                                <div class="widget widget-product card mb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <a referrerpolicy="origin" target="_blank"
+                                               href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
+                                                <img referrerpolicy="origin"
+                                                     src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
+                                                     alt="" style="cursor:pointer"
+                                                     code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                                 style='cursor:pointer'
+                                                 onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
+                                                 alt='logo-samandehi'
+                                                 src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                                        <div class="owl-stage-outer">
+                                            <div class="owl-stage"
+                                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                                                <div class="owl-item active"
+                                                     style="width: 300.75px; margin-left: 10px;">
+                                                    <div class="item">
 
 
+                                                    </div>
+                                                </div>
+                                                <div class="owl-item active"
+                                                     style="width: 300.75px; margin-left: 10px;">
+                                                    <div class="item">
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="owl-item active"
-                                     style="width: 300.75px; margin-left: 10px;">
-                                    <div class="item">
-
-
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-copyright">
+                            <div class="footer-copyright-text">
+                                <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer-copyright">
-            <div class="footer-copyright-text">
-                <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    </div>
     </section>
-    </footer>
+</footer>
 
 }
 
@@ -993,22 +994,22 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
 
 @section link
 {
-    <!-- font---------------------------------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-    <!-- plugin------------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-    <!-- main-style--------------/assetsCli-------------->
-    <link rel="stylesheet" href="/assetsCli/css/main.css">
-    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+<!-- font---------------------------------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+<!-- plugin------------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+<!-- main-style--------------/assetsCli-------------->
+<link rel="stylesheet" href="/assetsCli/css/main.css">
+<link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 <div class="container-main">
     <div class="d-block">
-        <section class="blog-checkout d-block order-1">
+        <section class="blog-checkout d-block order-1"> 
             <div class="col-lg">
                 <div class="checkout woocommerce-checkout">
                     <div class="content-checkout">
@@ -1017,16 +1018,31 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                 <div class="col2-set" id="customer-details">
                                     <div class="col-12">
                                         <div class="billing-fields mt-4">
-                                            <h4 class="text-success">سفارش دریافت شد</h4>
-                                            <p class="thankyou-order-received">
-                                                پرداخت با موفقیت انجام شد. سفارش شما
-                                                با موفقیت ثبت شد و در زمان تعیین شده برای شما ارسال خواهد شد.
-                                                از اینکه پارس می را برای خرید انتخاب کردید از شما سپاسگزاریم.
-                                            </p>
+                                            @if (ViewBag.IsSuccess)
+                                            {
+                                                <h4 class="text-success">سفارش دریافت شد</h4>
+                                                <p class="thankyou-order-received">
+                                                    پرداخت با موفقیت انجام شد. سفارش شما
+                                                    با موفقیت ثبت شد و در زمان تعیین شده برای شما ارسال خواهد شد.
+                                                    از اینکه پارس می را برای خرید انتخاب کردید از شما سپاسگزاریم.
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <h4 class="text-danger">خطا در ثبت سفارش</h4>
+                                              
+                                                    <p class="thankyou-order-received">
+                                                        بانک دچار اختلال شده و درصورت کسر وجه، ظرف ۷۲ ساعت به حسابتان بازمی‌گرداند. </p>
+                                            }
+                                           
                                             <ul class="order-overview">
                                                 <li class="order-overview-item">
                                                     کد سفارش :
                                                     <span>@factor.FactorCode</span>
+                                                </li>
+                                                <li class="order-overview-item">
+                                                    کد پیگیری :
+                                                    <span>@ViewBag.SaleReferenceId</span>
                                                 </li>
                                                 <li class="order-overview-item">
                                                     تاریخ :
@@ -1053,7 +1069,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                 <div>
                                     <a href="@Url.Action("Profile","Home")" class="btn btn-success">بازگشت به صفحه اصلی </a>
                                 </div>
-                               
+
                             </form>
                         </div>
                     </div>
@@ -1065,49 +1081,49 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
 
 @section script
 {
-    <script>
-        function CheckOut(){
+<script>
+    function CheckOut(){
         console.log(getCheckedRadioId())
-            window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
-        }
-        function  CheckCode(){
-            $.ajax({
-                type: "Post",
-                data: {code: $('#DiscountCode').val()},
-                url: "/Home/DiscountCheck",
-                success: function (data) {
-                    alert("کد تخفیف معتبر است")
-                },
-                error: function (xhr) {
-                    console.dir(xhr)
-                    alert("کدتخفیف نامعتبر");
-                }
-            });
-        }
-        function getCheckedRadioId() {
-            const radioButtons = document.querySelectorAll('input[name="payment_method"]');
-            let checkedRadioId = null;
-            radioButtons.forEach(function(radio) {
-                if (radio.checked) {
-                    checkedRadioId = radio.id;
-                }
-            });
-            return checkedRadioId;
-        }
-    
-    
-    </script>
-    <!-- file js---------------------------------------------------->
-    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
-    <!-- plugin--/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assetsCli/js/vendor/wNumb.js"></script>
-    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-    <!-- main js-/assetsCli--------------------------------------------->
-    <script src="/assetsCli/js/main.js"></script>
+        window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
+    }
+    function  CheckCode(){
+        $.ajax({
+            type: "Post",
+            data: {code: $('#DiscountCode').val()},
+            url: "/Home/DiscountCheck",
+            success: function (data) {
+                alert("کد تخفیف معتبر است")
+            },
+            error: function (xhr) {
+                console.dir(xhr)
+                alert("کدتخفیف نامعتبر");
+            }
+        });
+    }
+    function getCheckedRadioId() {
+        const radioButtons = document.querySelectorAll('input[name="payment_method"]');
+        let checkedRadioId = null;
+        radioButtons.forEach(function(radio) {
+            if (radio.checked) {
+                checkedRadioId = radio.id;
+            }
+        });
+        return checkedRadioId;
+    }
+
+
+</script>
+<!-- file js---------------------------------------------------->
+<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+<script src="/assetsCli/js/vendor/bootstrap.js"></script>
+<!-- plugin--/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="/assetsCli/js/vendor/wNumb.js"></script>
+<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+<!-- main js-/assetsCli--------------------------------------------->
+<script src="/assetsCli/js/main.js"></script>
 }

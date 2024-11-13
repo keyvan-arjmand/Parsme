@@ -1,5 +1,6 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Factor
+@using Domain.Enums
 @using WebApp.Models
 <!DOCTYPE html>
 <html lang="fa">
@@ -24,7 +25,7 @@ body {
 
 .title {
     text-align: center;
-    font-size: 20px;
+    font-size: 23px;
     margin-bottom: 20px;
 }
 
@@ -37,7 +38,7 @@ body {
 .header-table td, .party-info td, .invoice-table th, .invoice-table td {
     border: 1px solid #000;
     padding: 10px;
-    font-size: 14px;
+    font-size: 17px;
 }
 
 .header-table td {
@@ -47,7 +48,7 @@ body {
 .party-info td {
     vertical-align: top;
     padding: 10px;
-    font-size: 14px;
+    font-size: 17px;
 }
 
 .seller-info, .buyer-info {
@@ -66,11 +67,25 @@ body {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    font-size: 14px;
+    padding: 20px;
+    font-size: 17px
 }
 
 .signatures p {
     margin: 0;
+}
+.signatures {
+    position: relative;
+    display: inline-block;
+}
+
+.signature-image {
+    position: absolute;
+    top: -10px;
+    left: -135px;
+    width: 100%;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 
@@ -137,30 +152,40 @@ body {
         <table class="header-table">
             <tr>
                 <td>شماره فاکتور: @factor.FactorCode</td>
-                <td>شماره اقتصادی: 411491945011</td>
-                <td colspan="2">تلفن و فکس: 02112345678</td>
             </tr>
             <tr>
                 <td>تاریخ صدور: @factor.InsertDate.ToPersianTime()</td>
-                <td>کد پستی: 1578134381</td>
-                <td colspan="2">نشانی شرکت: تهران، خیابان بیست و یکم، پلاک 34</td>
             </tr>
         </table>
     
         <table class="party-info">
             <tr>
                 <td class="seller-info">
-                    <strong>فروشنده:</strong> شرکت توان آزاده<br>
-                    <strong>شناسه ملی:</strong> 1234567890<br>
-                    <strong>آدرس:</strong> تهران، خیابان جنوبی، پلاک 20<br>
-                    <strong>شماره تماس:</strong> 02112345678
+                    <strong>فروشنده:</strong>شرکت کسری تامین اندیشان ستد نیشتمان<br>
+                    <strong>شناسه ملی:</strong> 10610074776<br>
+                    <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری و تجاری ولی عصر، طبقه 6، واحد 33<br>
+                    <strong>شماره تماس:</strong> 02143000107
                 </td>
-                <td class="buyer-info">
-                    <strong>خریدار:</strong> @factor.User.Name @factor.User.Family<br>
-                    <strong>شناسه ملی:</strong> @factor.User.NationalCode<br>
-                    <strong>آدرس:</strong>@factor.UserAddress.Address<br>
-                    <strong>شماره تماس:</strong> @factor.UserAddress.Number
-                </td>
+                @if (factor.AccountType == AccountType.Genuine)
+                {
+                    <td class="buyer-info">
+                        <strong>خریدار:</strong> @factor.User.Name @factor.User.Family<br>
+                        <strong>شماره اقتصادی / شماره ملی:</strong> @factor.User.NationalCode<br>
+                        <strong>آدرس:</strong>@factor.UserAddress.Address<br>
+                        <strong>شماره تماس:</strong> @factor.UserAddress.Number
+                    </td>
+                }
+                else
+                {
+                    <td class="buyer-info">
+                        <strong>خریدار:</strong> @factor.User.Name @factor.User.Family _ @factor.OrganizationName<br>
+                        <strong>شماره اقتصادی / شماره ملی:</strong> @factor.EconomicNumber<br>
+                        <strong>شماره ثبت:</strong> @factor.RegistrationNumber<br>
+                        <strong>آدرس:</strong>@factor.Adders<br>
+                        <strong>شماره تماس:</strong> @factor.OrganizationNumber
+                    </td>
+                }
+             
             </tr>
         </table>
     
@@ -200,7 +225,7 @@ body {
                         priceBasket = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
                         }
 
-                        priceBasket = priceBasket * i.Count;
+                        priceBasket = (priceBasket * i.Count) *10;
                         var countPrice = priceBasket * i.Count;
                         }
                         <td>@priceBasket.ToString("N0")</td>
@@ -216,22 +241,36 @@ body {
                 @{
                     if (factor.PostMethod.Price > 0)
                     {
-                        <td>@factor.PostMethod.Price.ToString("N0")</td>
+                        var post = factor.PostMethod.Price*10;
+                        <td>@post.ToString("N0")</td>
+                        <td>@post.ToString("N0")</td>
 
                     }
                     else
                     {
                         <td>رایگان</td>
+                        <td>رایگان</td>
                     }
                 }
+                
             </tr>
             <tr>
-                <td colspan="4">جمع کل</td>
-                <td colspan="2">@price.ToString("N0")</td>
+                <td colspan="4">جمع کل (ریال)</td>
+                @{
+                    var c4 = price * 10;
+                }
+                <td colspan="2">@c4.ToString("N0")</td>
             </tr>
             <tr>
                 @{
-                    var feeAll = price + factor.PostMethod.Price - factor.DiscountAmount;
+                    var dis = (factor.DiscountAmount + factor.AmountPrice )*10;
+                }
+                <td colspan="4">تخفیف (ریال)</td>
+                <td colspan="2">@dis.ToString("N0")</td>
+            </tr>
+            <tr>
+                @{
+                    var feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount+factor.AmountPrice)) *10;
                 }
                 <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال): </td>
                 <td colspan="2">@feeAll.ToString("N0")</td>
@@ -241,6 +280,7 @@ body {
         <div class="footer d-flex justify-content-between">
             <div class="signatures p-3">
                 <p>مهر و امضای فروشنده:</p>
+                <img src="/assetsCli/images/mohr.png" alt="Signature Image" class="signature-image">
             </div>
             <div class="signatures p-3">
                 <p>مهر و امضای خریدار:</p>

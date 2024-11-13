@@ -24,4 +24,17 @@ public class Factor:BaseEntity
     public Status Status { get; set; }
     public ICollection<FactorProduct> Products { get; set; } = default!;
     public ICollection<LogFactor> Logs { get; set; } = default!;
+    public string? ReferenceNumber { get; set; }
+    public long SaleReferenceId { get; set; }
+    public string? StatusPayment { get; set; }
+    public bool IsLegal { get; set; }
+    public AccountType AccountType { get; set; }
+    
+    public string? EconomicNumber { get; set; }
+    public string? OrganizationName { get; set; }
+    public string? NationalId { get; set; }
+    public string? PostCode { get; set; }
+    public string? OrganizationNumber { get; set; }
+    public string? RegistrationNumber { get; set; }
+    public string? Adders { get; set; }
 }

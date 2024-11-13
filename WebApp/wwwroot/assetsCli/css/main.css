@@ -3818,6 +3818,15 @@ aside.main-row-bg .card-product-horizontal .card-product-horizontal-content {
     background: #fff;
     border: 1px solid #dedede;
 }
+#suggestion-slider .owl-nav .owl-prev,
+#suggestion-slider .owl-nav .owl-next {
+    display: none;
+}
+
+.product-carousel-symbol .owl-nav .owl-prev,
+.product-carousel-symbol .owl-nav .owl-next {
+    display: none;
+}
 
 .form-auth-row .ui-checkbox input[type="checkbox"]:checked + .ui-checkbox-check:before {
     content: "\F12C";
@@ -4705,7 +4714,7 @@ span.shipping-destination {
 
 .page-account-box .ds-userlogin .account-box .account-box-headline a.active span {
     background: #fff;
-    color: #3d8f14 !important;
+    color: #ff2525 !important;
     border-radius: 20px;
 }
 
@@ -4807,8 +4816,8 @@ span.shipping-destination {
     line-height: 14px;
     margin: 20px 0;
     border-radius: 20px;
-    background: #3d8f14 !important;
-    border-color: #3d8f14;
+    background: #ff3636  !important;
+    border-color: #ff4343;
     font-size: 14px;
     outline: none;
     transition: 0.2s;
@@ -5093,7 +5102,7 @@ span.shipping-destination {
 }
 
 .post-item-profile .sidebar-profile .profile-box .profile-box-content-footer .profile-box-tabs a:hover {
-    color: #3d8f14;
+    color: #ff2323;
     transition: 0.2s;
 }
 
@@ -5138,7 +5147,7 @@ span.shipping-destination {
 
 .post-item-profile .sidebar-profile .profile-box ul.profile-account-navs li.profile-account-nav-item a.active {
     background-color: #dfe3ff !important;
-    color: #3d8f14 !important;
+    color: #ff2929 !important;
 }
 
 .post-item-profile .profile-content {
@@ -5205,8 +5214,8 @@ span.shipping-destination {
     padding: 5px;
     font-size: 12px;
     color: #fff;
-    background: #3d8f14;
-    border-color: #3d8f14;
+    background: #ff2e2e;
+    border-color: #ff0000;
     border-radius: 20px;
     font-weight: 500;
 }
@@ -5515,8 +5524,8 @@ span.shipping-destination {
 .middle-container .form-checkout .form-checkout-row input {
     display: block;
     font-size: 12px;
-    width: 100%;
-    height: 45px;
+    width: 100% !important;
+    height: 45px !important;
     outline: none;
     border: 1px solid #cfcfcf;
     padding: 0 10px;
@@ -5575,7 +5584,7 @@ span.shipping-destination {
 .middle-container .form-checkout .form-checkout-row .btn-registrar {
     padding: 7px 20px;
     border-radius: 15px;
-    background-color: #3d8f14;
+    background-color: #ff2020;
     color: #fff;
     margin-top: 15px;
     font-size: 13px;
@@ -5841,8 +5850,8 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .Order-address button:hover span {
-    border-color: #3d8f14;
-    color: #3d8f14;
+    border-color: #ff0000;
+    color: #ff4646;
     transition: 0.2s;
 }
 

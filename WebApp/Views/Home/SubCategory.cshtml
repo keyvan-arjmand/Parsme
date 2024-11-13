@@ -1500,7 +1500,7 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize - 1, id })" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize - 1, id,values=details })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -1509,18 +1509,18 @@
                         if (i == pageSize)
                         {
                             <li class="page-item">
-                                <a class="page-link active" href="@Url.Action("SubCategory", "Home", new { page = i, id })">@i</a>
+                                <a class="page-link active" href="@Url.Action("SubCategory", "Home", new { page = i, id,values=details })">@i</a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link " href="@Url.Action("SubCategory", "Home", new { page = i, id })">@i</a>
+                                <a class="page-link " href="@Url.Action("SubCategory", "Home", new { page = i, id,values=details })">@i</a>
                             </li>
                         }
                     }
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize + 1, id })" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize + 1, id ,values=details})" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -1545,23 +1545,27 @@
     function Search(){
         var id ='@Html.Raw(ViewBag.Id)'
         const spanElement = document.getElementById('slider-non-linear-step-value');
-        // Get the text content of the span
         const spanText = spanElement.textContent;
-        // Split the text to get the individual numbers
         const values = spanText.split(' - ');
         var min = values[0].replace(/,/g, '');
         var max = values[1].replace(/,/g, '');
         var confirmCodeUrl = '@Url.Action("SubCategory", "Home")';
-        window.location.href = confirmCodeUrl + '?id=' + id+"&min="+min+'&max='+max;
+        const checkedValues = Array.from(new Set(
+            Array.from(document.querySelectorAll('input[name="IsSearch"]:checked'))
+                .map(checkbox => checkbox.value)
+        ));
+        if (checkedValues.length > 0) {
+            confirmCodeUrl += '?id=' + id + "&min=" + min + '&max=' + max + '&values=' + checkedValues.join(',');
+        } else {
+            confirmCodeUrl += '?id=' + id + "&min=" + min + '&max=' + max;
+        }
+        window.location.href = confirmCodeUrl;
     }
     function submitFormWithSelectedValues() {
         Notiflix.Loading.circle('در حال پردازش ...');
-        // فرم را پاک می‌کنیم تا مقادیر قبلی تکراری نشوند
         const form = document.getElementById('searchForm');
         const previousValues = form.querySelectorAll('input[name="values"]');
         previousValues.forEach(input => input.remove());
-
-        // مقادیر چک‌باکس‌های انتخاب‌شده را اضافه می‌کنیم
         const checkedValues = Array.from(document.querySelectorAll('input[name="IsSearch"]:checked'))
             .map(checkbox => checkbox.value);
         checkedValues.forEach(value => {
@@ -1571,7 +1575,6 @@
             hiddenInput.value = value;
             form.appendChild(hiddenInput);
         });
-        // ارسال فرم
         form.submit();
     }
 </script>

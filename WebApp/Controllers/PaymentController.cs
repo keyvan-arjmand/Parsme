@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using WebApp.Models;
 
 namespace WebApp.Controllers;
 
@@ -40,8 +41,9 @@ public class PaymentController : Controller
         return View();
     }
 
-    public async Task<IActionResult> ProductFactor(string discountCode, int postMethodId,
-        int userAddressId, string desc)
+    public async Task<string> ProductFactor(string discountCode, int postMethodId,
+        int userAddressId, string desc, string economicNumber, string organizationName, string nationalId,
+        string postCode, string organizationNumber, string registrationNumber, string adders,bool isLegal=false)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -114,11 +116,19 @@ public class PaymentController : Controller
                 DiscountAmount = discountAmount,
                 PostMethodId = postMethodId,
                 InsertDate = DateTime.Now,
-                Status = Status.Pending,
+                Status = Status.PendingForPayment,
                 AmountPrice = offer,
                 FactorCode = Helpers.CodeGenerator(user.Id, DateTime.Now.Month.ToString()),
                 IsReturned = false,
                 Desc = desc ?? string.Empty,
+                AccountType = isLegal ?AccountType.Legal:AccountType.Genuine,
+                EconomicNumber = economicNumber,
+                IsLegal = isLegal,
+                NationalId = nationalId,
+                RegistrationNumber = registrationNumber,
+                Adders = adders,
+                OrganizationNumber = organizationNumber,
+                OrganizationName = organizationName,PostCode = postCode
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
 
@@ -136,29 +146,33 @@ public class PaymentController : Controller
                 }, CancellationToken.None);
             }
 
-            ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
-                .Include(x => x.PostMethod)
-                .Include(x => x.UserAddress)
-                .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product)
-                .ThenInclude(x => x.Offer)
-                .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x=>x.Offer)
-                .FirstOrDefaultAsync(x => x.Id == factor.Id);
-            ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
-            HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(new List<int>()));
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
-            return View();
+            HttpClient httpClient = new HttpClient();
+
+            var result =
+                await httpClient.GetAsync(
+                    $"https://front.parsme.com/bank/Index?Price={factor.Amount}&factorId={factor.Id}");
+            if (result.IsSuccessStatusCode)
+            {
+                var response = await result.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(response))
+                {
+                    ViewBag.RefId = response;
+                    ViewBag.UrlBank = BpmConfig.PostUrl;
+                    ViewBag.Error = false;
+                    ViewBag.Error = "در حال اتصال به در گاه بانک به پرداخت ملت";
+                    return response;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+
+            return string.Empty;
         }
         else
         {
-            return RedirectToAction("Index");
+            return string.Empty;
         }
     }
 }

@@ -1814,16 +1814,15 @@ public class HomeController : Controller
     public async Task<IActionResult> SendLoginCode(string phoneNumber)
     {
         var user = await _userManager.FindByNameAsync(phoneNumber);
-        var userRoles = await _userManager.GetRolesAsync(user);
         KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-        if (user == null && userRoles.Any(x => !x.Equals("admin")))
-            throw new Exception("User not Exist");
+        if (user == null)
+            return RedirectToAction("SignUp", "Home", new { phoneNumber });
         user.ConfirmCode = Helpers.GetConfirmCode();
         user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
         await _userManager.UpdateAsync(user);
         var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
             "VerifyCodeFaani");
-        return Ok();
+        return RedirectToAction("ConfirmCode", new { user.PhoneNumber });
     }
 
     public async Task<ActionResult> ProfileDetail()

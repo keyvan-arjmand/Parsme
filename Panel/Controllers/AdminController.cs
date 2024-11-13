@@ -1938,14 +1938,6 @@ public class AdminController : Controller
             CityId = request.CityId,
             Sheba = request.Sheba,
             NationalCode = request.NationalCode,
-            AccountType = request.AccountType,
-            Adderss = request.Adderss,
-            EconomicNumber = request.EconomicNumber,
-            NationalId = request.NationalId,
-            OrganizationName = request.OrganizationName,
-            PostCode = request.PostCode,
-            OrganizationNumber = request.OrganizationNumber,
-            RegistrationNumber = request.RegistrationNumber
         };
         if (!await _roleManager.RoleExistsAsync("user"))
         {
@@ -1977,14 +1969,6 @@ public class AdminController : Controller
         user.CityId = request.CityId;
         user.Email = request.Email;
         user.NationalCode = request.NationalCode;
-        user.AccountType = request.AccountType;
-        user.Adderss = request.Adderss;
-        user.EconomicNumber = request.EconomicNumber;
-        user.NationalId = request.NationalId;
-        user.OrganizationName = request.OrganizationName;
-        user.PostCode = request.PostCode;
-        user.OrganizationNumber = request.OrganizationNumber;
-        user.RegistrationNumber = request.RegistrationNumber;
         if (request.Password != user.Password)
         {
             await _userManager.ChangePasswordAsync(user, user.Password, request.Password);
@@ -2431,14 +2415,6 @@ public class AdminController : Controller
                         Email = i.Email ?? string.Empty,
                         CityId = i.CityId,
                         Roles = a.ToList(),
-                        AccountType = i.AccountType,
-                        Adderss = i.Adderss,
-                        EconomicNumber = i.EconomicNumber,
-                        NationalId = i.NationalId,
-                        OrganizationName = i.OrganizationName,
-                        OrganizationNumber = i.OrganizationNumber,
-                        PostCode = i.PostCode,
-                        RegistrationNumber = i.RegistrationNumber
                     });
                 }
 
