@@ -8,7 +8,6 @@ public class Product : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public string PersianTitle { get; set; } = string.Empty;
-    public string Code { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
     public string MetaKeyword { get; set; } = string.Empty;
     public string FullDesc { get; set; } = string.Empty;

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Utilities;
 using Application.Interfaces;
 using Domain.Entity.Factor;
+using Domain.Entity.Factor.Product;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
@@ -141,7 +142,7 @@ public class PaymentController : Controller
                 await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
                 await _work.GenericRepository<FactorProduct>().AddAsync(new FactorProduct
                 {
-                    ProductColorId = prod.Id,
+                    ProductId = prod.Id,
                     FactorId = factor.Id
                 }, CancellationToken.None);
             }

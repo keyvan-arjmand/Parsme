@@ -94,198 +94,149 @@ body {
 @{
     Layout = null;
     Factor factor = ViewBag.Factor;
-    
+
     double price = 0;
     foreach (var i in factor.Products)
     {
-        @if (i.ProductColor.Product.IsOffer)
+        foreach (var q in i.FactorProductColor)
         {
-            if (i.ProductColor.Product.Offer.StartDate.CalcOffer(i.ProductColor.Product.Offer.Days, i.ProductColor.Product.Offer.Hours, i.ProductColor.Product.Offer.Minutes, i.ProductColor.Product.IsOffer) && i.ProductColor.Product.ProductColors.Any(x => x.ColorId == i.ProductColor.Product.Offer.ColorId))
-            {
-                price += @i.ProductColor.Product.Offer.StartDate.CalcOffer(i.ProductColor.Product.DiscountAmount, i.ProductColor.Product.Offer.OfferAmount, i.ProductColor.Product.ProductColors.FirstOrDefault(x => x.ColorId == i.ProductColor.Product.Offer.ColorId).Price, i.ProductColor.Product.Offer.Days, i.ProductColor.Product.Offer.Hours, i.ProductColor.Product.Offer.Minutes, i.ProductColor.Product.IsOffer);
-            }
-            else
-            {
-                price += @i.ProductColor.Product.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.ProductColor.Product.DiscountAmount);
-            }
-        }
-        else
-        {
-            price += @i.ProductColor.Product.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.ProductColor.Product.DiscountAmount);
+            price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
         }
     }
 
-
-    List<BasketProduct> products = new List<BasketProduct>();
-    foreach (var q in factor.Products)
-    {
-        if (products.Any(x => x.ProductColors.FirstOrDefault().Id == q.ProductColor.Product.ProductColors.FirstOrDefault().Id))
-        {
-            products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == q.ProductColor.Product.ProductColors.FirstOrDefault().Id).Count++;
-        }
-        else
-        {
-            products.Add(new BasketProduct
-            {
-                SubCategoryId = q.ProductColor.Product.SubCategoryId,
-                ProductStatus = q.ProductColor.Product.ProductStatus,
-                ProductColors = q.ProductColor.Product.ProductColors.ToList(),
-                InsertDate = q.ProductColor.Product.InsertDate,
-                Count = 1,
-                Code = q.ProductColor.Product.UnicCode,
-                DiscountAmount = q.ProductColor.Product.DiscountAmount,
-                Title = q.ProductColor.Product.Title,
-                ImageUri = q.ProductColor.Product.ImageUri,
-                IsOffer = q.ProductColor.Product.IsOffer,
-                PersianTitle = q.ProductColor.Product.PersianTitle,
-                Id = q.Id,
-                Offer = q.ProductColor.Product.Offer
-            });
-        }
-    }
 }
 <body>
 
-    <div class="invoice-container">
-        <h2 class="title">صورت‌حساب فروش کالا و ارائه خدمت</h2>
-    
-        <table class="header-table">
-            <tr>
-                <td>شماره فاکتور: @factor.FactorCode</td>
-            </tr>
-            <tr>
-                <td>تاریخ صدور: @factor.InsertDate.ToPersianTime()</td>
-            </tr>
-        </table>
-    
-        <table class="party-info">
-            <tr>
-                <td class="seller-info">
-                    <strong>فروشنده:</strong>شرکت کسری تامین اندیشان ستد نیشتمان<br>
-                    <strong>شناسه ملی:</strong> 10610074776<br>
-                    <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری و تجاری ولی عصر، طبقه 6، واحد 33<br>
-                    <strong>شماره تماس:</strong> 02143000107
+<div class="invoice-container">
+    <h2 class="title">صورت‌حساب فروش کالا و ارائه خدمت</h2>
+
+    <table class="header-table">
+        <tr>
+            <td>شماره فاکتور: @factor.FactorCode</td>
+        </tr>
+        <tr>
+            <td>تاریخ صدور: @factor.InsertDate.ToPersianTime()</td>
+        </tr>
+    </table>
+
+    <table class="party-info">
+        <tr>
+            <td class="seller-info">
+                <strong>فروشنده:</strong>شرکت کسری تامین اندیشان ستد نیشتمان<br>
+                <strong>شناسه ملی:</strong> 10610074776<br>
+                <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری و تجاری ولی عصر، طبقه 6، واحد 33<br>
+                <strong>شماره تماس:</strong> 02143000107
+            </td>
+            @if (factor.AccountType == AccountType.Genuine)
+            {
+                <td class="buyer-info">
+                    <strong>خریدار:</strong> @factor.User.Name @factor.User.Family<br>
+                    <strong>شماره اقتصادی / شماره ملی:</strong> @factor.User.NationalCode<br>
+                    <strong>آدرس:</strong>@factor.UserAddress.Address<br>
+                    <strong>شماره تماس:</strong> @factor.UserAddress.Number
                 </td>
-                @if (factor.AccountType == AccountType.Genuine)
-                {
-                    <td class="buyer-info">
-                        <strong>خریدار:</strong> @factor.User.Name @factor.User.Family<br>
-                        <strong>شماره اقتصادی / شماره ملی:</strong> @factor.User.NationalCode<br>
-                        <strong>آدرس:</strong>@factor.UserAddress.Address<br>
-                        <strong>شماره تماس:</strong> @factor.UserAddress.Number
-                    </td>
-                }
-                else
-                {
-                    <td class="buyer-info">
-                        <strong>خریدار:</strong> @factor.User.Name @factor.User.Family _ @factor.OrganizationName<br>
-                        <strong>شماره اقتصادی / شماره ملی:</strong> @factor.EconomicNumber<br>
-                        <strong>شماره ثبت:</strong> @factor.RegistrationNumber<br>
-                        <strong>آدرس:</strong>@factor.Adders<br>
-                        <strong>شماره تماس:</strong> @factor.OrganizationNumber
-                    </td>
-                }
-             
-            </tr>
-        </table>
-    
-        <table class="invoice-table">
-            <tr>
-                <th>ردیف</th>
-                <th>شناسه کالا یا خدمت</th>
-                <th>شرح کالا یا خدمت</th>
-                <th>تعداد</th>
-                <th>مبلغ واحد (ریال)</th>
-                <th>جمع کل (ریال)</th>
-            </tr>
-            @{
-                int index = 1;
-                foreach (var i in products)
+            }
+            else
+            {
+                <td class="buyer-info">
+                    <strong>خریدار:</strong> @factor.User.Name @factor.User.Family _ @factor.OrganizationName<br>
+                    <strong>شماره اقتصادی / شماره ملی:</strong> @factor.EconomicNumber<br>
+                    <strong>شماره ثبت:</strong> @factor.RegistrationNumber<br>
+                    <strong>آدرس:</strong>@factor.Adders<br>
+                    <strong>شماره تماس:</strong> @factor.OrganizationNumber
+                </td>
+            }
+
+        </tr>
+    </table>
+
+    <table class="invoice-table">
+        <tr>
+            <th>ردیف</th>
+            <th>شناسه کالا یا خدمت</th>
+            <th>شرح کالا یا خدمت</th>
+            <th>تعداد</th>
+            <th>مبلغ واحد (ریال)</th>
+            <th>جمع کل (ریال)</th>
+        </tr>
+        @{
+            int index = 1;
+            foreach (var i in factor.Products)
+            {
+                foreach (var q in i.FactorProductColor)
                 {
                     <tr>
                         <td>@index</td>
-                        <td>@i.Code</td>
+                        <td>@i.UnicCode</td>
                         <td>@i.PersianTitle</td>
-                        <td>@i.Count</td>
+                        <td>@q.Count</td>
                         @{
-                        var priceBasket = new double();
-                        if (i.IsOffer)
-                        {
-                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                        {
-                        priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
-                        }
-                        else
-                        {
-                        priceBasket = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
-                        }
-                        }
-                        else
-                        {
-                        priceBasket = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
-                        }
+                            var priceBasket = new double();
 
-                        priceBasket = (priceBasket * i.Count) *10;
-                        var countPrice = priceBasket * i.Count;
+                            priceBasket = q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
+
+
+                            priceBasket = (priceBasket * q.Count) * 10;
+                            var countPrice = priceBasket * q.Count;
                         }
                         <td>@priceBasket.ToString("N0")</td>
                         <td>@countPrice.ToString("N0")</td>
                     </tr>
                 }
             }
-            <tr>
-                <td>#</td>
-                <td>@factor.PostMethodId</td>
-                <td>@factor.PostMethod.Title</td>
-                <td>-</td>
-                @{
-                    if (factor.PostMethod.Price > 0)
-                    {
-                        var post = factor.PostMethod.Price*10;
-                        <td>@post.ToString("N0")</td>
-                        <td>@post.ToString("N0")</td>
+        }
+        <tr>
+            <td>#</td>
+            <td>@factor.PostMethodId</td>
+            <td>@factor.PostMethod.Title</td>
+            <td>-</td>
+            @{
+                if (factor.PostMethod.Price > 0)
+                {
+                    var post = factor.PostMethod.Price * 10;
+                    <td>@post.ToString("N0")</td>
+                    <td>@post.ToString("N0")</td>
+                }
+                else
+                {
+                    <td>رایگان</td>
+                    <td>رایگان</td>
+                }
+            }
 
-                    }
-                    else
-                    {
-                        <td>رایگان</td>
-                        <td>رایگان</td>
-                    }
-                }
-                
-            </tr>
-            <tr>
-                <td colspan="4">جمع کل (ریال)</td>
-                @{
-                    var c4 = price * 10;
-                }
-                <td colspan="2">@c4.ToString("N0")</td>
-            </tr>
-            <tr>
-                @{
-                    var dis = (factor.DiscountAmount + factor.AmountPrice )*10;
-                }
-                <td colspan="4">تخفیف (ریال)</td>
-                <td colspan="2">@dis.ToString("N0")</td>
-            </tr>
-            <tr>
-                @{
-                    var feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount+factor.AmountPrice)) *10;
-                }
-                <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال): </td>
-                <td colspan="2">@feeAll.ToString("N0")</td>
-            </tr>
-        </table>
-    
-        <div class="footer d-flex justify-content-between">
-            <div class="signatures p-3">
-                <p>مهر و امضای فروشنده:</p>
-                <img src="/assetsCli/images/mohr.png" alt="Signature Image" class="signature-image">
-            </div>
-            <div class="signatures p-3">
-                <p>مهر و امضای خریدار:</p>
-            </div>
+        </tr>
+        <tr>
+            <td colspan="4">جمع کل (ریال)</td>
+            @{
+                var c4 = price * 10;
+            }
+            <td colspan="2">@c4.ToString("N0")</td>
+        </tr>
+        <tr>
+            @{
+                var dis = (factor.DiscountAmount + factor.AmountPrice) * 10;
+            }
+            <td colspan="4">تخفیف (ریال)</td>
+            <td colspan="2">@dis.ToString("N0")</td>
+        </tr>
+        <tr>
+            @{
+                var feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount + factor.AmountPrice)) * 10;
+            }
+            <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال): </td>
+            <td colspan="2">@feeAll.ToString("N0")</td>
+        </tr>
+    </table>
+
+    <div class="footer d-flex justify-content-between">
+        <div class="signatures p-3">
+            <p>مهر و امضای فروشنده:</p>
+            <img src="/assetsCli/images/mohr.png" alt="Signature Image" class="signature-image">
+        </div>
+        <div class="signatures p-3">
+            <p>مهر و امضای خریدار:</p>
         </div>
     </div>
+</div>
 </body>
 </html>

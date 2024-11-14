@@ -184,10 +184,8 @@ public class BankController : Controller
         ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
             .Include(x => x.PostMethod)
             .Include(x => x.UserAddress)
-            .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product)
-            .ThenInclude(x => x.Offer)
-            .Include(x => x.Products).ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
-            .ThenInclude(x => x.Offer)
+            .Include(x => x.Products).ThenInclude(x => x.FactorProductColor).ThenInclude(x => x.FactorProduct)
+            .Include(x => x.Products).ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
             .FirstOrDefaultAsync(x => x.Id == SaleOrderId.ToInt());
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)

@@ -1,4 +1,5 @@
 ﻿using Domain.Entity.Factor;
+using Domain.Entity.Factor.Product;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Notif;
 using Domain.Entity.Product;
@@ -54,6 +55,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
     public DbSet<ContactUs> ContactUs { set; get; }
     public DbSet<Factor> Factors { set; get; }
     public DbSet<FactorProduct> FactorProducts { set; get; }
+    public DbSet<FactorProductColor> FactorProductColors { set; get; }
     public DbSet<LogFactor> LogFactors { set; get; }
     public DbSet<LogReturnedFactor> LogReturnedFactors { set; get; }
     public DbSet<ReturnedFactor> ReturnedFactors { set; get; }

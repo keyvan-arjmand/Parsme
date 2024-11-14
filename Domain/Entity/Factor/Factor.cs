@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Common;
+using Domain.Entity.Factor.Product;
 using Domain.Entity.User;
 using Domain.Enums;
 

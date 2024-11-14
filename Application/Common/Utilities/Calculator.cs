@@ -34,7 +34,7 @@ public static class Calculator
     }
 
     public static double Pass(this bool state, double amount1, double amount2)
-    
+
     {
         return state ? amount1 : amount2;
     }
@@ -47,11 +47,16 @@ public static class Calculator
 
         return (isOffer, offerTime >= DateTime.Now) switch
         {
-            (true, true) => price - offerDiscount,
+            (true, true) => price - (offerDiscount + discount),
             (false, true) => price - discount,
             (true, false) => price - discount,
             (false, false) => price - discount
         };
+    }
+
+    public static double CalcOffer(this double price, double discount, double offerDiscount)
+    {
+        return price - (discount + offerDiscount);
     }
 
     public static bool CalcOffer(this DateTime time, int day, int hour, int min, bool isOffer)
@@ -72,6 +77,5 @@ public static class Calculator
                 return false;
             }
         }
- 
     }
 }

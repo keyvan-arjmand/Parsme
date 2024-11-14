@@ -217,19 +217,19 @@
             @{
                 foreach (var i in factor.Factor.Products.ToList())
                 {
-                    var prod = factor.Factor.Products.Select(x => x.ProductColor.Product).FirstOrDefault(x => x.Id == i.ProductColor.ProductId);
-                    <tr>
-                        <td>@prod.Id</td>
-                        <td>
-                            <img src="/Images/ProductImage/@prod.ImageUri" width="60"/>
-                        </td>
-                        <td>
-                            @prod.PersianTitle
-                        </td>
-                        <td>@i.ProductColor.Color.Title</td>
-                        <td>@prod.Brand.Title</td>
-                        <td>@i.Count</td>
-                    </tr>
+                    @* var prod = factor.Factor.Products.Select(x => x.ProductColor.Product).FirstOrDefault(x => x.Id == i.ProductColor.ProductId); *@
+                    @* <tr> *@
+                    @*     <td>@prod.Id</td> *@
+                    @*     <td> *@
+                    @*         <img src="/Images/ProductImage/@prod.ImageUri" width="60"/> *@
+                    @*     </td> *@
+                    @*     <td> *@
+                    @*         @prod.PersianTitle *@
+                    @*     </td> *@
+                    @*     <td>@i.ProductColor.Color.Title</td> *@
+                    @*     <td>@prod.Brand.Title</td> *@
+                    @*     <td>@i.Count</td> *@
+                    @* </tr> *@
                 }
             }
 

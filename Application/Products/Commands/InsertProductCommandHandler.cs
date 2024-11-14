@@ -27,7 +27,6 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
         if (subCat == null) throw new Exception();
         var product = new Product
         {
-            Code = string.Empty,
             Title = request.Product.Title!,
             InsertDate = DateTime.Now,
             IsActive = request.Product.IsActive,

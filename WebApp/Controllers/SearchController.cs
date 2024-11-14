@@ -32,7 +32,7 @@ public class SearchController : Controller
                 .Include(x => x.BrandTag)
                 .Where(x => x.Title.Contains(i) || x.PersianTitle.Contains(i) ||
                             x.Brand.Title.Contains(i) ||
-                            x.Detail.Contains(i) || x.MetaKeyword.Contains(i) || x.Code.Contains(i) ||
+                            x.Detail.Contains(i) || x.MetaKeyword.Contains(i) || 
                             x.BrandTag.Title.Contains(i) || x.SeoTitle.Contains(i) ||
                             x.UnicCode.Contains(i) || x.SubCategory.Name.Contains(i))
                 .Take(5).Select(x => new SearchProd

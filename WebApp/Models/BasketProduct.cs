@@ -8,7 +8,6 @@ public class BasketProduct
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string PersianTitle { get; set; } = string.Empty;
-    public string Code { get; set; } = string.Empty;
     public string Detail { get; set; } = string.Empty;
     public string MetaDesc { get; set; } = string.Empty;
     public string MetaKeyword { get; set; } = string.Empty;

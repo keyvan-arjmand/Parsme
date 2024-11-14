@@ -504,7 +504,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product).ThenInclude(x => x.Offer)
+                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.FactorId == id);
@@ -558,7 +558,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
                 .Where(x => x.User.UserName == User.Identity.Name).ToListAsync();
             ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                               new SeoPage();
@@ -707,7 +707,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.ProductColor).ThenInclude(x => x!.Product)
+                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                               new SeoPage();
@@ -2365,7 +2365,7 @@ public class HomeController : Controller
     public async Task<IActionResult> ShowFactor(int id)
     {
         var factor = await _work.GenericRepository<Factor>().TableNoTracking.Include(x => x.Products)
-            .ThenInclude(x => x.ProductColor).ThenInclude(x => x.Product).ThenInclude(x => x.Offer)
+            .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x.FactorProduct)
             .Include(x => x.User)
             .Include(x => x.UserAddress)
             .Include(x => x.PostMethod)

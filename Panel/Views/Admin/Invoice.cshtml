@@ -415,14 +415,14 @@ with font-awesome or any other icon font library -->
                                 @{
                                     foreach (var i in factor.Products.ToList())
                                     {
-                                        var prod = factor.Products.Select(x => x.ProductColor.Product).FirstOrDefault(x => x.Id == i.ProductColor.ProductId);
-                                        <tr>
-                                            <td>@prod.Id</td>
-                                            <td>@i.Count</td>
-                                            <td>@prod.PersianTitle</td>
-                                            <td>@prod.ProductColors.FirstOrDefault(x=>x.Id==i.ProductColorId).Color.Title</td>
-                                            <td>@factor.Products.Select(x => x.ProductColor).FirstOrDefault(x => x.ProductId == prod.Id).Price.ToString("N0") تومان</td>
-                                        </tr>
+                                        @* var prod = factor.Products.Select(x => x.ProductColor.Product).FirstOrDefault(x => x.Id == i.ProductColor.ProductId); *@
+                                        @* <tr> *@
+                                        @*     <td>@prod.Id</td> *@
+                                        @*     <td>@i.Count</td> *@
+                                        @*     <td>@prod.PersianTitle</td> *@
+                                        @*     <td>@prod.ProductColors.FirstOrDefault(x=>x.Id==i.ProductColorId).Color.Title</td> *@
+                                        @*     <td>@factor.Products.Select(x => x.ProductColor).FirstOrDefault(x => x.ProductId == prod.Id).Price.ToString("N0") تومان</td> *@
+                                        @* </tr> *@
                                     }
                                 }
                                 </tbody>

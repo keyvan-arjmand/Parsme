@@ -775,7 +775,6 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                             ProductColors = q.ProductColors.ToList(),
                                                             InsertDate = q.InsertDate,
                                                             Count = 1,
-                                                            Code = q.Code,
                                                             DiscountAmount = q.DiscountAmount,
                                                             Detail = q.Detail,
                                                             Strengths = q.Strengths,
@@ -1086,40 +1085,25 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                         </thead>
                                         <tbody>
                                         @{
-                                        foreach (var i in factor.Products.Select(x=>x.ProductColor.Product).ToList())
+                                        foreach (var i in factor.Products.ToList())
                                         {
-                                        <tr>
-                                            <td class="product-name">@i.PersianTitle</td>
-                                            <td class="product-total">
+                                            foreach (var q in i.FactorProductColor)
+                                            {
+                                                <tr>
+                                                    <td class="product-name">@i.PersianTitle</td>
+                                                    <td class="product-total">
                                                         <span class="amount">
-                                                            <span>تومان</span>
-                                                            @if (i.IsOffer)
-                                                            {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                            {
+
                                                             <span class="amount">
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer)
-                                                                <span>تومان</span>
-                                                                </span>
-                                                            }
-                                                            else
-                                                            {
-                                                            <span class="amount">
-                                                                    @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                                <span>تومان</span>
-                                                                </span>
-                                                            }
-                                                            }
-                                                            else
-                                                            {
-                                                            <span class="amount">
-                                                                @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                                @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount)
                                                                 <span>تومان</span>
                                                             </span>
-                                                            }
+
                                                         </span>
-                                            </td>
-                                        </tr>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        
                                         }
                                         }
                                         </tbody>
