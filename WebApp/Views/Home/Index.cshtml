@@ -1441,15 +1441,8 @@
                                             @{
                                                 if (i.ProductStatus != ProductStatus.Available || !i.ProductColors.Any(x => x.Inventory > 0))
                                                 {
-                                                    <div class="text-center">
-                                                        <del>
-                                                            <span class="p-3 text-muted">
-                                                                تخفیفات
-                                                            </span>
-                                                        </del>
-                                                        <span class="text-danger">
-                                                            اتمام موجودی
-                                                        </span>
+                                                    <div class="text-center" style="padding: 5px">
+                                                        <img src="assetsCli/images/done.jpg"/>
                                                     </div>
                                                 }
                                                 else
@@ -1461,7 +1454,7 @@
                                                             if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="text-center" style="padding: 5px">
-                                                                  <img src="assetsCli/images/done.jpg"/>
+                                                                    <img src="assetsCli/images/done.jpg"/>
                                                                 </div>
                                                             }
                                                         }
@@ -1484,7 +1477,7 @@
                                             @if (i.IsOffer)
                                             {
                                                 <div class="promotion-badge  text-start  black-color-text-pars fw-bold">
-                                                <img src="/assetsCli/images/coupon.png"/>
+                                                    <img src="/assetsCli/images/coupon.png"/>
                                                 </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
@@ -1555,15 +1548,8 @@
                                             @{
                                                 if (i.ProductStatus != ProductStatus.Available || !i.ProductColors.Any(x => x.Inventory > 0))
                                                 {
-                                                    <div class="text-center">
-                                                        <del>
-                                                            <span class="p-3 text-muted">
-                                                                تخفیفات
-                                                            </span>
-                                                        </del>
-                                                        <span class="text-danger">
-                                                            اتمام موجودی
-                                                        </span>
+                                                    <div class="text-center" style="padding: 5px">
+                                                        <img src="assetsCli/images/done.jpg"/>
                                                     </div>
                                                 }
                                                 else
@@ -1654,7 +1640,7 @@
     position: relative;
     top: 2px;
     font-weight: 600;
-    font-size: 14px;">کالاهای پیشنهادی</span>
+    font-size: 14px;">@seoPage.ProductTitle</span>
             <h3 class="card-title"></h3>
         </div>
         <a href="@Url.Action("ShowAll", "Home", new { q = "کالاهای پیشنهادی" })">
@@ -1827,7 +1813,7 @@
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
         <header class="card-header d-flex justify-content-between">
             <div>
-                <span class="title-one text-start">محصولات جدید</span>
+                <span class="title-one text-start">@seoPage.ProductTitle2</span>
                 <h3 class="card-title"></h3>
 
             </div>
@@ -1990,7 +1976,7 @@
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
         <header class="card-header d-flex justify-content-between">
             <div>
-                <span class="title-one text-start">محصولات پرفروش</span>
+                <span class="title-one text-start">@seoPage.ProductTitle3</span>
                 <h3 class="card-title"></h3>
             </div>
             <a href="@Url.Action("ShowAll", "Home", new { q = "محصولات پرفروش" })">
@@ -2171,7 +2157,7 @@
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
         <header class="card-header d-flex justify-content-between">
             <div>
-                <span class="title-one ">دیگر محصولات پارس می</span>
+                <span class="title-one ">@seoPage.ProductTitle4</span>
                 <h3 class="card-title"></h3>
             </div>
             <a href="@Url.Action("ShowAll", "Home", new { q = "دیگر محصولات پارس می" })">

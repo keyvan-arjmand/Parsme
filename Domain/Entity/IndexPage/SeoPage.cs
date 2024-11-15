@@ -14,4 +14,8 @@ public class SeoPage : BaseEntity
     public string HeaderNumber { get; set; } = string.Empty;
     public string HeaderLogo { get; set; } = string.Empty;
     public string EmailComp { get; set; } = string.Empty;
+    public string ProductTitle { get; set; } = string.Empty;
+    public string ProductTitle2 { get; set; } = string.Empty;
+    public string ProductTitle3 { get; set; } = string.Empty;
+    public string ProductTitle4 { get; set; } = string.Empty;
 }

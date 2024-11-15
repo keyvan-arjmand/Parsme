@@ -160,35 +160,6 @@ namespace Domain.Migrations
                     b.ToTable("Factors");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Factor.FactorProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FactorId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ProductColorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FactorId");
-
-                    b.HasIndex("ProductColorId");
-
-                    b.ToTable("FactorProducts");
-                });
-
             modelBuilder.Entity("Domain.Entity.Factor.LogFactor", b =>
                 {
                     b.Property<int>("Id")
@@ -253,6 +224,90 @@ namespace Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LogReturnedFactors");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("DiscountAmount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("FactorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PersianTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnicCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactorId");
+
+                    b.ToTable("FactorProducts");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProductColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ColorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FactorProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Guarantee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("OfferAmount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FactorProductId");
+
+                    b.ToTable("FactorProductColors");
                 });
 
             modelBuilder.Entity("Domain.Entity.Factor.ReturnedFactor", b =>
@@ -1210,6 +1265,22 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProductTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTitle2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTitle3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTitle4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SeoIndexCanonical")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1605,10 +1676,6 @@ namespace Domain.Migrations
 
                     b.Property<int?>("BrandTagId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Detail")
                         .IsRequired()
@@ -2222,21 +2289,6 @@ namespace Domain.Migrations
                     b.Navigation("UserAddress");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Factor.FactorProduct", b =>
-                {
-                    b.HasOne("Domain.Entity.Factor.Factor", "Factor")
-                        .WithMany("Products")
-                        .HasForeignKey("FactorId");
-
-                    b.HasOne("Domain.Entity.Product.ProductColor", "ProductColor")
-                        .WithMany()
-                        .HasForeignKey("ProductColorId");
-
-                    b.Navigation("Factor");
-
-                    b.Navigation("ProductColor");
-                });
-
             modelBuilder.Entity("Domain.Entity.Factor.LogFactor", b =>
                 {
                     b.HasOne("Domain.Entity.Factor.Factor", "Factor")
@@ -2269,6 +2321,28 @@ namespace Domain.Migrations
                     b.Navigation("Factor");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProduct", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.Factor", "Factor")
+                        .WithMany("Products")
+                        .HasForeignKey("FactorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Factor");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProductColor", b =>
+                {
+                    b.HasOne("Domain.Entity.Factor.Product.FactorProduct", "FactorProduct")
+                        .WithMany("FactorProductColor")
+                        .HasForeignKey("FactorProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FactorProduct");
                 });
 
             modelBuilder.Entity("Domain.Entity.Factor.ReturnedFactor", b =>
@@ -2561,6 +2635,11 @@ namespace Domain.Migrations
                     b.Navigation("Logs");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProduct", b =>
+                {
+                    b.Navigation("FactorProductColor");
                 });
 
             modelBuilder.Entity("Domain.Entity.IndexPage.FaqCat", b =>
