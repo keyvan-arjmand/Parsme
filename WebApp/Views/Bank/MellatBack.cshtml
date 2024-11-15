@@ -298,10 +298,10 @@ foreach (var i in basket)
 {
 @if (i.IsOffer)
 {
-if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
 {
 offer += i.Offer.OfferAmount;
-price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
 }
 else
 {
@@ -846,9 +846,9 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                                                 var priceBasket = new double();
                                                                 if (i.IsOffer)
                                                                 {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                 {
-                                                                priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                                 }
                                                                 else
                                                                 {

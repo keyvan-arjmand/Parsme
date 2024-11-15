@@ -1635,9 +1635,6 @@ namespace Domain.Migrations
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Days")
-                        .HasColumnType("int");
-
                     b.Property<int>("Hours")
                         .HasColumnType("int");
 

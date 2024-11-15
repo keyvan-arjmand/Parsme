@@ -2698,7 +2698,6 @@ public class AdminController : Controller
             if (offer != null)
             {
                 offer.OfferAmount = request.Offer.OfferAmount.ToDouble();
-                offer.Days = request.Offer.Days.ToInt();
                 offer.Hours = request.Offer.Hours.ToInt();
                 offer.Minutes = request.Offer.Minutes.ToInt();
                 offer.ColorId = request.Offer.ColorId.ToInt();
@@ -2709,7 +2708,6 @@ public class AdminController : Controller
             {
                 var offerInsert = new Domain.Entity.Product.Offer
                 {
-                    Days = request.Offer.Days.ToInt(),
                     ProductId = product.Id,
                     StartDate = request.Offer.Time,
                     OfferAmount = request.Offer.OfferAmount.ToDouble(),

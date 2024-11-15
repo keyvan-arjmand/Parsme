@@ -68,7 +68,7 @@
                                                    class="d-block hover-img-link">
                                                     @if (i.IsOffer)
                                                     {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                         {
                                                             <div class="promotion-badge p-2"> شگفت انگیز</div>
                                                         }
@@ -107,7 +107,7 @@
                                                 <div class="price">
                                                     @if (i.IsOffer)
                                                     {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                         {
                                                             <del>
                                                                 <span>
@@ -117,7 +117,7 @@
                                                             </del>
                                                             <ins>
                                                                 <span>
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                                     <span>تومان</span>
                                                                 </span>
                                                             </ins>

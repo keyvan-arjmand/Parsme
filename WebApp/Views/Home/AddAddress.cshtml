@@ -6,14 +6,14 @@
 @using WebApp.Models
 
 @{
-Layout = "_Layout";
-List<MainCategory> categories = ViewBag.Categories;
-List<Product> basket = ViewBag.BasketProd;
-List<UserAddress> addresses = ViewBag.Address;
-List<City> cities = ViewBag.City;
-Domain.Entity.User.User user = ViewBag.User;
-List<SearchResult> searchResults = ViewBag.Search;
-FooterLink footerLink = ViewBag.FooterLink;
+    Layout = "_Layout";
+    List<MainCategory> categories = ViewBag.Categories;
+    List<Product> basket = ViewBag.BasketProd;
+    List<UserAddress> addresses = ViewBag.Address;
+    List<City> cities = ViewBag.City;
+    Domain.Entity.User.User user = ViewBag.User;
+    List<SearchResult> searchResults = ViewBag.Search;
+    FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
 }
 
@@ -28,7 +28,7 @@ FooterLink footerLink = ViewBag.FooterLink;
                     class="col-7 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
-                            <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
+                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
                         </a>
                     </div>
                     <div class="text-start p-2">
@@ -300,10 +300,10 @@ FooterLink footerLink = ViewBag.FooterLink;
         {
             @if (i.IsOffer)
             {
-                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                 {
                     offer += i.Offer.OfferAmount;
-                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                 }
                 else
                 {
@@ -324,8 +324,11 @@ FooterLink footerLink = ViewBag.FooterLink;
         @if (seoPage.ShowTopBanner)
         {
             <div class="col-12 p-0">
-                <img style="width: 100%;    height: 100px;    object-fit: cover"
-                     src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+                <a href="@seoPage.TopBannerHref">
+                    <img style="width: 100%;    height: 100px;    object-fit: cover"
+                         src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+                </a>
+
             </div>
         }
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
@@ -848,9 +851,9 @@ FooterLink footerLink = ViewBag.FooterLink;
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
                                                                     {
-                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                         {
-                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,  i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                                         }
                                                                         else
                                                                         {
@@ -993,18 +996,32 @@ FooterLink footerLink = ViewBag.FooterLink;
 
 }
 
+@section loader
+{
+    <div class="P-loader">
+        <div class="P-loader-content">
+            <div class="logo-loader">
+                <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
+            </div>
+            <div class="pic-loader text-center">
+                <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+            </div>
+        </div>
+    </div>
+}
+
 @section link
 {
-<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-<!-- plugin------------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-<!-- main-style--------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/main.css">
-<link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
 
 <div class="container-main">
@@ -1074,49 +1091,75 @@ FooterLink footerLink = ViewBag.FooterLink;
                             <div class="profile-stats">
                                 <div class="profile-address">
                                     <div class="middle-container">
-                                        <form   asp-action="InsertUserAddress" asp-controller="Home" method="post"  class="form-checkout">
+                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout">
                                             <div class="form-checkout-row">
-                                                <label for="name">نام تحویل گیرنده <abbr class="required"
-                                                                                         title="ضروری" style="color:red;">*</abbr></label>
+                                                <label for="name">
+                                                    نام تحویل گیرنده
+                                                    <abbr class="required"
+                                                          title="ضروری" style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
                                                 <input type="text" id="name"
                                                        class="input-name-checkout form-control" name="Name">
-                                                <label for="phone-number">شماره موبایل <abbr class="required"
-                                                                                             title="ضروری" style="color:red;">*</abbr></label>
+                                                <label for="phone-number">
+                                                    شماره موبایل
+                                                    <abbr class="required"
+                                                          title="ضروری" style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
                                                 <input type="text" id="phone-number"
                                                        class="input-name-checkout form-control text-left" name="Number">
 
                                                 <div class="form-checkout-valid-row">
-                                                    <label for="city">شهر
+                                                    <label for="city">
+                                                        شهر
                                                         <abbr class="required" title="ضروری"
-                                                              style="color:red;">*</abbr></label>
+                                                              style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
                                                     <select name="CityId" id="city" class="form-control">
-                                                        <option value="0" selected="selected">شهر مورد نظر
-                                                            خود را انتخاب کنید</option>
+                                                        <option value="0" selected="selected">
+                                                            شهر مورد نظر
+                                                            خود را انتخاب کنید
+                                                        </option>
                                                         @foreach (var i in cities)
                                                         {
                                                             <option value="@i.Id">@i.Name</option>
-
                                                         }
                                                     </select>
-                                                  
+
                                                 </div>
 
-                                                <label for="post-code">کد پستی<abbr class="required" title="ضروری"
-                                                                                    style="color:red;">*</abbr></label>
+                                                <label for="post-code">
+                                                    کد پستی
+                                                    <abbr class="required" title="ضروری"
+                                                          style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
                                                 <input type="text" id="post-code"
                                                        class="input-name-checkout form-control" name="PostCode"
                                                        placeholder="کد پستی را بدون خط تیره بنویسید">
 
-                                                <label for="address">آدرس
+                                                <label for="address">
+                                                    آدرس
                                                     <abbr class="required" title="ضروری"
-                                                          style="color:red;">*</abbr></label>
+                                                          style="color:red;">
+                                                        *
+                                                    </abbr>
+                                                </label>
                                                 <textarea rows="5" cols="30" id="address" name="Address"
                                                           class="textarea-name-checkout form-control"></textarea>
 
                                                 <div class="AR-CR">
                                                     <button type="submit" class="btn-registrar"> ثبت آدرس</button>
                                                     <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal"
-                                                       aria-label="Close">بازگشت</a>
+                                                       aria-label="Close">
+                                                        بازگشت
+                                                    </a>
                                                 </div>
                                             </div>
                                         </form>
@@ -1133,16 +1176,16 @@ FooterLink footerLink = ViewBag.FooterLink;
 
 @section script
 {
-<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-<script src="/assetsCli/js/vendor/bootstrap.js"></script>
-<!-- plugin--/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-<script src="/assetsCli/js/vendor/wNumb.js"></script>
-<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-<!-- main js-/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
+    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
+    <!-- plugin--/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+    <script src="/assetsCli/js/vendor/wNumb.js"></script>
+    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+    <!-- main js-/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/main.js"></script>
 }

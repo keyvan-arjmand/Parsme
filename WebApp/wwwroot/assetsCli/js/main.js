@@ -1,25 +1,24 @@
 $(document).ready(function (e) {
 
-    $('#SearchEl').on('input', function() {
+    $('#SearchEl').on('input', function () {
         // Your function code here
         $.ajax({
             type: "Get",
             data: {search: $(this).val()},
             url: "/Search/SearchProd/",
-            beforeSend: function() {
+            beforeSend: function () {
             },
             error: function (xhr) {
                 Notiflix.Notify.failure('خطای داخلی');
             },
-            complete: function() {
+            complete: function () {
             },
             timeout: 40000,
             success: function (data) {
                 let html = ``;
-                if (data.length>0)
-                { data.map(x =>
-                {
-                    html+=`  <li>
+                if (data.length > 0) {
+                    data.map(x => {
+                        html += `  <li>
                                             <a href="/Home/ProductPage/${x.id}">
                                                 <img src="https://newdev.parsme.com/Images/ProductImage/${x.imageUri}" width="30px">
                                                 ${x.persianTitle}
@@ -28,8 +27,9 @@ $(document).ready(function (e) {
                                                 </a>
                                             </a>
                             </li>`;
-                })}else{
-                    html+=`  <li>
+                    })
+                } else {
+                    html += `  <li>
                                             <a href="">
                                               نتیجه ای یافت نشد
                                             </a>
@@ -43,35 +43,6 @@ $(document).ready(function (e) {
     });
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     //    hover-menu-overlay--------------------------
     $('li.nav-overlay').hover(function () {
         $('.mega-menu').removeClass('active');
@@ -119,8 +90,7 @@ $(document).ready(function (e) {
             e.removeClass('open');
             e.find('li').removeClass('opne');
             e.find('ul').slideUp(200);
-        }
-        else {
+        } else {
             e.addClass('open');
             e.children('ul').slideDown(200);
             e.siblings('li').children('ul').slideUp(200);
@@ -134,12 +104,12 @@ $(document).ready(function (e) {
     // searchResult--------------------------------------
     $('.header-search .header-search-box .form-search .header-search-input').on('click', function () {
         $(this).parents('.header-search').addClass('show-result').find('.search-result').fadeIn();
-        $(".overlay-search-box").css({ "opacity": "1", "visibility": "visible" });
+        $(".overlay-search-box").css({"opacity": "1", "visibility": "visible"});
     })
     $(document).click(function (e) {
         if ($(e.target).is('.header-search *')) return;
         $('.search-result').hide();
-        $(".overlay-search-box").css({ "opacity": "0", "visibility": "hidden" });
+        $(".overlay-search-box").css({"opacity": "0", "visibility": "hidden"});
     });
     // searchResult--------------------------------------
 
@@ -218,7 +188,7 @@ $(document).ready(function (e) {
         dots: false,
         autoplay: true,
         autoplayTimeout: 3000,
-        nav:true,
+        nav: true,
         navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
         autoplayHoverPause: true,
         responsiveClass: true,
@@ -387,8 +357,7 @@ $(document).ready(function (e) {
         $('.sticky-sidebar').theiaStickySidebar();
     }
 
-    //   countdown----------------------------
-    ! function (l) {
+    !function (l) {
         var t = {
             init: function () {
                 t.countDown()
@@ -399,19 +368,27 @@ $(document).ready(function (e) {
                         a = l(this).data("date-time"),
                         e = l(this).data("labels");
                     (i || t).countdown(a, function (t) {
-                        l(this).html(t.strftime('<div class="countdown-item"><div class="countdown-value">%D</div><div class="countdown-label">' + e["label-day"] + '</div></div><div class="countdown-item"><div class="countdown-value">%H</div><div class="countdown-label">' + e["label-hour"] + '</div></div><div class="countdown-item"><div class="countdown-value">%M</div><div class="countdown-label">' + e["label-minute"] + '</div></div><div class="countdown-item"><div class="countdown-value">%S</div><div class="countdown-label">' + e["label-second"] + "</div></div>"))
-                    })
-                })
+                        // فقط ساعت، دقیقه و ثانیه
+                        l(this).html(t.strftime(
+                            '<div class="countdown-item"><div class="countdown-value">%H</div><div class="countdown-label">' + e["label-hour"] + '</div></div>' +
+                            '<div class="countdown-item"><div class="countdown-value">%M</div><div class="countdown-label">' + e["label-minute"] + '</div></div>' +
+                            '<div class="countdown-item"><div class="countdown-value">%S</div><div class="countdown-label">' + e["label-second"] + '</div></div>'
+                        ));
+                    });
+                });
             },
         };
         l(function () {
             t.init()
-        })
+        });
     }(jQuery);
-    const cd = new Date().getFullYear() + 1
+
+// برای نمونه شمارش معکوس با یک سال جدید
+    const cd = new Date().getFullYear() + 1;
     $('#countdown').countdown({
         year: cd
     });
+
 
     // checkout-coupon-------------------------------
     $(".showcoupon").on("click", function () {
@@ -579,7 +556,7 @@ $(document).ready(function (e) {
     //     }
     //     hidePreloader();
     // });
-    $(".P-loader").fadeOut(2000,"swing");
+    $(".P-loader").fadeOut(2000, "swing");
     // Page Loader----------------------------
 
     // scroll_progress-------------------------
@@ -670,7 +647,7 @@ $(document).ready(function (e) {
 
     $('.back-to-top').click(function (e) {
         e.preventDefault();
-        $('html, body').animate({ scrollTop: 0 }, 800, 'easeInExpo');
+        $('html, body').animate({scrollTop: 0}, 800, 'easeInExpo');
     });
 
     if ($("#img-product-zoom").length) {
@@ -711,6 +688,7 @@ $(document).ready(function (e) {
     };
     var navbar = document.querySelector('.header-main-nav');
     var sticky = navbar.offsetTop;
+
     function stickyNavbar() {
 
         if (window.pageYOffset > sticky) {

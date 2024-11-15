@@ -28,7 +28,7 @@
                     class="col-7 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
-                            <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
+                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
                         </a>
                     </div>
                     <div class="text-start p-2">
@@ -300,10 +300,10 @@
         {
             @if (i.IsOffer)
             {
-                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                 {
                     offer += i.Offer.OfferAmount;
-                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                 }
                 else
                 {
@@ -851,9 +851,9 @@
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
                                                                     {
-                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                         {
-                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                                         }
                                                                         else
                                                                         {
@@ -996,6 +996,20 @@
 
 }
 
+@section loader
+{
+    <div class="P-loader">
+        <div class="P-loader-content">
+            <div class="logo-loader">
+                <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
+            </div>
+            <div class="pic-loader text-center">
+                <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+            </div>
+        </div>
+    </div>
+}
+
 @section meta
 {
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
@@ -1032,6 +1046,7 @@
 
 </style>
 }
+
 
 <div class="container-main">
 
@@ -1108,10 +1123,10 @@
                                                         <span class="amount">
                                                             @if (i.IsOffer)
                                                             {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                 {
                                                                     <div>
-                                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
 
                                                                     </div>
                                                                 }
@@ -1301,12 +1316,9 @@
                                     </div>
                                     <div class="countdown-timer">
                                         <div class="countdown h4"
-                                             data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                             data-labels="{&quot;label-day&quot;: &quot;روز&quot;, &quot;label-hour&quot;: &quot;ساعت&quot;, &quot;label-minute&quot;: &quot;دقیقه&quot;, &quot;label-second&quot;: &quot;ثانیه&quot;}">
-                                            <div class="countdown-item">
-                                                <div class="countdown-value">@i.Offer.Days</div>
-                                                <div class="countdown-label">روز</div>
-                                            </div>
+                                             data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                             data-labels="{ &quot;label-hour&quot;: &quot;ساعت&quot;, &quot;label-minute&quot;: &quot;دقیقه&quot;, &quot;label-second&quot;: &quot;ثانیه&quot;}">
+
                                             <div class="countdown-item">
                                                 <div class="countdown-value">@i.Offer.Hours</div>
                                                 <div class="countdown-label">ساعت</div>
@@ -1434,8 +1446,8 @@
                                             </ul>
                                             <div class="countdown-timer">
                                                 <div class="countdown h4"
-                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                     data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                     data-labels='{ "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                 </div>
                                             </div>
                                             @{
@@ -1449,9 +1461,9 @@
                                                 {
                                                     if (i.IsOffer)
                                                     {
-                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                         {
-                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="text-center" style="padding: 5px">
                                                                     <img src="assetsCli/images/done.jpg"/>
@@ -1541,8 +1553,8 @@
                                             </ul>
                                             <div class="countdown-timer">
                                                 <div class="countdown h4"
-                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes) "
-                                                     data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                     data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes) "
+                                                     data-labels='{ "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                 </div>
                                             </div>
                                             @{
@@ -1556,9 +1568,9 @@
                                                 {
                                                     if (i.IsOffer)
                                                     {
-                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        if (!i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                         {
-                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            if (!i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                             {
                                                                 <div class="text-center" style="padding: 5px">
                                                                     <img src="assetsCli/images/done.jpg"/>
@@ -1674,16 +1686,16 @@
                                                     <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                                         @if (i.IsOffer)
                                                         {
-                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                             {
-                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                                 {
                                                                     <div class="d-flex justify-content-between gap-3">
                                                                         <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right">فروش ویژه</div>
                                                                         <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                             <div class="countdown h6"
-                                                                                 data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                                 data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
+                                                                                 data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                                 data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1743,7 +1755,7 @@
                                                 <div class="price">
                                                     @if (i.IsOffer)
                                                     {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                         {
                                                             <del>
                                                                 <span>
@@ -1753,7 +1765,7 @@
                                                             </del>
                                                             <ins>
                                                                 <span>
-                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                                     <span>تومان</span>
                                                                 </span>
                                                             </ins>
@@ -1843,15 +1855,15 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
                                                             <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right">فروش ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
                                                                      data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                 </div>
                                                             </div>
@@ -1912,7 +1924,7 @@
                                     <div class="price">
                                         @if (i.IsOffer)
                                         {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                             {
                                                 <del>
                                                     <span>
@@ -1922,7 +1934,7 @@
                                                 </del>
                                                 <ins>
                                                     <span>
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
                                                 </ins>
@@ -2005,15 +2017,15 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
                                                             <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right">فروش ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
                                                                      data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                 </div>
                                                             </div>
@@ -2074,7 +2086,7 @@
                                     <div class="price">
                                         @if (i.IsOffer)
                                         {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                             {
                                                 <del>
                                                     <span>
@@ -2084,7 +2096,7 @@
                                                 </del>
                                                 <ins>
                                                     <span>
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
                                                 </ins>
@@ -2186,16 +2198,16 @@
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
                                             @if (i.IsOffer)
                                             {
-                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                 {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
                                                             <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right">فروش ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 <div class="countdown h6"
-                                                                     data-date-time="@i.Offer.StartDate.AddDays(i.Offer.Days).AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
-                                                                     data-labels='{"label-day": "", "label-hour": "", "label-minute": "", "label-second": ""}'>
+                                                                     data-date-time="@i.Offer.StartDate.AddHours(i.Offer.Hours).AddMinutes(i.Offer.Minutes)"
+                                                                     data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2255,7 +2267,7 @@
                                     <div class="price">
                                         @if (i.IsOffer)
                                         {
-                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                             {
                                                 <del>
                                                     <span>
@@ -2265,7 +2277,7 @@
                                                 </del>
                                                 <ins>
                                                     <span>
-                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
                                                 </ins>

@@ -80,16 +80,8 @@
 @await RenderSectionAsync("footer")
 <!-- footer------------------------------------------->
 <!-- Page Loader----------------------------->
-<div class="P-loader">
-    <div class="P-loader-content">
-        <div class="logo-loader">
-            <img src="/Images/Banner/parsme-logo.png" alt="logo">
-        </div>
-        <div class="pic-loader text-center">
-            <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
-        </div>
-    </div>
-</div>
+@await RenderSectionAsync("loader")
+
 <!-- Page Loader----------------------------->
 </body>
 <!-- file js---------------------------------------------------->

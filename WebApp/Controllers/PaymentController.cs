@@ -77,12 +77,12 @@ public class PaymentController : Controller
             {
                 if (i.IsOffer)
                 {
-                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) &&
+                    if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) &&
                         i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                     {
                         offer += i.Offer.OfferAmount;
                         price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount,
-                            i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days,
+                            i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,
                             i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                     }
                     else

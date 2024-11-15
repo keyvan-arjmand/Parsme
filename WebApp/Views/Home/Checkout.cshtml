@@ -21,10 +21,10 @@
     {
         @if (i.IsOffer)
         {
-            if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+            if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
             {
                 offer += i.Offer.OfferAmount;
-                price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
             }
             else
             {
@@ -90,7 +90,7 @@
                     class="col-7 d-flex justify-content-start justify-content-sm-between justify-content-md-start justify-content-lg-start">
                     <div class="logo text-start p-2">
                         <a href="@Url.Action("Index", "Home")">
-                            <img src="/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
+                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="پارس می">
                         </a>
                     </div>
                     <div class="text-start p-2">
@@ -362,10 +362,10 @@
         {
             @if (i.IsOffer)
             {
-                if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                 {
                     offer += i.Offer.OfferAmount;
-                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,  i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                 }
                 else
                 {
@@ -386,8 +386,11 @@
         @if (seoPage.ShowTopBanner)
         {
             <div class="col-12 p-0">
-                <img style="width: 100%;    height: 100px;    object-fit: cover"
-                     src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+                <a href="@seoPage.TopBannerHref">
+                    <img style="width: 100%;    height: 100px;    object-fit: cover"
+                         src="http://newdev.parsme.com/Images/Banner/@seoPage.TopBanner"/>
+                </a>
+
             </div>
         }
         <div class="col-lg-9 col-md-12 col-xs-12 pr">
@@ -910,9 +913,9 @@
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
                                                                     {
-                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                        if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                         {
-                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                                         }
                                                                         else
                                                                         {
@@ -1055,6 +1058,20 @@
 
 }
 
+@section loader
+{
+    <div class="P-loader">
+        <div class="P-loader-content">
+            <div class="logo-loader">
+                <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
+            </div>
+            <div class="pic-loader text-center">
+                <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+            </div>
+        </div>
+    </div>
+}
+
 @section link
 {
     <!-- font---------------------------------------->
@@ -1116,12 +1133,12 @@
         <div class="billing-fields mt-4">
             <h4>جزئیات صورتحساب</h4>
             <div class="form-checkout-row">
-                <h5 class="p-3"  id="UserAddresT">ارسال به آدرس</h5>
+                <h5 class="p-3" id="UserAddresT">ارسال به آدرس</h5>
                 <div class="d-flex flex-column" id="UserAddres">
                     @{
                         foreach (var i in userAddresses)
                         {
-                            <div class="shipping-totals-item" >
+                            <div class="shipping-totals-item">
 
                                 <div class="shipping-totals-outline" style="display: flex;
     justify-content: space-between;
@@ -1240,9 +1257,9 @@
                 var price = 0.0;
                 @if (i.IsOffer)
                 {
-                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                    if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                     {
-                        price = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                        price = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,  i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                     }
                     else
                     {
@@ -1289,7 +1306,7 @@
             {
                 @if (i.IsOffer)
                 {
-                    if (i.Offer.StartDate.CalcOffer(i.Offer.Days, i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                    if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                     {
                         offerDiscount += @i.Offer.OfferAmount;
                     }

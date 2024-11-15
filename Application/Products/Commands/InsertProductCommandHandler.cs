@@ -95,7 +95,6 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
         {
             var offer = new Domain.Entity.Product.Offer
             {
-                Days = request.Product.Offer.Days.ToInt(),
                 ColorId = request.Product.Offer.ColorId.ToInt(),
                 Hours = request.Product.Offer.Hours.ToInt(),
                 Minutes = request.Product.Offer.Minutes.ToInt(),

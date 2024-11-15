@@ -39,11 +39,11 @@ public static class Calculator
         return state ? amount1 : amount2;
     }
 
-    public static double CalcOffer(this DateTime time, double discount, double offerDiscount, double price, int day,
+    public static double CalcOffer(this DateTime time, double discount, double offerDiscount, double price,
         int hour,
         int min, bool isOffer)
     {
-        var offerTime = time.AddDays(day).AddHours(hour).AddMinutes(min);
+        var offerTime = time.AddHours(hour).AddMinutes(min);
 
         return (isOffer, offerTime >= DateTime.Now) switch
         {
@@ -59,9 +59,9 @@ public static class Calculator
         return price - (discount + offerDiscount);
     }
 
-    public static bool CalcOffer(this DateTime time, int day, int hour, int min, bool isOffer)
+    public static bool CalcOffer(this DateTime time, int hour, int min, bool isOffer)
     {
-        var offerTime = time.AddDays(day).AddHours(hour).AddMinutes(min);
+        var offerTime = time.AddHours(hour).AddMinutes(min);
         if (!isOffer)
         {
             return false;
