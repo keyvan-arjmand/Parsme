@@ -1,12 +1,14 @@
-﻿@{
+﻿@using Domain.Entity.IndexPage
+@{
     Layout = null;
+    SeoPage seoPage = ViewBag.Seo;
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود</title>
+    <title>ساخت حساب جدید</title>
 
     <!-- font---------------------------------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
@@ -15,6 +17,8 @@
     <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/css/notiflix.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
 </head>
@@ -27,22 +31,20 @@
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <a href="@Url.Action("Index","Home")" class="account-box-logo">Parsme</a>
-                        <div class="account-box">
+                        <div class="account-box"> 
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
                                     <div class="message-light">
+                                        <a href="@Url.Action("Index", "Home")">
+                                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/>
+                                        </a>
                                         <div class="massege-light-send">
-                                            برای شماره همراه @ViewBag.Phone کد تایید ارسال گردید
-                                            @* <div class="form-edit-number"> *@
-                                            @*     <a href="#" class="edit-number-link">ویرایش شماره</a> *@
-                                            @* </div> *@
+                                            حساب کاربری با شماره موبایل کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> وجود ندارد. برای ساخت حساب جدید، کد تایید برای این شماره ارسال گردید.
                                             <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
-
                                         </div>
                                         <div class="account-box-verify-content">
                                             <div class="form-account">
-                                                <div class="form-account-title">کد فعال سازی پیامک شده را وارد کنید</div>
+                                                <div class="form-account-title">کد فعال سازی را وارد کنید</div>
                                                 <div class="form-account-row">
                                                     <div class="lines-number-input">
                                                         <input type="text" class="line-number-account" maxlength="1">
@@ -97,30 +99,62 @@
 <!-- plugin--/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/vendor/countdown.min.js"></script>
 <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/js/Notiflix.js"></script>
+<script src="/js/sweetalert.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
 <script>
-    function Login(){
-        // Select all input elements with the class "line-number-account"
+
+    function Login() {
+        // ترکیب مقادیر ورودی‌های کد
         const inputs = document.querySelectorAll('.line-number-account');
-        // Initialize an empty string to hold the combined values
         let compressedString = '';
-        // Loop through each input element and append its value to the compressedString
         inputs.forEach(input => {
             compressedString += input.value;
         });
-        // Display the compressed string in the result paragraph
+
+        // ارسال درخواست AJAX
         $.ajax({
-            type: "Post",
-            data: {phoneNumber:$('#PhoneNumber').val(),code:compressedString},
+            type: "POST",
             url: "/Home/ValidateCodeUser/",
+            data: {
+                phoneNumber: $('#PhoneNumber').val(),
+                code: compressedString
+            },
+            beforeSend: function () {
+                // نمایش پیام بارگذاری
+                Notiflix.Loading.circle('در حال پردازش ...');
+            },
             success: function (data) {
-                window.location.href= `@Url.Action("WelcomeParsme", "Home")`
+                // اگر پاسخ موفقیت‌آمیز بود
+                Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                Swal.fire({
+                    title: 'موفق',
+                    text: 'به پارس‌مه خوش آمدید',
+                    icon: 'success',
+                    confirmButtonText: 'ادامه'
+                }).then(() => {
+                    // انتقال به صفحه بعد
+                    window.location.href = `@Url.Action("WelcomeParsme", "Home")`;
+                });
             },
             error: function (xhr) {
-                alert("کد وارد شده معتبر نمیباشد");
+                // نمایش پیام خطا
+                Notiflix.Notify.failure('کد وارد شده معتبر نمی‌باشد');
+                Swal.fire({
+                    title: 'خطا',
+                    text: 'کد وارد شده معتبر نمی‌باشد. لطفاً دوباره تلاش کنید.',
+                    icon: 'error',
+                    confirmButtonText: 'بستن'
+                });
+            },
+            complete: function () {
+                // حذف پیام بارگذاری
+                Notiflix.Loading.remove();
             }
         });
     }
+
+
 </script>
 </html>

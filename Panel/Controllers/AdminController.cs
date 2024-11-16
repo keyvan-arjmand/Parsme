@@ -7,6 +7,7 @@ using Application.Common.ApiResult;
 using Application.Common.Mapping;
 using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
+using Application.Dtos;
 using Application.Dtos.Client;
 using Application.Interfaces;
 using Application.Products.Commands;
@@ -2097,7 +2098,8 @@ public class AdminController : Controller
 
     public async Task<ActionResult> ConfirmCode(string code, string phoneNumber)
     {
-        var user = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+        var result = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
         await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
 
         return Ok();

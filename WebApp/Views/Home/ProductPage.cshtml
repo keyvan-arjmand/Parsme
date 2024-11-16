@@ -1328,14 +1328,14 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
             if (prod.Offer.StartDate.CalcOffer( prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer) && prod.ProductColors.Any(x => x.ColorId == prod.Offer.ColorId))
             {
                 <div
-                    class="d-flex justify-content-between justify-content-sm-between justify-content-md-start justify-content-lg-start gap-5 ">
+                    class="d-flex justify-content-between justify-content-sm-between justify-content-md-start justify-content-lg-start gap-5 " style="gap:37px">
                     <div class="promotion-badge align-self-center badge badge-danger p-2"
-                         style=" width: 83px ;color: white !important;height: 30px!important;">
+                         style=" width: 83px ;color: white !important;height: 30px!important;background-color: #ff2828 !important;">
                         فروش ویژه
                     </div>
                     <div class="countdown-timer text-start"
                          style="margin-top: 0 !important;text-align: start">
-                        <div class="countdown h4"
+                        <div class="countdown h4" style="margin-bottom: 0!important;"
                              data-date-time="@prod.Offer.StartDate.AddHours(prod.Offer.Hours).AddMinutes(prod.Offer.Minutes)"
                              data-labels='{ "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                         </div>
@@ -1797,7 +1797,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
 </div>
 </section>
 </div>
-<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12 pl mt-1 d-flex flex-column p-3 text-center ">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 pl mt-1 d-flex flex-column p-3 text-left ">
     <a class="p-1" style="cursor: pointer" data-toggle="modal" data-target="#btn-deli2">
         <img class="" src="/Images/Banner/image.png"/>
     </a>

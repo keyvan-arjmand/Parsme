@@ -1,5 +1,8 @@
-﻿@{
+﻿@using Domain.Entity.IndexPage
+@{
 Layout = null;
+SeoPage seoPage = ViewBag.Seo;
+
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -15,6 +18,8 @@ Layout = null;
     <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/css/notiflix.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
 </head>
@@ -27,22 +32,21 @@ Layout = null;
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <a href="@Url.Action("Index","Home")" class="account-box-logo">Parsme</a>
                         <div class="account-box">
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
+                                    <a href="@Url.Action("Index","Home")" ><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
                                     <div class="message-light">
                                         <div class="massege-light-send">
-                                            برای شماره همراه @ViewBag.Phone کد تایید ارسال گردید 
+                                            کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> پیامک شد
                                             @* <div class="form-edit-number"> *@
                                             @*     <a href="#" class="edit-number-link">ویرایش شماره</a> *@
                                             @* </div> *@
                                             <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
-                                            
                                         </div>
                                         <div class="account-box-verify-content">
                                             <div class="form-account">
-                                                <div class="form-account-title">کد فعال سازی پیامک شده را وارد کنید</div>
+                                                <div class="form-account-title">کد تایید را وارد کنید</div>
                                                 <div class="form-account-row">
                                                     <div class="lines-number-input">
                                                         <input type="text" class="line-number-account" maxlength="1">
@@ -96,30 +100,82 @@ Layout = null;
 <!-- plugin--/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/vendor/countdown.min.js"></script>
 <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+<script src="/js/Notiflix.js"></script>
+<script src="/js/sweetalert.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
 <script>
-    function Login(){
-            // Select all input elements with the class "line-number-account"
-            const inputs = document.querySelectorAll('.line-number-account');
-            // Initialize an empty string to hold the combined values
-            let compressedString = '';
-            // Loop through each input element and append its value to the compressedString
-            inputs.forEach(input => {
-                compressedString += input.value;
-            });
-            // Display the compressed string in the result paragraph
+    function Login() {
+        // ترکیب مقادیر ورودی‌های کد
+        const inputs = document.querySelectorAll('.line-number-account');
+        let compressedString = '';
+        inputs.forEach(input => {
+            compressedString += input.value;
+        });
+
+        // ارسال درخواست AJAX
         $.ajax({
-            type: "Post",
-            data: {phoneNumber:$('#PhoneNumber').val(),code:compressedString},
+            type: "POST",
             url: "/Home/ValidateCode/",
-            success: function (data) {
-                window.location.href= `@Url.Action("Profile", "Home")`
+            data: {
+                phoneNumber: $('#PhoneNumber').val(),
+                code: compressedString
             },
-            error: function (xhr) {
-                alert("کد وارد شده معتبر نمیباشد");
+            beforeSend: function () {
+                // نمایش پیام بارگذاری
+                Notiflix.Loading.circle('در حال پردازش ...');
+            },
+            success: function (data) {
+                if (data.isSuccess) {
+                    // نمایش پیام موفقیت
+                    Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                    showAlertSuccess();
+                    // انتقال به صفحه مورد نظر
+                    window.location.href = `@Url.Action("Profile", "Home")`;
+                } else {
+                    // نمایش پیام خطای قابل مدیریت
+                    Notiflix.Notify.failure('خطا در اجرای عملیات');
+                    showAlertErrorProd(data.message);
+                }
+            },
+            error: function () {
+                // نمایش پیام خطای عمومی
+                showAlertError();
+            },
+            complete: function () {
+                // حذف پیام بارگذاری
+                Notiflix.Loading.remove();
             }
         });
     }
+
+    // پیام‌های موفقیت و خطا
+    function showAlertSuccess() {
+        Swal.fire({
+            title: 'موفق',
+            text: 'عملیات موفقیت آمیز',
+            icon: 'success',
+            confirmButtonText: 'بستن'
+        });
+    }
+
+    function showAlertError() {
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
+
+    function showAlertErrorProd(message) {
+        Swal.fire({
+            title: 'خطا',
+            text: message,
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
+
 </script>
 </html>

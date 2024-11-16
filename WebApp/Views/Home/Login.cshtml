@@ -1,12 +1,15 @@
-﻿@{
+﻿@using Domain.Entity.IndexPage
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     Layout = null;
+    SeoPage seoPage = ViewBag.Seo;
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود</title>
+    <title>ورود | ثبت نام</title>
     <!-- font---------------------------------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
@@ -26,19 +29,26 @@
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <a href="@Url.Action("Index","Home")" class="account-box-logo">Parsme</a>
                         <div class="account-box">
                             <div class="account-box-headline">
-                                <a href="@Url.Action("Login", "Home")" class="login-ds active w-100">
-                                    <span class="title">ورود / ثبت نام</span>
-                                    <span class="sub-title">در پارس می</span>
-                                </a>
+                                    <a href="@Url.Action("Index","Home")" ><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
+                                    <a href="@Url.Action("Login", "Home")" class="login-ds active w-100">
+                                        <span class="title">ورود / ثبت نام</span>
+                                    </a>
+                                    <div style="padding-right: 35px">
+                                        <h6 style="font-size: 14px">
+                                            سلام!
+
+                                        </h6>
+                                        <h6 style="font-size: 17px;color: #797979">
+                                            لطفا شماره موبایل خود را وارد کنید
+                                        </h6>
+                                    </div>
                             </div>
-                            <div class="Login-to-account mt-4">
+                            <div class="Login-to-account ">
                                 <div class="account-box-content">
                                     <form class=" text-right" asp-action="SendLoginCode" asp-controller="Home">
                                         <div class="form-account-title">
-                                            <label for="Phone">شماره موبایل</label>
                                             <input type="text" class="number-email-input" id="Phone" name="phoneNumber" required="required">
                                         </div>
                                         <div class="form-auth-row">
@@ -48,9 +58,9 @@
                                             </label>
                                             <label for="remember" class="remember-me mr-0">مرا به خاطر بسپار</label>
                                         </div>
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <div class="form-row-account">
-                                                <button   class="btn btn-primary" type="submit"><a class="text-decoration-none text-white">ورود با کد یکبار مصرف</a></button>
+                                        <div class="d-flex justify-content-center gap-2 w-100">
+                                            <div class="form-row-account w-100">
+                                                <button   class="btn btn-primary" type="submit"><a class="text-decoration-none text-white">ورود</a></button>
                                             </div>
                                         </div>
                                     </form>

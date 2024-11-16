@@ -362,19 +362,35 @@ $(document).ready(function (e) {
             init: function () {
                 t.countDown()
             },
-            countDown: function (t, i) {
+            countDown: function () {
                 l(".countdown").each(function () {
                     var t = l(this),
                         a = l(this).data("date-time"),
                         e = l(this).data("labels");
-                    (i || t).countdown(a, function (t) {
-                        // فقط ساعت، دقیقه و ثانیه
-                        l(this).html(t.strftime(
-                            '<div class="countdown-item"><div class="countdown-value">%H</div><div class="countdown-label">' + e["label-hour"] + '</div></div>' +
-                            '<div class="countdown-item"><div class="countdown-value">%M</div><div class="countdown-label">' + e["label-minute"] + '</div></div>' +
-                            '<div class="countdown-item"><div class="countdown-value">%S</div><div class="countdown-label">' + e["label-second"] + '</div></div>'
-                        ));
-                    });
+
+                    // مقدار نهایی زمان به میلی‌ثانیه
+                    var targetTime = new Date(a).getTime();
+                    setInterval(function () {
+                        var now = new Date().getTime();
+                        var distance = targetTime - now;
+
+                        if (distance > 0) {
+                            var totalHours = Math.floor(distance / (1000 * 60 * 60));
+                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                            // به فرمت HH:MM:SS نمایش داده می‌شود
+                            var timeFormatted =
+                                String(totalHours).padStart(2, '0') + ":" +
+                                String(minutes).padStart(2, '0') + ":" +
+                                String(seconds).padStart(2, '0');
+
+                            t.html(timeFormatted); // نمایش زمان به شکل HH:MM:SS
+                        }
+                        // else {
+                        //     t.html('<div class="expired-message">زمان تمام شد!</div>');
+                        // }
+                    }, 1000);
                 });
             },
         };
@@ -382,6 +398,7 @@ $(document).ready(function (e) {
             t.init()
         });
     }(jQuery);
+
 
 // برای نمونه شمارش معکوس با یک سال جدید
     const cd = new Date().getFullYear() + 1;
@@ -422,6 +439,8 @@ $(document).ready(function (e) {
             }
         })
     });
+
+
     // add-to-cart
     // $('.btn-add-to-cart').on('click', function (event) {
     //     event.preventDefault();

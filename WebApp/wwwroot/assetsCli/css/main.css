@@ -10,7 +10,8 @@
     height: 83px !important;;
     margin-top: 0 !important;
 }
- .input-coupon-code {
+
+.input-coupon-code {
     width: 75%;
     height: 40px;
     border-radius: 20px;
@@ -20,10 +21,12 @@
     font-size: 13px;
     color: #666666;
 }
- .proceed-to-checkout:hover {
+
+.proceed-to-checkout:hover {
     opacity: 0.7;
     transition: 0.2s;
 }
+
 .proceed-to-checkout {
     padding: 6px 15px;
     background-color: #ff0000;
@@ -32,11 +35,13 @@
     transition: 0.2s;
     cursor: pointer;
 }
- .btn-coupon:hover {
+
+.btn-coupon:hover {
     opacity: 0.7;
     transition: 0.2s;
 }
- .btn-coupon {
+
+.btn-coupon {
     width: 20%;
     height: 40px;
     background-color: #ff0000;
@@ -45,6 +50,7 @@
     color: #fff;
     transition: 0.2s;
 }
+
 .sticky-nav-btn {
     margin-top: 25px !important;
     position: fixed !important;
@@ -2379,9 +2385,9 @@ header.header-main {
 .countdown-timer {
     width: 100%;
     text-align: center;
-    margin-top: 15px;
     display: block;
     position: relative;
+    color: #ff1a1a;
 }
 
 .countdown {
@@ -2428,6 +2434,7 @@ header.header-main {
     font-size: 15px !important;
     border: none !important;
 }
+
 .countdown .countdown-label {
     padding-top: 0.25rem;
     color: #3b3a3a;
@@ -2835,7 +2842,8 @@ header.header-main {
     padding-top: 40px;
     max-height: 90px;
 }
-.post-title{
+
+.post-title {
     display: block;
     white-space: normal;
     overflow: hidden;
@@ -2849,6 +2857,7 @@ header.header-main {
     color: #535353;
     text-decoration: none;
 }
+
 .widget-product .product-carousel .item .post-title a {
     font-size: 16px;
     color: #535353;
@@ -2928,8 +2937,28 @@ header.header-main {
 }
 
 .widget-product .product-carousel .item .countdown-timer .countdown .countdown-item {
-    margin-right: 0.5em;
+    margin-right: 0.15em;
 }
+
+.loading-container {
+    width: 100%; /* عرض کامل */
+    background-color: #f0f0f0; /* رنگ پس‌زمینه */
+    border-radius: 10px;
+    overflow: hidden;
+    height: 5px; /* ارتفاع بار */
+    position: relative;
+    margin-top: 4px;
+}
+
+/* Loading bar */
+.loading-bar {
+    height: 100%;
+    width: 100%; /* شروع از صفر */
+    background-color: #ff2222; /* رنگ خط بار */
+    /*animation: loadingReverse 9s alternate;  !* انیمیشن بارگذاری *!*/
+    float: left;
+}
+
 
 .widget-product .product-carousel .item .discount {
     width: 50px;
@@ -3818,6 +3847,7 @@ aside.main-row-bg .card-product-horizontal .card-product-horizontal-content {
     background: #fff;
     border: 1px solid #dedede;
 }
+
 #suggestion-slider .owl-nav .owl-prev,
 #suggestion-slider .owl-nav .owl-next {
     display: none;
@@ -4046,9 +4076,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     margin-right: 3px;
 }
 
-.product-card {
-    min-height: 353px;
-}
 
 .product-rate i.active {
     color: #febd69;
@@ -4076,7 +4103,9 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     position: absolute;
     width: fit-content;
     top: 45px;
+    margin-left: 18px;
     padding: 5px;
+    margin-right: -10px;
 }
 
 .discount-d span {
@@ -4100,7 +4129,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     margin-bottom: 5px;
     text-align: center;
     margin-top: 10px;
-    
+
 }
 
 .shop-archive-content .product-items .product-box .title a {
@@ -4690,13 +4719,12 @@ span.shipping-destination {
     width: 100%;
     height: auto;
     display: block;
-    background: #f5f5ff;
     overflow: hidden;
 }
 
 .page-account-box .ds-userlogin .account-box .account-box-headline a {
     padding: 5px 0;
-    width: 50%;
+    width: 100%;
     text-align: right;
     color: #999;
     float: right;
@@ -4747,7 +4775,7 @@ span.shipping-destination {
 }
 
 .page-account-box .ds-userlogin .account-box .Login-to-account .account-box-content p {
-    color: #999999;
+    color: #ff0000;
     font-size: 12px;
     line-height: 2;
     margin-top: 1.5rem;
@@ -4812,11 +4840,11 @@ span.shipping-destination {
 
 .account-box-content .form-row-account button {
     width: 100%;
-    height: 35px;
+    height: 45px;
     line-height: 14px;
     margin: 20px 0;
     border-radius: 20px;
-    background: #ff3636  !important;
+    background: #ff3636 !important;
     border-color: #ff4343;
     font-size: 14px;
     outline: none;
@@ -4954,8 +4982,8 @@ span.shipping-destination {
 }
 
 .message-light .account-box-verify-content .form-account .lines-number-input input.line-number-account:focus {
-    border-bottom: 4px solid #651ff6;
-    color: #651ff6;
+    border-bottom: 4px solid #fb1f1f;
+    color: #fa0101;
 }
 
 .message-light .receive-verify-code {
@@ -4973,8 +5001,10 @@ span.shipping-destination {
 #countdown-verify-end {
     display: inline-block;
     margin-bottom: -7px;
-    font-size: 16px;
+    font-size: 25px;
     margin-top: 0;
+    width: 60px;
+
 }
 
 #countdown-verify-end span {
@@ -4990,7 +5020,7 @@ span.shipping-destination {
 }
 
 .link-border-verify {
-    color: #9e9e9e !important;
+    color: #ff0000 !important;
     border-bottom: 1px dashed #9e9e9e;
     background-color: transparent;
     font-weight: 500;
@@ -5890,7 +5920,7 @@ span.shipping-destination {
 }
 
 .checkout .content-checkout .checkout-review-order table.checkout-review-order-table tfoot .price ins {
-    color: #ff3e3e  !important;
+    color: #ff3e3e !important;
     font-size: 22px;
     height: auto;
     display: block;
@@ -6813,7 +6843,7 @@ main.single-product .product .gallery-items li img:hover {
     margin-bottom: 0;
     text-align: center;
     font-size: 15px;
-    height: 50px;
+    height: 35px;
     line-height: 14px;
 }
 
@@ -6835,9 +6865,11 @@ main.single-product .product .gallery-items li img:hover {
     margin-bottom: 20px;
     float: right;
 }
+
 .ck.ck-reset_all.ck-widget__type-around {
     display: none;
 }
+
 .owl-carousel .owl-nav {
     font-size: 24px;
     position: absolute;
@@ -6846,6 +6878,7 @@ main.single-product .product .gallery-items li img:hover {
     left: 0;
     margin-left: 70px !important;
 }
+
 /*.owl-prev {*/
 /*    display: none !important;*/
 /*}*/
@@ -9864,12 +9897,21 @@ body.light .progress-wrap::after {
 body.light .progress-wrap svg.progress-circle path {
     stroke: var(--black-blue);
 }
+
 @media (min-width: 760px) {
     .thumb {
 
         max-height: 265px;
     }
 }
+
+@media (min-width: 868px) {
+    .product-card {
+        min-height: 444px !important;
+        max-height: 444px !important;
+    }
+}
+
 .thumb {
     min-height: 265px;
 

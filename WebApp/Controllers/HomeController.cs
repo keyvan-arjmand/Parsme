@@ -2,6 +2,7 @@
 using Application.Admin.V1.Commands.ConfirmCodAdmin;
 using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
+using Application.Dtos;
 using Application.Dtos.Products;
 using Application.Interfaces;
 using Domain.Entity.Factor;
@@ -72,7 +73,7 @@ public class HomeController : Controller
 
         ViewBag.BasketProd = basketProducts;
 
-        ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+        ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -82,7 +83,7 @@ public class HomeController : Controller
         var otherProd = new List<Product>();
         foreach (var i in cats.Select(x => x.Id).ToList())
         {
-            otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+            otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -91,7 +92,7 @@ public class HomeController : Controller
         }
 
         ViewBag.OtherParsme = otherProd;
-        ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
+        ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking
             .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -100,7 +101,6 @@ public class HomeController : Controller
             .Take(10).ToListAsync();
         ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
         ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.ProductColors)
             .Include(x => x.SubCategory)
             .Include(x => x.Offer)
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
@@ -955,7 +955,7 @@ public class HomeController : Controller
                 .Where(x => x.BrandId == id)
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .Skip((page - 1) * 10)
-                .Take(10)
+                .Take(12)
                 .ToListAsync();
         }
         else
@@ -966,7 +966,7 @@ public class HomeController : Controller
                 .Include(x => x.Offer)
                 .Where(x => x.BrandId == id)
                 .Skip((page - 1) * 10)
-                .Take(10)
+                .Take(12)
                 .ToListAsync();
         }
 
@@ -1161,7 +1161,7 @@ public class HomeController : Controller
             .Include(x => x.ProductColors).ThenInclude(x => x.Color)
             .Include(x => x.Offer)
             .Skip((page - 1) * 10)
-            .Take(10)
+            .Take(12)
             .ToListAsync();
 
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
@@ -1222,7 +1222,7 @@ public class HomeController : Controller
                             x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
                 .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                 .Skip((page - 1) * 10)
-                .Take(10)
+                .Take(12)
                 .ToListAsync();
         }
         else
@@ -1237,7 +1237,7 @@ public class HomeController : Controller
                             x.Brand.Title.Contains(search) ||
                             x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
                 .Skip((page - 1) * 10)
-                .Take(10)
+                .Take(12)
                 .ToListAsync();
         }
 
@@ -1301,7 +1301,7 @@ public class HomeController : Controller
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .Skip((page - 1) * 10)
-                    .Take(10)
+                    .Take(12)
                     .ToListAsync();
             }
             else
@@ -1317,7 +1317,7 @@ public class HomeController : Controller
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
                     .Skip((page - 1) * 10)
-                    .Take(10)
+                    .Take(12)
                     .ToListAsync();
             }
         }
@@ -1337,7 +1337,7 @@ public class HomeController : Controller
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Skip((page - 1) * 10)
-                    .Take(10)
+                    .Take(12)
                     .ToListAsync();
             }
             else
@@ -1353,7 +1353,7 @@ public class HomeController : Controller
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Skip((page - 1) * 10)
-                    .Take(10)
+                    .Take(12)
                     .ToListAsync();
             }
         }
@@ -1614,7 +1614,7 @@ public class HomeController : Controller
         if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == phoneNumber) ||
             !phoneNumber.IsValidIranianPhoneNumber())
         {
-            return RedirectToAction("Register");
+            return RedirectToAction("Login");
         }
         else
         {
@@ -1756,6 +1756,7 @@ public class HomeController : Controller
 
     public async Task<ActionResult> Login()
     {
+        ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 
@@ -1764,19 +1765,18 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<ActionResult> ConfirmPhoneNumber(string phoneNumber)
+    public async Task<ActionResult> ConfirmPhoneNumber(string phoneNumber, bool state = true)
     {
         var user = await _userManager.FindByNameAsync(phoneNumber);
-        var userRoles = await _userManager.GetRolesAsync(user);
         KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-        if (user == null && userRoles.Any(x => !x.Equals("admin")))
-            throw new Exception("User not Exist");
         user.ConfirmCode = Helpers.GetConfirmCode();
         user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
         await _userManager.UpdateAsync(user);
         var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
-            "VerifyCodeFaani");
+            "SignUpCode");
         @ViewBag.Phone = phoneNumber;
+        ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
+
         return View();
     }
 
@@ -1787,6 +1787,7 @@ public class HomeController : Controller
 
     public async Task<ActionResult> ConfirmCode(string phoneNumber)
     {
+        ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
         ViewBag.Phone = phoneNumber;
         return View();
     }
@@ -1796,19 +1797,92 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<ActionResult> ValidateCode(string phoneNumber, string code)
+    [HttpPost]
+    public async Task<ApiAction> ValidateCode(string phoneNumber, string code)
     {
-        var user = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
-        await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
-        return Ok();
+        // بررسی ورودی‌ها
+        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code))
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "Phone number and code are required."
+            };
+        }
+
+        try
+        {
+            // ارسال درخواست برای تأیید کد
+            var result = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+            // بررسی نتیجه تأیید کد
+            if (result == null || !result.IsSuccess)
+            {
+                return result;
+            }
+
+            // اگر کد معتبر بود، اطلاعات کاربر را بازیابی کنید
+            var user = await _userManager.FindByNameAsync(phoneNumber);
+
+            if (user == null)
+            {
+                return result;
+            }
+
+            // انجام ورود کاربر
+            var signInResult = await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+
+            if (!signInResult.Succeeded)
+            {
+                return result;
+            }
+
+            // موفقیت آمیز بودن عملیات
+            return result;
+        }
+        catch (Exception ex)
+        {
+            // مدیریت خطا
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "An error occurred while processing your request.",
+            };
+        }
     }
 
-    public async Task<ActionResult> ValidateCodeUser(string phoneNumber, string code)
+    [HttpPost]
+    public async Task<ApiAction> ValidateCodeUser(string phoneNumber, string code)
     {
-        var user = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
-        await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
-        return Ok();
+        // بررسی ورودی‌های الزامی
+        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code))
+        {
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "شماره نامعتبر"
+            };
+        }
+
+        try
+        {
+            // ارسال درخواست برای تایید کد
+            var result = await _mediator.Send(new ConfirmCodAdminCommand(phoneNumber, code));
+
+            var user = await _userManager.FindByNameAsync(phoneNumber);
+            var signInResult = await _signInManager.PasswordSignInAsync(user, user.Password, true, false);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            // مدیریت خطای داخلی
+            return new ApiAction
+            {
+                IsSuccess = false,
+                Message = "An error occurred while processing your request."
+            };
+        }
     }
+
 
     [HttpPost]
     public async Task<IActionResult> SendLoginCode(string phoneNumber)
@@ -1821,7 +1895,7 @@ public class HomeController : Controller
         user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
         await _userManager.UpdateAsync(user);
         var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
-            "VerifyCodeFaani");
+            "LoginCode");
         return RedirectToAction("ConfirmCode", new { user.PhoneNumber });
     }
 
