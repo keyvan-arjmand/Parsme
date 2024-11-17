@@ -1275,33 +1275,13 @@ else
                                                                         if (i.Id == selectPostMethod.Id)
                                                                         {
                                                                             <div class="shipping-totals-outline" style="display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;">
-                                                                                <label for="#" class="shipping-totals-title-row">
-                                                                                    <div class="shipping-totals-title">
-                                                                                        @if (i.Price > 0)
-                                                                                        {
-                                                                                            <span> @i.Title : @i.Price.ToString("N0")</span>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <span> @i.Title : رایگان </span>
-                                                                                        }
-                                                                                    </div>
-                                                                                </label>
                                                                                 <label for="#" class="outline-radio">
                                                                                     <input type="radio" value="@i.Id" checked="checked" name="payment_method"
                                                                                            id="@i.Id">
                                                                                     <span class="outline-radio-check"></span>
                                                                                 </label>
-
-                                                                            </div>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <div class="shipping-totals-outline" style="display: flex;
-    justify-content: space-between;
-    align-items: center;">
                                                                                 <label for="#" class="shipping-totals-title-row">
                                                                                     <div class="shipping-totals-title">
                                                                                         @if (i.Price > 0)
@@ -1314,11 +1294,34 @@ else
                                                                                         }
                                                                                     </div>
                                                                                 </label>
+
+
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                          
+                                                                            <div class="shipping-totals-outline" style="display: flex;
+    justify-content: start;
+    align-items: center;">
                                                                                 <label for="#" class="outline-radio">
                                                                                     <input type="radio" value="@i.Id" name="payment_method"
                                                                                            id="@i.Id">
                                                                                     <span class="outline-radio-check"></span>
                                                                                 </label>
+                                                                                <label for="#" class="shipping-totals-title-row">
+                                                                                    <div class="shipping-totals-title">
+                                                                                        @if (i.Price > 0)
+                                                                                        {
+                                                                                            <span> @i.Title : @i.Price.ToString("N0")</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span> @i.Title : رایگان </span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </label>
+
 
                                                                             </div>
                                                                         }

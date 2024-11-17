@@ -1141,18 +1141,19 @@
                             <div class="shipping-totals-item">
 
                                 <div class="shipping-totals-outline" style="display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;">
+                                    <label for="address`@i.Id`" class="outline-radio" style="width: 0 !important;">
+                                        <input value="@i.Id" type="radio" name="userAddressId" id="address`@i.Id`">
+                                        <span class="outline-radio-check"></span>
+                                    </label>
                                     <label for="#" class="shipping-totals-title-row">
                                         <div class="shipping-totals-title">
 
                                             <span> @i.Address</span>
                                         </div>
                                     </label>
-                                    <label for="address`@i.Id`" class="outline-radio">
-                                        <input value="@i.Id" type="radio" name="userAddressId" id="address`@i.Id`">
-                                        <span class="outline-radio-check"></span>
-                                    </label>
+
                                 </div>
                             </div>
                         }

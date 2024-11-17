@@ -3803,7 +3803,9 @@ aside.main-row-bg .card-product-horizontal .card-product-horizontal-content {
     display: block;
     margin: 0 auto;
 }
-
+.sticky-sidebar{
+    min-height: 1px !important;
+}
 /* redio--------------------------*/
 
 .form-auth-row {
@@ -5001,9 +5003,9 @@ span.shipping-destination {
 #countdown-verify-end {
     display: inline-block;
     margin-bottom: -7px;
-    font-size: 25px;
+    font-size: 17px;
     margin-top: 0;
-    width: 60px;
+    width: 83px;
 
 }
 
@@ -6870,22 +6872,7 @@ main.single-product .product .gallery-items li img:hover {
     display: none;
 }
 
-.owl-carousel .owl-nav {
-    font-size: 24px;
-    position: absolute;
-    top: 0;
-    margin-top: 15px !important;
-    left: 0;
-    margin-left: 70px !important;
-}
 
-/*.owl-prev {*/
-/*    display: none !important;*/
-/*}*/
-
-/*.owl-next {*/
-/*    display: none !important;*/
-/*}*/
 
 .tabs .tabs-content h2.params-headline {
     padding-bottom: 15px;
@@ -6927,7 +6914,7 @@ main.single-product .product .gallery-items li img:hover {
     width: 100%;
     text-align: center;
     bottom: 15px;
-    color: #3d8f14;
+    color: #ff3131;
     background: #fff;
     cursor: pointer;
     font-size: 14px;
@@ -7951,13 +7938,13 @@ span.show-less {
 }
 
 .comparison .bg-cs-table-tr {
-    background-color: #ff7979;
+    background-color: #ff0000;
     font-size: 16px;
 }
 
 .comparison .bg-cs-table-tr td,
 .comparison .bg-cs-table-tr th {
-    color: #252525;
+    color: #ffffff;
     font-weight: 500;
 }
 
@@ -8684,16 +8671,17 @@ span.show-less {
 .add-group-border {
     width: 185px;
     height: 185px;
-    border: 2px solid #5cb860;
+    border: 2px solid #ff2e2e;
     position: relative;
     margin: 0 10px 40px;
     display: inline-block;
+    border-radius: 15px;
 }
 
 .add-group-border .add-group {
     width: 80px;
     height: 80px;
-    background-color: #5cb860;
+    background-color: #ff2828;
     border-radius: 100%;
     margin: 33px auto;
     -webkit-transition: all 500ms ease;
@@ -8706,7 +8694,7 @@ span.show-less {
 .add-group-border:hover .add-group {
     width: 100%;
     height: 100%;
-    border-radius: 0;
+    border-radius: 15px;
     margin: 0 auto;
     -webkit-transition: all 370ms ease;
     -moz-transition: all 370ms ease;

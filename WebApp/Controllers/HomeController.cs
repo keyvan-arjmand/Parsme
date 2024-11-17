@@ -504,7 +504,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.FactorId == id);
@@ -558,8 +558,11 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
-                .Where(x => x.User.UserName == User.Identity.Name).ToListAsync();
+                .ThenInclude(x => x.FactorProductColor)
+                .Where(x => x.User.UserName == User.Identity.Name)
+                .AsNoTracking()  
+                .ToListAsync();
+
             ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                               new SeoPage();
             return View();
@@ -723,6 +726,8 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+
             var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
             factor.IsReturned = true;
             await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
@@ -733,6 +738,9 @@ public class HomeController : Controller
                 FactorId = id,
                 Desc = Desc
             }, CancellationToken.None);
+            KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+            webApi.VerifyLookup(user.PhoneNumber,factor.FactorCode,
+                "ReturnsProcessed");
             return RedirectToAction("UserOrder");
         }
         else
@@ -1032,10 +1040,12 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.Faq = await _work.GenericRepository<Faq>().Table.ToListAsync();
         ViewBag.BasketProd = basketProducts;
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
+        ViewBag.FaqCats = await _work.GenericRepository<FaqCat>().TableNoTracking.Include(x=>x.Faqs).ToListAsync();
+        ViewBag.Faqs= await _work.GenericRepository<Faq>().TableNoTracking.Where(x=>x.ShowFirst).ToListAsync();
+
         return View();
     }
 
@@ -1776,7 +1786,6 @@ public class HomeController : Controller
             "SignUpCode");
         @ViewBag.Phone = phoneNumber;
         ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
-
         return View();
     }
 
@@ -1801,7 +1810,7 @@ public class HomeController : Controller
     public async Task<ApiAction> ValidateCode(string phoneNumber, string code)
     {
         // بررسی ورودی‌ها
-        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code))
+        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code) )
         {
             return new ApiAction
             {
@@ -2439,12 +2448,26 @@ public class HomeController : Controller
     public async Task<IActionResult> ShowFactor(int id)
     {
         var factor = await _work.GenericRepository<Factor>().TableNoTracking.Include(x => x.Products)
-            .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x.FactorProduct)
+            .ThenInclude(x => x.FactorProductColor)
             .Include(x => x.User)
             .Include(x => x.UserAddress)
             .Include(x => x.PostMethod)
             .FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.Factor = factor;
+        return View();
+    }
+
+    public async Task<IActionResult> ResendCode(string phoneNumber)
+    {
+        var user = await _userManager.FindByNameAsync(phoneNumber);
+        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+        user.ConfirmCode = Helpers.GetConfirmCode();
+        user.ConfirmCodeExpireTime = DateTime.Now.AddMinutes(3);
+        await _userManager.UpdateAsync(user);
+        var result = webApi.VerifyLookup(phoneNumber, user.ConfirmCode,
+            "LoginCode");
+        @ViewBag.Phone = phoneNumber;
+        ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 }

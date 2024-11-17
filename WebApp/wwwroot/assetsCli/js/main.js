@@ -618,7 +618,7 @@ $(document).ready(function (e) {
             date: (new Date()).getTime() + 180 * 1000, // 1 minute later
             text: '<span class="day">%s</span><span class="hour">%s</span><span>: %s</span><span>%s</span>',
             end: function () {
-                $countdownOptionEnd.html("<a href='' class='link-border-verify form-account-link'>ارسال مجدد</a>");
+                $countdownOptionEnd.html("<a onclick='ResendCode()' class='link-border-verify'>ارسال مجدد</a>");
             }
         });
     }

@@ -1553,7 +1553,7 @@
 
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize - 1, search = search })" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize - 1, search = search,min=minPrice,max=maxPrice })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -1562,18 +1562,18 @@
                         if (i == pageSize)
                         {
                             <li class="page-item">
-                                <a class="page-link active" href="@Url.Action("Search", "Home", new { page = i, search = search })">@i</a>
+                                <a class="page-link active" href="@Url.Action("Search", "Home", new { page = i, search = search,min=minPrice,max=maxPrice })">@i</a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link " href="@Url.Action("Search", "Home", new { page = i, search = search })">@i</a>
+                                <a class="page-link " href="@Url.Action("Search", "Home", new { page = i, search = search,min=minPrice,max=maxPrice })">@i</a>
                             </li>
                         }
                     }
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize + 1, search = search })" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("Search", "Home", new { page = pageSize + 1, search = search,min=minPrice,max=maxPrice })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

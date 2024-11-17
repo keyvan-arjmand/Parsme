@@ -1,14 +1,15 @@
 ﻿@using Domain.Entity.IndexPage
 @{
-    Layout = null;
-    SeoPage seoPage = ViewBag.Seo;
+Layout = null;
+SeoPage seoPage = ViewBag.Seo;
+
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ساخت حساب جدید</title>
+    <title>ورود</title>
 
     <!-- font---------------------------------------->
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
@@ -31,20 +32,21 @@
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <div class="account-box"> 
+                        <div class="account-box">
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
+                                    <a href="@Url.Action("Index","Home")" ><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
                                     <div class="message-light">
-                                        <a href="@Url.Action("Index", "Home")">
-                                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/>
-                                        </a>
                                         <div class="massege-light-send">
-                                            حساب کاربری با شماره موبایل کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> وجود ندارد. برای ساخت حساب جدید، کد تایید برای این شماره ارسال گردید.
+                                            کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> پیامک شد
+                                            @* <div class="form-edit-number"> *@
+                                            @*     <a href="#" class="edit-number-link">ویرایش شماره</a> *@
+                                            @* </div> *@
                                             <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
                                         </div>
                                         <div class="account-box-verify-content">
                                             <div class="form-account">
-                                                <div class="form-account-title">کد فعال سازی را وارد کنید</div>
+                                                <div class="form-account-title">کد تایید را وارد کنید</div>
                                                 <div class="form-account-row">
                                                     <div class="lines-number-input">
                                                         <input type="text" class="line-number-account" maxlength="1">
@@ -58,8 +60,7 @@
                                         </div>
                                         <div class="form-account-row">
                                             <div class="receive-verify-code">
-                                                <p id="countdown-verify-end">
-                                                    <span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span>
+                                                <p id="countdown-verify-end"><span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span>
                                                     <i class="fa fa-clock-o"></i>
                                                 </p>
                                             </div>
@@ -104,7 +105,6 @@
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
 <script>
-
     function Login() {
         // ترکیب مقادیر ورودی‌های کد
         const inputs = document.querySelectorAll('.line-number-account');
@@ -116,7 +116,7 @@
         // ارسال درخواست AJAX
         $.ajax({
             type: "POST",
-            url: "/Home/ValidateCodeUser/",
+            url: "/Home/ValidateCode/",
             data: {
                 phoneNumber: $('#PhoneNumber').val(),
                 code: compressedString
@@ -126,27 +126,21 @@
                 Notiflix.Loading.circle('در حال پردازش ...');
             },
             success: function (data) {
-                // اگر پاسخ موفقیت‌آمیز بود
-                Notiflix.Notify.success('عملیات با موفقیت انجام شد');
-                Swal.fire({
-                    title: 'موفق',
-                    text: 'به پارس‌مه خوش آمدید',
-                    icon: 'success',
-                    confirmButtonText: 'ادامه'
-                }).then(() => {
-                    // انتقال به صفحه بعد
-                    window.location.href = `@Url.Action("WelcomeParsme", "Home")`;
-                });
+                if (data.isSuccess) {
+                    // نمایش پیام موفقیت
+                    Notiflix.Notify.success('عملیات با موفقیت انجام شد');
+                    showAlertSuccess();
+                    // انتقال به صفحه مورد نظر
+                    window.location.href = `@Url.Action("Profile", "Home")`;
+                } else {
+                    // نمایش پیام خطای قابل مدیریت
+                    Notiflix.Notify.failure('خطا در اجرای عملیات');
+                    showAlertErrorProd(data.message);
+                }
             },
-            error: function (xhr) {
-                // نمایش پیام خطا
-                Notiflix.Notify.failure('کد وارد شده معتبر نمی‌باشد');
-                Swal.fire({
-                    title: 'خطا',
-                    text: 'کد وارد شده معتبر نمی‌باشد. لطفاً دوباره تلاش کنید.',
-                    icon: 'error',
-                    confirmButtonText: 'بستن'
-                });
+            error: function () {
+                // نمایش پیام خطای عمومی
+                showAlertError();
             },
             complete: function () {
                 // حذف پیام بارگذاری
@@ -154,8 +148,33 @@
             }
         });
     }
-    function ResendCode(){
-        window.location.href = `@Url.Action("ResendCode", "Home",new{phoneNumber=ViewBag.Phone})`;
+
+    // پیام‌های موفقیت و خطا
+    function showAlertSuccess() {
+        Swal.fire({
+            title: 'موفق',
+            text: 'عملیات موفقیت آمیز',
+            icon: 'success',
+            confirmButtonText: 'بستن'
+        });
+    }
+
+    function showAlertError() {
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطای داخلی در سرور',
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
+    }
+
+    function showAlertErrorProd(message) {
+        Swal.fire({
+            title: 'خطا',
+            text: message,
+            icon: 'error',
+            confirmButtonText: 'بستن'
+        });
     }
 
 </script>

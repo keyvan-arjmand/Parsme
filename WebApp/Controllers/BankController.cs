@@ -31,11 +31,11 @@ public class BankController : Controller
     }
 
     // GET
-    public async Task<string> Index(long Price, int factorId)
+    public async Task<string> Index(long Price, int factorId,int userId)
     {
         try
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null) throw new Exception();
             BankTransaction p = new BankTransaction
             {
@@ -270,8 +270,10 @@ public class BankController : Controller
                 else
                 {
                     factor.Status = Status.Field;
+                    factor.StatusPayment = melatResult.ResCode;
+                    order.StatusPayment = melatResult.ResCode;
                     order.SaleReferenceId = melatResult.SaleReferenceId.ToInt();
-                    order.PaymentFinished = true;
+                    order.PaymentFinished = false;
                     await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
                     await _work.GenericRepository<BankTransaction>().UpdateAsync(order, CancellationToken.None);
                     isError = true;
