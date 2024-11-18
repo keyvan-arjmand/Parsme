@@ -1391,10 +1391,10 @@
                                             @if (i.IsOffer)
                                             {
                                                 <div class="d-flex justify-content-between">
-                                                    <div class="promotion-badge  text-start  black-color-text-pars fw-bold" style="height: 51px">
-                                                        <img src="/assetsCli/images/coupon.png"/>
+                                                    <div class="promotion-badge  text-start  black-color-text-pars fw-bold" style="height: 51px ;color: #ff2828;width: 50%; align-content: center">
+                                                        پیشنهاد شگفت انگیز
                                                     </div>
-                                                    <div class="">
+                                                    <div class="" style="width: 50%; align-content: center">
                                                         <span style="color: #ff2828;font-weight: bolder">
                                                             @i.Offer.OfferAmount.ToString("N0")
                                                             تومان تخفیف !
@@ -1507,10 +1507,10 @@
                                             @if (i.IsOffer)
                                             {
                                                 <div class="d-flex justify-content-between">
-                                                    <div class="promotion-badge  text-start  black-color-text-pars fw-bold" style="height: 51px">
-                                                        <img src="/assetsCli/images/coupon.png"/>
+                                                    <div class="promotion-badge  text-start  black-color-text-pars fw-bold" style="height: 51px ;color: #ff2828;width: 50%; align-content: center">
+                                                        پیشنهاد شگفت انگیز
                                                     </div>
-                                                    <div class="">
+                                                    <div class="" style="width: 50%; align-content: center">
                                                         <span style="color: #ff2828;font-weight: bolder">
                                                             @i.Offer.OfferAmount.ToString("N0")
                                                             تومان تخفیف !
@@ -1711,6 +1711,10 @@
                                             <div class="item shadow-card">
                                                 <div class="thumb" style="min-height: 265px">
                                                     <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                                        @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                                        {
+                                                        <div class="promotion-badgee">ناموجود</div>
+                                                        }
                                                         @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
                                                         {
                                                             if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
@@ -1760,14 +1764,7 @@
                                                                 </div>
                                                             </div>
                                                         }
-                                                        @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
-                                                        {
-                                                            <div class="p-3">
-                                                                <div class="discount-d">
-                                                                    <span>ناموجود</span>
-                                                                </div>
-                                                            </div>
-                                                        }
+
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                              class="img-fluid" alt="">
                                                     </a>
@@ -1888,6 +1885,10 @@
                                 <div class="item shadow-card">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                            {
+                                            <div class="promotion-badgee">ناموجود</div>
+                                            }
                                             @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
                                             {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
@@ -1937,14 +1938,7 @@
                                                     </div>
                                                 </div>
                                             }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
-                                            {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
-                                                </div>
-                                            }
+
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
                                         </a>
@@ -2056,6 +2050,10 @@
                                 <div class="item shadow-card">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                            {
+                                            <div class="promotion-badgee">ناموجود</div>
+                                            }
                                             @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
                                             {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
@@ -2105,14 +2103,7 @@
                                                     </div>
                                                 </div>
                                             }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
-                                            {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
-                                                </div>
-                                            }
+
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
                                         </a>
@@ -2243,6 +2234,10 @@
                                 <div class="item shadow-card">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
+                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                            {
+                                            <div class="promotion-badgee">ناموجود</div>
+                                            }
                                             @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
                                             {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
@@ -2292,14 +2287,7 @@
                                                     </div>
                                                 </div>
                                             }
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
-                                            {
-                                                <div class="p-3">
-                                                    <div class="discount-d">
-                                                        <span>ناموجود</span>
-                                                    </div>
-                                                </div>
-                                            }
+
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                  class="img-fluid" alt="">
                                         </a>

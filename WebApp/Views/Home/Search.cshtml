@@ -1224,63 +1224,60 @@
                                         <section class="product-box product product-type-simple">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
-                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                            @{
-                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                                            var totalMinutes = totalHours * 60;
-                                                            }
-                                                            <div class="countdown h6" style="text-align: left"
-                                                                 data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
-                                                                 data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="loading-container">
-                                                        <div class="loading-bar"></div>
-                                                    </div>
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
-                                                        </div>
-                                                    </div>
+                                                    <div class="promotion-badgee">ناموجود</div>
                                                     }
+                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
+                                                    {
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                        @{
+                                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                                                                            var totalMinutes = totalHours * 60;
+                                                                        }
+                                                                        <div class="countdown h6" style="text-align: left"
+                                                                             data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
+                                                                             data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="loading-container">
+                                                                    <div class="loading-bar"></div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex justify-content-between gap-3">
+                                                                <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                            <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                            </div>
+                                                        </div>
+                                                    }
+
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
@@ -1335,63 +1332,60 @@
                                         <section class="product-box product product-type-simple">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
-                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                            @{
-                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                                            var totalMinutes = totalHours * 60;
-                                                            }
-                                                            <div class="countdown h6" style="text-align: left"
-                                                                 data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
-                                                                 data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="loading-container">
-                                                        <div class="loading-bar"></div>
-                                                    </div>
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
-                                                        </div>
-                                                    </div>
+                                                    <div class="promotion-badgee">ناموجود</div>
                                                     }
+                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
+                                                    {
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                        @{
+                                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                                                                            var totalMinutes = totalHours * 60;
+                                                                        }
+                                                                        <div class="countdown h6" style="text-align: left"
+                                                                             data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
+                                                                             data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="loading-container">
+                                                                    <div class="loading-bar"></div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex justify-content-between gap-3">
+                                                                <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                            <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                            </div>
+                                                        </div>
+                                                    }
+
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>
@@ -1446,63 +1440,60 @@
                                         <section class="product-box product product-type-simple">
                                             <div class="thumb" style="min-height: 265px">
                                                 <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
-                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-                                                    {
-                                                    if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                            @{
-                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                                            var totalMinutes = totalHours * 60;
-                                                            }
-                                                            <div class="countdown h6" style="text-align: left"
-                                                                 data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
-                                                                 data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="loading-container">
-                                                        <div class="loading-bar"></div>
-                                                    </div>
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                    }
-                                                    else
-                                                    {
-                                                    <div class="d-flex justify-content-between gap-3">
-                                                        <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
-                                                        <div class="countdown-timer w-50 d-flex justify-content-between">
-                                                        </div>
-                                                    </div>
-                                                    }
                                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
                                                     {
-                                                    <div class="p-3">
-                                                        <div class="discount-d">
-                                                            <span>ناموجود</span>
-                                                        </div>
-                                                    </div>
+                                                    <div class="promotion-badgee">ناموجود</div>
                                                     }
+                                                    @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
+                                                    {
+                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        {
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                        @{
+                                                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                                                                            var totalMinutes = totalHours * 60;
+                                                                        }
+                                                                        <div class="countdown h6" style="text-align: left"
+                                                                             data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
+                                                                             data-labels='{ "label-hour": "", "label-minute": "", "label-second": ""}'>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="loading-container">
+                                                                    <div class="loading-bar"></div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="d-flex justify-content-between gap-3">
+                                                                    <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                    <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex justify-content-between gap-3">
+                                                                <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                                <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex justify-content-between gap-3">
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px"></div>
+                                                            <div class="countdown-timer w-50 d-flex justify-content-between">
+                                                            </div>
+                                                        </div>
+                                                    }
+
                                                     <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                          class="img-fluid" alt="">
                                                 </a>

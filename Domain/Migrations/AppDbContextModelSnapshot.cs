@@ -747,7 +747,7 @@ namespace Domain.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("ShowFirst")
+                    b.Property<bool>("ShowFirst")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -1825,6 +1825,9 @@ namespace Domain.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

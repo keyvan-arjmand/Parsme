@@ -39,9 +39,7 @@ SeoPage seoPage = ViewBag.Seo;
                                     <div class="message-light">
                                         <div class="massege-light-send">
                                             کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> پیامک شد
-                                            @* <div class="form-edit-number"> *@
-                                            @*     <a href="#" class="edit-number-link">ویرایش شماره</a> *@
-                                            @* </div> *@
+                                         
                                             <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
                                         </div>
                                         <div class="account-box-verify-content">
@@ -69,6 +67,9 @@ SeoPage seoPage = ViewBag.Seo;
                                             <div class="account-footer">
                                                 <div class="form-row-account">
                                                     <button class="btn btn-primary" type="button" onclick="Login()">ورود به پارس می</button>
+                                                </div>
+                                                <div class="form-edit-number">
+                                                    <a href="@Url.Action("Login","Home")" class="edit-number-link">ویرایش شماره</a>
                                                 </div>
                                             </div>
                                         </div>

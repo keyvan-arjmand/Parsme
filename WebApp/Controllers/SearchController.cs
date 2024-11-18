@@ -23,26 +23,38 @@ public class SearchController : Controller
     public async Task<List<SearchProd>> SearchProd(string search)
     {
         var searchKeywords = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        List<SearchProd> searchProds = new List<SearchProd>();
-        foreach (var i in searchKeywords)
+        var query = _work.GenericRepository<Product>().TableNoTracking
+            .Include(p => p.ProductColors) // Include ProductColors
+            .ThenInclude(pc => pc.Color) // ThenInclude for Color inside ProductColors
+            .Include(p => p.SubCategory) // Include SubCategory
+            .ThenInclude(sc => sc.Category) // ThenInclude for Category inside SubCategory
+            .Include(p => p.Offer).AsQueryable();
+        ;
+        if (searchKeywords.Any())
         {
-            searchProds.AddRange(await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x => x.Brand)
-                .Include(x => x.SubCategory)
-                .Include(x => x.BrandTag)
-                .Where(x => x.Title.Contains(i) || x.PersianTitle.Contains(i) ||
-                            x.Brand.Title.Contains(i) ||
-                            x.Detail.Contains(i) || x.MetaKeyword.Contains(i) || 
-                            x.BrandTag.Title.Contains(i) || x.SeoTitle.Contains(i) ||
-                            x.UnicCode.Contains(i) || x.SubCategory.Name.Contains(i))
-                .Take(5).Select(x => new SearchProd
-                {
-                    PersianTitle = x.PersianTitle,
-                    Id = x.Id,
-                    ImageUri = x.ImageUri
-                }).ToListAsync());
+            foreach (var keyword in searchKeywords)
+            {
+                query = query.Where(product =>
+                    product.Title.Contains(keyword) ||
+                    product.PersianTitle.Contains(keyword) ||
+                    product.Brand.Title.Contains(keyword) ||
+                    product.Detail.Contains(keyword) ||
+                    product.MetaKeyword.Contains(keyword) ||
+                    product.BrandTag.Title.Contains(keyword) ||
+                    product.SeoTitle.Contains(keyword) ||
+                    product.UnicCode.Contains(keyword) ||
+                    product.SubCategory.Name.Contains(keyword));
+            }
         }
 
-        return searchProds.DistinctBy(x => x.Id).ToList();
+        return await query
+            .Take(5)
+            .Select(x => new SearchProd
+            {
+                PersianTitle = x.PersianTitle,
+                ImageUri = x.ImageUri,
+                Id = x.Id
+            })
+            .ToListAsync();
     }
 }

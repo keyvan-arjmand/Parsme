@@ -123,23 +123,23 @@ $(document).ready(function (e) {
         responsiveClass: true,
         responsive: {
             0: {
-                items: 1,
+                items: 1.8,
                 slideBy: 1
             },
             576: {
-                items: 1,
+                items: 2.3,
                 slideBy: 1
             },
             768: {
-                items: 2,
+                items: 3.6,
                 slideBy: 2
             },
             992: {
-                items: 3,
+                items: 3.3,
                 slideBy: 2
             },
             1400: {
-                items: 4,
+                items: 4.4,
                 slideBy: 3
             }
         }
@@ -628,7 +628,7 @@ $(document).ready(function (e) {
     //    verify-phone-number-----------------------
 
     // tab-------------------------------------
-    $(".mask-handler").click(function (e) {
+    $(".mask-handler").onclick(function (e) {
         e.preventDefault();
         var sumaryBox = $(this).parents('.content-expert-summary');
         sumaryBox.find('.mask-text').toggleClass('active');

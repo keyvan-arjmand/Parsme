@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApp.Models;
+using WebApp.Models.Search;
 
 namespace WebApp.Controllers;
 
@@ -560,7 +561,7 @@ public class HomeController : Controller
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .Where(x => x.User.UserName == User.Identity.Name)
-                .AsNoTracking()  
+                .AsNoTracking()
                 .ToListAsync();
 
             ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
@@ -739,7 +740,7 @@ public class HomeController : Controller
                 Desc = Desc
             }, CancellationToken.None);
             KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-            webApi.VerifyLookup(user.PhoneNumber,factor.FactorCode,
+            webApi.VerifyLookup(user.PhoneNumber, factor.FactorCode,
                 "ReturnsProcessed");
             return RedirectToAction("UserOrder");
         }
@@ -1043,8 +1044,8 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
-        ViewBag.FaqCats = await _work.GenericRepository<FaqCat>().TableNoTracking.Include(x=>x.Faqs).ToListAsync();
-        ViewBag.Faqs= await _work.GenericRepository<Faq>().TableNoTracking.Where(x=>x.ShowFirst).ToListAsync();
+        ViewBag.FaqCats = await _work.GenericRepository<FaqCat>().TableNoTracking.Include(x => x.Faqs).ToListAsync();
+        ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking.Where(x => x.ShowFirst).ToListAsync();
 
         return View();
     }
@@ -1216,38 +1217,71 @@ public class HomeController : Controller
     {
         ViewBag.SearchR = search;
         ViewBag.Page = page;
+        var searchKeywords = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        List<SearchProd> searchProds = new List<SearchProd>();
+
         if (max > 0)
         {
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x => x.ProductColors)
-                .ThenInclude(x => x.Color)
-                .Include(x => x.SubCategory)
-                .ThenInclude(sc => sc.Category)
-                .Include(x => x.Offer)
-                .Where(x => x.SubCategory.Name.Contains(search) ||
-                            x.SubCategory.Category.Name.Contains(search) ||
-                            x.PersianTitle.Contains(search) ||
-                            x.Title.Contains(search) ||
-                            x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
-                .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+            var query = _work.GenericRepository<Product>().TableNoTracking
+                .Include(p => p.ProductColors) // Include ProductColors
+                .ThenInclude(pc => pc.Color) // ThenInclude for Color inside ProductColors
+                .Include(p => p.SubCategory) // Include SubCategory
+                .ThenInclude(sc => sc.Category) // ThenInclude for Category inside SubCategory
+                .Include(p => p.Offer)
+                .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max)); // Include Offer
+            if (searchKeywords.Any())
+            {
+                foreach (var keyword in searchKeywords)
+                {
+                    query = query.Where(product =>
+                        product.Title.Contains(keyword) ||
+                        product.PersianTitle.Contains(keyword) ||
+                        product.Brand.Title.Contains(keyword) ||
+                        product.Detail.Contains(keyword) ||
+                        product.MetaKeyword.Contains(keyword) ||
+                        product.BrandTag.Title.Contains(keyword) ||
+                        product.SeoTitle.Contains(keyword) ||
+                        product.UnicCode.Contains(keyword) ||
+                        product.SubCategory.Name.Contains(keyword));
+                }
+
+            }
+            ViewBag.Products = await query
                 .Skip((page - 1) * 10)
-                .Take(12)
+                .Take(24)
                 .ToListAsync();
         }
+
         else
         {
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x => x.ProductColors)
-                .Include(x => x.SubCategory)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Include(x => x.Offer)
-                .Where(x => x.SubCategory.Name.Contains(search) || x.SubCategory.Category.Name.Contains(search) ||
-                            x.PersianTitle.Contains(search) || x.Title.Contains(search) ||
-                            x.Brand.Title.Contains(search) ||
-                            x.Detail.Contains(search) || x.MetaKeyword.Contains(search))
+            var query = _work.GenericRepository<Product>().TableNoTracking
+                .Include(p => p.ProductColors) // Include ProductColors
+                .ThenInclude(pc => pc.Color) // ThenInclude for Color inside ProductColors
+                .Include(p => p.SubCategory) // Include SubCategory
+                .ThenInclude(sc => sc.Category) // ThenInclude for Category inside SubCategory
+                .Include(p => p.Offer).AsQueryable();                ;
+            if (searchKeywords.Any())
+            {
+                
+                foreach (var keyword in searchKeywords)
+                {
+                    query = query.Where(product =>
+                        product.Title.Contains(keyword) ||
+                        product.PersianTitle.Contains(keyword) ||
+                        product.Brand.Title.Contains(keyword) ||
+                        product.Detail.Contains(keyword) ||
+                        product.MetaKeyword.Contains(keyword) ||
+                        product.BrandTag.Title.Contains(keyword) ||
+                        product.SeoTitle.Contains(keyword) ||
+                        product.UnicCode.Contains(keyword) ||
+                        product.SubCategory.Name.Contains(keyword));
+                }
+            }
+
+            ViewBag.Products = await query
                 .Skip((page - 1) * 10)
-                .Take(12)
+                .Take(24)
                 .ToListAsync();
         }
 
@@ -1810,7 +1844,7 @@ public class HomeController : Controller
     public async Task<ApiAction> ValidateCode(string phoneNumber, string code)
     {
         // بررسی ورودی‌ها
-        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code) )
+        if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(code))
         {
             return new ApiAction
             {
