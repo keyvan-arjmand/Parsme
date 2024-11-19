@@ -1470,9 +1470,39 @@ else
             window.location.href = 'checkout?code='+$('#DiscountCode').val()+'&postMethod='+getCheckedRadioId();
         }
     }
-    function  CheckCode(){
-        window.location.href =`@Url.Action("DiscountCheck", "Basket")`+`?code=`+$('#DiscountCode').val();
+    function CheckCode() {
+        var discountCode = $('#DiscountCode').val();
+
+        if (!discountCode) {
+            Notiflix.Notify.failure('لطفاً کد تخفیف را وارد کنید.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Basket/DiscountCheck",
+            data: { code: discountCode },
+            beforeSend: function () {
+                Notiflix.Loading.circle('در حال بررسی کد تخفیف...');
+            },
+            success: function (data) {
+                if (data.isSuccess) {
+                    Notiflix.Notify.success('کد تخفیف معتبر است.');
+                    // اعمال تغییرات دلخواه در UI یا ریدایرکت
+                    window.location.href = `/Home/Basket`;
+                } else {
+                    Notiflix.Notify.failure('کد تخفیف نامعتبر است.');
+                }
+            },
+            error: function () {
+                Notiflix.Notify.failure('خطایی در بررسی کد تخفیف رخ داده است.');
+            },
+            complete: function () {
+                Notiflix.Loading.remove();
+            }
+        });
     }
+
     function getCheckedRadioId() {
         const radioButtons = document.querySelectorAll('input[name="payment_method"]');
         let checkedRadioId = null;

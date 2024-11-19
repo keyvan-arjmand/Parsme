@@ -574,8 +574,8 @@ public class HomeController : Controller
         }
     }
 
-    public async Task<IActionResult> EditeProfile(string name, string family,
-        string email, string Sheba, string NationalCode)
+    public async Task<IActionResult> EditeProfile(string name, string family,int cityId,
+        string email, string Sheba, string NationalCode, string code, int postMethod, bool toCheckout = false)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -590,11 +590,17 @@ public class HomeController : Controller
                 user.Email = email;
                 user.Sheba = Sheba;
                 user.NationalCode = NationalCode;
-
                 await _userManager.UpdateAsync(user);
             }
 
-            return RedirectToAction("ProfileDetail");
+            if (toCheckout)
+            {
+                return RedirectToAction("Checkout", "Home", new { code = code, postMethod = postMethod });
+            }
+            else
+            {
+                return RedirectToAction("ProfileDetail");
+            }
         }
         else
         {
@@ -812,6 +818,10 @@ public class HomeController : Controller
                 }
             }
 
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+            ViewBag.ProfValid = (!string.IsNullOrWhiteSpace(user.Name) && !string.IsNullOrWhiteSpace(user.Family) &&
+                                 !string.IsNullOrWhiteSpace(user.NationalCode));
+            ViewBag.User = user;
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
             var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
@@ -821,7 +831,6 @@ public class HomeController : Controller
             ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
                                  new FooterLink();
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Code == code) ?? new DiscountCode();
             ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
@@ -1245,8 +1254,8 @@ public class HomeController : Controller
                         product.UnicCode.Contains(keyword) ||
                         product.SubCategory.Name.Contains(keyword));
                 }
-
             }
+
             ViewBag.Products = await query
                 .Skip((page - 1) * 10)
                 .Take(24)
@@ -1260,10 +1269,10 @@ public class HomeController : Controller
                 .ThenInclude(pc => pc.Color) // ThenInclude for Color inside ProductColors
                 .Include(p => p.SubCategory) // Include SubCategory
                 .ThenInclude(sc => sc.Category) // ThenInclude for Category inside SubCategory
-                .Include(p => p.Offer).AsQueryable();                ;
+                .Include(p => p.Offer).AsQueryable();
+            ;
             if (searchKeywords.Any())
             {
-                
                 foreach (var keyword in searchKeywords)
                 {
                     query = query.Where(product =>

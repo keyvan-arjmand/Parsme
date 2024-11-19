@@ -114,7 +114,7 @@ $(document).ready(function (e) {
     // searchResult--------------------------------------
 
     // slider-product------------------------
-    $(".product-carousel").owlCarousel({
+    $(".offer-carousel").owlCarousel({
         rtl: true,
         margin: 10,
         nav: true,
@@ -123,15 +123,15 @@ $(document).ready(function (e) {
         responsiveClass: true,
         responsive: {
             0: {
-                items: 1.8,
+                items: 1.1,
                 slideBy: 1
             },
             576: {
-                items: 2.3,
+                items: 2.2,
                 slideBy: 1
             },
             768: {
-                items: 3.6,
+                items: 3.3,
                 slideBy: 2
             },
             992: {
@@ -141,6 +141,42 @@ $(document).ready(function (e) {
             1400: {
                 items: 4.4,
                 slideBy: 3
+            }
+        }
+    });
+    
+    $(".product-carousel").owlCarousel({
+        rtl: true,
+        margin: 10,
+        nav: true,
+        navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
+        dots: false,
+        responsiveClass: true,
+        fluidSpeed: true,
+        autoplay: true,
+        autoplayTimeout: 6000,
+        autoplayHoverPause: true,
+        smartSpeed: 800,
+        touchDrag: true, 
+        mouseDrag: true, 
+        pullDrag: true,  
+        freeDrag: false,
+        loop: true,
+        responsive: {
+            0: {
+                items: 1.4,
+            },
+            576: {
+                items: 2.2,
+            },
+            768: {
+                items: 2.4,
+            },
+            992: {
+                items: 2.8,
+            },
+            1400: {
+                items: 3.8,
             }
         }
     });
@@ -157,15 +193,12 @@ $(document).ready(function (e) {
         responsive: {
             0: {
                 items: 1,
-                slideBy: 1
             },
             576: {
                 items: 1,
-                slideBy: 1
             },
             768: {
                 items: 3,
-                slideBy: 2
             },
             992: {
                 items: 5,

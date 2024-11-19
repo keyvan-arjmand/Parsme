@@ -2339,6 +2339,16 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                 navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
                 dots: false,
                 responsiveClass: true,
+                fluidSpeed: true,
+                autoplay: true,
+                autoplayTimeout: 6000,
+                autoplayHoverPause: true,
+                smartSpeed: 800,
+                touchDrag: true,
+                mouseDrag: true,
+                pullDrag: true,
+                freeDrag: false,
+                loop: true,
                 responsive: {
                     0: {
                         items: 1.8,
@@ -2349,15 +2359,15 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                         slideBy: 1
                     },
                     768: {
-                        items: 3.6,
+                        items: 3.4,
                         slideBy: 2
                     },
                     992: {
-                        items: 4.4,
+                        items: 4.3,
                         slideBy: 2
                     },
                     1400: {
-                        items: 5.6,
+                        items: 4.6,
                         slideBy: 3
                     }
                 }
