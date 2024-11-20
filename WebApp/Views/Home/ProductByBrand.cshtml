@@ -1285,7 +1285,7 @@
                     }
                     else
                     {
-                        <div class="p-2 m-1 text-center">محصولی یافت نشد</div>
+                        <div class="p-2 m-1 text-center">کالایی یافت نشد</div>
                     }
                 }
 
@@ -1302,10 +1302,7 @@
                                 <section class="product-box product product-type-simple">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
-                                            @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
-                                            {
-                                            <div class="promotion-badgee">ناموجود</div>
-                                            }
+                                         
                                             @if (i.IsOffer && i.ProductColors.Any(x => x.Inventory > 0) && i.ProductStatus == ProductStatus.Available)
                                             {
                                                 if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
@@ -1372,21 +1369,31 @@
                                             @i.PersianTitle
                                         </a>
                                     </h2>
-                                    <div class="price">
-                                        <span class="amount">
-                                            @{
-                                                if (i.IsOffer)
-                                                {
-                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
-                                                }
-                                                else
-                                                {
-                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.DiscountAmount).ToString("N0")
-                                                }
-                                            }
-                                            <span>تومان</span>
-                                        </span>
+                                    @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                    {
+                                    <div class="price" style="color: #ff2828">
+                                        ناموجود
                                     </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="price">
+                                            <span class="amount">
+                                                @{
+                                                    if (i.IsOffer)
+                                                    {
+                                                        @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                    }
+                                                    else
+                                                    {
+                                                        @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                    }
+                                                }
+                                                <span>تومان</span>
+                                            </span>
+                                        </div>
+                                    }
+                                 
                                 </section>
                             </div>
                         }
@@ -1480,21 +1487,30 @@
                                             @i.PersianTitle
                                         </a>
                                     </h2>
+                                    @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
+                                    {
+                                    <div class="price" style="color: #ff2828">
+                                        ناموجود
+                                    </div>
+                                    }
+                                    else
+                                    {
                                     <div class="price">
-                                        <span class="amount">
-                                            @{
+                                            <span class="amount">
+                                                @{
                                                 if (i.IsOffer)
                                                 {
-                                                    @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
+                                                @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault().Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer).ToString("N0")
                                                 }
                                                 else
                                                 {
-                                                    @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.DiscountAmount).ToString("N0")
+                                                @i.ProductColors.FirstOrDefault().Price.DiscountProduct(i.DiscountAmount).ToString("N0")
                                                 }
-                                            }
-                                            <span>تومان</span>
-                                        </span>
+                                                }
+                                                <span>تومان</span>
+                                            </span>
                                     </div>
+                                    }
                                 </section>
                             </div>
                         }

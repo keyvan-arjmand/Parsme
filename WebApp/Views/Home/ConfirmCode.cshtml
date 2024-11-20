@@ -35,7 +35,13 @@ SeoPage seoPage = ViewBag.Seo;
                         <div class="account-box">
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
-                                    <a href="@Url.Action("Index","Home")" ><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
+                                    <div  class="d-flex justify-content-between" style="gap:10px ">
+                                  <a href="@Url.Action("Login","Home")">      <img src="/assetsCli/images/right-arrow.png" width="40"/></a>
+                                        <a href="@Url.Action("Index", "Home")">
+                                            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/>
+                                        </a>
+                                        <img/>
+                                    </div>
                                     <div class="message-light">
                                         <div class="massege-light-send">
                                             کد تایید برای شماره <span style="color: #ff2828">@ViewBag.Phone</span> پیامک شد
