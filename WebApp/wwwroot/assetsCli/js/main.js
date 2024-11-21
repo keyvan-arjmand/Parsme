@@ -170,13 +170,13 @@ $(document).ready(function (e) {
                 items: 2.2,
             },
             768: {
-                items: 2.4,
+                items: 2.7,
             },
             992: {
-                items: 2.8,
+                items: 3.4,
             },
             1400: {
-                items: 3.8,
+                items: 4.2,
             }
         }
     });
