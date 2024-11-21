@@ -4,12 +4,14 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Application.Common.Utilities;
+using Application.Constants.Kavenegar;
 using Application.Interfaces;
 using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;
+using Kavenegar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,7 @@ public class BankController : Controller
     }
 
     // GET
-    public async Task<string> Index(long Price, int factorId,int userId)
+    public async Task<string> Index(long Price, int factorId, int userId)
     {
         try
         {
@@ -77,7 +79,7 @@ public class BankController : Controller
                     date,
                     time,
                     "خرید از فروشگاه اینترنتی پارس می",
-                    redirect,
+                    $"https://front.parsme.com/{redirect}",
                     "0",
                     string.Empty,
                     string.Empty,
@@ -165,6 +167,8 @@ public class BankController : Controller
                     }
                     else
                     {
+                        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+                   
                         ViewBag.Message = melatMessage.data.succeedMsg;
                         ViewBag.IsSuccess = true;
                         HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(new List<int>()));
@@ -215,7 +219,7 @@ public class BankController : Controller
         ViewBag.Categories = cats;
         ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
                              new FooterLink();
-      
+
         ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                           new SeoPage();
         return View();

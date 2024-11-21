@@ -1455,33 +1455,58 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
     public async Task<IActionResult> AddToBasket(int id)
     {
-        var basketlist = new List<int>();
+        var response = new ApiAction();
 
-        if (HttpContext.Session.GetString("basket") != null)
+        try
         {
-            basketlist = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            // دریافت اطلاعات محصول
+            var prod = await _work.GenericRepository<ProductColor>().TableNoTracking
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (prod == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "محصول یافت نشد.";
+                return Json(response);
+            }
+
+            // بازیابی لیست سبد از سشن
+            var basketlist = new List<int>();
+            if (HttpContext.Session.GetString("basket") != null)
+            {
+                basketlist = JsonConvert.DeserializeObject<List<int>>(HttpContext.Session.GetString("basket")).ToList();
+            }
+
+            // شمارش تعداد محصول در سبد
+            var prodCount = basketlist.Count(x => x == id);
+
+            // بررسی موجودی
+            if (prodCount + 1 > prod.Inventory) // فرض کنید فیلد Stock تعداد موجودی محصول باشد
+            {
+                response.IsSuccess = false;
+                response.Message = "تعداد درخواستی از موجودی محصول بیشتر است.";
+                return Json(response);
+            }
+
+            // اضافه کردن محصول به سبد
             basketlist.Add(id);
             HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
+
+            response.IsSuccess = true;
+            response.Message = "محصول با موفقیت به سبد اضافه شد.";
         }
-        else
+        catch (Exception ex)
         {
-            basketlist.Add(id);
-            HttpContext.Session.SetString("basket", JsonConvert.SerializeObject(basketlist));
+            response.IsSuccess = false;
+            response.Message = "خطایی رخ داد: " + ex.Message;
         }
 
-        var previousUrl = Request.Headers["Referer"];
-
-        if (!string.IsNullOrEmpty(previousUrl))
-        {
-            return Redirect(previousUrl);
-        }
-        else
-        {
-            return RedirectToAction("Index", "Home");
-        }
+        return Json(response);
     }
+
 
     public async Task<IActionResult> Privacy()
     {

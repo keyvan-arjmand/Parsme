@@ -8,6 +8,7 @@ using Domain.Entity.Product;
 using Domain.Entity.User;
 using Domain.Enums;
 using Kavenegar;
+using Kavenegar.Models.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -115,7 +116,7 @@ public class PaymentController : Controller
                 Amount = price,
                 UserId = user.Id,
                 DiscountCode = discountCode ?? string.Empty,
-                UserAddressId = userAddressId,
+                UserAddressId = userAddressId == 0 ? null : userAddressId,
                 DiscountAmount = discountAmount,
                 PostMethodId = postMethodId,
                 InsertDate = DateTime.Now,
@@ -128,9 +129,9 @@ public class PaymentController : Controller
                 EconomicNumber = economicNumber,
                 IsLegal = isLegal,
                 NationalId = nationalId,
-                RegistrationNumber = registrationNumber,
-                Adders = adders,
-                OrganizationNumber = organizationNumber,
+                RegistrationNumber = registrationNumber ?? string.Empty,
+                Adders = adders ?? string.Empty,
+                OrganizationNumber = organizationNumber ?? string.Empty,
                 OrganizationName = organizationName, PostCode = postCode
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
@@ -140,7 +141,7 @@ public class PaymentController : Controller
                          .ToList())
             {
                 var prod = await _work.GenericRepository<ProductColor>().Table
-                    .Include(x => x.Product).ThenInclude(x=>x.Offer)
+                    .Include(x => x.Product).ThenInclude(x => x.Offer)
                     .Include(x => x.Guarantee)
                     .Include(x => x.Color)
                     .FirstOrDefaultAsync(x => x.Id == i);
@@ -215,9 +216,9 @@ public class PaymentController : Controller
                 var response = await result.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(response))
                 {
-                       KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-                            webApi.VerifyLookup(user.PhoneNumber, user.Name+" "+user.Family,factor.FactorCode,string.Empty,
-                                "ProcessingOrder");
+                    // KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+                    // webApi.VerifyLookup(user.PhoneNumber, $"{user.Name} {user.Family}", factor.FactorCode,VerifyLookupType.Sms
+                    //     );
                     ViewBag.RefId = response;
                     ViewBag.UrlBank = BpmConfig.PostUrl;
                     ViewBag.Error = false;

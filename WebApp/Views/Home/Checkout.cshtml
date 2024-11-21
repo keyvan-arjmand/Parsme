@@ -1277,7 +1277,7 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                         price = price * i.Count;
                                         <tr class="checkout-cart-item">
                                             <td class="product-image">
-                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri">
+                                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" width="45">
                                             </td>
                                             <td class="product-name">@i.PersianTitle</td>
                                             <td class="product-name">@i.Count +</td>
@@ -1639,7 +1639,7 @@ else
                 window.location.replace(url);
             },
             beforeSend: function () {
-                Notiflix.Loading.circle('در حال اتصال به درگاه به پرداخت ملت ...');
+                Notiflix.Loading.circle('در حال اتصال به درگاه بانک ملت ...');
             },
             error: function (xhr) {
                 Notiflix.Notify.failure('خطای داخلی');
