@@ -1005,6 +1005,19 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
 <link rel="stylesheet" href="/assetsCli/css/main.css">
 <link rel="stylesheet" href="/assetsCli/css/responsive.css">
 }
+@section loader
+{
+<div class="P-loader">
+    <div class="P-loader-content">
+        <div class="logo-loader">
+            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
+        </div>
+        <div class="pic-loader text-center">
+            <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+        </div>
+    </div>
+</div>
+}
 
 <div class="container-main">
     <div class="d-block">

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApp.Views.Bank;
+namespace WebApp.Views.Payment;
 
 public class MellatBack : PageModel
 {

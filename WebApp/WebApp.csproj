@@ -123,6 +123,7 @@
     <_ContentIncludedByDefault Remove="Views\Admin\User.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Bank\" />
     <Folder Include="wwwroot\Header\" />
   </ItemGroup>
   <ItemGroup>
