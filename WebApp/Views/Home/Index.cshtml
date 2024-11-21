@@ -1279,73 +1279,61 @@
             <span class="title-one text-start black-color-text-pars fw-bold" style="font-size: 23px">تخفیفات شگفت انگیز</span>
             <h3 class="card-title"></h3>
         </header>
-        <div class="offer-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+        <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
             <div class="owl-stage-outer">
                 <div class="owl-stage"
                      style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1162px;">
-                    @{
-                        foreach (var i in offers)
-                        {
-                            <div class="owl-item tab-item active" style="width: 222.313px; margin-left: 10px;">
-                                <div class="item">
-                                    <div class="" style="padding: 5px">
-                                        <span style="color: #ff2828 ;font-weight: bolder">
-                                            @i.Offer.OfferAmount.ToString("N0")
-                                            تومان تخفیف !
-                                        </span>
+                   @foreach (var i in offers)
+                   {
+                        <div class="owl-item tab-item active" style="width: 222.313px; margin-left: 10px;">
+                        <div class="item">
+                            <a href="#" class="d-block hover-img-link">
+                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                            </a>
+                            <h2 class="post-title">
+                                <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
+                                    @i.PersianTitle
+                                </a>
+                            </h2>
+                            <div class="price">
+                                <del>
+                                    <span>
+                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price.ToString("N0")
+                                        <span>تومان</span>
+                                    </span>
+                                </del>
+                                <ins>
+                                    <span>
+                                        @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price.DiscountProduct(i.Offer.OfferAmount).ToString("N0")
+                                        <span>تومان</span>
+                                    </span>
+                                </ins>
+                            </div>
+                            @{
+                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                            var totalMinutes = totalHours * 60;
+                            }
+                            <div class="countdown-timer">
+                                <div class="countdown h4" data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
+                                     data-labels="{ &quot;label-hour&quot;: &quot;ساعت&quot;, &quot;label-minute&quot;: &quot;دقیقه&quot;, &quot;label-second&quot;: &quot;ثانیه&quot;}">
+                             
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">10</div>
+                                        <div class="countdown-label">ساعت</div>
                                     </div>
-                                    <a href="@Url.Action("ProductPage", "Home", new { @i.Id })"
-                                       class="d-block hover-img-link">
-                                        <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                             class="img-fluid" alt="">
-                                    </a>
-                                    <h2 class="post-title">
-                                        <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                            @i.PersianTitle
-                                        </a>
-                                    </h2>
-                                    <div class="price">
-                                        <del>
-                                            <span>
-                                                @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price.ToString("N0")
-                                                <span>تومان</span>
-                                            </span>
-                                        </del>
-                                        <ins>
-                                            <span>
-                                                @i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price.DiscountProduct(i.Offer.OfferAmount).ToString("N0")
-                                                <span>تومان</span>
-                                            </span>
-                                        </ins>
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">16</div>
+                                        <div class="countdown-label">دقیقه</div>
                                     </div>
-                                    <div class="countdown-timer">
-                                        @{
-                                            var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                            var totalMinutes = totalHours * 60;
-                                        }
-                                        <div class="countdown h4"
-                                             data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
-                                             data-labels="{ &quot;label-hour&quot;: &quot;ساعت&quot;, &quot;label-minute&quot;: &quot;دقیقه&quot;, &quot;label-second&quot;: &quot;ثانیه&quot;}">
-
-                                            <div class="countdown-item">
-                                                <div class="countdown-value">@i.Offer.Hours</div>
-                                                <div class="countdown-label">ساعت</div>
-                                            </div>
-                                            <div class="countdown-item">
-                                                <div class="countdown-value">@i.Offer.Minutes</div>
-                                                <div class="countdown-label">دقیقه</div>
-                                            </div>
-                                            <div class="countdown-item">
-                                                <div class="countdown-value">01</div>
-                                                <div class="countdown-label">ثانیه</div>
-                                            </div>
-                                        </div>
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">01</div>
+                                        <div class="countdown-label">ثانیه</div>
                                     </div>
-
                                 </div>
                             </div>
-                        }
-                    }
+                        </div>
+                    </div>
+                   }
 
                 </div>
             </div>
@@ -1458,8 +1446,8 @@
                                             </ul>
                                             <div class="countdown-timer">
                                                 @{
-                                                    var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                                    var totalMinutes = totalHours * 60;
+                                                var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                                                var totalMinutes = totalHours * 60;
                                                 }
                                                 <div class="countdown h4"
                                                      data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
@@ -1574,11 +1562,11 @@
                                             </ul>
                                             <div class="countdown-timer">
                                                 @{
-                                                    var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
-                                                    var totalMinutes = totalHours * 60;
+                                                var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
+                                                var totalMinutes = totalHours * 60;
                                                 }
                                                 <div class="countdown h4"
-                                                     data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes) "
+                                                     data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
                                                      data-labels='{ "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
                                                 </div>
                                             </div>
