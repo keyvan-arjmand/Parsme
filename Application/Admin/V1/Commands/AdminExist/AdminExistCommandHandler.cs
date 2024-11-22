@@ -20,7 +20,7 @@ public class AdminExistCommandHandler:IRequestHandler<AdminExistCommand,UserLogi
         //     throw new Exception("Invalid Phone Number");
         var user = await _userManager.FindByNameAsync(request.PhoneNumber);
         var userRoles = await _userManager.GetRolesAsync(user);
-        if (user == null && userRoles.Any(x => !x.Equals("admin")))
+        if (user == null || !userRoles.Any(x => x.Contains("admin")))
             throw new Exception("User not Exist");
         return new UserLoginDto
         {   

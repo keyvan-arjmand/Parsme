@@ -180,6 +180,8 @@ $(document).ready(function (e) {
             }
         }
     });
+    
+    
 
     // brand---------------------------------------
     $(".product-carousel-brand").owlCarousel({

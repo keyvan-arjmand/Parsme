@@ -1279,7 +1279,7 @@
             <span class="title-one text-start black-color-text-pars fw-bold" style="font-size: 23px">تخفیفات شگفت انگیز</span>
             <h3 class="card-title"></h3>
         </header>
-        <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+        <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag" id="moboffer">
             <div class="owl-stage-outer">
                 <div class="owl-stage"
                      style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1162px;">
@@ -1316,19 +1316,7 @@
                             <div class="countdown-timer">
                                 <div class="countdown h4" data-date-time="@i.Offer.StartDate.AddMinutes(totalMinutes)"
                                      data-labels="{ &quot;label-hour&quot;: &quot;ساعت&quot;, &quot;label-minute&quot;: &quot;دقیقه&quot;, &quot;label-second&quot;: &quot;ثانیه&quot;}">
-                             
-                                    <div class="countdown-item">
-                                        <div class="countdown-value">10</div>
-                                        <div class="countdown-label">ساعت</div>
-                                    </div>
-                                    <div class="countdown-item">
-                                        <div class="countdown-value">16</div>
-                                        <div class="countdown-label">دقیقه</div>
-                                    </div>
-                                    <div class="countdown-item">
-                                        <div class="countdown-value">01</div>
-                                        <div class="countdown-label">ثانیه</div>
-                                    </div>
+                               
                                 </div>
                             </div>
                         </div>
@@ -2404,7 +2392,42 @@
     window.onscroll = function () {
         stickyNavbar();
     };
-
+window.onload = function (){
+    $("#moboffer").owlCarousel({
+        rtl: true,
+        margin: 10,
+        nav: true,
+        navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
+        dots: false,
+        responsiveClass: true,
+        fluidSpeed: true,
+        autoplay: true,
+        autoplayTimeout: 6000,
+        autoplayHoverPause: true,
+        smartSpeed: 800,
+        touchDrag: true,
+        mouseDrag: true,
+        pullDrag: true,
+        freeDrag: false,
+        loop: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            576: {
+                items: 1.4,
+            },
+            768: {
+                items: 2.7,
+            },
+            992: {
+                items: 3.4,
+            },
+            1400: {
+                items: 4.2,
+            }
+        }
+    });}
     var navbar = document.querySelector('.header-main-nav');
     var navbarBanner = document.querySelector('.stickkon');
     //var navbarBanner = document.getElementById('#sideBanner');

@@ -144,7 +144,7 @@ public class AdminController : Controller
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
                                 x.FactorCode.Contains(search))
                     .OrderByDescending(x => x.InsertDate)
@@ -157,7 +157,7 @@ public class AdminController : Controller
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
@@ -185,7 +185,7 @@ public class AdminController : Controller
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
                                 x.FactorCode.Contains(search))
                     .OrderByDescending(x => x.InsertDate)
@@ -198,7 +198,7 @@ public class AdminController : Controller
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
@@ -227,7 +227,7 @@ public class AdminController : Controller
                         .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
                         .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
                         .Include(x => x.Factor).ThenInclude(x => x.Products)
-                        .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                        .ThenInclude(x => x.FactorProductColor)
                         .Include(x => x.Factor).ThenInclude(x => x.Products)
                         .ThenInclude(x => x.FactorProductColor)
                         .Where(x => x.Factor.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
@@ -242,7 +242,7 @@ public class AdminController : Controller
                     .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
                     .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
                     .Include(x => x.Factor).ThenInclude(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .Include(x => x.Factor).ThenInclude(x => x.Products)
                     .ThenInclude(x => x.FactorProductColor)
                     .OrderByDescending(x => x.InsertDate)
@@ -273,7 +273,7 @@ public class AdminController : Controller
                         .Include(x => x.PostMethod)
                         .Include(x => x.UserAddress)
                         .Include(x => x.Products)
-                        .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                        .ThenInclude(x => x.FactorProductColor)
                         .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
                                     x.FactorCode.Contains(search))
                         .OrderByDescending(x => x.InsertDate)
@@ -286,7 +286,7 @@ public class AdminController : Controller
                     .Include(x => x.PostMethod)
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                    .ThenInclude(x => x.FactorProductColor)
                     .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
@@ -426,7 +426,7 @@ public class AdminController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress).ThenInclude(q => q.City)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                .ThenInclude(x => x.FactorProductColor)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -554,7 +554,7 @@ public class AdminController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress).ThenInclude(q => q.City)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                .ThenInclude(x => x.FactorProductColor)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -582,7 +582,7 @@ public class AdminController : Controller
                 .Include(x => x.Factor).ThenInclude(x => x.PostMethod)
                 .Include(x => x.Factor).ThenInclude(x => x.UserAddress).ThenInclude(q => q.City)
                 .Include(x => x.Factor).ThenInclude(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                .ThenInclude(x => x.FactorProductColor)
                 .Include(x => x.Factor).ThenInclude(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -862,13 +862,15 @@ public class AdminController : Controller
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking
+                    .Include(x => x.SubCategory)
                     .Where(x => x.Title.Contains(search) ||
                                 x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
             }
             else
             {
-                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.Include(x => x.SubCategory)
+                ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking
+                    .Include(x => x.SubCategory)
                     .OrderByDescending(x => x.Id).ToListAsync();
             }
 
@@ -1873,6 +1875,7 @@ public class AdminController : Controller
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
         ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
+        
         return View("LoginPassword");
     }
 

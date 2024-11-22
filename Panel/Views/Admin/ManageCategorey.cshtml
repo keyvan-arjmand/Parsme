@@ -53,15 +53,15 @@
                                         <label for="exampleInputPassword1">عنوان دسته بندی</label>
                                         <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">لوگو</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input name="logo" type="file"  class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @* <div class="form-group"> *@
+                                    @*     <label for="exampleInputFile">لوگو</label> *@
+                                    @*     <div class="input-group"> *@
+                                    @*         <div class="custom-file"> *@
+                                    @*             <input name="logo" type="file"  class="custom-file-input" id="exampleInputFile"> *@
+                                    @*             <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label> *@
+                                    @*         </div> *@
+                                    @*     </div> *@
+                                    @* </div> *@
 
                                     <div class="d-flex flex-column">
                                         <div class="form-group">
@@ -95,7 +95,6 @@
                                             <tr>
                                                 <th class="text-center" style="width: 5%">id</th>
                                                 <th class="text-center" style="width: 20%">عنوان</th>
-                                                <th class="text-center" style="width: 35%">لوگو</th>
                                                 <th class="text-center" style="width: 30%">وضعیت</th>
                                                 <th class="text-center" style="width: 10%">#</th>
                                             </tr>
@@ -115,9 +114,6 @@
 
                                                 <td class="text-center">@i.Id</td>
                                                 <td class="text-center">@i.Name</td>
-                                                <td class="text-center">
-                                                    <img src="/Images/Category/@i.LogoUri" width="60"/>
-                                                </td>
                                                 <td class="text-center">
                                                     @if (i.IsActive)
                                                     {
@@ -157,15 +153,6 @@
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان دسته بندی</label>
                                         <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">لوگو</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input name="logo" type="file" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="form-group d-flex flex-column">
                                         <label for="exampleInputPassword1">نوع دسته بندی</label>
@@ -218,7 +205,6 @@
                                             <tr>
                                                 <th class="text-center" style="width: 5%">id</th>
                                                 <th class="text-center" style="width: 20%">عنوان</th>
-                                                <th class="text-center" style="width: 25%">لوگو</th>
                                                 <th class="text-center" style="width: 25%">دسته مادر</th>
                                                 <th class="text-center" style="width: 15%">وضعیت</th>
                                                 <th class="text-center" style="width: 10%">#</th>
@@ -239,9 +225,6 @@
 
                                                             <td class="text-center">@i.Id</td>
                                                             <td class="text-center">@i.Name</td>
-                                                            <td class="text-center">
-                                                                <img src="/Images/Category/@i.LogoUri" width="60"/>
-                                                            </td>
                                                             <td class="text-center">@i.MainCategory.Name</td>
                                                             <td class="text-center">
                                                                 @if (i.IsActive)
@@ -420,15 +403,6 @@
                         <label class="form-check-label">وضعیت فعال</label>
                     </div>
                 </div>
-
-                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="ImageCat" name="ImageCat" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: center;">
-                        <img id="LogoCatM" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
-                    </div>
-                </div>
-
-
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
                 <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
@@ -456,13 +430,6 @@
                     <div class="form-check w-50 mt-4">
                         @Html.CheckBox("isActiveCat", new { @name = "isActiveCat" })
                         <label class="form-check-label">وضعیت فعال</label>
-                    </div>
-                </div>
-
-                <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)">
-                    <input type="file" id="ImageCat" name="ImageCat" title="test" class="form-control">
-                    <div class="input-group  p-1" style="justify-content: center;">
-                        <img id="LogoCat" src="" style="object-fit: cover;text-align: center" class="LogoCat" width="130"/>
                     </div>
                 </div>
                 <div class="input-group p-3  m-2 w-50">

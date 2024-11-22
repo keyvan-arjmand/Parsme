@@ -217,8 +217,20 @@
     display: none;
 }
 
+.select2-selection select2-selection--single {
+    min-width: 210px !important;
+}
+
+.select2-selection {
+    min-width: 210px !important;
+}
+
+.select2-selection--single {
+    min-width: 210px !important;
+}
+
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-    min-width: 40PX;
+    min-width: 10PX;
     border-color: transparent transparent #888 transparent;
     border-width: 0 4px 5px 4px;
 }

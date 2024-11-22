@@ -33,15 +33,15 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <img src="/Images/Banner/parsme-logo.png"/>
         <p class="text-decoration-none">
             <b>ورود به پنل مدیریت</b>
         </p>
     </div>
     <!-- /.login-logo -->
     <div class="card">
-        <div class="card-body login-card-body">
-            <p class="login-box-msg ">شماره تماس خود را وارد کنید</p>
+        <div class="card-body login-card-body text-center">
+            <img src="/Images/parsme-logo.png"/>
+            <p class="login-box-msg " style="  padding: 15px 20px 20px 20px!important;">شماره تماس خود را وارد کنید</p>
             <form >
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="شماره تماس" id="phoneNumber">
@@ -50,11 +50,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
-                        <a class="btn btn-primary btn-block btn-flat rounded-2 text-white" onclick="confirmCode()">ورود با کد</a>
-                    </div>
+                    @* <div class="col-6"> *@
+                    @*     <a class="btn btn-primary btn-block btn-flat rounded-2 text-white" onclick="confirmCode()">ورود با کد</a> *@
+                    @* </div> *@
                     <!-- /.col -->
-                    <div class="col-6">
+                    <div class="col-12">
                         <a class="btn btn-primary btn-block btn-flat rounded-2 text-white" onclick="withPassword()">ورود با رمز عبور</a>
                     </div>
                     <!-- /.col -->

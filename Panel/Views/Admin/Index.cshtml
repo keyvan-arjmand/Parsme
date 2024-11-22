@@ -142,7 +142,7 @@
                             <span class="float-left"><b> @productReport.First</b>/ @productReport.Second</span>
                             <div class="progress progress-sm">
                                 @{
-                                var per1centage = (productReport.First / (double)productReport.Second) * 100;
+                                var per1centage = (productReport.Second / (double)productReport.First) * 100;
                                 }
                                 <div class="progress-bar bg-primary" style="width: @per1centage%"></div>
                             </div>
@@ -154,7 +154,7 @@
                             <span class="float-left"><b> @factorReport.First</b>/ @factorReport.Second</span>
                             <div class="progress progress-sm">
                                 @{
-                                var percentage = (factorReport.First / (double)factorReport.Second) * 100;
+                                var percentage = (factorReport.Second / (double)factorReport.First) * 100;
                                 }
                                 <div class="progress-bar bg-success" style="width: @percentage%"></div>
                             </div>
