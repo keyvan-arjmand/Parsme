@@ -8,6 +8,7 @@ public class FactorProductColor:BaseEntity
     public double OfferAmount { get; set; }
     public int ColorId { get; set; } 
     public string ColorCode { get; set; } = string.Empty;
+    public string ColorName { get; set; } = string.Empty;
     public string Guarantee { get; set; } = string.Empty;
     public double Price { get; set; }
     public int Count { get; set; }

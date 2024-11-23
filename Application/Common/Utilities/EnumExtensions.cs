@@ -37,15 +37,23 @@ public static class EnumExtensions
             if ((input as Enum)!.HasFlag((value as Enum)!))
                 yield return (T)value;
     }
+    public static string GetDisplayName(this Enum enumValue)
+    {
+        if (enumValue == null) return string.Empty; // جلوگیری از خطای null reference
 
+        var displayAttribute = enumValue.GetType()
+            .GetMember(enumValue.ToString())
+            .FirstOrDefault()
+            ?.GetCustomAttribute<DisplayAttribute>();
+
+        return displayAttribute?.Name ?? enumValue.ToString();
+    }
     public static string ToDisplay(this Enum value, DisplayProperty property = DisplayProperty.Name)
     {
         var attribute = value.GetType().GetField(value.ToString())
             .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
-
         if (attribute == null)
             return value.ToString();
-
         var propValue = attribute.GetType().GetProperty(property.ToString()).GetValue(attribute, null);
         return propValue.ToString();
     }

@@ -128,11 +128,17 @@ namespace Domain.Migrations
                     b.Property<int?>("PostMethodId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RecipientName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ReferenceNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegistrationNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RejectStatus")
+                        .HasColumnType("int");
 
                     b.Property<long>("SaleReferenceId")
                         .HasColumnType("bigint");
@@ -234,6 +240,10 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("DiscountAmount")
                         .HasColumnType("float");
 
@@ -284,6 +294,10 @@ namespace Domain.Migrations
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ColorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -330,6 +344,9 @@ namespace Domain.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<int>("RejectType")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReturnedStatus")
                         .HasColumnType("int");

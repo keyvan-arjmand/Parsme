@@ -45,6 +45,7 @@ public class PaymentController : Controller
     {
         return View();
     }
+
     public class MelatResult
     {
         public string RefId { get; set; }
@@ -151,6 +152,7 @@ public class PaymentController : Controller
             {
                 var prod = await _work.GenericRepository<ProductColor>().Table
                     .Include(x => x.Product).ThenInclude(x => x.Offer)
+                    .Include(x => x.Product).ThenInclude(x => x.Brand)
                     .Include(x => x.Guarantee)
                     .Include(x => x.Color)
                     .FirstOrDefaultAsync(x => x.Id == i);
@@ -165,7 +167,8 @@ public class PaymentController : Controller
                         UnicCode = prod.Product.UnicCode,
                         Title = prod.Product.Title,
                         PersianTitle = prod.Product.PersianTitle,
-                        ImageUri = prod.Product.ImageUri
+                        ImageUri = prod.Product.ImageUri,
+                        Brand = prod.Product.Brand.Title,
                     };
                     await _work.GenericRepository<FactorProduct>().AddAsync(a, CancellationToken.None);
                     fc.Add(a);
@@ -187,6 +190,7 @@ public class PaymentController : Controller
                         Guarantee = prod.Guarantee.Title,
                         ColorCode = prod.Color.ColorCode,
                         FactorProductId = factorProdId,
+                        ColorName = prod.Color.Title
                     };
                     if (prod.Product.IsOffer)
                     {
@@ -225,9 +229,8 @@ public class PaymentController : Controller
                 var response = await result.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(response))
                 {
-                    // KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-                    // webApi.VerifyLookup(user.PhoneNumber, $"{user.Name} {user.Family}", factor.FactorCode,VerifyLookupType.Sms
-                    //     );
+                    KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+                    webApi.VerifyLookup(user.PhoneNumber, user.Name, factor.FactorCode, "-", "ProcessingOrder");
                     ViewBag.RefId = response;
                     ViewBag.UrlBank = BpmConfig.PostUrl;
                     ViewBag.Error = false;
@@ -247,7 +250,8 @@ public class PaymentController : Controller
             return string.Empty;
         }
     }
-     public async Task<IActionResult> MellatBack(string RefId, string ResCode, string SaleOrderId,
+
+    public async Task<IActionResult> MellatBack(string RefId, string ResCode, string SaleOrderId,
         string SaleReferenceId, string orderid)
     {
         ViewBag.Message = null;
@@ -342,5 +346,4 @@ public class PaymentController : Controller
                           new SeoPage();
         return View();
     }
-    
 }

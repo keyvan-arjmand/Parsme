@@ -9,6 +9,7 @@ using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
 using Application.Dtos;
 using Application.Dtos.Client;
+using Application.Factors.Commands.SendMessageUser;
 using Application.Interfaces;
 using Application.Products.Commands;
 using AutoMapper;
@@ -61,8 +62,10 @@ public class AdminController : Controller
 
             ViewBag.FactorPendingCount = await _work.GenericRepository<Factor>().TableNoTracking
                 .CountAsync(x => x.Status == Status.Pending && x.InsertDate.Date == DateTime.Now.Date);
+            
             ViewBag.FactorCount = await _work.GenericRepository<Factor>().TableNoTracking
                 .CountAsync(x => x.InsertDate.Date == DateTime.Now.Date);
+            
             ViewBag.Users = await _userManager.Users.Take(12).OrderByDescending(x => x.InsertDate).ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
@@ -599,12 +602,15 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ChangeStatus(int id, string desc, int status)
+    public async Task<ActionResult> ChangeStatus(int id, string desc, int status, int rejectType = 0)
     {
         if (User.Identity.IsAuthenticated)
         {
-            var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            var factor = await _work.GenericRepository<Factor>().Table.Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .FirstOrDefaultAsync(x => x.Id == id);
             factor.Status = (Status)status;
+            factor.RejectStatus = (RejectStatus)rejectType;
             var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             await _work.GenericRepository<LogFactor>().AddAsync(new LogFactor
             {
@@ -614,6 +620,39 @@ public class AdminController : Controller
                 Desc = desc,
             }, CancellationToken.None);
             await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+            var command = new SendMessageUserCommand
+            {
+                Number = factor.User.PhoneNumber,
+                Status = (Status)status,
+                Token = string.Empty,
+                Token2 = string.Empty,
+                Token3 = string.Empty,
+            };
+            switch ((Status)status)
+            {
+                case Status.Accepted:
+                    command.Token = factor.FactorCode;
+                    command.Token2 = factor.PostMethod.Title;
+                    break;
+                case Status.Rejected:
+                    command.Token = factor.RejectStatus.ToDisplay();
+                    command.Token2 = factor.FactorCode;
+                    break;
+                case Status.Returned:
+                    command.Token = factor.FactorCode;
+                    break;
+                case Status.ReadyToSend:
+                    command.Token = factor.FactorCode;
+                    break;
+                case Status.ReadyToGet:
+                    command.Token =
+                        "تهران-میدان-ولیعصر-خیابان-ولیعصر-خیابان-ولدی-مرکز-کامپیوتر-ولیعصر-برج-اداری-شمالی-طبقه۶-واحد۳۳";
+                    break;
+                default:
+                    break;
+            }
+
+            await _mediator.Send(command, CancellationToken.None);
             return RedirectToAction("FactorDetail", "Admin", new { factor.Id });
         }
         else
@@ -776,7 +815,7 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle,
-        IFormFile ImageUri, string TopBannerHref, string NavNameComp,string HeaderNumber,IFormFile HeaderLogo)
+        IFormFile ImageUri, string TopBannerHref, string NavNameComp, string HeaderNumber, IFormFile HeaderLogo)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -789,11 +828,13 @@ public class AdminController : Controller
                 {
                     img = up.Uploadfile(ImageUri, "Banner");
                 }
+
                 var logo = string.Empty;
                 if (ImageUri != null)
                 {
                     logo = up.Uploadfile(HeaderLogo, "Banner");
                 }
+
                 await _work.GenericRepository<SeoPage>().AddAsync(new SeoPage
                 {
                     SeoIndexCanonical = SeoIndexCanonical,
@@ -802,8 +843,8 @@ public class AdminController : Controller
                     TopBanner = img,
                     TopBannerHref = TopBannerHref,
                     NavNameComp = NavNameComp,
-                   HeaderNumber = HeaderNumber,
-                   HeaderLogo = logo
+                    HeaderNumber = HeaderNumber,
+                    HeaderLogo = logo
                 }, CancellationToken.None);
             }
             else
@@ -831,12 +872,14 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ChangeReturnedStatus(int id, string desc, int status)
+    public async Task<ActionResult> ChangeReturnedStatus(int id, string desc, int status, int rejectType)
     {
         if (User.Identity.IsAuthenticated)
         {
-            var factor = await _work.GenericRepository<ReturnedFactor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+            var factor = await _work.GenericRepository<ReturnedFactor>().Table.Include(x => x.Factor)
+                .FirstOrDefaultAsync(x => x.Id == id);
             factor.ReturnedStatus = (ReturnedStatus)status;
+            factor.RejectType = (RejectType)rejectType;
             var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             await _work.GenericRepository<LogReturnedFactor>().AddAsync(new LogReturnedFactor()
             {
@@ -845,7 +888,30 @@ public class AdminController : Controller
                 ReturnedFactorId = factor.Id,
                 Desc = desc,
             }, CancellationToken.None);
+            var command = new SendMessageUserCommand
+            {
+                Number = factor.Factor.User.PhoneNumber,
+                ReturnedStatus = factor.ReturnedStatus,
+                IsReturn = true,
+            };
+            switch ((ReturnedStatus)status)
+            {
+                case ReturnedStatus.Accepted:
+                    command.Token = "d ";
+                    break;
+                case ReturnedStatus.Rejected:
+                    command.Token = factor.RejectType.ToDisplay();
+                    command.Token2 = factor.Factor.FactorCode;
+                    break;
+                case ReturnedStatus.Returned:
+                    command.Token = factor.Factor.FactorCode;
+                    break;
+                default:
+                    break;
+            }
+
             await _work.GenericRepository<ReturnedFactor>().UpdateAsync(factor, CancellationToken.None);
+            await _mediator.Send(command);
             return RedirectToAction("ReturnedFactorDetail", "Admin", new { factor.Id });
         }
         else
@@ -1875,7 +1941,7 @@ public class AdminController : Controller
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
         ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
-        
+
         return View("LoginPassword");
     }
 

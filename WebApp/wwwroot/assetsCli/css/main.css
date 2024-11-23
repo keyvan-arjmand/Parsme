@@ -5617,8 +5617,8 @@ span.shipping-destination {
 .middle-container a.cancel-edit-address {
     float: left;
     font-size: 14px;
-    color: #3d8f14;
-    border-bottom: 1px dashed #3d8f14;
+    color: #ff2929;
+    border-bottom: 1px dashed #ff0000;
     margin-top: 20px;
     text-decoration: none;
     font-weight: 500;

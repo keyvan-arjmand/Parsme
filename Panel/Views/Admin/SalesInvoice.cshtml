@@ -1,5 +1,6 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Factor
+@using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
 Layout = "_LayoutAdmin";
@@ -160,8 +161,18 @@ List<Factor> factors = ViewBag.Factors;
                                                         <td class="text-center">@i.InsertDate.ToPersianTime()</td>
                                                         <td class="text-center">ملت</td>
                                                         <td class="text-center">6104****5678</td>
-                                                        <td class="text-center">پرداخت شده</td>
-                                                        <td class="text-center">265783</td>
+                                                        @if (i.Status == Status.PendingForPayment || i.Status == Status.Field)
+                                                        {
+                                                            <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span></td>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-center"><span class="badge badge-success">پرداخت شده</span></td>
+
+
+                                                        }
+                                                        <td class="text-center">@i.FactorCode</td>
                                                         <td class="text-center">
                                                             <a href="@Url.Action("Invoice","Admin",new{i.Id})" class="badge bg-warning text-muted">مشاهده</a>
                                                         </td>

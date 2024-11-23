@@ -1,4 +1,5 @@
-﻿@using Application.Common.Utilities
+﻿@using System.ComponentModel.DataAnnotations
+@using Application.Common.Utilities
 @using Domain.Entity.Factor
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -84,8 +85,9 @@
 <div class="card">
 <div class="card-header p-2">
     <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">فاکتور شماره @factor.FactorCode</a>
+        <li class="nav-item d-flex justify-content-between">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab"> شماره فاکتور @factor.FactorCode</a>
+            <h6 class="nav-link "> فاکتور @factor.AccountType.ToDisplay()</h6>
         </li>
     </ul>
 </div><!-- /.card-header -->
@@ -116,36 +118,103 @@
     <!-- /.card-header -->
     <div class="card-body" style="background-color:	rgb(220,220,220,0.4)">
         <input id="Id" value="@factor.Id" hidden="hidden"/>
-        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
-            <div class="form-group w-50 p-3">
-                <label>نام تحویل گیرنده</label>
-                <input id="Title" type="text" readonly value="@factor.UserAddress.Name" class="form-control"
-                       required="required">
+        @if (factor.AccountType == AccountType.Genuine)
+        {
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
+                <div class="form-group w-50 p-3">
+                    <label>نام تحویل گیرنده</label>
+                    <input id="Title" type="text" readonly value="@factor.UserAddress.Name" class="form-control"
+                           required="required">
+                </div>
+                <div class="form-group w-50 p-3">
+                    <label>شهر</label>
+                    <input id="PersianTitle" readonly value="@factor.UserAddress.City.Name" type="text"
+                           class="form-control" required="required">
+                </div>
             </div>
-            <div class="form-group w-50 p-3">
-                <label>شهر</label>
-                <input id="PersianTitle" readonly value="@factor.UserAddress.City.Name" type="text"
-                       class="form-control" required="required">
-            </div>
-        </div>
-        <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-            <div class="form-group w-50 p-3">
-                <label>آدرس</label>
-                <textarea id="Detail" class="form-control" readonly
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+                <div class="form-group w-50 p-3">
+                    <label>آدرس</label>
+                    <textarea id="Detail" class="form-control" readonly
                                                       required="required">@factor.UserAddress.Address</textarea>
+                </div>
+                <div class="form-group w-50 p-3">
+                    <label>شماره تماس</label>
+                    <input id="MetaDesc" value="@factor.UserAddress.Number" readonly type="text"
+                           class="form-control">
+                </div>
             </div>
-            <div class="form-group w-50 p-3">
-                <label>شماره تماس</label>
-                <input id="MetaDesc" value="@factor.UserAddress.Number" readonly type="text"
-                       class="form-control">
+        }
+        else
+        {
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center ">
+                <div class="form-group w-50 p-3">
+                    <label>نام تحویل گیرنده</label>
+                    <input id="Title" type="text" readonly value="@factor.RecipientName" class="form-control"
+                           required="required">
+                </div>
+                <div class="form-group w-50 p-3">
+                    <label>آدرس</label>
+                    <textarea id="Detail" class="form-control" readonly
+                              required="required">@factor.Adders</textarea>
+                </div>
             </div>
-        </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+                <div class="form-group w-50 p-3">
+                    <label>نام سازمان</label>
+                    <input id="MetaDesc" value="@factor.OrganizationName" readonly type="text"
+                           class="form-control">
+                </div>
+                <div class="form-group w-50 p-3">
+                    <label>شماره اقتصادی</label>
+                    <textarea id="Detail" class="form-control" readonly
+                              required="required">@factor.EconomicNumber</textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+                <div class="form-group w-50 p-3">
+                    <label>شماره سازمان</label>
+                    <input id="MetaDesc" value="@factor.OrganizationNumber" readonly type="text"
+                           class="form-control">
+                </div>
+                <div class="form-group w-50 p-3">
+                    <label>شناسه ملی</label>
+                    <textarea id="Detail" class="form-control" readonly
+                              required="required">@factor.NationalId</textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+
+                <div class="form-group w-50 p-3">
+                    <label>شماره ثبت</label>
+                    <input id="MetaDesc" value="@factor.RegistrationNumber" readonly type="text"
+                           class="form-control">
+                </div>
+
+            </div>
+        }
+
+
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-            <div class="form-group w-50 p-3">
-                <label>کد پستی</label>
-                <input id="MetaKeyword" value="@factor.UserAddress.PostCode" readonly type="text"
-                       class="form-control" required="required">
-            </div>
+            @if (factor.AccountType == AccountType.Genuine)
+            {
+                <div class="form-group w-50 p-3">
+                    <label>کد پستی</label>
+                    <input id="MetaKeyword" value="@factor.UserAddress.PostCode" readonly type="text"
+                           class="form-control" required="required">
+                </div>
+            }
+            else
+            {
+                <div class="form-group w-50 p-3">
+                    <label>کد پستی</label>
+                    <input id="MetaKeyword" value="@factor.PostCode" readonly type="text"
+                           class="form-control" required="required">
+                </div>
+            }
+
             <div class="form-group w-50 p-3">
                 <label>کد ملی</label>
                 <input id="ProductGift" value="@factor.User.NationalCode" readonly type="text"
@@ -215,22 +284,24 @@
                 <th>تعداد</th>
             </tr>
             @{
-                @* foreach (var i in factor.Products.ToList()) *@
-                @* { *@
-                @*     var prod = factor.Products.Select(x => x.FactorProductColor).FirstOrDefault(x => x.Id == i.ProductId); *@
-                @*     <tr> *@
-                @*         <td>@prod.Id</td> *@
-                @*         <td> *@
-                @*             <img src="/Images/ProductImage/@prod.ImageUri" width="60"/> *@
-                @*         </td> *@
-                @*         <td> *@
-                @*             @prod.PersianTitle *@
-                @*         </td> *@
-                @*         <td>@i.ProductColor.Color.Title</td> *@
-                @*         <td>@prod.Brand.Title</td> *@
-                @*         <td>@i.Count</td> *@
-                @*     </tr> *@
-                @* } *@
+                foreach (var i in factor.Products.ToList())
+                {
+                    foreach (var q in i.FactorProductColor)
+                    {
+                        <tr>
+                            <td>@q.Id</td>
+                            <td>
+                                <img src="/Images/ProductImage/@i.ImageUri" width="60"/>
+                            </td>
+                            <td>
+                                @i.PersianTitle
+                            </td>
+                            <td>@q.ColorName</td>
+                            <td>@i.Brand</td>
+                            <td>@q.Count</td>
+                        </tr>
+                    }
+                }
             }
 
 
@@ -241,7 +312,7 @@
 <div class="card card-info card-outline mt-4">
     <div class="card-header">
         <h3 class="card-title">
-            <small class="h4">تایین وضعیت</small>
+            <small class="h4">تعیین وضعیت</small>
         </h3>
         <!-- tools box -->
         <div class="card-tools">
@@ -265,52 +336,100 @@
         <form asp-action="ChangeStatus" asp-controller="Admin" method="post">
             <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
                 <div class="form-group w-50 p-3  d-flex flex-column">
-                    <input value="@factor.Id" name="id"  hidden="hidden"/>
+                    <input value="@factor.Id" name="id" hidden="hidden"/>
                     <label for="exampleInputPassword1">وضعیت سفارش</label>
-                    <select id="ProductSt3atus" name="status" class="form-control select2"
+                    <select id="ProductStatus" name="status" class="form-control select2"
                             aria-label="Default select example" required="required">
                         @{
-                            if (factor.Status == Status.Accepted)
+                            foreach (var status in Enum.GetValues(typeof(Status)).Cast<Status>())
                             {
-                                <option value="0" selected="selected">ارسال شده</option>
-                                <option value="1">رد شده</option>
-                                <option value="2">در حال پردازش</option>
-                                <option value="3">مرجوعی</option>
-                            }
-                            if (factor.Status == Status.Rejected)
-                            {
-                                <option value="0" >ارسال شده</option>
-                                <option value="1" selected="selected">رد شده</option>
-                                <option value="2">در حال پردازش</option>
-                                <option value="3">مرجوعی</option>
-                            }
-                            if (factor.Status == Status.Pending)
-                            {
-                                <option value="0" >ارسال شده</option>
-                                <option value="1">رد شده</option>
-                                <option value="2" selected="selected">در حال پردازش</option>
-                                <option value="3">مرجوعی</option>
-                            }
-                            if (factor.Status == Status.Rejected)
-                            {
-                                <option value="0">ارسال شده</option>
-                                <option value="1">رد شده</option>
-                                <option value="2">در حال پردازش</option>
-                                <option value="3"  selected="selected">مرجوعی</option>
+                                var displayName = status.GetType()
+                                    .GetField(status.ToString())
+                                    ?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                    .FirstOrDefault() is DisplayAttribute displayAttr
+                                    ? displayAttr.Name
+                                    : status.ToString();
+
+                                bool isDisabled = status == Status.Field || status == Status.PendingForPayment || status == Status.Pending;
+
+                                if (isDisabled)
+                                {
+                                    if (factor.Status == status)
+                                    {
+                                        <option value="@((int)status)" selected disabled>@displayName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@((int)status)" disabled>@displayName</option>
+                                    }
+                                }
+                                else
+                                {
+                                    if (factor.Status == status)
+                                    {
+                                        <option value="@((int)status)" selected>@displayName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@((int)status)">@displayName</option>
+                                    }
+                                }
                             }
                         }
                     </select>
-                  
+
                 </div>
                 <div class="form-group w-50 p-3">
                     <label>توضیحات</label>
                     <textarea id="Detai1l" name="desc" class="form-control"
-                              required="required"></textarea>
+                              required="required" placeholder="توضیحات پیگیری سفارش"></textarea>
                 </div>
+
             </div>
+            <div class="form-group w-50 p-3">
+                @if (factor.Status == Status.Rejected)
+                {
+                    <select id="rejectDropdown" name="rejectType" style="max-width: 400px" class="form-control">
+                        @foreach (var reject in Enum.GetValues(typeof(RejectStatus)).Cast<RejectStatus>())
+                        {
+                            var displayName = reject.GetType()
+                                .GetField(reject.ToString())
+                                ?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                .FirstOrDefault() is DisplayAttribute displayAttr
+                                ? displayAttr.Name
+                                : reject.ToString();
+                            if (reject == factor.RejectStatus)
+                            {
+                                <option value="@((int)reject)" selected="selected">@displayName</option>
+                            }
+                            else
+                            {
+                                <option value="@((int)reject)">@displayName</option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <select id="rejectDropdown" name="rejectType" style="display:none;max-width: 400px" class="form-control">
+                        @foreach (var reject in Enum.GetValues(typeof(RejectStatus)).Cast<RejectStatus>())
+                        {
+                            var displayName = reject.GetType()
+                                .GetField(reject.ToString())
+                                ?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                                .FirstOrDefault() is DisplayAttribute displayAttr
+                                ? displayAttr.Name
+                                : reject.ToString();
+
+                            <option value="@((int)reject)">@displayName</option>
+                        }
+                    </select>
+                }
+            </div>
+
             <div class="d-flex justify-content-center flex-nowrap gap-3 align-items-center mt-3">
-                <div class="form-input w-100">
-                    <button type="submit" class="btn btn-primary">
+                <div class="form-input w-100 text-center">
+                    <button type="submit" class="btn btn-primary" style="width: 100px">
                         ثبت
                     </button>
                 </div>
@@ -359,7 +478,7 @@
 
             </table>
         </div>
-       
+
     </div>
 </div>
 
@@ -373,5 +492,24 @@
 </section>
 
 @section script{
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            // دریافت المان‌های موردنظر
+            const $statusDropdown = $("#ProductStatus");
+            const $rejectDropdown = $("#rejectDropdown");
+            // رویداد تغییر
+            $statusDropdown.on("change", function () {
+                const selectedValue = parseInt($(this).val(), 10); // مقدار انتخاب‌شده
+
+                if (selectedValue === 1) { // مقدار مربوط به "رد شده"
+                    $rejectDropdown.show(); // نمایش لیست مربوطه
+                } else {
+                    $rejectDropdown.hide(); // مخفی کردن لیست مربوطه
+                }
+            });
+        });
+
+
+    </script>
+
 }

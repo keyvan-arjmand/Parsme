@@ -717,7 +717,7 @@ public class HomeController : Controller
                 .Include(x => x.PostMethod)
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor).ThenInclude(x => x!.FactorProduct)
+                .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
                               new SeoPage();
@@ -743,7 +743,8 @@ public class HomeController : Controller
                 ReturnedType = (ReturnedType)Type,
                 InsertDate = DateTime.Now,
                 FactorId = id,
-                Desc = Desc
+                Desc = Desc,
+                ReturnedStatus = ReturnedStatus.Pending
             }, CancellationToken.None);
             KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
             webApi.VerifyLookup(user.PhoneNumber, factor.FactorCode,

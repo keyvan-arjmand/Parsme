@@ -8,6 +8,7 @@ public  class ReturnedFactor:BaseEntity
 {
     public ReturnedType ReturnedType { get; set; }
     public ReturnedStatus ReturnedStatus { get; set; }
+    public RejectType RejectType { get; set; }
     public int? FactorId { get; set; }
     [ForeignKey("FactorId")] public Factor? Factor { get; set; } 
     public string Desc { get; set; } = string.Empty;
