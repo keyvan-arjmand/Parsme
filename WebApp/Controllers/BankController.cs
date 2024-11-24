@@ -28,6 +28,7 @@ public class BankController : Controller
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _work;
     private readonly ILogger<BankController> _logger;
+
     public BankController(UserManager<User> userManager, IUnitOfWork work, ILogger<BankController> logger)
     {
         _userManager = userManager;
@@ -211,7 +212,8 @@ public class BankController : Controller
         string SaleReferenceId)
     {
         //iewBag.Message = null;
-        //iewBag.IsSuccess = false;
+        ViewBag.IsSuccess = false;
+
         //iewBag.RefId = RefId;
         //iewBag.ResCode = ResCode;
         //iewBag.SaleReferenceId = SaleReferenceId;
@@ -265,11 +267,11 @@ public class BankController : Controller
         // }
 
 
-        ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
-            .Include(x => x.PostMethod)
-            .Include(x => x.UserAddress)
-            .Include(x => x.Products).ThenInclude(x => x.FactorProductColor)
-            .FirstOrDefaultAsync(x => x.Id == 87);
+        // ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
+        //     .Include(x => x.PostMethod)
+        //     .Include(x => x.UserAddress)
+        //     .Include(x => x.Products).ThenInclude(x => x.FactorProductColor)
+        //     .FirstOrDefaultAsync(x => x.Id == 93);
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -307,47 +309,18 @@ public class BankController : Controller
 
     private async Task MellatReturn(string RefId, string ResCode, string SaleOrderId, string SaleReferenceId)
     {
-        Log.Information(
-            "MellatReturn called with parameters: RefId={RefId}, ResCode={ResCode}, SaleOrderId={SaleOrderId}, SaleReferenceId={SaleReferenceId}");
-
         BypassCertificateError();
         var saleReferenceId = string.Empty;
         var resCode = string.Empty;
-
+        ViewBag.bank = "refid=" + RefId + "+++++++" + "rescpde=" + ResCode + "+++++++++" + "saleroder=" + SaleOrderId +
+                       "+++++++++" + "saleref=" + SaleReferenceId;
         try
         {
-            // دریافت ResCode
-            if (string.IsNullOrWhiteSpace(ResCode))
-            {
-                resCode = Request.Query["ResCode"].FirstOrDefault()
-                          ?? Request.Form["ResCode"].FirstOrDefault()
-                          ?? RouteData.Values["ResCode"]?.ToString();
-                Log.Information(
-                    "MellatReturn res1code={resCode}");
+            resCode = ResCode;
 
-            }
-            else
-            {
-                resCode = ResCode;
-            }
 
-            Log.Information("ResCode resolved to: {ResCode}", resCode);
+            saleReferenceId = SaleReferenceId;
 
-            // دریافت SaleReferenceId
-            if (string.IsNullOrWhiteSpace(SaleReferenceId))
-            {
-                saleReferenceId = Request.Query["SaleReferenceId"].FirstOrDefault()
-                                  ?? Request.Form["SaleReferenceId"].FirstOrDefault()
-                                  ?? RouteData.Values["SaleReferenceId"]?.ToString();
-                Log.Information(
-                    "MellatReturn saleReferenceId={saleReferenceId}");
-            }
-            else
-            {
-                saleReferenceId = SaleReferenceId;
-            }
-
-            Log.Information("SaleReferenceId resolved to: {SaleReferenceId}", saleReferenceId);
 
             if (string.IsNullOrEmpty(saleReferenceId))
             {
@@ -369,42 +342,15 @@ public class BankController : Controller
                 string refId = null;
                 try
                 {
-                    // تلاش برای گرفتن SaleOrderId و تبدیل آن به نوع عددی
-                    if (string.IsNullOrWhiteSpace(SaleOrderId))
-                    {
-                        saleOrderId = long.Parse(Request.Query["SaleOrderId"].FirstOrDefault()
-                                                 ?? Request.Form["SaleOrderId"].FirstOrDefault()
-                                                 ?? RouteData.Values["SaleOrderId"]?.ToString());
-                        Log.Information(
-                            "MellatReturn saleOrderId={saleOrderId}");
-                    }
-                    else
-                    {
-                        saleOrderId = SaleOrderId.ToInt();
-                    }
+                    saleOrderId = SaleOrderId.ToInt();
 
                     saleReferenceIdLong = long.Parse(saleReferenceId.Trim());
 
-                    if (string.IsNullOrWhiteSpace(RefId))
-                    {
-                        refId = Request.Query["RefId"].FirstOrDefault()
-                                ?? Request.Form["RefId"].FirstOrDefault()
-                                ?? RouteData.Values["RefId"]?.ToString();
-                        Log.Information(
-                            "MellatReturn refId={refId}");
-                    }
-                    else
-                    {
-                        refId = RefId;
-                    }
 
-                    Log.Information(
-                        "Parsed SaleOrderId: {SaleOrderId}, SaleReferenceIdLong: {SaleReferenceIdLong}, RefId: {RefId}",
-                        saleOrderId, saleReferenceIdLong, refId);
+                    refId = RefId;
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Error occurred while parsing SaleOrderId and SaleReferenceId");
                     ViewBag.IsSuccess = false;
                     ViewBag.Message = ex + "<br/>" +
                                       " وضعیت:مشکلی در پرداخت بوجود آمده ، در صورتی که وجه پرداختی از حساب بانکی شما کسر شده است آن مبلغ به صورت خودکار برگشت داده خواهد شد ";
@@ -414,6 +360,9 @@ public class BankController : Controller
 
                 try
                 {
+                    var factor = await _work.GenericRepository<Factor>().Table.Include(x=>x.User)
+                        .FirstOrDefaultAsync(x => x.ReferenceNumber.Contains(RefId));
+                    ViewBag.Factor = factor;
                     var payment = new PaymentGatewayClient();
                     var result = await payment.bpVerifyRequestAsync(Convert.ToInt64(BpmConfig.TerminalId),
                         BpmConfig.UserName,
@@ -422,33 +371,50 @@ public class BankController : Controller
                         saleOrderId,
                         saleReferenceIdLong);
 
+                   
+
                     if (result.Body.@return == "0")
                     {
                         ViewBag.Message = "پرداخت شما با موفقیت انجام شد";
                         ViewBag.SaleReferenceId = saleReferenceIdLong;
                         ViewBag.IsSuccess = true;
-                        Log.Information("Payment verified successfully for SaleReferenceId: {SaleReferenceId}",
-                            saleReferenceIdLong);
+                         factor.Status = Status.Pending;
+                         factor.SaleReferenceId = saleReferenceIdLong;
+                         factor.StatusPayment = "پرداخت شما با موفقیت انجام شد";
+                         KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+                         webApi.VerifyLookup(factor.User.PhoneNumber, factor.User.Name, factor.FactorCode, "-", "ProcessingOrder");
+                         var tr = await _work.GenericRepository<BankTransaction>().Table
+                             .FirstOrDefaultAsync(x => x.Id == saleOrderId);
+                         tr.StatusPayment = resCode;
+                         tr.SaleReferenceId = saleReferenceIdLong;
+                         tr.PaymentFinished = true;
+                         tr.BuyDatetime = DateTime.Now;
+                         await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+                         await _work.GenericRepository<BankTransaction>().UpdateAsync(tr, CancellationToken.None);
                     }
                     else
                     {
+                         factor.Status = Status.Field;
+                         factor.SaleReferenceId = saleReferenceIdLong;
+                         factor.StatusPayment = $"پرداخت آنلاین با خطا {result.Body.@return} مواجه شده است.";
+                         await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
                         ViewBag.IsSuccess = false;
                         ViewBag.Message = $"پرداخت آنلاین با خطا {result.Body.@return} مواجه شده است.";
-                        Log.Warning("Payment failed with return code: {ReturnCode}", result.Body.@return);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "An error occurred during the payment verification process");
                     ViewBag.Message =
                         "مشکلی در پرداخت به وجود آمده است ، در صورتیکه وجه پرداختی از حساب بانکی شما کسر شده است آن مبلغ به صورت خودکار برگشت داده خواهد شد";
                     ViewBag.SaleReferenceId = "**************";
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Log.Error(ex, "همون اول کار رید ");
+            ViewBag.Message =
+                "مشکلی در پرداخت به وجود آمده است ، در صورتیکه وجه پرداختی از حساب بانکی شما کسر شده است آن مبلغ به صورت خودکار برگشت داده خواهد شد";
+            ViewBag.SaleReferenceId = "**************";
         }
     }
 

@@ -229,8 +229,7 @@ public class PaymentController : Controller
                 var response = await result.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(response))
                 {
-                    KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-                    webApi.VerifyLookup(user.PhoneNumber, user.Name, factor.FactorCode, "-", "ProcessingOrder");
+            
                     ViewBag.RefId = response;
                     ViewBag.UrlBank = BpmConfig.PostUrl;
                     ViewBag.Error = false;

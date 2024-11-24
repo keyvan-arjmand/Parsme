@@ -1043,8 +1043,8 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                             {
                                                 <h4 class="text-danger">خطا در ثبت سفارش</h4>
                                               
-                                                    <p class="thankyou-order-received">
-                                                        بانک دچار اختلال شده و درصورت کسر وجه، ظرف ۷۲ ساعت به حسابتان بازمی‌گرداند. </p>
+                                                <p class="thankyou-order-received">
+                                                    بانک دچار اختلال شده و درصورت کسر وجه، ظرف ۷۲ ساعت به حسابتان بازمی‌گرداند. </p>
                                             }
                                            
                                             <ul class="order-overview">
@@ -1083,6 +1083,9 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
                                 </div>
 
                             </form>
+                        </div>
+                        <div class="bg-gradient p-3 m-3" >
+                            @ViewBag.bank
                         </div>
                     </div>
                 </div>
