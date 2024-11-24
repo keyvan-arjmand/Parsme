@@ -16,6 +16,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MyTested.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
@@ -123,7 +125,6 @@
     <_ContentIncludedByDefault Remove="Views\Admin\User.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Bank\" />
     <Folder Include="wwwroot\Header\" />
   </ItemGroup>
   <ItemGroup>

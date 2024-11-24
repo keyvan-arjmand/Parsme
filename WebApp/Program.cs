@@ -4,6 +4,7 @@ using Domain.Entity.User;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console() // برای نمایش در کنسول
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) // ذخیره در فایل
+    .CreateLogger();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Admin/AccessDenied";
@@ -50,6 +56,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });
+builder.Host.UseSerilog();
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,10 +66,9 @@ var app = builder.Build();
 
  if (!app.Environment.IsDevelopment())
  {
-     app.UseExceptionHandler("/Home/Error");
+     //app.UseExceptionHandler("/Home/Error");
      app.UseHsts();
  }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
