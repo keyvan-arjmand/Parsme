@@ -10,5 +10,5 @@ public class ProductDetail : BaseEntity
     public int ProductId { get; set; }
     public int Priority { get; set; }
 
-    public string Value { get; set; } = string.Empty;
+    public string? Value { get; set; }
 }

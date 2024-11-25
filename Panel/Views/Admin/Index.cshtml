@@ -10,6 +10,8 @@
     int factorPendingCount = ViewBag.FactorPendingCount;
     ReportIndexModel productReport = ViewBag.ProductReport;
     ReportIndexModel factorReport = ViewBag.FactorReport;
+    ReportIndexModel factorFieldReport = ViewBag.FactorFieldReport;
+    IndexReport report = ViewBag.Report;
 }
 
 @section link
@@ -142,7 +144,7 @@
                             <span class="float-left"><b> @productReport.First</b>/ @productReport.Second</span>
                             <div class="progress progress-sm">
                                 @{
-                                var per1centage = (productReport.Second / (double)productReport.First) * 100;
+                                    var per1centage = (productReport.Second / (double)productReport.First) * 100;
                                 }
                                 <div class="progress-bar bg-primary" style="width: @per1centage%"></div>
                             </div>
@@ -154,12 +156,21 @@
                             <span class="float-left"><b> @factorReport.First</b>/ @factorReport.Second</span>
                             <div class="progress progress-sm">
                                 @{
-                                var percentage = (factorReport.Second / (double)factorReport.First) * 100;
+                                    var percentage = (factorReport.Second / (double)factorReport.First) * 100;
                                 }
                                 <div class="progress-bar bg-success" style="width: @percentage%"></div>
                             </div>
                         </div>
-
+                        <div class="progress-group">
+                            خرید های ناموفق
+                            <span class="float-left"><b> @factorFieldReport.First</b>/ @factorFieldReport.Second</span>
+                            <div class="progress progress-sm">
+                                @{
+                                var percentage2 = (factorFieldReport.Second / (double)factorFieldReport.First) * 100;
+                                }
+                                <div class="progress-bar bg-danger" style="width: @percentage2%"></div>
+                            </div>
+                        </div>
                         <!-- /.progress-group -->
                     </div>
                     <!-- /.col -->
@@ -174,7 +185,7 @@
                             <span class="description-percentage text-success">
                                 <i class="fa fa-caret-up"></i>
                             </span>
-                            <h5 class="description-header">تومان @ViewBag.Sale.ToString("N0")</h5>
+                            <h5 class="description-header">تومان @report.TotalAmount.ToString("N0")</h5>
                             <span class="description-text">کل گردش حساب</span>
                         </div>
                         <!-- /.description-block -->
@@ -182,8 +193,8 @@
                     <!-- /.col -->
                     <div class="col-sm-3 col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-warning"><i class="fa fa-caret-left"></i> 0%</span>
-                            <h5 class="description-header">تومان @ViewBag.SaleMonth.ToString("N0")</h5>
+                            <span class="description-percentage text-warning"><i class="fa fa-caret-left"></i> </span>
+                            <h5 class="description-header">تومان @report.TotalWithTaxAmount.ToString("N0")</h5>
                             <span class="description-text">فروش ماه</span>
                         </div>
                         <!-- /.description-block -->
@@ -191,17 +202,17 @@
                     <!-- /.col -->
                     <div class="col-sm-3 col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-success"><i class="fa fa-caret-up"></i> 23%</span>
-                            <h5 class="description-header">تومان @ViewBag.profit.ToString("N0")</h5>
+                            <span class="description-percentage text-success"><i class="fa fa-caret-up"></i></span>
+                            <h5 class="description-header">تومان @report.TotalProfit.ToString("N0")</h5>
                             <span class="description-text">سود ماه</span>
                         </div>
                         <!-- /.description-block -->
                     </div>
                     <!-- /.col -->
                     <div class="col-sm-3 col-6">
-                        <div class="description-block">
+                        <div class="description-block border-right">
                             <span class="description-percentage text-danger"><i class="fa fa-caret-down"></i> 10%</span>
-                            <h5 class="description-header">@ViewBag.Tax.ToString("N0")تومان  </h5>
+                            <h5 class="description-header">@report.TotalTax.ToString("N0")تومان </h5>
                             <span class="description-text">مالیات</span>
                         </div>
                         <!-- /.description-block -->
@@ -281,7 +292,7 @@
                                     <img src="/Images/ProductImage/@i.ImageUri" alt="Product Image" class="img-size-50">
                                 </div>
                                 <div class="product-info">
-                                    <a href="@Url.Action("EditProduct","Admin",new{i.Id})" class="product-title">
+                                    <a href="@Url.Action("EditProduct", "Admin", new { i.Id })" class="product-title">
                                         @i.SubCategory.Name
                                         <span class="badge badge-warning float-left">@i.Brand.Title</span>
                                     </a>

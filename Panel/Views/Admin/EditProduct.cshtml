@@ -9,7 +9,7 @@
     List<SubCategory> subCategories = ViewBag.SubCats;
     List<Color> colors = ViewBag.Colors;
     List<Guarantee> Guarantees = ViewBag.Guarantee;
-    List<BrandTag> brandTags =ViewBag.BrandTags;
+    List<BrandTag> brandTags = ViewBag.BrandTags;
     var catDetail = new List<CatDetailEdit>();
     foreach (var i in products.ProductDetails)
     {
@@ -113,14 +113,45 @@
 <div class="col-md-12">
 <div class="card">
 <div class="card-header p-2">
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " href="#SubCategory" data-toggle="tab">کد کالا : @products.UnicCode</a>
-        </li>
-    </ul>
+    <div class="d-flex justify-content-between">
+        <ul class="nav nav-pills">
+            <li class="nav-item active">
+                <a class="nav-link " href="#SubCategory" data-toggle="tab">ویرایش کالا</a>
+            </li>
+            <li class="nav-item disabled">
+                <a class="nav-link " href="#SubCategory" data-toggle="tab">کد کالا : @products.UnicCode</a>
+            </li>
+        </ul>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item disabled">
+                <a class="nav-link " href="#SubCategory" data-toggle="tab">اخرین ویرایش</a>
+            </li>
+            <li class="nav-item">
+                @if (products.UserUpdateId > 0)
+                {
+                    <span class="nav-link disabled">
+                        @products.UserUpdate.Name
+                        @products.UserUpdate.Family
+                    </span>
+                }
+                else
+                {
+                    <span class="nav-link disabled">
+                       @products.Creator.Name
+                        @products.Creator.Family
+                    </span>
+                  
+                }
+            </li>
+            <li class="nav-item">
+                <span class="nav-link disabled">
+                @products.UpdateTime
+                    
+                </span>
+            </li>
+        </ul>
+    </div>
 </div><!-- /.card-header -->
 <div class="tab-content">
 <form class="tab-pane p-5 active show" id="SubCategory">
@@ -171,7 +202,7 @@
             <div class="form-group w-50 p-3">
                 <label>هـدایا</label>
                 <input id="ProductGift" value="@products.ProductGift" type="text"
-                       class="form-control" required="required">
+                       class="form-control">
             </div>
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
@@ -197,155 +228,10 @@
                 <input id="UnicCode" value="@products.UnicCode" type="text" class="form-control">
             </div>
         </div>
-       
+
     </div>
 </div>
-    <div>
-        <div class="card card-info card-outline mt-4">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <small class="h5"> جزئیات محصول</small>
-                </h3>
-                <!-- tools box -->
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="collapse"
-                            data-toggle="tooltip"
-                            title="Collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="remove"
-                            data-toggle="tooltip"
-                            title="Remove">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <!-- /. tools -->
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <div class="form-group w-100 p-3 d-flex flex-column">
-                    <label for="exampleInputPassword1">برند</label>
-                    <select id="BrandTag" class="form-control select2" aria-label="Default select example" required="required">
-                        @{
-                        <option value="0">انتخاب</option>
-                        foreach (var i in brandTags)
-                        {
-                            if (i.Id == products.BrandTagId)
-                            {
-                                <option value="@i.Id" selected="selected">@i.Title</option>
 
-                            }
-                            else
-                            {
-                                <option value="@i.Id">@i.Title</option>
-
-                            }
-                        }
-                        }
-                    </select>
-                </div>
-                <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                    <div class="form-group w-50 p-3 d-flex flex-column">
-                        <label for="exampleInputPassword1">دسته بندی</label>
-                        <select id="SubCatSelect" class="form-control select2"
-                                aria-label="Default select example" required="required">
-                            @{
-                            <option value="0">انتخاب</option>
-                            foreach (var i in subCategories)
-                            {
-                            if (products.SubCategoryId == i.Id)
-                            {
-                            <option value="@i.Id" selected="selected">@i.Name</option>
-                            }
-                            else
-                            {
-                            <option value="@i.Id">@i.Name</option>
-                            }
-                            }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group w-50 p-3  d-flex flex-column">
-                        <label for="exampleInputPassword1">زیر گروه کالا</label>
-                        <select id="BrandId" class="form-control "
-                                aria-label="Default select example" required="required">
-                        </select>
-                    </div>
-                </div>
-                <div style="background-color:	rgb(220,220,220,0.4);padding: 8px;margin: 3px;border-radius: 5px">
-                    <label id="labelDetail" style="display: none">ویژگی های محصول</label>
-
-                    <div id="DetailProduct"
-                         class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
-                         style="gap: 30px">
-                        @{
-                        @foreach (var q in catDetail)
-                        {
-                        <label style="display: block;" class="h5">@q.Feature.Title</label>
-                        foreach (var x in q.CategoryDetails)
-                        {
-                        if ((DataType)x.DataType == DataType.SelectBox)
-                        {
-                        <div class=" d-flex w-100 form-group detail-form">
-                            <div class="input-group-prepend">
-                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
-                            </div>
-                            <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
-                                @foreach (var i in x.Option.Split(","))
-                                {
-                                if (i == x.Value)
-                                {
-                                <option value="@i" selected="selected">@i</option>
-                                }
-                                else
-                                {
-                                <option value="@i">@i</option>
-                                }
-                                }
-
-                            </select>
-                            <input name="DetailId" value="@x.Id" hidden="hidden" required="required">
-                        </div>
-                        }
-
-                        if ((DataType)x.DataType == DataType.CheckBox)
-                        {
-                        <div class=" d-flex  gap-3 w-100 form-group detail-form">
-                            <span class="">@x.Title</span>
-                            @if (x.Value.Contains("true"))
-                            {
-                            <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
-                            }
-                            else
-                            {
-                            <input type="checkbox" name="DetailVal" class="form-check-input"/>
-                            }
-                            <input name="DetailId" value="@x.Id" hidden="hidden">
-                        </div>
-                        }
-
-                        if ((DataType)x.DataType != DataType.CheckBox && (DataType)x.DataType != DataType.SelectBox)
-                        {
-                        <div class=" d-flex w-100 form-group detail-form">
-                            <div class="input-group-prepend">
-                                <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
-                            </div>
-                            <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
-                            <input name="DetailId" value="@x.Id" hidden="hidden">
-                        </div>
-                        }
-                        }
-                        }
-                        }
-                    </div>
-                </div>
-             
-            </div>
-        </div>
-
-    </div>
 <div class="card card-info card-outline mt-4">
 <div class="card-header">
     <h3 class="card-title">
@@ -516,8 +402,8 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between w-75" style="gap: 10px">
-                        
+                        <div class="d-flex justify-content-start w-75" style="gap: 10px">
+
                             <div class="d-flex flex-column">
                                 <label for="hours">ساعت</label>
                                 <input type="number" id="hours" name="hours" min="0" max="24"
@@ -561,11 +447,6 @@
                         </div>
 
                         <div class="d-flex justify-content-between w-75" style="gap: 10px">
-                            <div class="d-flex flex-column">
-                                <label for="days">روز</label>
-                                <input type="number" id="days" name="days" min="0" max="30"
-                                       value="0" class="form-control"><br><br>
-                            </div>
                             <div class="d-flex flex-column">
                                 <label for="hours">ساعت</label>
                                 <input type="number" id="hours" name="hours" min="0" max="24"
@@ -783,7 +664,150 @@
 
     </div>
 </div>
+<div>
+    <div class="card card-info card-outline mt-4">
+        <div class="card-header">
+            <h3 class="card-title">
+                <small class="h5"> جزئیات محصول</small>
+            </h3>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-sm"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="form-group w-100 p-3 d-flex flex-column">
+                <label for="exampleInputPassword1">برند</label>
+                <select id="BrandTag" class="form-control select2" aria-label="Default select example" required="required">
+                    @{
+                        <option value="0">انتخاب</option>
+                        foreach (var i in brandTags)
+                        {
+                            if (i.Id == products.BrandTagId)
+                            {
+                                <option value="@i.Id" selected="selected">@i.Title</option>
+                            }
+                            else
+                            {
+                                <option value="@i.Id">@i.Title</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+                <div class="form-group w-50 p-3 d-flex flex-column">
+                    <label for="exampleInputPassword1">دسته بندی</label>
+                    <select id="SubCatSelect" class="form-control select2"
+                            aria-label="Default select example" required="required">
+                        @{
+                            <option value="0">انتخاب</option>
+                            foreach (var i in subCategories)
+                            {
+                                if (products.SubCategoryId == i.Id)
+                                {
+                                    <option value="@i.Id" selected="selected">@i.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group w-50 p-3  d-flex flex-column">
+                    <label for="exampleInputPassword1">زیر گروه کالا</label>
+                    <select id="BrandId" class="form-control "
+                            aria-label="Default select example" required="required">
+                    </select>
+                </div>
+            </div>
+            <div style="background-color:	rgb(220,220,220,0.4);padding: 8px;margin: 3px;border-radius: 5px">
+                <label id="labelDetail" style="display: none">ویژگی های محصول</label>
 
+                <div id="DetailProduct"
+                     class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap"
+                     style="gap: 30px">
+                    @{
+                        @foreach (var q in catDetail)
+                        {
+                            <label style="display: block;" class="h5">@q.Feature.Title</label>
+                            foreach (var x in q.CategoryDetails)
+                            {
+                                if ((DataType)x.DataType == DataType.SelectBox)
+                                {
+                                    <div class=" d-flex w-100 form-group detail-form">
+                                        <div class="input-group-prepend">
+                                            <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
+                                        </div>
+                                        <select name="DetailVal" style="border-radius: 5px 0 0 5px;" class="form-control select2" aria-label="Default select example" required="required">
+                                            @foreach (var i in x.Option.Split(","))
+                                            {
+                                                if (i == x.Value)
+                                                {
+                                                    <option value="@i" selected="selected">@i</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <input name="DetailId" value="@x.Id" hidden="hidden" required="required">
+                                    </div>
+                                }
+
+                                if ((DataType)x.DataType == DataType.CheckBox)
+                                {
+                                    <div class=" d-flex  gap-3 w-100 form-group detail-form">
+                                        <span class="">@x.Title</span>
+                                        @if (x.Value.Contains("true"))
+                                        {
+                                            <input type="checkbox" name="DetailVal" checked="checked" class="form-check-input"/>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="DetailVal" class="form-check-input"/>
+                                        }
+                                        <input name="DetailId" value="@x.Id" hidden="hidden">
+                                    </div>
+                                }
+
+                                if ((DataType)x.DataType != DataType.CheckBox && (DataType)x.DataType != DataType.SelectBox)
+                                {
+                                    <div class=" d-flex w-100 form-group detail-form">
+                                        <div class="input-group-prepend">
+                                            <span style="border-radius: 0 5px 5px 0;" class="input-group-text">@x.Title</span>
+                                        </div>
+                                        <input name="DetailVal" value="@x.Value" style="border-radius: 5px 0 0 5px;" type="text" class="form-control">
+                                        <input name="DetailId" value="@x.Id" hidden="hidden">
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
 <div>
     <div class="card card-info card-outline mt-4">
         <div class="card-header">

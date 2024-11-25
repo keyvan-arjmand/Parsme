@@ -12,6 +12,7 @@ public class FactorProduct:BaseEntity
     public double DiscountAmount { get; set; }
     public string UnicCode { get; set; } = string.Empty;
     public string Brand { get; set; } = string.Empty;
+    public int Profit { get; set; }
 
     public int FactorId { get; set; }
     [ForeignKey(nameof(FactorId))] public Factor Factor { get; set; } = default!;

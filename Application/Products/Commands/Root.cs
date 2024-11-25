@@ -41,7 +41,6 @@ public class Offer
     public string OfferAmount { get; set; }
     public string Hours { get; set; }
     public string Minutes { get; set; }
-    public string Days { get; set; }
     public DateTime Time { get; set; }
 
 }

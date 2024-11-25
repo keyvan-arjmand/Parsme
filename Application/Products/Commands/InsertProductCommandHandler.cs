@@ -50,7 +50,9 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
             SeoDesc = request.Product.SeoDesc,
             SeoTitle = request.Product.SeoTitle,
             UnicCode = request.Product.UnicCode,
-            BrandTagId = request.Product.BrandTagId.ToInt()
+            BrandTagId = request.Product.BrandTagId.ToInt(),
+            OnClick = 0,
+            CreatorId = request.UserId,
         };
         await _work.GenericRepository<Product>().AddAsync(product, CancellationToken.None);
         var productGallery = request.Product.Images.Select(x => new ImageGallery

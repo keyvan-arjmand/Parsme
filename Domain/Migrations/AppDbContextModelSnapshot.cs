@@ -264,6 +264,9 @@ namespace Domain.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Profit")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1694,6 +1697,9 @@ namespace Domain.Migrations
                     b.Property<int?>("BrandTagId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Detail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1737,12 +1743,14 @@ namespace Domain.Migrations
                     b.Property<int?>("OfferId")
                         .HasColumnType("int");
 
+                    b.Property<int>("OnClick")
+                        .HasColumnType("int");
+
                     b.Property<string>("PersianTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductGift")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductStatus")
@@ -1772,6 +1780,12 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UserUpdateId")
+                        .HasColumnType("int");
+
                     b.Property<string>("WeakPoints")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1782,9 +1796,13 @@ namespace Domain.Migrations
 
                     b.HasIndex("BrandTagId");
 
+                    b.HasIndex("CreatorId");
+
                     b.HasIndex("OfferId");
 
                     b.HasIndex("SubCategoryId");
+
+                    b.HasIndex("UserUpdateId");
 
                     b.ToTable("Products");
                 });
@@ -1850,7 +1868,6 @@ namespace Domain.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -2466,6 +2483,10 @@ namespace Domain.Migrations
                         .WithMany("Products")
                         .HasForeignKey("BrandTagId");
 
+                    b.HasOne("Domain.Entity.User.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
                     b.HasOne("Domain.Entity.Product.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId");
@@ -2476,13 +2497,21 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entity.User.User", "UserUpdate")
+                        .WithMany()
+                        .HasForeignKey("UserUpdateId");
+
                     b.Navigation("Brand");
 
                     b.Navigation("BrandTag");
 
+                    b.Navigation("Creator");
+
                     b.Navigation("Offer");
 
                     b.Navigation("SubCategory");
+
+                    b.Navigation("UserUpdate");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.ProductColor", b =>

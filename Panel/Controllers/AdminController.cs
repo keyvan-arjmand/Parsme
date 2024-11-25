@@ -62,10 +62,56 @@ public class AdminController : Controller
 
             ViewBag.FactorPendingCount = await _work.GenericRepository<Factor>().TableNoTracking
                 .CountAsync(x => x.Status == Status.Pending && x.InsertDate.Date == DateTime.Now.Date);
-            
+
             ViewBag.FactorCount = await _work.GenericRepository<Factor>().TableNoTracking
                 .CountAsync(x => x.InsertDate.Date == DateTime.Now.Date);
-            
+            var startDate = new DateTime(2024, 11, 1); // تاریخ شروع
+            var endDate = new DateTime(2024, 11, 30); // تاریخ پایان
+
+            var factors = await _work.GenericRepository<Factor>().TableNoTracking
+                .Where(f => f.InsertDate >= startDate && f.InsertDate <= endDate)
+                .Include(f => f.Products)
+                .ThenInclude(fp => fp.FactorProductColor)
+                .AsQueryable() // تبدیل به IQueryable
+                .ToListAsync();
+
+            // متغیرهای جمع‌بندی
+            double totalAmount = 0.0;
+            double totalProfit = 0.0;
+            double totalTax = 0.0;
+
+            // محاسبه مقادیر
+            foreach (var factor in factors)
+            {
+                totalAmount += factor.Amount; // مبلغ کل فاکتور
+
+                foreach (var product in factor.Products)
+                {
+                    foreach (var productColor in product.FactorProductColor)
+                    {
+                        // محاسبه سود برای هر رنگ محصول
+                        var profitForColor = (productColor.Price * productColor.Count * product.Profit / 100);
+                        var adjustedProfitForColor = profitForColor - productColor.OfferAmount - product.DiscountAmount;
+                        totalProfit += adjustedProfitForColor;
+                    }
+                }
+
+                // محاسبه مالیات
+                totalTax += factor.Amount * 0.10; // فرض مالیات ۱۰٪
+            }
+
+            // ساخت گزارش نهایی
+            var monthlyReport = new IndexReport
+            {
+                TotalAmount = totalAmount,
+                TotalProfit = totalProfit,
+                TotalTax = totalTax,
+                TotalWithTaxAmount = totalAmount - totalTax
+            };
+
+            ViewBag.Report = monthlyReport;
+
+
             ViewBag.Users = await _userManager.Users.Take(12).OrderByDescending(x => x.InsertDate).ToListAsync();
             ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
@@ -85,9 +131,15 @@ public class AdminController : Controller
                 First = await _work.GenericRepository<Factor>().TableNoTracking
                     .CountAsync(),
                 Second = await _work.GenericRepository<Factor>().TableNoTracking
-                    .CountAsync(x => x.Status == Status.Accepted),
+                    .CountAsync(x => x.Status != Status.Field),
             };
-
+            ViewBag.FactorFieldReport = new ReportIndexModel
+            {
+                First = await _work.GenericRepository<Factor>().TableNoTracking
+                    .CountAsync(),
+                Second = await _work.GenericRepository<Factor>().TableNoTracking
+                    .CountAsync(x => x.Status == Status.Field),
+            };
             ViewBag.Tax = await _work.GenericRepository<Factor>().TableNoTracking.SumAsync(x => x.Amount) * 0.1;
             ViewBag.profit = await _work.GenericRepository<Factor>().TableNoTracking.SumAsync(x => x.Amount) * 0.23;
             ViewBag.SaleMonth = await _work.GenericRepository<Factor>().TableNoTracking
@@ -1586,6 +1638,8 @@ public class AdminController : Controller
                 .Include(x => x.Offer)
                 .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
                 .Include(x => x.ProductImages)
+                .Include(x => x.UserUpdate)
+                .Include(x => x.Creator)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
@@ -1619,6 +1673,8 @@ public class AdminController : Controller
                 .Include(x => x.Offer)
                 .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
                 .Include(x => x.ProductImages)
+                .Include(x => x.UserUpdate)
+                .Include(x => x.Creator)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
@@ -1635,6 +1691,8 @@ public class AdminController : Controller
                 .ToListAsync();
             ViewBag.Guarantee = await _work.GenericRepository<Guarantee>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
+            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking.OrderByDescending(x => x.Id)
+                .Select(x => x.UnicCode).FirstOrDefaultAsync() ?? string.Empty;
             return View();
         }
         else
@@ -1654,6 +1712,8 @@ public class AdminController : Controller
             var productsQuery = _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.BrandTag)
+                .Include(x => x.UserUpdate)
+                .Include(x => x.Creator)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .AsSplitQuery()
                 .AsQueryable();
@@ -1708,6 +1768,8 @@ public class AdminController : Controller
 
             #endregion
 
+            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking.OrderByDescending(x => x.Id)
+                .Select(x => x.UnicCode).FirstOrDefaultAsync() ?? string.Empty;
             return View();
         }
         else
@@ -2590,9 +2652,11 @@ public class AdminController : Controller
 
         request.ImageUri = imageUri;
         request.Images = images;
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
         await _mediator.Send(new InsertProductCommand
         {
-            Product = request
+            Product = request,
+            UserId = user.Id
         });
 
         return new ApiAction
@@ -2643,6 +2707,7 @@ public class AdminController : Controller
         var product = await _work.GenericRepository<Product>().Table.FirstOrDefaultAsync(x => x.Id == request.Id);
         if (product == null) throw new Exception();
         Upload up = new Upload(_webHostEnvironment);
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
         #region prod
 
@@ -2670,6 +2735,7 @@ public class AdminController : Controller
         product.SeoDesc = request.SeoDesc;
         product.SeoTitle = request.SeoTitle;
         product.BrandTagId = request.BrandTagId.ToInt();
+        product.UserUpdateId = user.Id;
 
         if (product.BrandId != request.BrandId.ToInt())
         {

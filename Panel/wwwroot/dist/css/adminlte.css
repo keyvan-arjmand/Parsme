@@ -53,11 +53,17 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: transparent;
-}
-
-@-ms-viewport {
-  width: device-width;
+  -webkit-tap-highlight-color: transparent;کل گردش حساب
+۰%
+تومان ۴,۳۶۴,۷۶۳,۰۰۰
+فروش ماه
+۲۳%
+تومان ۱,۰۰۳,۸۹۵,۴۹۰
+سود ماه
+۱۰%
+۴۳۶,۴۷۶,۳۰۰تومان
+مالیات
+  font-family: 'IRANSans', Arial, sans-serif !important;
 }
 
 article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {

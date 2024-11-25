@@ -12,7 +12,7 @@ public class Product : BaseEntity
     public string MetaKeyword { get; set; } = string.Empty;
     public string FullDesc { get; set; } = string.Empty;
     public string ImageUri { get; set; } = string.Empty;
-    public string ProductGift { get; set; } = string.Empty;
+    public string? ProductGift { get; set; }
     public string Strengths { get; set; } = string.Empty;
     public string WeakPoints { get; set; } = string.Empty;
     public string UnicCode { get; set; } = string.Empty;
@@ -22,7 +22,7 @@ public class Product : BaseEntity
     public int BrandId { get; set; }
     [ForeignKey(nameof(BrandId))] public Brand Brand { get; set; } = default!;
     public int? BrandTagId { get; set; }
-    [ForeignKey(nameof(BrandTagId))] public BrandTag? BrandTag { get; set; } 
+    [ForeignKey(nameof(BrandTagId))] public BrandTag? BrandTag { get; set; }
     public int? OfferId { get; set; }
     [ForeignKey(nameof(OfferId))] public Offer? Offer { get; set; }
     public int SubCategoryId { get; set; }
@@ -36,9 +36,15 @@ public class Product : BaseEntity
     public bool IsOffer { get; set; }
     public bool IsShowIndex { get; set; }
     public bool MomentaryOffer { get; set; }
+    public int OnClick { get; set; }
     public DateTime InsertDate { get; set; }
-    
-    public string? SeoTitle { get; set; } 
-    public string? SeoDesc { get; set; } 
-    public string? SeoCanonical { get; set; } 
+    public DateTime UpdateTime { get; set; }
+
+    public string? SeoTitle { get; set; }
+    public string? SeoDesc { get; set; }
+    public string? SeoCanonical { get; set; }
+    public int? CreatorId { get; set; }
+    [ForeignKey(nameof(CreatorId))] public User.User? Creator { get; set; }
+    public int? UserUpdateId { get; set; }
+    [ForeignKey(nameof(UserUpdateId))] public User.User? UserUpdate { get; set; }
 }

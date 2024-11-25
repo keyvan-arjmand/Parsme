@@ -5,7 +5,7 @@
 @{
     Layout = "_LayoutAdmin";
     List<Brand> brands = ViewBag.Brands;
-    List<BrandTag> brandTags =ViewBag.BrandTags;
+    List<BrandTag> brandTags = ViewBag.BrandTags;
     List<Product> products = ViewBag.Products;
     List<SubCategory> subCategories = ViewBag.SubCats;
     List<Color> colors = ViewBag.Colors;
@@ -156,15 +156,18 @@
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                     <tr>
-                        <th>Id</th>
-                        <th>نام</th>
-                        <th>عکس</th>
-                        <th>تاریخ</th>
-                        <th>برند</th>
-                        <th>گروه کالا</th>
-                        <th>تعداد رنگ</th>
-                        <th>وضعیت</th>
-                        <th class="text-center" style="width: 10%">#</th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center" style="width: 290px">نام</th>
+                        <th class="text-center">کد</th>
+                        <th class="text-center">رویداد</th>
+                        <th class="text-center">بازدید</th>
+                        <th class="text-center">عکس</th>
+                        <th class="text-center">تاریخ</th>
+                        <th class="text-center">برند</th>
+                        <th class="text-center">گروه کالا</th>
+                        <th class="text-center">تعداد رنگ</th>
+                        <th class="text-center">وضعیت</th>
+                        <th class="text-center" style="width: 10%">عملیات</th>
                     </tr>
                     @{
                         if (products.Count < 1)
@@ -178,32 +181,58 @@
                             foreach (var i in products)
                             {
                                 <tr>
-                                    <td>@i.Id</td>
-                                    <td style="overflow: hidden">@i.PersianTitle</td>
-                                    <td>
-                                        <img src="/Images/ProductImage/@i.ImageUri" width="60"/>
-                                    </td>
-                                    <td>@i.InsertDate.ToPersianTime()</td>
-                                    <td>@i.BrandTag.Title</td>
-                                    <td>@i.Brand.Title</td>
-                                    <td>@i.ProductColors.Count()</td>
+                                    <td  class="text-center">@i.Id</td>
+                                    <td  class="text-center" style="overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    text-align: center;
+    letter-spacing: -0.3px;
+    line-height: 25px;
+    max-height: 90px;">@i.PersianTitle</td>
+                                    <td  class="text-center" >@i.UnicCode</td>
+                                    <td   class="text-center">
+                                        @if (i.MomentaryOffer || i.IsOffer)
+                                        {
+                                            if (i.MomentaryOffer)
+                                            {
+                                                <a class="badge bg-info text-muted text-decoration-none " style="color: white!important;">لحظه ای</a>
+                                            }
 
+                                            if (i.IsOffer)
+                                            {
+                                                <a class="badge bg-danger text-muted text-decoration-none " style="color: white!important;">ویژه</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="badge bg-gray text-muted text-decoration-none " style="color: white!important;">هیچکدام</a>
+                                        }
+
+                                    </td>
+                                    <td  class="text-center">@i.OnClick</td>
+                                    <td  class="text-center">
+                                        <img src="/Images/ProductImage/@i.ImageUri" width="60"/>
+                                    </td >
+                                    <td  class="text-center">@i.InsertDate.ToPersianTime()</td>
+                                    <td  class="text-center">@i.BrandTag.Title</td>
+                                    <td  class="text-center">@i.Brand.Title</td>
+                                    <td  class="text-center">@i.ProductColors.Count()</td>
                                     @if (@i.ProductStatus == ProductStatus.Available)
                                     {
-                                        <td>
+                                        <td  class="text-center">
                                             <span class="badge badge-success">@i.ProductStatus.ToDisplay()</span>
                                         </td>
                                     }
                                     else
                                     {
-                                        <td>
+                                        <td  class="text-center">
                                             <span class="badge badge-danger">@i.ProductStatus.ToDisplay()</span>
                                         </td>
                                     }
                                     <td class="text-center">
-                                        <a class="badge bg-warning text-muted text-decoration-none" href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
-                                        <a class="badge bg-info text-muted  text-decoration-none" href="@Url.Action("TranscriptProduct", "Admin", new { @i.Id })">رونوشت</a>
-                                        <a class="badge bg-danger text-muted  text-decoration-none" href="@Url.Action("DeleteProd", "Admin", new { @i.Id })">حذف</a>
+                                        <a class="badge bg-warning text-muted text-decoration-none " style="color: white!important;" href="@Url.Action("EditProduct", "Admin", new { @i.Id })">ویرایش</a>
+                                        <a class="badge bg-info text-muted  text-decoration-none" style="color: white!important;" href="@Url.Action("TranscriptProduct", "Admin", new { @i.Id })">رونوشت</a>
+                                        <a class="badge bg-danger text-muted  text-decoration-none" style="color: white!important;" href="@Url.Action("DeleteProd", "Admin", new { @i.Id })">حذف</a>
                                     </td>
                                 </tr>
                             }
@@ -225,9 +254,9 @@
                     </li>
                     @for (var i = productsPage; i <= productsPage + 2; i++)
                     {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("ProductManage", "Admin", new { page = @i })">@i</a>
-                    </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("ProductManage", "Admin", new { page = @i })">@i</a>
+                        </li>
                     }
                     <li class="page-item">
                         <a class="page-link" href="@Url.Action("ProductManage", "Admin", new { page = @productsPage + 1 })" aria-label="Next">
@@ -248,6 +277,9 @@
         <h3 class="card-title">
             <small class="h4">مشخصات کلی</small>
         </h3>
+        <p class="card-title" >
+            <small class="h4" style="font-size: 15px">اخرین کد کالا : @ViewBag.LastCode</small>
+        </p>
         <!-- tools box -->
         <div class="card-tools">
             <button type="button" class="btn btn-tool btn-sm"
@@ -294,7 +326,7 @@
             </div>
             <div class="form-group w-50 p-3">
                 <label>هـدایا</label>
-                <input id="ProductGift" type="text" class="form-control" required="required">
+                <input id="ProductGift" type="text" class="form-control" >
             </div>
         </div>
         <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
@@ -308,78 +340,10 @@
             </div>
         </div>
 
-     
+
     </div>
 </div>
-    <div>
-        <div class="card card-info card-outline mt-4">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <small class="h5"> جزئیات محصول</small>
-                </h3>
-                <!-- tools box -->
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="collapse"
-                            data-toggle="tooltip"
-                            title="Collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool btn-sm"
-                            data-widget="remove"
-                            data-toggle="tooltip"
-                            title="Remove">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <!-- /. tools -->
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <div class="form-group w-100 p-3 d-flex flex-column">
-                    <label for="exampleInputPassword1">برند</label>
-                    <select id="BrandTag" class="form-control select2" aria-label="Default select example" required="required">
-                        @{
-                        <option value="0">انتخاب</option>
-                        foreach (var i in brandTags)
-                        {
-                        <option value="@i.Id">@i.Title</option>
-                        }
-                        }
-                    </select>
-                </div>
-                <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
-                    <div class="form-group w-50 p-3 d-flex flex-column">
-                        <label for="exampleInputPassword1">دسته بندی</label>
-                        <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
-                            @{
-                            <option value="0">انتخاب</option>
-                            foreach (var i in subCategories)
-                            {
-                            <option value="@i.Id">@i.Name</option>
-                            }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group w-50 p-3  d-flex flex-column">
-                        <label for="exampleInputPassword1">زیر گروه کالا</label>
-                        <select id="BrandId" class="form-control " aria-label="Default select example" required="required">
-                        </select>
-                    </div>
-                </div>
 
-                <div style="background-color:	rgb(220,220,220,0.4);padding: 8px;margin: 3px;border-radius: 5px">
-                    <label id="labelDetail" style="display: none">ویژگی های محصول</label>
-
-                    <div id="DetailProduct"
-                         class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap" style="gap: 30px">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 <div class="card card-info card-outline mt-4">
     <div class="card-header">
         <h3 class="card-title">
@@ -466,11 +430,8 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between w-75" style="gap: 10px">
-                        <div class="d-flex flex-column">
-                            <label for="days">روز</label>
-                            <input type="number" id="days" name="days" min="0" max="30" value="0" class="form-control"><br><br>
-                        </div>
+                    <div class="d-flex justify-content-start w-75" style="gap: 10px">
+                    
                         <div class="d-flex flex-column">
                             <label for="hours">ساعت</label>
                             <input type="number" id="hours" name="hours" min="0" max="24" value="0" class="form-control"><br><br>
@@ -611,7 +572,75 @@
 
     </div>
 </div>
+    <div>
+        <div class="card card-info card-outline mt-4">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <small class="h5"> جزئیات محصول</small>
+                </h3>
+                <!-- tools box -->
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool btn-sm"
+                            data-widget="collapse"
+                            data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool btn-sm"
+                            data-widget="remove"
+                            data-toggle="tooltip"
+                            title="Remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- /. tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group w-100 p-3 d-flex flex-column">
+                    <label for="exampleInputPassword1">برند</label>
+                    <select id="BrandTag" class="form-control select2" aria-label="Default select example" required="required">
+                        @{
+                        <option value="0">انتخاب</option>
+                        foreach (var i in brandTags)
+                        {
+                        <option value="@i.Id">@i.Title</option>
+                        }
+                        }
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between flex-nowrap gap-3 align-items-center">
+                    <div class="form-group w-50 p-3 d-flex flex-column">
+                        <label for="exampleInputPassword1">دسته بندی</label>
+                        <select id="SubCatSelect" class="form-control select2" aria-label="Default select example" required="required">
+                            @{
+                            <option value="0">انتخاب</option>
+                            foreach (var i in subCategories)
+                            {
+                            <option value="@i.Id">@i.Name</option>
+                            }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group w-50 p-3  d-flex flex-column">
+                        <label for="exampleInputPassword1">زیر گروه کالا</label>
+                        <select id="BrandId" class="form-control " aria-label="Default select example" required="required">
+                        </select>
+                    </div>
+                </div>
 
+                <div style="background-color:	rgb(220,220,220,0.4);padding: 8px;margin: 3px;border-radius: 5px">
+                    <label id="labelDetail" style="display: none">ویژگی های محصول</label>
+
+                    <div id="DetailProduct"
+                         class="form-group w-100 p-3 d-flex justify-content-start align-content-center  flex-wrap" style="gap: 30px">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 <div>
     <div class="card card-info card-outline mt-4">
         <div class="card-header">
@@ -638,7 +667,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="mb-3">
-            
+
                 <textarea class="form-control editor" id="editor1" name="editor1" ></textarea>
             </div>
         </div>
@@ -668,7 +697,7 @@
 </section>
 
 @section script{
-      
+
     <script>
         document.getElementById('ImageUri').addEventListener('change', function(event) {
             const file = event.target.files[0];
