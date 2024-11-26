@@ -1702,13 +1702,14 @@ public class AdminController : Controller
     }
 
 
-    public async Task<ActionResult> ProductManage(string search, int page = 1)
+    public async Task<ActionResult> ProductManage(string search, int route, int page = 1)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
             ViewBag.productsPage = page;
+            ViewBag.route = route;
             var productsQuery = _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.BrandTag)
@@ -1717,24 +1718,42 @@ public class AdminController : Controller
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .AsSplitQuery()
                 .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(search))
+            switch (route)
             {
-                productsQuery = productsQuery
-                    .Where(x => x.SubCategory.Name.Contains(search) ||
-                                x.Brand.Title.Contains(search) ||
-                                x.Detail.Contains(search) ||
-                                x.Strengths.Contains(search) ||
-                                x.FullDesc.Contains(search) ||
-                                x.MetaKeyword.Contains(search) ||
-                                x.FullDesc.Contains(search) ||
-                                x.PersianTitle.Contains(search) ||
-                                x.WeakPoints.Contains(search) ||
-                                x.ProductGift.Contains(search) ||
-                                x.ProductColors.Any(t => t.Color.ColorCode.Contains(search) ||
-                                                         t.Color.Title.Contains(search)) ||
-                                x.ProductDetails.Any(q => q.Value.Contains(search)));
+                case 0:
+                    if (!string.IsNullOrWhiteSpace(search))
+                    {
+                        productsQuery = productsQuery
+                            .Where(x => x.SubCategory.Name.Contains(search) ||
+                                        x.Brand.Title.Contains(search) ||
+                                        x.Detail.Contains(search) ||
+                                        x.Strengths.Contains(search) ||
+                                        x.FullDesc.Contains(search) ||
+                                        x.MetaKeyword.Contains(search) ||
+                                        x.FullDesc.Contains(search) ||
+                                        x.PersianTitle.Contains(search) ||
+                                        x.WeakPoints.Contains(search) ||
+                                        x.ProductGift.Contains(search) ||
+                                        x.ProductColors.Any(t => t.Color.ColorCode.Contains(search) ||
+                                                                 t.Color.Title.Contains(search)) ||
+                                        x.ProductDetails.Any(q => q.Value.Contains(search)));
+                    }
+
+                    break;
+                case 1:
+                    productsQuery = productsQuery.Where(x => x.InsertDate >= DateTime.Now.AddDays(-10));
+                    break;
+                case 2:
+                    productsQuery = productsQuery.Where(x => x.IsOffer);
+                    break;
+                case 3:
+                    productsQuery = productsQuery.Where(x => x.MomentaryOffer);
+                    break;
+                case 4:
+                    productsQuery = productsQuery.Where(x => x.ProductColors.Any(q => q.Inventory <= 0));
+                    break;
             }
+
 
             ViewBag.Products = await productsQuery
                 .OrderByDescending(x => x.Id)
@@ -1755,14 +1774,19 @@ public class AdminController : Controller
                 .ToListAsync();
 
             ViewBag.AllProd = await _work.GenericRepository<Product>().TableNoTracking.CountAsync();
+
             ViewBag.AllInvProd = await _work.GenericRepository<ProductColor>().TableNoTracking
                 .CountAsync(x => x.Inventory > 0);
+
             ViewBag.AllInvLowProd = await _work.GenericRepository<ProductColor>().TableNoTracking
                 .CountAsync(x => x.Inventory <= 0);
+
             ViewBag.AllNewProd = await _work.GenericRepository<Product>().TableNoTracking
                 .CountAsync(x => x.InsertDate >= DateTime.Now.AddDays(-10));
+
             ViewBag.AllIsOfferProd =
                 await _work.GenericRepository<Product>().TableNoTracking.CountAsync(x => x.IsOffer);
+
             ViewBag.AllIsMomentProd =
                 await _work.GenericRepository<Product>().TableNoTracking.CountAsync(x => x.MomentaryOffer);
 
@@ -2736,6 +2760,7 @@ public class AdminController : Controller
         product.SeoTitle = request.SeoTitle;
         product.BrandTagId = request.BrandTagId.ToInt();
         product.UserUpdateId = user.Id;
+        product.UpdateTime = DateTime.Now;
 
         if (product.BrandId != request.BrandId.ToInt())
         {
