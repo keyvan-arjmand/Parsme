@@ -1365,10 +1365,28 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("LogoUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OnClick")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SeoCanonical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1897,6 +1915,18 @@ namespace Domain.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoCanonical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2474,7 +2504,7 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.Product.Product", b =>
                 {
                     b.HasOne("Domain.Entity.Product.Brand", "Brand")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2694,6 +2724,11 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entity.IndexPage.FaqCat", b =>
                 {
                     b.Navigation("Faqs");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Product.Brand", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.BrandTag", b =>

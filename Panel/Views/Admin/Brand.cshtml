@@ -5,6 +5,7 @@
     List<Domain.Entity.Product.Brand> brands = ViewBag.Brands;
     List<SubCategory> SubCats = ViewBag.SubCats;
 }
+@model Panel.Models.CheckBoxHtml
 
 @section link
 {
@@ -53,13 +54,24 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2"
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around flex-wrap  p-2"
                                       asp-action="InsertBrand" asp-controller="Admin" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">عنوان </label>
                                         <input name="title" class="form-control" id="exampleInputPassword1" required="required">
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">عنوان سئو </label>
+                                        <input name="seoTitle" class="form-control" id="exampleInputPassword2" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1"> توضیحات</label>
+                                        <input name="seoDesc" class="form-control" id="exampleInputPassword3" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">آدرس متعارف </label>
+                                        <input name="seoCanonical" class="form-control" id="exampleInputPassword4" required="required">
+                                    </div>
                                     @* <div class="form-group"> *@
                                     @*     <label for="exampleInputFile">لوگو</label> *@
                                     @*     <div class="input-group"> *@
@@ -89,6 +101,13 @@
                                         </select>
                                     </div>
                                     <div class="d-flex flex-column align-content-center justify-content-center ">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                @Html.CheckBox("isActive")
+                                                @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                                                <label class="form-check-label">وضعیت فعال</label>
+                                            </div>
+                                        </div>
                                         <div class="form-input">
                                             <button type="submit" class="btn btn-primary">ثبت</button>
                                         </div>
@@ -97,22 +116,31 @@
 
                             </div>
                             <div class="card mt-3">
-                                <form asp-action="Brand" asp-controller="Admin" method="post">
+                                <form asp-action="Brand" asp-controller="Admin" method="post" class="d-flex justify-content-between">
                                     <div class="input-group p-3  m-2 w-50">
                                         <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
                                         <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
                                     </div>
+                                    <div class="form-check w-50 mt-4">
+                                        <input type="hidden" id="isActiveSearch" name="isActiveSearch" value="@ViewBag.IsAct.ToString()" />
+                                        @Html.CheckBoxFor(model => model.IsActive, new { @id = "isActive3", @name = "isActive3" })
+                                        <label class="form-check-label">وضعیت فعال</label>
+                                    </div>
+
                                 </form>
 
                                 <div class="card-body p-0">
                                     <table class="table table-condensed">
                                         <tbody>
                                         <tr>
-                                            <th class="text-center" style="width: 5%">id</th>
-                                            <th class="text-center" style="width: 20%">عنوان</th>
-                                            <th class="text-center" style="width: 15%">زیر دسته</th>
+                                            <th class="text-center">id</th>
+                                            <th class="text-center">عنوان</th>
+                                            <th class="text-center">بازدید</th>
+                                            <th class="text-center">تعداد کالا</th>
+                                            <th class="text-center">وضعیت</th>
+                                            <th class="text-center">زیر دسته</th>
                                             @* <th class="text-center" style="width: 25%">لوگو</th> *@
-                                            <th class="text-center" style="width: 10%">#</th>
+                                            <th class="text-center">عملیات</th>
                                         </tr>
                                         @{
                                             if (brands.Count < 1)
@@ -133,6 +161,18 @@
                                                     <tr>
                                                         <td class="text-center">@i.Id</td>
                                                         <td class="text-center">@i.Title</td>
+                                                        <td class="text-center">@i.OnClick</td>
+                                                        <td class="text-center">@i.Products.Count</td>
+                                                        <td class="text-center">
+                                                            @if (i.IsActive)
+                                                            {
+                                                                <span class="badge bg-success ">فعال</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-danger ">غیرفعال</span>
+                                                            }
+                                                        </td>
                                                         <td class="text-center">@i.SubCategory.Name</td>
                                                         @* <td class="text-center"> *@
                                                         @*     <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/> *@
@@ -142,7 +182,10 @@
                                                                 <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
                                                                 <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                 <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
-                                                                <input type="text" name="mLogo" class="mLogo" value="@i.LogoUri" hidden="hidden"/>
+                                                                <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                                                <input type="text" name="mSeoCanonical" class="mSeoCanonical" value="@i.SeoCanonical" hidden="hidden"/>
+                                                                <input type="text" name="mSeoDesc" class="mSeoDesc" value="@i.SeoDesc" hidden="hidden"/>
+                                                                <input type="text" name="mSeoTitle" class="mSeoTitle" value="@i.SeoTitle" hidden="hidden"/>
                                                                 <input type="text" name="mSubCategoryId" class="mSubCategoryId" value="@i.SubCategoryId" hidden="hidden"/>
                                                             </form>
                                                         </td>
@@ -193,6 +236,23 @@
                         </select>
                     </div>
                 </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان سئو</span>
+                        <input type="text" id="SeoTitle" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoTitle">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">توضیحات سئو </span>
+                        <input type="text" id="SeoDesc" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoDesc">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">آدرس متعارف</span>
+                        <input type="text" id="SeoCanonical" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoCanonical">
+                    </div>
+
+                </div>
 
                 @* <div class=" m-2  p-3 " style="background-color:	rgb(220,220,220,0.4)"> *@
                 @*     <input type="file" id="Image" name="image" title="test" class="form-control"> *@
@@ -201,9 +261,12 @@
                 @*     </div> *@
                 @* </div> *@
 
-
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
+                <div class="form-check w-50 mt-4">
+                    @Html.CheckBox("isActive2", new { @name = "isActive2" })
+                    <label class="form-check-label">وضعیت فعال</label>
+                </div>
                 <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
@@ -211,9 +274,10 @@
 </div>
 
 @section script{
-
     <script>
- 
+
+</script>
+    <script>
     $(document).ready(function () {
 
         $(".modalProduct").click(function () {
@@ -221,11 +285,21 @@
 
             $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
             $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
-            $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
+            $("#SeoTitle").val(currentrow.find($("input.mSeoTitle[type=text]")).val());
+            $("#SeoDesc").val(currentrow.find($("input.mSeoDesc[type=text]")).val());
+            $("#SeoCanonical").val(currentrow.find($("input.mSeoCanonical[type=text]")).val());
+            var isActiveValue = currentrow.find("input.mIsActive[type=text]").val();
+            if (isActiveValue === "True") {
+                $('#isActive2').prop('checked', true);
+            } else {
+                $('#isActive2').prop('checked', false);
+            }
             $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
-            $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
         });
-       
+        $('#isActive3').on('change', function() {
+            var isActiveSearch = $('#isActiveSearch');
+            isActiveSearch.val(this.checked ? 'true' : 'false'); // اگر تیک خورده باشد، true می‌شود وگرنه false
+        });
     });
     $('#Image').on('change', function(event) {
         var input = event.target;
@@ -237,6 +311,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     });
+
 </script>
 
 }

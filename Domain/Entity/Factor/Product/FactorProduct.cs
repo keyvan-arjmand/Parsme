@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Common;
+using Domain.Entity.Product;
 
 namespace Domain.Entity.Factor.Product;
 
-public class FactorProduct:BaseEntity
+public class FactorProduct : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public string PersianTitle { get; set; } = string.Empty;
@@ -11,6 +12,8 @@ public class FactorProduct:BaseEntity
     public string ImageUri { get; set; } = string.Empty;
     public double DiscountAmount { get; set; }
     public string UnicCode { get; set; } = string.Empty;
+    public string BrandId { get; set; } = string.Empty;
+    [ForeignKey(nameof(BrandId))] public Brand BrandEn { get; set; }
     public string Brand { get; set; } = string.Empty;
     public int Profit { get; set; }
 

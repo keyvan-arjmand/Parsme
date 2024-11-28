@@ -6,6 +6,8 @@
     List<Category> categories = ViewBag.Cats;
     List<SubCategory> subCategories = ViewBag.SubCats;
 }
+@model Panel.Models.CheckBoxHtml
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -23,360 +25,375 @@
     </div><!-- /.container-fluid -->
 </div>
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- /.col -->
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header p-2">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link active show" href="#Main" data-toggle="tab">دسته بندی مادر</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#activity" data-toggle="tab">دسته بندی ها</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="#SubCategory" data-toggle="tab">زیردسته ها</a>
-                            </li>
-                        </ul>
-                    </div><!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active show" id="Main">
-                                <div class="d-flex justify-content-start gap-3">
-                                    <b>تعداد دسته بندی:</b> <a class=""> @mainCategories.Count</a>
-                                </div>
+<div class="container-fluid">
+<div class="row">
+<!-- /.col -->
+<div class="col-md-12">
+<div class="card">
+<div class="card-header p-2">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active show" href="#Main" data-toggle="tab">دسته بندی مادر</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#activity" data-toggle="tab">دسته بندی ها</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#SubCategory" data-toggle="tab">زیردسته ها</a>
+        </li>
+    </ul>
+</div><!-- /.card-header -->
+<div class="card-body">
+<div class="tab-content">
+<div class="tab-pane active show" id="Main">
+    <div class="d-flex justify-content-start gap-3">
+        <b>تعداد دسته بندی:</b> <a class=""> @mainCategories.Count</a>
+    </div>
 
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertMainCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">عنوان دسته بندی</label>
-                                        <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
-                                    </div>
-                                    @* <div class="form-group"> *@
-                                    @*     <label for="exampleInputFile">لوگو</label> *@
-                                    @*     <div class="input-group"> *@
-                                    @*         <div class="custom-file"> *@
-                                    @*             <input name="logo" type="file"  class="custom-file-input" id="exampleInputFile"> *@
-                                    @*             <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label> *@
-                                    @*         </div> *@
-                                    @*     </div> *@
-                                    @* </div> *@
+    <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertMainCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputPassword1">عنوان دسته بندی</label>
+            <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
+        </div>
+        @* <div class="form-group"> *@
+        @*     <label for="exampleInputFile">لوگو</label> *@
+        @*     <div class="input-group"> *@
+        @*         <div class="custom-file"> *@
+        @*             <input name="logo" type="file"  class="custom-file-input" id="exampleInputFile"> *@
+        @*             <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
 
-                                    <div class="d-flex flex-column">
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                @Html.CheckBox("isActive")
-                                                @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
-                                                <label class="form-check-label">وضعیت فعال</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="form-input">
-                                                <button type="submit" class="btn btn-primary">ثبت</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <div class="card mt-3">
-                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
-                                        <div class="input-group p-3 w-25   m-2">
-                                            <input type="text" value="0" name="index" hidden="hidden"/>
-                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
-                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
-                                        </div>
-                                    </form>
-                                    <div class="card-body p-0">
-                                        <table class="table table-condensed">
-                                            <tbody>
-                                            <tr>
-                                                <th class="text-center" style="width: 5%">id</th>
-                                                <th class="text-center" style="width: 20%">عنوان</th>
-                                                <th class="text-center" style="width: 30%">وضعیت</th>
-                                                <th class="text-center" style="width: 10%">#</th>
-                                            </tr>
-                                            @{
-                                            if (mainCategories.Count < 1)
-                                            {
-                                            <tr>
-                                                <td class="text-center"></td>
-                                                <td class="text-center">یافت نشد</td>
-                                            </tr>
-                                            }
-                                            else
-                                            {
-                                            foreach (var i in mainCategories)
-                                            {
-                                            <tr>
-
-                                                <td class="text-center">@i.Id</td>
-                                                <td class="text-center">@i.Name</td>
-                                                <td class="text-center">
-                                                    @if (i.IsActive)
-                                                    {
-                                                    <span class="badge bg-success ">فعال</span>
-                                                    }
-                                                    else
-                                                    {
-                                                    <span class="badge bg-danger ">غیرفعال</span>
-                                                    }
-                                                </td>
-                                                <td class="text-center">
-                                                    <form>
-                                                        <a class="badge bg-warning text-muted modalMainCat" data-toggle="modal" data-target="#MainCatModal">ویرایش</a>
-                                                        <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
-                                                        <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
-                                                        <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
-                                                        <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            }
-                                            }
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-
-                            </div>
-                            <div class="tab-pane " id="activity">
-                                <div class="d-flex justify-content-start gap-3">
-                                    <b>تعداد دسته بندی:</b> <a class=""> @categories.Count</a>
-                                </div>
-
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">عنوان دسته بندی</label>
-                                        <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
-                                    </div>
-                                    <div class="form-group d-flex flex-column">
-                                        <label for="exampleInputPassword1">نوع دسته بندی</label>
-                                        <select name="mainCatId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
-                                            @{
-                                            int index = 0;
-                                            foreach (var i in mainCategories)
-                                            {
-                                            if (index == 0)
-                                            {
-                                            <option selected value="@i.Id">@i.Name</option>
-                                            }
-                                            else
-                                            {
-                                            <option value="@i.Id">@i.Name</option>
-                                            }
-                                            }
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                @Html.CheckBox("isActive")
-                                                @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
-                                                <label class="form-check-label">وضعیت فعال</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="form-input">
-                                                <button type="submit" class="btn btn-primary">ثبت</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <div class="card mt-3">
-                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
-                                        <div class="input-group p-3 w-25   m-2">
-                                            <input type="text" value="0" name="index" hidden="hidden"/>
-                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
-                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
-                                        </div>
-                                    </form>
-                                    <div class="card-body p-0">
-                                        <table class="table table-condensed">
-                                            <tbody>
-                                            <tr>
-                                                <th class="text-center" style="width: 5%">id</th>
-                                                <th class="text-center" style="width: 20%">عنوان</th>
-                                                <th class="text-center" style="width: 25%">دسته مادر</th>
-                                                <th class="text-center" style="width: 15%">وضعیت</th>
-                                                <th class="text-center" style="width: 10%">#</th>
-                                            </tr>
-                                            @{
-                                                if (categories.Count < 1)
-                                                {
-                                                    <tr>
-                                                        <td class="text-center"></td>
-                                                        <td class="text-center">یافت نشد</td>
-                                                    </tr>
-                                                }
-                                                else
-                                                {
-                                                    foreach (var i in categories)
-                                                    {
-                                                        <tr>
-
-                                                            <td class="text-center">@i.Id</td>
-                                                            <td class="text-center">@i.Name</td>
-                                                            <td class="text-center">@i.MainCategory.Name</td>
-                                                            <td class="text-center">
-                                                                @if (i.IsActive)
-                                                                {
-                                                                    <span class="badge bg-success ">فعال</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="badge bg-danger ">غیرفعال</span>
-                                                                }
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <form>
-                                                                    <a class="badge bg-warning text-muted modalCat" data-toggle="modal" data-target="#CatModal">ویرایش</a>
-                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
-                                                                    <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
-                                                                    <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
-                                                                    <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
-                                                                    <input type="text" name="mIsActive" class="mMainCat" value="@i.MainCategoryId" hidden="hidden"/>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-
-                            </div>
-                            <div class="tab-pane" id="SubCategory">
-                                <div class="d-flex justify-content-start gap-3">
-                                    <b>تعداد زیر دسته:</b> <a > @subCategories.Count</a>
-                                </div>
-
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertSubCat" asp-controller="Admin" method="post">
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">عنوان زیر دسته</label>
-                                        <input name="title" type="text" required="required" class="form-control" id="exampleInputPassword1">
-                                    </div>
-                                    <div class="form-group d-flex flex-column">
-                                        <label for="exampleInputPassword1">نوع دسته بندی</label>
-                                        <select name="catId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
-                                            @{
-                                                int index = 0;
-                                                foreach (var i in categories)
-                                                {
-                                                    if (index == 0)
-                                                    {
-                                                        <option selected value="@i.Id">@i.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@i.Id">@i.Name</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-
-                                    <div class="d-flex flex-column">
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                @Html.CheckBox("isActive")
-                                                <label class="form-check-label">وضعیت فعال</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="form-input">
-                                                <button type="submit" class="btn btn-primary">ثبت</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-
-                                <div class="card mt-3">
-                                    <form asp-action="ManageCategory" asp-controller="Admin" method="post">
-                                        <div class="input-group p-3 w-25   m-2">
-                                            <input type="text" value="1" name="index" hidden="hidden"/>
-                                            <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
-                                            <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
-                                        </div>
-                                    </form>
-                                    <div class="card-body p-0">
-                                        <table class="table table-condensed">
-                                            <tbody>
-                                            <tr>
-                                                <th class="text-center" style="width: 5%">id</th>
-                                                <th class="text-center" style="width: 20%">عنوان</th>
-                                                <th class="text-center" style="width: 35%">دسته بندی</th>
-                                                <th class="text-center" style="width: 30%">وضعیت</th>
-                                                <th class="text-center" style="width: 10%">#</th>
-                                            </tr>
-                                            @{
-                                                if (subCategories.Count < 1)
-                                                {
-                                                    <tr>
-                                                        <td class="text-center"></td>
-                                                        <td class="text-center">یافت نشد</td>
-                                                    </tr>
-                                                }
-                                                else
-                                                {
-                                                    foreach (var i in subCategories)
-                                                    {
-                                                        <tr>
-
-                                                            <td class="text-center">@i.Id</td>
-                                                            <td class="text-center">@i.Name</td>
-                                                            <td class="text-center">@i.Category!.Name</td>
-                                                            <td class="text-center">
-                                                                @if (i.IsActive)
-                                                                {
-                                                                    <span class="badge bg-success ">فعال</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="badge bg-danger ">غیرفعال</span>
-                                                                }
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <form>
-                                                                    <a class="badge bg-warning text-muted modalSubCat" data-toggle="modal" data-target="#SubCatModal">ویرایش</a>
-                                                                    <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
-                                                                    <input type="text" name="mTitle" class="mTitle" value="@i.Name" hidden="hidden"/>
-                                                                    <input type="text" name="mCatId" class="mCatId" value="@i.CategoryId" hidden="hidden"/>
-                                                                    <input type="text" name="mIsActiveSub" class="mIsActiveSub" value="@i.IsActive.ToString()" hidden="hidden"/>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div><!-- /.card-body -->
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <div class="form-check">
+                    @Html.CheckBox("isActive")
+                    @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                    <label class="form-check-label">وضعیت فعال</label>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="form-input">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+
+            </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </form>
+
+    <div class="card mt-3">
+        <form asp-action="ManageCategory" asp-controller="Admin" method="post">
+            <div class="input-group p-3 w-25   m-2">
+                <input type="text" value="0" name="index" hidden="hidden"/>
+                <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+            </div>
+        </form>
+        <div class="card-body p-0">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <th class="text-center" style="width: 5%">id</th>
+                    <th class="text-center" style="width: 20%">عنوان</th>
+                    <th class="text-center" style="width: 30%">وضعیت</th>
+                    <th class="text-center" style="width: 10%">#</th>
+                </tr>
+                @{
+                    if (mainCategories.Count < 1)
+                    {
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center">یافت نشد</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var i in mainCategories)
+                        {
+                            <tr>
+
+                                <td class="text-center">@i.Id</td>
+                                <td class="text-center">@i.Name</td>
+                                <td class="text-center">
+                                    @if (i.IsActive)
+                                    {
+                                        <span class="badge bg-success ">فعال</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger ">غیرفعال</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <form>
+                                        <a class="badge bg-warning text-muted modalMainCat" data-toggle="modal" data-target="#MainCatModal">ویرایش</a>
+                                        <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                        <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
+                                        <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
+                                        <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+</div>
+<div class="tab-pane " id="activity">
+    <div class="d-flex justify-content-start gap-3">
+        <b>تعداد دسته بندی:</b> <a class=""> @categories.Count</a>
+    </div>
+
+    <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertCat" asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputPassword1">عنوان دسته بندی</label>
+            <input name="title" type="text" class="form-control" required="required" id="exampleInputPassword1">
+        </div>
+        <div class="form-group d-flex flex-column">
+            <label for="exampleInputPassword1">نوع دسته بندی</label>
+            <select name="mainCatId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
+                @{
+                    int index = 0;
+                    foreach (var i in mainCategories)
+                    {
+                        if (index == 0)
+                        {
+                            <option selected value="@i.Id">@i.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <div class="form-check">
+                    @Html.CheckBox("isActive")
+                    @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                    <label class="form-check-label">وضعیت فعال</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-input">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <div class="card mt-3">
+        <form asp-action="ManageCategory" asp-controller="Admin" method="post">
+            <div class="input-group p-3 w-25   m-2">
+                <input type="text" value="0" name="index" hidden="hidden"/>
+                <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+            </div>
+        </form>
+        <div class="card-body p-0">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <th class="text-center" style="width: 5%">id</th>
+                    <th class="text-center" style="width: 20%">عنوان</th>
+                    <th class="text-center" style="width: 25%">دسته مادر</th>
+                    <th class="text-center" style="width: 15%">وضعیت</th>
+                    <th class="text-center" style="width: 10%">#</th>
+                </tr>
+                @{
+                    if (categories.Count < 1)
+                    {
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center">یافت نشد</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var i in categories)
+                        {
+                            <tr>
+
+                                <td class="text-center">@i.Id</td>
+                                <td class="text-center">@i.Name</td>
+                                <td class="text-center">@i.MainCategory.Name</td>
+                                <td class="text-center">
+                                    @if (i.IsActive)
+                                    {
+                                        <span class="badge bg-success ">فعال</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger ">غیرفعال</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <form>
+                                        <a class="badge bg-warning text-muted modalCat" data-toggle="modal" data-target="#CatModal">ویرایش</a>
+                                        <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                        <input type="text" name="mName" class="mName" value="@i.Name" hidden="hidden"/>
+                                        <input type="text" name="mLogoUri" class="mLogoUri" value="@i.LogoUri" hidden="hidden"/>
+                                        <input type="text" name="mIsActive" class="mIsActive" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                        <input type="text" name="mIsActive" class="mMainCat" value="@i.MainCategoryId" hidden="hidden"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+</div>
+<div class="tab-pane" id="SubCategory">
+    <div class="d-flex justify-content-start gap-3">
+        <b>تعداد زیر دسته:</b> <a > @subCategories.Count</a>
+    </div>
+
+    <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-around p-2" asp-action="InsertSubCat" asp-controller="Admin" method="post">
+        <div class="form-group">
+            <label for="exampleInputPassword1">عنوان زیر دسته</label>
+            <input name="title" type="text" required="required" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">عنوان سئو </label>
+            <input name="seoTitle" class="form-control" id="exampleInputPassword2" required="required">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1"> توضیحات</label>
+            <input name="seoDesc" class="form-control" id="exampleInputPassword3" required="required">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">آدرس متعارف </label>
+            <input name="seoCanonical" class="form-control" id="exampleInputPassword4" required="required">
+        </div>
+        <div class="form-group d-flex flex-column">
+            <label for="exampleInputPassword1">نوع دسته بندی</label>
+            <select name="catId" class="form-select select2 w-100 p-3" required="required" aria-label="Default select example">
+                @{
+                    int index = 0;
+                    foreach (var i in categories)
+                    {
+                        if (index == 0)
+                        {
+                            <option selected value="@i.Id">@i.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@i.Id">@i.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <div class="form-check">
+                    @Html.CheckBox("isActive")
+                    <label class="form-check-label">وضعیت فعال</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-input">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+
+    <div class="card mt-3">
+        <form asp-action="ManageCategory" asp-controller="Admin" method="post" class="d-flex justify-content-between">
+            <div class="input-group p-3 w-25   m-2">
+                <input type="text" value="1" name="index" hidden="hidden"/>
+                <input type="text" class="form-control w-50" name="search" style="border-radius: 0px 5px 5px 0px; !important;max-width: 250px" placeholder="جستجو">
+                <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو </button>
+            </div>
+        </form>
+        <div class="card-body p-0">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <th class="text-center" style="width: 5%">id</th>
+                    <th class="text-center" style="width: 20%">عنوان</th>
+                    <th class="text-center" style="width: 35%">دسته بندی</th>
+                    <th class="text-center" style="width: 30%">وضعیت</th>
+                    <th class="text-center" style="width: 10%">#</th>
+                </tr>
+                @{
+                    if (subCategories.Count < 1)
+                    {
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center">یافت نشد</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var i in subCategories)
+                        {
+                            <tr>
+
+                                <td class="text-center">@i.Id</td>
+                                <td class="text-center">@i.Name</td>
+                                <td class="text-center">@i.Category!.Name</td>
+                                <td class="text-center">
+                                    @if (i.IsActive)
+                                    {
+                                        <span class="badge bg-success ">فعال</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger ">غیرفعال</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <form>
+                                        <a class="badge bg-warning text-muted modalSubCat" data-toggle="modal" data-target="#SubCatModal">ویرایش</a>
+                                        <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
+                                        <input type="text" name="mTitle" class="mTitle" value="@i.Name" hidden="hidden"/>
+                                        <input type="text" name="mCatId" class="mCatId" value="@i.CategoryId" hidden="hidden"/>
+                                        <input type="text" name="mSeoCanonical" class="mSeoCanonical" value="@i.SeoCanonical" hidden="hidden"/>
+                                        <input type="text" name="mSeoDesc" class="mSeoDesc" value="@i.SeoDesc" hidden="hidden"/>
+                                        <input type="text" name="mSeoTitle" class="mSeoTitle" value="@i.SeoTitle" hidden="hidden"/>
+                                        <input type="text" name="mIsActiveSub" class="mIsActiveSub" value="@i.IsActive.ToString()" hidden="hidden"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+</div>
+</div>
+</div><!-- /.card-body -->
+</div>
+</div>
+</div>
+</div><!-- /.container-fluid -->
 </section>
 
 
@@ -435,10 +452,10 @@
                 <div class="input-group p-3  m-2 w-50">
                     <select class="form-select catIdP" id="MainCatIdP" name="MainCatId" required="required">
                         @{
-                        foreach (var i in mainCategories)
-                        {
-                        <option value="@i.Id">@i.Name</option>
-                        }
+                            foreach (var i in mainCategories)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
                         }
                     </select>
                 </div>
@@ -478,6 +495,23 @@
                         </select>
                     </div>
                 </div>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">عنوان سئو</span>
+                        <input type="text" id="SeoTitle" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoTitle">
+                    </div>
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">توضیحات سئو </span>
+                        <input type="text" id="SeoDesc" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoDesc">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="input-group p-3  m-2">
+                        <span class="input-group-text" style="border-radius: 0px 5px 5px 0px;" id="">آدرس متعارف</span>
+                        <input type="text" id="SeoCanonical" style="border-radius: 5px 0px 0px 5px;" class="form-control nameP" required="required" name="seoCanonical">
+                    </div>
+
+                </div>
                 <div class="form-check w-50 mt-4">
                     @Html.CheckBox("isActiveSubCat", new { @name = "isActiveSubCat" })
                     <label class="form-check-label">وضعیت فعال</label>
@@ -494,6 +528,10 @@
 
     <script>
     $(document).ready(function () {
+        $('#isActive3').on('change', function() {
+            var isActiveSearch = $('#isActiveSearch');
+            isActiveSearch.val(this.checked ? 'true' : 'false'); // اگر تیک خورده باشد، true می‌شود وگرنه false
+        });
         $(".modalMainCat").click(function () {
             var currentrow = $(this).closest("form");
 
@@ -537,6 +575,9 @@
             $(".idPSub").val(currentrow.find($("input.mId[type=text]")).val());
             $("#nameSubP").val(currentrow.find($("input.mTitle[type=text]")).val());
             $('#catIdP').val(currentrow.find($("input.mCatId[type=text]")).val());
+            $("#SeoTitle").val(currentrow.find($("input.mSeoTitle[type=text]")).val());
+            $("#SeoDesc").val(currentrow.find($("input.mSeoDesc[type=text]")).val());
+            $("#SeoCanonical").val(currentrow.find($("input.mSeoCanonical[type=text]")).val());
             var isActiveValue = currentrow.find("input.mIsActiveSub[type=text]").val();
             if (isActiveValue === "True") {
                 $('#isActiveSubCat').prop('checked', true);

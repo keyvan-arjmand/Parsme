@@ -14,5 +14,6 @@ public class Brand : BaseEntity
     public string SeoDesc { get; set; } = string.Empty;
     public string SeoCanonical { get; set; } = string.Empty;
     public int OnClick { get; set; }
+    public ICollection<Product> Products { get; set; } = default!;
     [ForeignKey("SubCategoryId")] public SubCategory? SubCategory { get; set; }
 }

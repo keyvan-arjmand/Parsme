@@ -260,6 +260,16 @@ public class AdminController : Controller
 
             #endregion
 
+            var factors = await _work.GenericRepository<Factor>().TableNoTracking
+                .Include(x => x.User)
+                .Include(x => x.PostMethod)
+                .Include(x => x.UserAddress)
+                .Include(x => x.Products)
+                .ThenInclude(x => x.FactorProductColor)
+                .OrderByDescending(x => x.InsertDate)
+                .ToListAsync();
+            
+            
             return View();
         }
         else
@@ -972,23 +982,33 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> Brand(string search)
+    public async Task<ActionResult> Brand(string search, bool isActiveSearch = true)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            ViewBag.IsAct = isActiveSearch;
+            var model = new CheckBoxHtml
+            {
+                IsActive = isActiveSearch
+            };
             if (!string.IsNullOrWhiteSpace(search))
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking
                     .Include(x => x.SubCategory)
+                    .Include(x => x.Products)
                     .Where(x => x.Title.Contains(search) ||
-                                x.SubCategory.Name.Contains(search)).OrderByDescending(x => x.Id).ToListAsync();
+                                x.SubCategory.Name.Contains(search))
+                    .Where(x => x.IsActive == isActiveSearch)
+                    .OrderByDescending(x => x.Id).ToListAsync();
             }
             else
             {
                 ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking
                     .Include(x => x.SubCategory)
+                    .Include(x => x.Products)
+                    .Where(x => x.IsActive == isActiveSearch)
                     .OrderByDescending(x => x.Id).ToListAsync();
             }
 
@@ -997,7 +1017,7 @@ public class AdminController : Controller
 
             #endregion
 
-            return View();
+            return View(model);
         }
         else
         {
@@ -1084,16 +1104,19 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateBrand(int id, string title, IFormFile image, int subCategoryId)
+    public async Task<ActionResult> UpdateBrand(int id, string title, int subCategoryId, bool isActive2,
+        string seoTitle,
+        string seoDesc, string seoCanonical)
     {
         if (User.Identity.IsAuthenticated && id > 0 && subCategoryId > 0)
         {
             Upload up = new Upload(_webHostEnvironment);
             var brand = await _work.GenericRepository<Brand>().Table.FirstOrDefaultAsync(x => x.Id == id);
             brand.Title = title;
-            brand.LogoUri = image != null
-                ? up.Uploadfile(image, "Brand")
-                : brand.LogoUri;
+            brand.IsActive = isActive2;
+            brand.SeoTitle = seoTitle;
+            brand.SeoDesc = seoDesc;
+            brand.SeoCanonical = seoCanonical;
             brand.SubCategoryId = subCategoryId;
             await _work.GenericRepository<Brand>().UpdateAsync(brand, CancellationToken.None);
             return RedirectToAction("Brand");
@@ -1123,19 +1146,23 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrand(string title, IFormFile? logo, int subCatId)
+    public async Task<ActionResult> InsertBrand(string title, int subCatId, bool isActive, string seoTitle,
+        string seoDesc, string seoCanonical)
     {
         if (User.Identity.IsAuthenticated)
         {
             Upload up = new Upload(_webHostEnvironment);
-            var img = logo != null ? up.Uploadfile(logo, "Brand") : string.Empty;
             var subCat = await _work.GenericRepository<SubCategory>().Table.FirstOrDefaultAsync(x => x.Id == subCatId);
             if (subCat == null) throw new Exception();
             await _work.GenericRepository<Brand>().AddAsync(new Brand
             {
                 Title = title ?? string.Empty,
-                LogoUri = img,
-                SubCategoryId = subCat.Id
+                LogoUri = string.Empty,
+                SubCategoryId = subCat.Id,
+                IsActive = isActive,
+                SeoTitle = seoTitle,
+                SeoCanonical = seoCanonical,
+                SeoDesc = seoDesc,
             }, CancellationToken.None);
             return RedirectToAction("Brand");
         }
@@ -1205,12 +1232,25 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageCatDetail(string search, int index)
+    public async Task<ActionResult> ManageCatDetail(string search, int index, bool isActiveSearch = true,
+        bool isActiveShow = true)
     {
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+        }
+
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            ViewBag.IsAct = isActiveSearch;
+            ViewBag.IsActSh = isActiveShow;
+            var model = new CheckBoxHtml
+            {
+                IsActive = isActiveSearch,
+                IsActiveShow = isActiveShow
+            };
             if (!string.IsNullOrWhiteSpace(search))
             {
                 if (index == 0)
@@ -1239,7 +1279,8 @@ public class AdminController : Controller
                     ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
                         .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                         .Include(x => x.Feature)
-                        .Where(x => x.Title.Contains(search) || x.DataType == (DataType)dataType)
+                        .Where(x => x.Title.Contains(search) || x.Option.Contains(search))
+                        .Where(x => x.IsActive == isActiveSearch && x.ShowInSearch == isActiveShow)
                         .OrderByDescending(x => x.Id).ToListAsync();
                     ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
                         .OrderByDescending(x => x.Id)
@@ -1253,6 +1294,7 @@ public class AdminController : Controller
                     ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
                         .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                         .Include(x => x.Feature)
+                        .Where(x => x.IsActive == isActiveSearch && x.ShowInSearch == isActiveShow)
                         .OrderByDescending(x => x.Id).ToListAsync();
                     ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
                         .OrderByDescending(x => x.Id)
@@ -1268,6 +1310,7 @@ public class AdminController : Controller
                 ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
                     .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
                     .Include(x => x.Feature)
+                    .Where(x => x.IsActive == isActiveSearch && x.ShowInSearch == isActiveShow)
                     .OrderByDescending(x => x.Id).ToListAsync();
                 ViewBag.SubCat = await _work.GenericRepository<SubCategory>().TableNoTracking
                     .OrderByDescending(x => x.Id)
@@ -1278,7 +1321,7 @@ public class AdminController : Controller
 
             #endregion
 
-            return View();
+            return View(model);
         }
         else
         {
@@ -1325,7 +1368,8 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateSubCat(int id, string title, int catId, bool isActiveSubCat)
+    public async Task<ActionResult> UpdateSubCat(int id, string title, int catId, bool isActiveSubCat, string seoTitle,
+        string seoDesc, string seoCanonical)
     {
         if (User.Identity.IsAuthenticated && id > 0 && catId > 0)
         {
@@ -1333,6 +1377,9 @@ public class AdminController : Controller
             subCat.Name = title;
             subCat.IsActive = isActiveSubCat;
             subCat.CategoryId = catId;
+            subCat.SeoCanonical = seoCanonical;
+            subCat.SeoDesc = seoDesc;
+            subCat.SeoTitle = seoTitle;
             await _work.GenericRepository<SubCategory>().UpdateAsync(subCat, CancellationToken.None);
             return RedirectToAction("ManageCategory");
         }
@@ -1552,7 +1599,8 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertSubCat(string title, bool isActive, int? catId)
+    public async Task<ActionResult> InsertSubCat(string title, bool isActive, int? catId, string seoTitle,
+        string seoDesc, string seoCanonical)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1572,7 +1620,10 @@ public class AdminController : Controller
             {
                 Name = title,
                 IsActive = isActive,
-                CategoryId = cat.Id
+                CategoryId = cat.Id,
+                SeoDesc = seoDesc,
+                SeoCanonical = seoCanonical,
+                SeoTitle = seoTitle
             }, CancellationToken.None);
             return RedirectToAction("ManageCategory");
         }
