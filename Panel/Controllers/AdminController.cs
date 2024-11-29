@@ -14,6 +14,7 @@ using Application.Interfaces;
 using Application.Products.Commands;
 using AutoMapper;
 using Domain.Entity.Factor;
+using Domain.Entity.Factor.Product;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
@@ -227,6 +228,26 @@ public class AdminController : Controller
         }
     }
 
+    public async Task<IActionResult>  GetSalesData()
+    {
+        var oneMonthAgo = DateTime.Now.AddMonths(-1);
+        var salesData = await _work.GenericRepository<FactorProduct>()
+            .TableNoTracking
+            .Where(x => x.Factor.InsertDate >= oneMonthAgo)
+            .GroupBy(x => x.Brand)
+            .Select(g => new
+            {
+                label = g.FirstOrDefault().Brand ?? "نا مشخص", // استفاده از Brand
+                value = g.Count()
+            })
+            .OrderByDescending(x => x.value) // مرتب‌سازی بر اساس تعداد فروش
+            .Take(7) // محدود به 7 مورد
+            .ToListAsync();
+
+
+        return Ok(salesData);
+    }
+
     public async Task<ActionResult> SalesInvoice(string search)
     {
         if (User.Identity.IsAuthenticated)
@@ -241,8 +262,20 @@ public class AdminController : Controller
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
                     .ThenInclude(x => x.FactorProductColor)
-                    .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
-                                x.FactorCode.Contains(search))
+                    .Where(x => x.DiscountCode.Contains(search) || 
+                                x.Desc.Contains(search) ||
+                                x.FactorCode.Contains(search) ||
+                                x.User.PhoneNumber.Contains(search) || 
+                                x.User.Name.Contains(search) || 
+                                x.User.Family.Contains(search) || 
+                                x.EconomicNumber.Contains(search) ||
+                                x.OrganizationName.Contains(search) ||
+                                x.NationalId.Contains(search) ||
+                                x.PostCode.Contains(search) ||
+                                x.OrganizationNumber.Contains(search) ||
+                                x.RegistrationNumber.Contains(search) ||
+                                x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
                     .OrderByDescending(x => x.InsertDate)
                     .ToListAsync();
             }
@@ -260,16 +293,7 @@ public class AdminController : Controller
 
             #endregion
 
-            var factors = await _work.GenericRepository<Factor>().TableNoTracking
-                .Include(x => x.User)
-                .Include(x => x.PostMethod)
-                .Include(x => x.UserAddress)
-                .Include(x => x.Products)
-                .ThenInclude(x => x.FactorProductColor)
-                .OrderByDescending(x => x.InsertDate)
-                .ToListAsync();
-            
-            
+
             return View();
         }
         else

@@ -244,6 +244,9 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<double>("DiscountAmount")
                         .HasColumnType("float");
 
@@ -276,6 +279,8 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("FactorId");
 
@@ -2392,11 +2397,17 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Entity.Factor.Product.FactorProduct", b =>
                 {
+                    b.HasOne("Domain.Entity.Product.Brand", "BrandEn")
+                        .WithMany()
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("Domain.Entity.Factor.Factor", "Factor")
                         .WithMany("Products")
                         .HasForeignKey("FactorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BrandEn");
 
                     b.Navigation("Factor");
                 });

@@ -12,8 +12,8 @@ public class FactorProduct : BaseEntity
     public string ImageUri { get; set; } = string.Empty;
     public double DiscountAmount { get; set; }
     public string UnicCode { get; set; } = string.Empty;
-    public string BrandId { get; set; } = string.Empty;
-    [ForeignKey(nameof(BrandId))] public Brand BrandEn { get; set; }
+    public int? BrandId { get; set; } 
+    [ForeignKey(nameof(BrandId))] public Brand? BrandEn { get; set; }
     public string Brand { get; set; } = string.Empty;
     public int Profit { get; set; }
 
