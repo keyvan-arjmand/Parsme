@@ -176,7 +176,7 @@
                         <th class="text-center">بروزرسانی</th>
                         <th class="text-center">برند</th>
                         <th class="text-center">گروه کالا</th>
-                        <th class="text-center">تعداد رنگ</th>
+                        <th class="text-center">موجودی</th>
                         <th class="text-center">وضعیت</th>
                         <th class="text-center" style="width: 10%">عملیات</th>
                     </tr>
@@ -226,7 +226,7 @@
                                     </td >
                                     @if (!string.IsNullOrWhiteSpace(i.UpdateTime.ToPersianTime()))
                                     {
-                                    <td class="text-center">@i.UpdateTime.ToPersianTime()</td>
+                                        <td class="text-center">@i.UpdateTime.ToPersianTime()</td>
                                     }
                                     else
                                     {
@@ -234,7 +234,7 @@
                                     }
                                     <td class="text-center">@i.BrandTag.Title</td>
                                     <td class="text-center">@i.Brand.Title</td>
-                                    <td class="text-center">@i.ProductColors.Count()</td>
+                                    <td class="text-center">@i.ProductColors.Sum(x => x.Inventory)</td>
                                     @if (@i.ProductStatus == ProductStatus.Available)
                                     {
                                         <td class="text-center">

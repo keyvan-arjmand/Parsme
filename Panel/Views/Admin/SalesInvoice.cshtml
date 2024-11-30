@@ -92,7 +92,6 @@ List<Factor> factors = ViewBag.Factors;
                                             <th class="text-center">مبلغ</th>
                                             <th class="text-center">تاریخ</th>
                                             <th class="text-center">بانک</th>
-                                            <th class="text-center">حساب</th>
                                             <th class="text-center">وضعیت</th>
                                             <th class="text-center">پیگیری</th>
                                             <th class="text-center">#</th>
@@ -118,8 +117,7 @@ List<Factor> factors = ViewBag.Factors;
                                                         <td class="text-center">@i.User.Name @i.User.Family</td>
                                                         <td class="text-center">@i.Amount.ToString("N0")</td>
                                                         <td class="text-center">@i.InsertDate.ToPersianTime()</td>
-                                                        <td class="text-center">ملت</td>
-                                                        <td class="text-center">6104****5678</td>
+                                                        <td class="text-center">به پرداخت ملت</td>
                                                         @if (i.Status == Status.PendingForPayment || i.Status == Status.Field)
                                                         {
                                                             <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span></td>
@@ -131,7 +129,7 @@ List<Factor> factors = ViewBag.Factors;
 
 
                                                         }
-                                                        <td class="text-center">@i.FactorCode</td>
+                                                        <td class="text-center">@i.SaleReferenceId</td>
                                                         <td class="text-center">
                                                             <a href="@Url.Action("Invoice","Admin",new{i.Id})" class="badge bg-warning text-muted">مشاهده</a>
                                                         </td>

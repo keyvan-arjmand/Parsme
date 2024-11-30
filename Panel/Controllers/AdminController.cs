@@ -187,35 +187,204 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageFactor(string search)
+    public async Task<ActionResult> ManageFactor(string search,int type=5)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            ViewBag.FactorsT = await _work.GenericRepository<Factor>().TableNoTracking.ToListAsync();
             if (!string.IsNullOrWhiteSpace(search))
             {
-                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                    .Include(x => x.User)
-                    .Include(x => x.PostMethod)
-                    .Include(x => x.UserAddress)
-                    .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor)
-                    .Where(x => x.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
-                                x.FactorCode.Contains(search))
-                    .OrderByDescending(x => x.InsertDate)
-                    .ToListAsync();
+                switch (type)
+                {
+                     case 0:
+                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                             .Include(x => x.User)
+                             .Include(x => x.PostMethod)
+                             .Include(x => x.UserAddress)
+                             .Include(x => x.Products)
+                             .ThenInclude(x => x.FactorProductColor)
+                             .Where(x => x.DiscountCode.Contains(search) ||
+                                         x.Desc.Contains(search) ||
+                                         x.FactorCode.Contains(search) ||
+                                         x.User.PhoneNumber.Contains(search) ||
+                                         x.User.Name.Contains(search) ||
+                                         x.User.Family.Contains(search) ||
+                                         x.EconomicNumber.Contains(search) ||
+                                         x.OrganizationName.Contains(search) ||
+                                         x.NationalId.Contains(search) ||
+                                         x.PostCode.Contains(search) ||
+                                         x.OrganizationNumber.Contains(search) ||
+                                         x.RegistrationNumber.Contains(search) ||
+                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                             .Where(x => x.InsertDate.Month == DateTime.Now.Month)
+                             .OrderByDescending(x => x.InsertDate)
+                             .ToListAsync();
+                         break;
+                     case 1:
+                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                             .Include(x => x.User)
+                             .Include(x => x.PostMethod)
+                             .Include(x => x.UserAddress)
+                             .Include(x => x.Products)
+                             .ThenInclude(x => x.FactorProductColor)
+                             .Where(x => x.DiscountCode.Contains(search) ||
+                                         x.Desc.Contains(search) ||
+                                         x.FactorCode.Contains(search) ||
+                                         x.User.PhoneNumber.Contains(search) ||
+                                         x.User.Name.Contains(search) ||
+                                         x.User.Family.Contains(search) ||
+                                         x.EconomicNumber.Contains(search) ||
+                                         x.OrganizationName.Contains(search) ||
+                                         x.NationalId.Contains(search) ||
+                                         x.PostCode.Contains(search) ||
+                                         x.OrganizationNumber.Contains(search) ||
+                                         x.RegistrationNumber.Contains(search) ||
+                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                             .Where(x => x.InsertDate.Month == DateTime.Now.Month && x.Status == Status.Accepted)
+                             .OrderByDescending(x => x.InsertDate)
+                             .ToListAsync();
+                         break;
+                     case 2:
+                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                             .Include(x => x.User)
+                             .Include(x => x.PostMethod)
+                             .Include(x => x.UserAddress)
+                             .Include(x => x.Products)
+                             .ThenInclude(x => x.FactorProductColor)
+                             .Where(x => x.DiscountCode.Contains(search) ||
+                                         x.Desc.Contains(search) ||
+                                         x.FactorCode.Contains(search) ||
+                                         x.User.PhoneNumber.Contains(search) ||
+                                         x.User.Name.Contains(search) ||
+                                         x.User.Family.Contains(search) ||
+                                         x.EconomicNumber.Contains(search) ||
+                                         x.OrganizationName.Contains(search) ||
+                                         x.NationalId.Contains(search) ||
+                                         x.PostCode.Contains(search) ||
+                                         x.OrganizationNumber.Contains(search) ||
+                                         x.RegistrationNumber.Contains(search) ||
+                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                             .Where(x => x.InsertDate.Day == DateTime.Now.Day)
+                             .OrderByDescending(x => x.InsertDate)
+                             .ToListAsync();
+                         break;
+                     case 3:
+                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                             .Include(x => x.User)
+                             .Include(x => x.PostMethod)
+                             .Include(x => x.UserAddress)
+                             .Include(x => x.Products)
+                             .ThenInclude(x => x.FactorProductColor)
+                             .Where(x => x.DiscountCode.Contains(search) ||
+                                         x.Desc.Contains(search) ||
+                                         x.FactorCode.Contains(search) ||
+                                         x.User.PhoneNumber.Contains(search) ||
+                                         x.User.Name.Contains(search) ||
+                                         x.User.Family.Contains(search) ||
+                                         x.EconomicNumber.Contains(search) ||
+                                         x.OrganizationName.Contains(search) ||
+                                         x.NationalId.Contains(search) ||
+                                         x.PostCode.Contains(search) ||
+                                         x.OrganizationNumber.Contains(search) ||
+                                         x.RegistrationNumber.Contains(search) ||
+                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                             .Where(x => x.IsReturned)
+                             .OrderByDescending(x => x.InsertDate)
+                             .ToListAsync();
+                         break;
+                     case 5:
+                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                             .Include(x => x.User)
+                             .Include(x => x.PostMethod)
+                             .Include(x => x.UserAddress)
+                             .Include(x => x.Products)
+                             .ThenInclude(x => x.FactorProductColor)
+                             .Where(x => x.DiscountCode.Contains(search) ||
+                                         x.Desc.Contains(search) ||
+                                         x.FactorCode.Contains(search) ||
+                                         x.User.PhoneNumber.Contains(search) ||
+                                         x.User.Name.Contains(search) ||
+                                         x.User.Family.Contains(search) ||
+                                         x.EconomicNumber.Contains(search) ||
+                                         x.OrganizationName.Contains(search) ||
+                                         x.NationalId.Contains(search) ||
+                                         x.PostCode.Contains(search) ||
+                                         x.OrganizationNumber.Contains(search) ||
+                                         x.RegistrationNumber.Contains(search) ||
+                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                             .OrderByDescending(x => x.InsertDate)
+                             .ToListAsync();
+                         break;
+                }
+             
             }
             else
             {
-                ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                    .Include(x => x.User)
-                    .Include(x => x.PostMethod)
-                    .Include(x => x.UserAddress)
-                    .Include(x => x.Products)
-                    .ThenInclude(x => x.FactorProductColor)
-                    .OrderByDescending(x => x.InsertDate)
-                    .ToListAsync();
+                switch (type)
+                {
+                    case 0:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.InsertDate.Month == DateTime.Now.Month)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 1:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.InsertDate.Month == DateTime.Now.Month && x.Status == Status.Accepted)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 2:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.InsertDate.Day == DateTime.Now.Day)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 3:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.IsReturned)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 5:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                }
+          
             }
 
             #endregion
@@ -228,7 +397,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<IActionResult>  GetSalesData()
+    public async Task<IActionResult> GetSalesData()
     {
         var oneMonthAgo = DateTime.Now.AddMonths(-1);
         var salesData = await _work.GenericRepository<FactorProduct>()
@@ -262,12 +431,12 @@ public class AdminController : Controller
                     .Include(x => x.UserAddress)
                     .Include(x => x.Products)
                     .ThenInclude(x => x.FactorProductColor)
-                    .Where(x => x.DiscountCode.Contains(search) || 
+                    .Where(x => x.DiscountCode.Contains(search) ||
                                 x.Desc.Contains(search) ||
                                 x.FactorCode.Contains(search) ||
-                                x.User.PhoneNumber.Contains(search) || 
-                                x.User.Name.Contains(search) || 
-                                x.User.Family.Contains(search) || 
+                                x.User.PhoneNumber.Contains(search) ||
+                                x.User.Name.Contains(search) ||
+                                x.User.Family.Contains(search) ||
                                 x.EconomicNumber.Contains(search) ||
                                 x.OrganizationName.Contains(search) ||
                                 x.NationalId.Contains(search) ||
@@ -319,8 +488,20 @@ public class AdminController : Controller
                         .ThenInclude(x => x.FactorProductColor)
                         .Include(x => x.Factor).ThenInclude(x => x.Products)
                         .ThenInclude(x => x.FactorProductColor)
-                        .Where(x => x.Factor.DiscountCode.Contains(search) || x.Desc.Contains(search) ||
-                                    x.Factor.FactorCode.Contains(search))
+                        .Where(x => x.Factor.DiscountCode.Contains(search) ||
+                                    x.Desc.Contains(search) ||
+                                    x.Factor.FactorCode.Contains(search) ||
+                                    x.Factor.User.PhoneNumber.Contains(search) ||
+                                    x.Factor.User.Name.Contains(search) ||
+                                    x.Factor.User.Family.Contains(search) ||
+                                    x.Factor.EconomicNumber.Contains(search) ||
+                                    x.Factor.OrganizationName.Contains(search) ||
+                                    x.Factor.NationalId.Contains(search) ||
+                                    x.Factor.PostCode.Contains(search) ||
+                                    x.Factor.OrganizationNumber.Contains(search) ||
+                                    x.Factor.RegistrationNumber.Contains(search) ||
+                                    x.Factor.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                    x.Factor.Adders.Contains(search)) // اضافه کردن Adders به جستجو
                         .OrderByDescending(x => x.InsertDate)
                         .ToListAsync();
             }

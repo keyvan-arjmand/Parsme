@@ -1,9 +1,11 @@
 ﻿@using Application.Common.Utilities
 @using Domain.Entity.Factor
+@using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_LayoutAdmin";
     List<Factor> factors = ViewBag.Factors;
+    List<Factor> factorsT = ViewBag.FactorsT;
 }
 
 @section link
@@ -62,41 +64,52 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                        <a class="d-flex justify-content-between align-items-center border-bottom mb-3 text-decoration-none " style="color: black" href="@Url.Action("ManageFactor", "Admin", new { type = 0 })">
                             <p class="text-success text-xl text-center">
                                 <i class="fa fa-shopping-basket"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
                                 <span class="font-weight-bold text-center">
-                                    <i class="fa fa-arrow-up text-success"></i> @factors.Where(x => x.InsertDate.Month == DateTime.Now.Month).ToList().Count
+                                    <i class="fa fa-arrow-up text-success"></i> @factorsT.Where(x => x.InsertDate.Month == DateTime.Now.Month).ToList().Count
                                 </span>
                                 <span class="text-muted">سفارشات کل</span>
                             </p>
-                        </div>
+                        </a>
+                        <a class="d-flex justify-content-between align-items-center border-bottom mb-3 text-decoration-none " style="color: black" href="@Url.Action("ManageFactor", "Admin", new { type = 1 })">
+                            <p class="text-success text-xl text-center">
+                                <i class="fa fa-send"></i>
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                                <span class="font-weight-bold text-center">
+                                    <i class="fa fa-arrow-up text-success"></i> @factorsT.Where(x => x.InsertDate.Month == DateTime.Now.Month && x.Status == Status.Accepted).ToList().Count
+                                </span>
+                                <span class="text-muted">ارسالی های ماه</span>
+                            </p>
+                        </a>
                         <!-- /.d-flex -->
-                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                        <a class="d-flex justify-content-between align-items-center border-bottom mb-3 text-decoration-none " style="color: black" href="@Url.Action("ManageFactor", "Admin", new { type = 2 })">
                             <p class="text-warning text-xl text-center">
                                 <i class="fa fa-shopping-cart"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
                                 <span class="font-weight-bold text-center">
-                                    <i class="fa fa-arrow-up text-warning"></i>@factors.Count(x => x.InsertDate.Day == DateTime.Now.Day)
+                                    <i class="fa fa-arrow-up text-warning"></i>@factorsT.Count(x => x.InsertDate.Day == DateTime.Now.Day)
                                 </span>
                                 <span class="text-muted">سفارشات امروز</span>
                             </p>
-                        </div>
+                        </a>
                         <!-- /.d-flex -->
-                        <div class="d-flex justify-content-between align-items-center mb-0">
+                        <a class="d-flex justify-content-between align-items-center mb-0 text-decoration-none " style="color: black" href="@Url.Action("ManageFactor", "Admin", new { type = 3 })">
                             <p class="text-danger text-xl text-center">
                                 <i class="fa fa-archive"></i>
                             </p>
                             <p class="d-flex flex-column text-right">
                                 <span class="font-weight-bold text-center">
-                                    <i class="fa fa-arrow-down text-danger "></i> @factors.Where(x => x.IsReturned).ToList().Count
+                                    <i class="fa fa-arrow-down text-danger "></i> @factorsT.Where(x => x.IsReturned).ToList().Count
                                 </span>
                                 <span class="text-muted">تعداد مرجوعی</span>
                             </p>
-                        </div>
+                        </a>
                         <!-- /.d-flex -->
                     </div>
                 </div>
@@ -123,14 +136,16 @@
                                     <table class="table table-condensed">
                                         <tbody>
                                         <tr>
-                                            <th class="text-center" style="width: 5%">id</th>
-                                            <th class="text-center" style="width: 10%">کد فاکتور</th>
-                                            <th class="text-center" style="width: 20%">نام کاربر</th>
-                                            <th class="text-center" style="width: 20%">نوع فاکتور</th>
-                                            <th class="text-center" style="width: 25%">مبلغ</th>
-                                            <th class="text-center" style="width: 10%">تاریخ</th>
-                                            <th class="text-center" style="width: 20%">وضعیت</th>
-                                            <th class="text-center" style="width: 10%">#</th>
+                                            <th class="text-center">id</th>
+                                            <th class="text-center">کد فاکتور</th>
+                                            <th class="text-center">روش ارسال</th>
+                                            <th class="text-center">درگاه پرداخت</th>
+                                            <th class="text-center">نام کاربر</th>
+                                            <th class="text-center">نوع فاکتور</th>
+                                            <th class="text-center">مبلغ</th>
+                                            <th class="text-center">تاریخ</th>
+                                            <th class="text-center">وضعیت</th>
+                                            <th class="text-center">#</th>
                                         </tr>
                                         @{
                                             if (factors.Count < 1)
@@ -151,6 +166,8 @@
                                                     <tr>
                                                         <td class="text-center">@i.Id</td>
                                                         <td class="text-center">@i.FactorCode</td>
+                                                        <td class="text-center">@i.PostMethod.Title</td>
+                                                        <td class="text-center">به پرداخت ملت</td>
                                                         <td class="text-center">@i.User.Name @i.User.Family</td>
                                                         <td class="text-center">@i.AccountType.ToDisplay()</td>
                                                         <td class="text-center">@i.Amount.ToString("N0")</td>
