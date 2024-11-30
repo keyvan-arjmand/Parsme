@@ -187,7 +187,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ManageFactor(string search,int type=5)
+    public async Task<ActionResult> ManageFactor(string search, int type = 5)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -198,132 +198,131 @@ public class AdminController : Controller
             {
                 switch (type)
                 {
-                     case 0:
-                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                             .Include(x => x.User)
-                             .Include(x => x.PostMethod)
-                             .Include(x => x.UserAddress)
-                             .Include(x => x.Products)
-                             .ThenInclude(x => x.FactorProductColor)
-                             .Where(x => x.DiscountCode.Contains(search) ||
-                                         x.Desc.Contains(search) ||
-                                         x.FactorCode.Contains(search) ||
-                                         x.User.PhoneNumber.Contains(search) ||
-                                         x.User.Name.Contains(search) ||
-                                         x.User.Family.Contains(search) ||
-                                         x.EconomicNumber.Contains(search) ||
-                                         x.OrganizationName.Contains(search) ||
-                                         x.NationalId.Contains(search) ||
-                                         x.PostCode.Contains(search) ||
-                                         x.OrganizationNumber.Contains(search) ||
-                                         x.RegistrationNumber.Contains(search) ||
-                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
-                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
-                             .Where(x => x.InsertDate.Month == DateTime.Now.Month)
-                             .OrderByDescending(x => x.InsertDate)
-                             .ToListAsync();
-                         break;
-                     case 1:
-                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                             .Include(x => x.User)
-                             .Include(x => x.PostMethod)
-                             .Include(x => x.UserAddress)
-                             .Include(x => x.Products)
-                             .ThenInclude(x => x.FactorProductColor)
-                             .Where(x => x.DiscountCode.Contains(search) ||
-                                         x.Desc.Contains(search) ||
-                                         x.FactorCode.Contains(search) ||
-                                         x.User.PhoneNumber.Contains(search) ||
-                                         x.User.Name.Contains(search) ||
-                                         x.User.Family.Contains(search) ||
-                                         x.EconomicNumber.Contains(search) ||
-                                         x.OrganizationName.Contains(search) ||
-                                         x.NationalId.Contains(search) ||
-                                         x.PostCode.Contains(search) ||
-                                         x.OrganizationNumber.Contains(search) ||
-                                         x.RegistrationNumber.Contains(search) ||
-                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
-                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
-                             .Where(x => x.InsertDate.Month == DateTime.Now.Month && x.Status == Status.Accepted)
-                             .OrderByDescending(x => x.InsertDate)
-                             .ToListAsync();
-                         break;
-                     case 2:
-                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                             .Include(x => x.User)
-                             .Include(x => x.PostMethod)
-                             .Include(x => x.UserAddress)
-                             .Include(x => x.Products)
-                             .ThenInclude(x => x.FactorProductColor)
-                             .Where(x => x.DiscountCode.Contains(search) ||
-                                         x.Desc.Contains(search) ||
-                                         x.FactorCode.Contains(search) ||
-                                         x.User.PhoneNumber.Contains(search) ||
-                                         x.User.Name.Contains(search) ||
-                                         x.User.Family.Contains(search) ||
-                                         x.EconomicNumber.Contains(search) ||
-                                         x.OrganizationName.Contains(search) ||
-                                         x.NationalId.Contains(search) ||
-                                         x.PostCode.Contains(search) ||
-                                         x.OrganizationNumber.Contains(search) ||
-                                         x.RegistrationNumber.Contains(search) ||
-                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
-                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
-                             .Where(x => x.InsertDate.Day == DateTime.Now.Day)
-                             .OrderByDescending(x => x.InsertDate)
-                             .ToListAsync();
-                         break;
-                     case 3:
-                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                             .Include(x => x.User)
-                             .Include(x => x.PostMethod)
-                             .Include(x => x.UserAddress)
-                             .Include(x => x.Products)
-                             .ThenInclude(x => x.FactorProductColor)
-                             .Where(x => x.DiscountCode.Contains(search) ||
-                                         x.Desc.Contains(search) ||
-                                         x.FactorCode.Contains(search) ||
-                                         x.User.PhoneNumber.Contains(search) ||
-                                         x.User.Name.Contains(search) ||
-                                         x.User.Family.Contains(search) ||
-                                         x.EconomicNumber.Contains(search) ||
-                                         x.OrganizationName.Contains(search) ||
-                                         x.NationalId.Contains(search) ||
-                                         x.PostCode.Contains(search) ||
-                                         x.OrganizationNumber.Contains(search) ||
-                                         x.RegistrationNumber.Contains(search) ||
-                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
-                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
-                             .Where(x => x.IsReturned)
-                             .OrderByDescending(x => x.InsertDate)
-                             .ToListAsync();
-                         break;
-                     case 5:
-                         ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
-                             .Include(x => x.User)
-                             .Include(x => x.PostMethod)
-                             .Include(x => x.UserAddress)
-                             .Include(x => x.Products)
-                             .ThenInclude(x => x.FactorProductColor)
-                             .Where(x => x.DiscountCode.Contains(search) ||
-                                         x.Desc.Contains(search) ||
-                                         x.FactorCode.Contains(search) ||
-                                         x.User.PhoneNumber.Contains(search) ||
-                                         x.User.Name.Contains(search) ||
-                                         x.User.Family.Contains(search) ||
-                                         x.EconomicNumber.Contains(search) ||
-                                         x.OrganizationName.Contains(search) ||
-                                         x.NationalId.Contains(search) ||
-                                         x.PostCode.Contains(search) ||
-                                         x.OrganizationNumber.Contains(search) ||
-                                         x.RegistrationNumber.Contains(search) ||
-                                         x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
-                                         x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
-                             .OrderByDescending(x => x.InsertDate)
-                             .ToListAsync();
-                         break;
+                    case 0:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.DiscountCode.Contains(search) ||
+                                        x.Desc.Contains(search) ||
+                                        x.FactorCode.Contains(search) ||
+                                        x.User.PhoneNumber.Contains(search) ||
+                                        x.User.Name.Contains(search) ||
+                                        x.User.Family.Contains(search) ||
+                                        x.EconomicNumber.Contains(search) ||
+                                        x.OrganizationName.Contains(search) ||
+                                        x.NationalId.Contains(search) ||
+                                        x.PostCode.Contains(search) ||
+                                        x.OrganizationNumber.Contains(search) ||
+                                        x.RegistrationNumber.Contains(search) ||
+                                        x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                        x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                            .Where(x => x.InsertDate.Month == DateTime.Now.Month)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 1:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.DiscountCode.Contains(search) ||
+                                        x.Desc.Contains(search) ||
+                                        x.FactorCode.Contains(search) ||
+                                        x.User.PhoneNumber.Contains(search) ||
+                                        x.User.Name.Contains(search) ||
+                                        x.User.Family.Contains(search) ||
+                                        x.EconomicNumber.Contains(search) ||
+                                        x.OrganizationName.Contains(search) ||
+                                        x.NationalId.Contains(search) ||
+                                        x.PostCode.Contains(search) ||
+                                        x.OrganizationNumber.Contains(search) ||
+                                        x.RegistrationNumber.Contains(search) ||
+                                        x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                        x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                            .Where(x => x.InsertDate.Month == DateTime.Now.Month && x.Status == Status.Accepted)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 2:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.DiscountCode.Contains(search) ||
+                                        x.Desc.Contains(search) ||
+                                        x.FactorCode.Contains(search) ||
+                                        x.User.PhoneNumber.Contains(search) ||
+                                        x.User.Name.Contains(search) ||
+                                        x.User.Family.Contains(search) ||
+                                        x.EconomicNumber.Contains(search) ||
+                                        x.OrganizationName.Contains(search) ||
+                                        x.NationalId.Contains(search) ||
+                                        x.PostCode.Contains(search) ||
+                                        x.OrganizationNumber.Contains(search) ||
+                                        x.RegistrationNumber.Contains(search) ||
+                                        x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                        x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                            .Where(x => x.InsertDate.Day == DateTime.Now.Day)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 3:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.DiscountCode.Contains(search) ||
+                                        x.Desc.Contains(search) ||
+                                        x.FactorCode.Contains(search) ||
+                                        x.User.PhoneNumber.Contains(search) ||
+                                        x.User.Name.Contains(search) ||
+                                        x.User.Family.Contains(search) ||
+                                        x.EconomicNumber.Contains(search) ||
+                                        x.OrganizationName.Contains(search) ||
+                                        x.NationalId.Contains(search) ||
+                                        x.PostCode.Contains(search) ||
+                                        x.OrganizationNumber.Contains(search) ||
+                                        x.RegistrationNumber.Contains(search) ||
+                                        x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                        x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                            .Where(x => x.IsReturned)
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
+                    case 5:
+                        ViewBag.Factors = await _work.GenericRepository<Factor>().TableNoTracking
+                            .Include(x => x.User)
+                            .Include(x => x.PostMethod)
+                            .Include(x => x.UserAddress)
+                            .Include(x => x.Products)
+                            .ThenInclude(x => x.FactorProductColor)
+                            .Where(x => x.DiscountCode.Contains(search) ||
+                                        x.Desc.Contains(search) ||
+                                        x.FactorCode.Contains(search) ||
+                                        x.User.PhoneNumber.Contains(search) ||
+                                        x.User.Name.Contains(search) ||
+                                        x.User.Family.Contains(search) ||
+                                        x.EconomicNumber.Contains(search) ||
+                                        x.OrganizationName.Contains(search) ||
+                                        x.NationalId.Contains(search) ||
+                                        x.PostCode.Contains(search) ||
+                                        x.OrganizationNumber.Contains(search) ||
+                                        x.RegistrationNumber.Contains(search) ||
+                                        x.RecipientName.Contains(search) || // اضافه کردن RecipientName به جستجو
+                                        x.Adders.Contains(search)) // اضافه کردن Adders به جستجو
+                            .OrderByDescending(x => x.InsertDate)
+                            .ToListAsync();
+                        break;
                 }
-             
             }
             else
             {
@@ -384,7 +383,6 @@ public class AdminController : Controller
                             .ToListAsync();
                         break;
                 }
-          
             }
 
             #endregion
@@ -948,6 +946,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
+            Upload up = new Upload(_webHostEnvironment);
             var result = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
             if (result == null)
             {
@@ -1009,6 +1008,22 @@ public class AdminController : Controller
                     SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle,
                     SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc,
                     SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical,
+                    ParsInstallmentPurchaseImage = up.Uploadfile(request.ParsInstallmentPurchaseImage, "Pages"),
+                    ParsOnlineSupportDescImage = up.Uploadfile(request.ParsOnlineSupportDescImage, "Pages"),
+                    ParsGoalsImage = up.Uploadfile(request.ParsGoalsImage, "Pages"),
+                    ParsBuyingGuideImage = up.Uploadfile(request.ParsBuyingGuideImage, "Pages"),
+                    ParsOrganizationalPurchaseImage = up.Uploadfile(request.ParsOrganizationalPurchaseImage, "Pages"),
+                    ParsRegulationsDescImage = up.Uploadfile(request.ParsRegulationsDescImage, "Pages"),
+                    ParsWarrantyDescImage = up.Uploadfile(request.ParsWarrantyDescImage, "Pages"),
+                    SeoWhyParsImage = up.Uploadfile(request.SeoWhyParsImage, "Pages"),
+                    ParsShippingMethodsDescImage = up.Uploadfile(request.ParsShippingMethodsDescImage, "Pages"),
+                    ParsTrackingOrdersDescImage = up.Uploadfile(request.ParsTrackingOrdersDescImage, "Pages"),
+                    ParsUserPrivacyDescImage = up.Uploadfile(request.ParsUserPrivacyDescImage, "Pages"),
+                    SeoParsDarYekImage = up.Uploadfile(request.SeoParsDarYekImage, "Pages"),
+                    ParsConsultationBeforePurchaseDescImage =
+                        up.Uploadfile(request.ParsConsultationBeforePurchaseDescImage, "Pages"),
+                    ParsProceduresForReturningGoodsDescImage =
+                        up.Uploadfile(request.ParsProceduresForReturningGoodsDescImage, "Pages"),
                 }, CancellationToken.None);
             }
             else
@@ -1070,6 +1085,52 @@ public class AdminController : Controller
                 result.SeoParsUserPrivacyTitle = request.SeoParsUserPrivacyTitle;
                 result.SeoParsUserPrivacyDesc = request.SeoParsUserPrivacyDesc;
                 result.SeoParsUserPrivacyCanonical = request.SeoParsUserPrivacyCanonical;
+
+
+                result.ParsInstallmentPurchaseImage = request.ParsInstallmentPurchaseImage != null
+                    ? up.Uploadfile(request.ParsInstallmentPurchaseImage, "Pages")
+                    : result.ParsInstallmentPurchaseImage;
+                result.ParsOnlineSupportDescImage = request.ParsOnlineSupportDescImage != null
+                    ? up.Uploadfile(request.ParsOnlineSupportDescImage, "Pages")
+                    : result.ParsOnlineSupportDescImage;
+                result.ParsGoalsImage = request.ParsGoalsImage != null
+                    ? up.Uploadfile(request.ParsGoalsImage, "Pages")
+                    : result.ParsGoalsImage;
+                result.ParsBuyingGuideImage = request.ParsBuyingGuideImage != null
+                    ? up.Uploadfile(request.ParsBuyingGuideImage, "Pages")
+                    : result.ParsBuyingGuideImage;
+                result.ParsOrganizationalPurchaseImage = request.ParsOrganizationalPurchaseImage != null
+                    ? up.Uploadfile(request.ParsOrganizationalPurchaseImage, "Pages")
+                    : result.ParsOrganizationalPurchaseImage;
+                result.ParsRegulationsDescImage = request.ParsRegulationsDescImage != null
+                    ? up.Uploadfile(request.ParsRegulationsDescImage, "Pages")
+                    : result.ParsRegulationsDescImage;
+                result.ParsWarrantyDescImage = request.ParsWarrantyDescImage != null
+                    ? up.Uploadfile(request.ParsWarrantyDescImage, "Pages")
+                    : result.ParsWarrantyDescImage;
+                result.SeoWhyParsImage = request.SeoWhyParsImage != null
+                    ? up.Uploadfile(request.SeoWhyParsImage, "Pages")
+                    : result.SeoWhyParsImage;
+                result.ParsShippingMethodsDescImage = request.ParsShippingMethodsDescImage != null
+                    ? up.Uploadfile(request.ParsShippingMethodsDescImage, "Pages")
+                    : result.ParsShippingMethodsDescImage;
+                result.ParsTrackingOrdersDescImage = request.ParsTrackingOrdersDescImage != null
+                    ? up.Uploadfile(request.ParsTrackingOrdersDescImage, "Pages")
+                    : result.ParsTrackingOrdersDescImage;
+                result.ParsUserPrivacyDescImage = request.ParsUserPrivacyDescImage != null
+                    ? up.Uploadfile(request.ParsUserPrivacyDescImage, "Pages")
+                    : result.ParsUserPrivacyDescImage;
+                result.SeoParsDarYekImage = request.SeoParsDarYekImage != null
+                    ? up.Uploadfile(request.SeoParsDarYekImage, "Pages")
+                    : result.SeoParsDarYekImage;
+                result.ParsConsultationBeforePurchaseDescImage = request.ParsConsultationBeforePurchaseDescImage != null
+                    ? up.Uploadfile(request.ParsConsultationBeforePurchaseDescImage, "Pages")
+                    : result.ParsConsultationBeforePurchaseDescImage;
+                result.ParsProceduresForReturningGoodsDescImage =
+                    request.ParsProceduresForReturningGoodsDescImage != null
+                        ? up.Uploadfile(request.ParsProceduresForReturningGoodsDescImage, "Pages")
+                        : result.ParsProceduresForReturningGoodsDescImage;
+
                 await _work.GenericRepository<FooterPage>().UpdateAsync(result, CancellationToken.None);
             }
 
@@ -2120,80 +2181,76 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateBanner(BannerDto request)
+    public async Task<IActionResult> UpdateBanner(int id, string href, IFormFile image)
     {
-        if (request.Id <= 0)
-        {
-            Upload up = new Upload(_webHostEnvironment);
+        Upload up = new Upload(_webHostEnvironment);
+        var banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync();
 
-            await _work.GenericRepository<Banner>().AddAsync(new Banner
-            {
-                SmallBannerMiddle1 = up.Uploadfile(request.SmallBannerMiddle1, "Banner"),
-                BigBannerMiddle1 = up.Uploadfile(request.BigBannerMiddle1, "Banner"),
-                BigBannerMiddle2 = up.Uploadfile(request.BigBannerMiddle2, "Banner"),
-                LargeSideBanner = up.Uploadfile(request.LargeSideBanner, "Banner"),
-                SmallBannerMiddle2 = up.Uploadfile(request.SmallBannerMiddle2, "Banner"),
-                SmallBannerMiddle3 = up.Uploadfile(request.SmallBannerMiddle3, "Banner"),
-                SmallBannerMiddle4 = up.Uploadfile(request.SmallBannerMiddle4, "Banner"),
-                SmallSideBanner = up.Uploadfile(request.SmallSideBanner, "Banner"),
-                BigBannerMiddle1Href = request.BigBannerMiddle1Href,
-                BigBannerMiddle2Href = request.BigBannerMiddle2Href,
-                LargeSideBannerHref = request.LargeSideBannerHref,
-                SmallBannerMiddle1Href = request.SmallBannerMiddle1Href,
-                SmallBannerMiddle2Href = request.SmallBannerMiddle2Href,
-                SmallBannerMiddle3Href = request.SmallBannerMiddle3Href,
-                SmallBannerMiddle4Href = request.SmallBannerMiddle4Href,
-                SmallSideBannerHref = request.SmallSideBannerHref,
-                BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner"),
-                BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner"),
-                BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref,
-                BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref,
-            }, CancellationToken.None);
-        }
-        else
+        switch (id)
         {
-            Upload up = new Upload(_webHostEnvironment);
-            var banners = await _work.GenericRepository<Banner>().GetByIdAsync(CancellationToken.None, request.Id);
-            banners.SmallBannerMiddle1 = request.SmallBannerMiddle1 != null
-                ? up.Uploadfile(request.SmallBannerMiddle1, "Banner")
-                : banners.SmallBannerMiddle1;
-            banners.BigBannerMiddle1 = request.BigBannerMiddle1 != null
-                ? up.Uploadfile(request.BigBannerMiddle1, "Banner")
-                : banners.BigBannerMiddle1;
-            banners.BigBannerMiddle2 = request.BigBannerMiddle2 != null
-                ? up.Uploadfile(request.BigBannerMiddle2, "Banner")
-                : banners.BigBannerMiddle2;
-            banners.LargeSideBanner = request.LargeSideBanner != null
-                ? up.Uploadfile(request.LargeSideBanner, "Banner")
-                : banners.LargeSideBanner;
-            banners.SmallBannerMiddle2 = request.SmallBannerMiddle2 != null
-                ? up.Uploadfile(request.SmallBannerMiddle2, "Banner")
-                : banners.SmallBannerMiddle2;
-            banners.SmallBannerMiddle3 = request.SmallBannerMiddle3 != null
-                ? up.Uploadfile(request.SmallBannerMiddle3, "Banner")
-                : banners.SmallBannerMiddle3;
-            banners.SmallBannerMiddle4 = request.SmallBannerMiddle4 != null
-                ? up.Uploadfile(request.SmallBannerMiddle4, "Banner")
-                : banners.SmallBannerMiddle4;
-            banners.SmallSideBanner = request.SmallSideBanner != null
-                ? up.Uploadfile(request.SmallSideBanner, "Banner")
-                : banners.SmallSideBanner;
-            banners.BigBannerMiddle1Href = request.BigBannerMiddle1Href;
-            banners.BigBannerMiddle2Href = request.BigBannerMiddle2Href;
-            banners.LargeSideBannerHref = request.LargeSideBannerHref;
-            banners.SmallBannerMiddle1Href = request.SmallBannerMiddle1Href;
-            banners.SmallBannerMiddle2Href = request.SmallBannerMiddle2Href;
-            banners.SmallBannerMiddle3Href = request.SmallBannerMiddle3Href;
-            banners.SmallBannerMiddle4Href = request.SmallBannerMiddle4Href;
-            banners.SmallSideBannerHref = request.SmallSideBannerHref;
-
-            banners.BigBannerMiddle1Col = up.Uploadfile(request.BigBannerMiddle1Col, "Banner");
-            banners.BigBannerMiddle2Col = up.Uploadfile(request.BigBannerMiddle2Col, "Banner");
-            banners.BigBannerMiddle1ColHref = request.BigBannerMiddle1ColHref;
-            banners.BigBannerMiddle2ColHref = request.BigBannerMiddle2ColHref;
-            await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
+            case 1:
+                banners.SmallBannerMiddle1 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SmallBannerMiddle1;
+                banners.SmallBannerMiddle1Href = href;
+                break;
+            case 2:
+                banners.BigBannerMiddle1 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.BigBannerMiddle1;
+                banners.BigBannerMiddle1Href = href;
+                break;
+            case 3:
+                banners.BigBannerMiddle2 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.BigBannerMiddle2;
+                banners.BigBannerMiddle2Href = href;
+                break;
+            case 4:
+                banners.LargeSideBanner = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.LargeSideBanner;
+                banners.LargeSideBannerHref = href;
+                break;
+            case 5:
+                banners.SmallBannerMiddle2 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SmallBannerMiddle2;
+                banners.SmallBannerMiddle2Href = href;
+                break;
+            case 6:
+                banners.SmallBannerMiddle3 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SmallBannerMiddle3;
+                banners.SmallBannerMiddle3Href = href;
+                break;
+            case 7:
+                banners.SmallBannerMiddle4 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SmallBannerMiddle4;
+                banners.SmallBannerMiddle4Href = href;
+                break;
+            case 8:
+                banners.SmallSideBanner = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SmallSideBanner;
+                banners.SmallSideBannerHref = href;
+                break;
+            case 9:
+                banners.BigBannerMiddle1Col = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.BigBannerMiddle1Col;
+                banners.BigBannerMiddle1ColHref = href;
+                break;
+            case 10:
+                banners.BigBannerMiddle2Col = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.BigBannerMiddle2Col;
+                banners.BigBannerMiddle2ColHref = href;
+                break;
         }
 
+        await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
         return RedirectToAction("ManageBanner");
     }
 
@@ -2215,62 +2272,51 @@ public class AdminController : Controller
         return RedirectToAction("ManageFooterLink");
     }
 
-    public async Task<IActionResult> UpdateSlider(BannerDto request)
+    public async Task<IActionResult> UpdateSlider(int id, string href, string title, IFormFile image)
     {
-        if (request.Id <= 0)
-        {
-            Upload up = new Upload(_webHostEnvironment);
+        Upload up = new Upload(_webHostEnvironment);
+        var banners = await _work.GenericRepository<Banner>().Table.FirstOrDefaultAsync();
 
-            await _work.GenericRepository<Banner>().AddAsync(new Banner
-            {
-                SliderImage = up.Uploadfile(request.SliderImage, "Banner"),
-                SliderImage1 = up.Uploadfile(request.SliderImage1, "Banner"),
-                SliderImage2 = up.Uploadfile(request.SliderImage2, "Banner"),
-                SliderImage3 = up.Uploadfile(request.SliderImage3, "Banner"),
-                SliderImage4 = up.Uploadfile(request.SliderImage4, "Banner"),
-                SliderHref = request.SliderHref,
-                SliderHref1 = request.SliderHref1,
-                SliderHref2 = request.SliderHref2,
-                SliderHref4 = request.SliderHref4,
-                SliderHref3 = request.SliderHref3,
-                SliderTitle = request.SliderTitle,
-                SliderTitle1 = request.SliderTitle1,
-                SliderTitle2 = request.SliderTitle2,
-                SliderTitle3 = request.SliderTitle3,
-                SliderTitle4 = request.SliderTitle4,
-            }, CancellationToken.None);
-        }
-        else
+        switch (id)
         {
-            Upload up = new Upload(_webHostEnvironment);
-            var banners = await _work.GenericRepository<Banner>().GetByIdAsync(CancellationToken.None, request.Id);
-            banners.SliderHref = request.SliderHref;
-            banners.SliderHref1 = request.SliderHref1;
-            banners.SliderHref2 = request.SliderHref2;
-            banners.SliderHref3 = request.SliderHref3;
-            banners.SliderHref4 = request.SliderHref4;
-            banners.SliderImage = request.SliderImage != null
-                ? up.Uploadfile(request.SliderImage, "Banner")
-                : banners.SliderImage;
-            banners.SliderImage1 = request.SliderImage1 != null
-                ? up.Uploadfile(request.SliderImage1, "Banner")
-                : banners.SliderImage1;
-            banners.SliderImage2 = request.SliderImage2 != null
-                ? up.Uploadfile(request.SliderImage2, "Banner")
-                : banners.SliderImage2;
-            banners.SliderImage3 = request.SliderImage3 != null
-                ? up.Uploadfile(request.SliderImage3, "Banner")
-                : banners.SliderImage3;
-            banners.SliderImage4 = request.SliderImage4 != null
-                ? up.Uploadfile(request.SliderImage4, "Banner")
-                : banners.SliderImage4;
-            banners.SliderTitle = request.SliderTitle;
-            banners.SliderTitle1 = request.SliderTitle1;
-            banners.SliderTitle2 = request.SliderTitle2;
-            banners.SliderTitle3 = request.SliderTitle3;
-            banners.SliderTitle4 = request.SliderTitle4;
-            await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
+            case 1:
+                banners.SliderHref = href;
+                banners.SliderImage = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SliderImage;
+                banners.SliderTitle = title;
+                break;
+            case 2:
+                banners.SliderHref1 = href;
+                banners.SliderImage1 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SliderImage1;
+                banners.SliderTitle1 = title;
+                break;
+            case 3:
+                banners.SliderHref2 = href;
+                banners.SliderImage2 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SliderImage2;
+                banners.SliderTitle2 = title;
+                break;
+            case 4:
+                banners.SliderHref3 = href;
+                banners.SliderImage3 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SliderImage3;
+                banners.SliderTitle3 = title;
+                break;
+            case 5:
+                banners.SliderHref4 = href;
+                banners.SliderImage4 = image != null
+                    ? up.Uploadfile(image, "Banner")
+                    : banners.SliderImage4;
+                banners.SliderTitle4 = title;
+                break;
         }
+
+        await _work.GenericRepository<Banner>().UpdateAsync(banners, CancellationToken.None);
 
         return RedirectToAction("ManageSlider");
     }

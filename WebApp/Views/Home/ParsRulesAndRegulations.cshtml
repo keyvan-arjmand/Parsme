@@ -1045,10 +1045,10 @@ price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmou
     <div class="col-12">
         <div id="content">
             <div class="about">
-                <div class="about-us-head">
-                    <div class="about-us-head-inner">
-                        @Html.Raw(pages.SeoParsRegulationsTitle)
-                    </div>
+                <div class="about-us-head" style="
+                    background: url('@Url.Content("https://newdev.parsme.com/Images/Pages/" + pages.ParsRegulationsDescImage)') no-repeat 50%;
+                    ">
+
                 </div>
                 <div class="page-content-about">
                     @Html.Raw(pages.ParsRegulationsDesc)

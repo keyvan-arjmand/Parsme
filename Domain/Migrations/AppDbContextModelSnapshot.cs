@@ -953,7 +953,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsBuyingGuideImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsConsultationBeforePurchaseDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsConsultationBeforePurchaseDescImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -965,7 +973,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsGoalsImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsInstallmentPurchaseDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsInstallmentPurchaseImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -973,7 +989,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsOnlineSupportDescImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsOrganizationalPurchaseDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsOrganizationalPurchaseImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -981,7 +1005,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsProceduresForReturningGoodsDescImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsRegulationsDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsRegulationsDescImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -989,7 +1021,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsShippingMethodsDescImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsTrackingOrdersDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsTrackingOrdersDescImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -997,7 +1037,15 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParsUserPrivacyDescImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ParsWarrantyDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParsWarrantyDescImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1030,6 +1078,10 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoParsDarYekDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoParsDarYekImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1162,6 +1214,10 @@ namespace Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoWhyParsDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoWhyParsImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

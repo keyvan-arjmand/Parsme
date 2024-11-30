@@ -354,7 +354,7 @@
                 <div class="d-flex justify-content-between w-100 p-2 m-1">
                     <div class="d-flex flex-column w-100">
                         <label for="exampleInputPassword1">توضیحات پاورقی</label>
-                        <textarea  asp-for="DescFooter" id="SmallSideBannerin" value="" title="test" class="form-control w-100">@footer.DescFooter</textarea>
+                        <textarea  asp-for="DescFooter" id="dse1e"  title="test" class="form-control w-100" >@footer.DescFooter</textarea>
                     </div>
                 
                 </div>
@@ -377,4 +377,11 @@
 </section>
 
 @section script{
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("dse1e").value = `@footer.DescFooter`;
+
+        });
+    </script>
 }

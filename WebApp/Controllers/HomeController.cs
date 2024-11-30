@@ -560,7 +560,7 @@ public class HomeController : Controller
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
-                .Where(x => x.User.UserName == User.Identity.Name)
+                .Where(x => x.User.UserName == User.Identity.Name&&x.Status!=Status.PendingForPayment&&x.Status!=Status.Field)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -956,6 +956,7 @@ public class HomeController : Controller
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
+        ViewBag.BrandId = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync();
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
@@ -1339,6 +1340,8 @@ public class HomeController : Controller
         ViewBag.Id = id;
         ViewBag.Page = page;
         ViewBag.Values = values;
+        ViewBag.SubCatId = await _work.GenericRepository<SubCategory>().TableNoTracking
+            .FirstOrDefaultAsync(x => x.Id == id);
         if (max > 0)
         {
             if (values.Count > 0)
