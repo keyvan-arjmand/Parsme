@@ -415,6 +415,36 @@ public class AdminController : Controller
         return Ok(salesData);
     }
 
+    public async Task<IActionResult> GetDailySalesData()
+    {
+        var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var startDate = endDate.AddMonths(-1);
+
+        var salesData = await _work.GenericRepository<FactorProduct>()
+            .TableNoTracking
+            .Where(x => x.Factor.InsertDate >= startDate && x.Factor.InsertDate <= endDate)
+            .Select(x => new
+            {
+                Day = x.Factor.InsertDate.Date,
+                FactorProductColors = x.FactorProductColor // داده‌های مربوط به FactorProductColor
+            })
+            .ToListAsync();
+
+        // حالا روی داده‌های استخراج‌شده عملیات تجمیع را انجام می‌دهیم
+        var dailySales = Enumerable.Range(1, DateTime.DaysInMonth(startDate.Year, startDate.Month))
+            .Select(day => new
+            {
+                Day = day,
+                Count = salesData
+                    .Where(s => s.Day.Day == day) // فیلتر کردن بر اساس روز
+                    .Sum(s => s.FactorProductColors.Sum(c => c.Count)) // جمع تعداد محصولات برای هر روز
+            })
+            .ToList();
+
+
+        return Ok(dailySales);
+    }
+
     public async Task<ActionResult> SalesInvoice(string search)
     {
         if (User.Identity.IsAuthenticated)
@@ -3105,7 +3135,7 @@ public class AdminController : Controller
                 var val = request.ProductDetails.FirstOrDefault(x => x.DetailId.ToInt() == i.CategoryDetailId);
                 if (val != null)
                 {
-                    i.Value = val.DetailName;
+                    i.Value = val.DetailName??string.Empty;
                     await _work.GenericRepository<ProductDetail>().UpdateAsync(i, CancellationToken.None);
                 }
             }
