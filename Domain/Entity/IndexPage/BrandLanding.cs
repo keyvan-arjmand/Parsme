@@ -7,7 +7,6 @@ namespace Domain.Entity.IndexPage;
 public class BrandLanding : BaseEntity
 {
     public int? BrandTagId { get; set; }
-
     [ForeignKey("BrandTagId")] public BrandTag? BrandTag { get; set; }
 
     //slider
@@ -48,7 +47,7 @@ public class BrandLanding : BaseEntity
     public string? HrefSmallBanner3 { get; set; }
     public string? SmallBanner4 { get; set; }
     public string? HrefSmallBanner4 { get; set; }
-    
+
     public string SeoTitle { get; set; } = string.Empty;
     public string SeoDesc { get; set; } = string.Empty;
     public string SeoCanonical { get; set; } = string.Empty;

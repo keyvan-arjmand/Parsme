@@ -1,13 +1,13 @@
 ﻿@using Domain.Entity.IndexPage
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-Layout = "_LayoutAdmin";
-SeoPage seoPage = ViewBag.Index;
+    Layout = "_LayoutAdmin";
+    SeoPage seoPage = ViewBag.Index;
 }
 
 @section link
 {
-<style>
+    <style>
     .modal{
         top: 80px;
     }
@@ -51,7 +51,7 @@ SeoPage seoPage = ViewBag.Index;
                             <div class="tab-pane active show" id="activity">
                                 <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex flex-column gap-2 p-2"
                                       asp-action="UpdateIndexSeo" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <input  value="@seoPage.Id" hidden="hidden">
+                                    <input value="@seoPage.Id" hidden="hidden">
 
                                     <div class="card card-info card-outline mt-4">
                                         <div class="card-header">
@@ -77,24 +77,28 @@ SeoPage seoPage = ViewBag.Index;
                                         </div>
                                         <!-- /.card-header -->
                                         <div class="card-body">
+                                            <h4 class="p-3">سئو</h4>
+
                                             <div class=" m-2  p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column">
-                                                        <label for="exampleInputPassword1">توضیحات </label>
-                                                        <textarea type="text" name="SeoIndexDesc"  id="Desc" class="form-control w-100">@seoPage.SeoIndexDesc</textarea>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
+                                                <div class="d-flex justify-content-between flex-wrap" style="gap: 5px">
+                                                    <div class="d-flex flex-column" style="width: 48%">
                                                         <label for="exampleInputPassword1">عنوان </label>
-                                                        <input type="text"  name="SeoIndexTitle" id="SmallSideBannerin" value="@seoPage.SeoIndexTitle" title="test" class="w-100 form-control">
+                                                        <input type="text" name="SeoIndexTitle" id="SmallSideBannerin" value="@seoPage.SeoIndexTitle" title="test" class="w-100 form-control">
                                                     </div>
-                                                    <div class="d-flex flex-column">
+                                                    <div class="d-flex flex-column" style="width: 48%">
                                                         <label for="exampleInputPassword1">لینک</label>
-                                                        <input  name="SeoIndexCanonical" value="@seoPage.SeoIndexCanonical" class="form-control w-100" id="exampleInputPassword1">
+                                                        <input name="SeoIndexCanonical" value="@seoPage.SeoIndexCanonical" class="form-control w-100" id="exampleInputPassword1">
+                                                    </div>
+                                                    <div class="d-flex flex-column" style="width: 50%;">
+                                                        <label for="exampleInputPassword1">توضیحات </label>
+                                                        <textarea type="text" name="SeoIndexDesc"  id="Desc" class="form-control w-100" style="height: 150px">@seoPage.SeoIndexDesc</textarea>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <h4 class="p-3">بنر بالای صفحه</h4>
+
                                             <div class="m-2 p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex flex-column">
+                                                <div class="d-flex flex-column flex-wrap">
                                                     <div class="d-flex justify-content-between">
                                                         <div class="form-group w-50 p-3">
                                                             <label for="exampleInputFile">تصویر بنر</label>
@@ -112,18 +116,26 @@ SeoPage seoPage = ViewBag.Index;
                                                         </div>
 
                                                     </div>
-                                                    <div class="d-flex flex-column">
+                                                    <div class="d-flex flex-column align-self-center">
                                                         <div class="input-group w-100  p-1" style="justify-content: center;">
                                                             <img id="ProdImage" src="/Images/Banner/@seoPage.TopBanner" style="object-fit: cover;text-align: center;width: fit-content" class="imageThreeP"/>
                                                         </div>
                                                     </div>
-                                                    
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            @Html.CheckBox("ShowTopBanner", seoPage.ShowTopBanner)
+                                                            @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                                                            <label class="form-check-label">وضعیت نمایش</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                             
+
 
                                             </div>
+                                            <h4 class="p-3">هدر سایت</h4>
+
                                             <div class="m-2 p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
-                                                <div class="d-flex flex-column">
+                                                <div class="d-flex flex-column flex-wrap">
                                                     <div class="d-flex justify-content-between">
                                                         <div class="d-flex flex-column w-50 p-3">
                                                             <label for="exampleInputPassword1">عنوان نوار</label>
@@ -135,6 +147,13 @@ SeoPage seoPage = ViewBag.Index;
                                                         </div>
                                                     </div>
                                                     <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-column w-50 p-3">
+                                                            <label for="exampleInputPassword1">ایمیل</label>
+                                                            <input name="EmailComp" value="@seoPage.EmailComp" class="form-control" id="exampleInputPassword1">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
                                                         <div class="form-group w-50 p-3">
                                                             <label for="exampleInputFile">لوگو سایت</label>
                                                             <div class="input-group">
@@ -144,12 +163,39 @@ SeoPage seoPage = ViewBag.Index;
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex flex-column w-50">
+                                                        <div class="d-flex flex-column w-50" style="align-self: center;">
                                                             <div class="input-group w-100  p-1" style="justify-content: center;">
                                                                 <img id="HeaderLogo" src="/Images/Banner/@seoPage.HeaderLogo" style="object-fit: cover;text-align: center;width: fit-content" class="HeaderLogo"/>
                                                             </div>
                                                         </div>
 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h4 class="p-3">دسته بندی محصولات</h4>
+
+                                            <div class="m-2 p-3 w-100" style="background-color:	rgb(220,220,220,0.4)">
+                                                <div class="d-flex flex-column flex-wrap">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-column w-50 p-3">
+                                                            <label for="exampleInputPassword1">عنوان اول</label>
+                                                            <input name="ProductTitle" value="@seoPage.ProductTitle" class="form-control" id="exampleInputPassword1">
+                                                        </div>
+                                                        <div class="d-flex flex-column w-50 p-3">
+                                                            <label for="exampleInputPassword1">عنوان دوم</label>
+                                                            <input name="ProductTitle2" value="@seoPage.ProductTitle2" class="form-control" id="exampleInputPassword1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-column w-50 p-3">
+                                                            <label for="exampleInputPassword1">عنوان سوم</label>
+                                                            <input name="ProductTitle3" value="@seoPage.ProductTitle3" class="form-control" id="exampleInputPassword1">
+                                                        </div>
+                                                        <div class="d-flex flex-column w-50 p-3">
+                                                            <label for="exampleInputPassword1">عنوان چهارم</label>
+                                                            <input name="ProductTitle4" value="@seoPage.ProductTitle4" class="form-control" id="exampleInputPassword1">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

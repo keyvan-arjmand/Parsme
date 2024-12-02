@@ -12,6 +12,7 @@
     List<SearchResult> searchResults = ViewBag.Search as List<SearchResult>;
     FooterPage pages = ViewBag.Pages;
     FooterLink footerLink = ViewBag.FooterLink;
+    ViewData["Title"] = pages.SeoParsDarYekTitle;
 
     SeoPage seoPage = ViewBag.SeoPage;
 }

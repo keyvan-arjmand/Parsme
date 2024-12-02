@@ -15,6 +15,7 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
+    ViewData["Title"] = prod.SeoTitle;
 
     var catDetail = new List<CatDetailEdit>();
     foreach (var i in prod.ProductDetails)

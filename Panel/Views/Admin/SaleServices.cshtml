@@ -140,12 +140,11 @@
                                             <label for="exampleInputPassword1">توضیحات ارسال امروز</label>
                                             <div class="card-body">
                                                 <div class="mb-3">
-                                                    <textarea id="eitor1" asp-for="DescShippingToday" class="textare2a1 form-control editor" name="DescShippingToday" style="width: 100%">
-                                                           `@Html.Raw(saleServices.DescShippingToday)`
+                                                    <textarea id="editor2" asp-for="DescShippingToday" class=" form-control " name="DescShippingToday" style="width: 100%">
+                                                  
                                                             </textarea>
                                                 </div>
                                             </div>
-                                            <p>@saleServices.DescShippingToday</p>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between w-100" style="background-color:	rgb(220,220,220,0.4)">
@@ -154,12 +153,10 @@
                                             <label for="exampleInputPassword1">توضیحات تحویل حضوری</label>
                                             <div class="card-body">
                                                 <div class="mb-3">
-                                                    <textarea id="eitor3" asp-for="DescReceivePerson" class="textare2a1 form-control editor" name="DescReceivePerson" style="width: 100%">
-                                                            @saleServices.DescReceivePerson
+                                                    <textarea id="editor1" asp-for="DescReceivePerson" class=" form-control " name="DescReceivePerson" style="width: 100%">
                                                             </textarea>
                                                 </div>
                                             </div>
-                                            <p>@saleServices.DescReceivePerson</p>
                                         </div>
                                     </div>
                                     <div class="w-100">
@@ -177,86 +174,195 @@
 </section>
 
 @section script{
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
         $(document).ready(function () {
-            window.addEventListener("load", (e) => {
-                ClassicEditor
-                    .create(document.querySelector('#eitor3'), {
-                        // Editor configuration.
-                        //پشتیبانی از تگ های HTML
-                        htmlSupport: {
-                            allow: [
-                                {
-                                    name: /.*/,
-                                    attributes: true,
-                                    classes: true,
-                                    styles: true
-                                }
-                            ]
-                        },
-                        //edit toolbar
-                        toolbar: {
-                            items: [
-                                'undo', 'redo',
-                                '|', 'heading',
-                                '|', 'fontColor', 'fontBackgroundColor',
-                                '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                                '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
-                                '|', 'link', 'blockQuote', 'codeBlock',
-                                '|', 'alignment',
-                                '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-                                '|', 'htmlEmbed', 'sourceEditing'
-                            ],
-                            shouldNotGroupWhenFull: false
-                        },
-                        //edit heading
-                        heading: {
-                            options: [
-                                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
-                                { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
-                            ]
-                        },
-                        //edit link
-                        link: {
-                            addTargetToExternalLinks: true,
-                            decorators: [
-                                { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
-                            ],
-                        },
-                        //edit font color
-                        fontColor: {
-                            colors: [
-                                { color: 'red', label: 'قرمز' },
-                                { color: 'green', label: 'سبز' },
-                                { color: 'blue', label: 'آبی' },
-                                { color: 'pink', label: 'صورتی' },
-                                { color: '#f7f7f7', label: 'خاکستری' },
-                            ]
-                        },
-                        //edit background color
-                        fontBackgroundColor: {
-                            colors: [
-                                { color: 'red', label: 'قرمز' },
-                                { color: 'green', label: 'سبز' },
-                                { color: 'blue', label: 'آبی' },
-                                { color: 'pink', label: 'صورتی' },
-                            ]
-                        },
-                        extraPlugins: [MyCustomUploadAdapterPlugin],
+            document.getElementById('editor1').innerHTML = '@saleServices.DescReceivePerson';
+            document.getElementById('editor2').innerHTML = '@saleServices.DescShippingToday';
+            ClassicEditor
+                .create(document.querySelector('#editor1'), {
+                    // پشتیبانی کامل از تگ‌های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    // تنظیم نوار ابزار با همه گزینه‌ها
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'highlight', 'code',
+                            '|', 'link', 'blockQuote', 'codeBlock', 'htmlEmbed', 'sourceEditing',
+                            '|', 'alignment', 'indent', 'outdent',
+                            '|', 'bulletedList', 'numberedList', 'todoList',
+                            '|', 'imageUpload', 'imageInsert', 'mediaEmbed',
+                            '|', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells',
+                            '|', 'specialCharacters', 'horizontalLine', 'pageBreak',
+                            '|', 'findAndReplace', 'removeFormat', 'selectAll'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    // تنظیمات هدینگ
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                        ]
+                    },
+                    // تنظیمات جدول
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties'
+                        ]
+                    },
+                    // تنظیمات لینک
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            {
+                                mode: 'manual',
+                                label: 'قابلیت دانلود',
+                                attributes: { download: 'download' },
+                                defaultValue: false
+                            },
+                        ]
+                    },
+                    // تنظیمات رنگ فونت
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    // تنظیمات رنگ پس‌زمینه
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [
+                        // پلاگین‌های اضافی
+                        MyCustomUploadAdapterPlugin,
+                    ]
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(error => {
+                    console.error('There was a problem initializing the editor.', error);
+                });
 
-                    })
-                    .then(editor => {
-                        window.editor = editor;
-                    })
-                    .catch(handleSampleError);
+            ClassicEditor
+                .create(document.querySelector('#editor2'), {
+                    // پشتیبانی کامل از تگ‌های HTML
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /.*/,
+                                attributes: true,
+                                classes: true,
+                                styles: true
+                            }
+                        ]
+                    },
+                    // تنظیم نوار ابزار با همه گزینه‌ها
+                    toolbar: {
+                        items: [
+                            'undo', 'redo',
+                            '|', 'heading',
+                            '|', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'highlight', 'code',
+                            '|', 'link', 'blockQuote', 'codeBlock', 'htmlEmbed', 'sourceEditing',
+                            '|', 'alignment', 'indent', 'outdent',
+                            '|', 'bulletedList', 'numberedList', 'todoList',
+                            '|', 'imageUpload', 'imageInsert', 'mediaEmbed',
+                            '|', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells',
+                            '|', 'specialCharacters', 'horizontalLine', 'pageBreak',
+                            '|', 'findAndReplace', 'removeFormat', 'selectAll'
+                        ],
+                        shouldNotGroupWhenFull: false
+                    },
+                    // تنظیمات هدینگ
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                        ]
+                    },
+                    // تنظیمات جدول
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties'
+                        ]
+                    },
+                    // تنظیمات لینک
+                    link: {
+                        addTargetToExternalLinks: true,
+                        decorators: [
+                            {
+                                mode: 'manual',
+                                label: 'قابلیت دانلود',
+                                attributes: { download: 'download' },
+                                defaultValue: false
+                            },
+                        ]
+                    },
+                    // تنظیمات رنگ فونت
+                    fontColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                            { color: '#f7f7f7', label: 'خاکستری' },
+                        ]
+                    },
+                    // تنظیمات رنگ پس‌زمینه
+                    fontBackgroundColor: {
+                        colors: [
+                            { color: 'red', label: 'قرمز' },
+                            { color: 'green', label: 'سبز' },
+                            { color: 'blue', label: 'آبی' },
+                            { color: 'pink', label: 'صورتی' },
+                        ]
+                    },
+                    extraPlugins: [
+                        // پلاگین‌های اضافی
+                        MyCustomUploadAdapterPlugin,
+                    ]
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(error => {
+                    console.error('There was a problem initializing the editor.', error);
+                });
+            window.addEventListener("load", (e) => {
+            
             });
+        
 
         });
         $('#Desc1LogoIn').on('change', function(event) {
@@ -299,6 +405,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     });
+    
     $('#Desc5LogoIn').on('change', function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {

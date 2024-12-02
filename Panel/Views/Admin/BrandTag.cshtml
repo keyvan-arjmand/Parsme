@@ -69,7 +69,15 @@
                                             </div>
                                         </div>
                                     </div>
+                             
                                     <div class="d-flex flex-column align-content-center justify-content-center ">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                @Html.CheckBox("isClick")
+                                                @* <input name="isActive" class="form-check-input" type="checkbox" id="isActive"> *@
+                                                <label class="form-check-label">وضعیت فعال</label>
+                                            </div>
+                                        </div>
                                         <div class="form-input">
                                             <button type="submit" class="btn btn-primary">ثبت</button>
                                         </div>
@@ -92,6 +100,7 @@
                                             <th class="text-center"> id</th>
                                             <th class="text-center">عنوان</th>
                                             <th class="text-center">لوگو</th>
+                                            <th class="text-center">وضعیت</th>
                                             <th class="text-center">#</th>
                                         </tr>
                                         @{
@@ -117,10 +126,21 @@
                                                             <img src="/Images/Brand/@i.LogoUri" width="50" alt=""/>
                                                         </td>
                                                         <td class="text-center">
+                                                            @if (i.IsClick)
+                                                            {
+                                                            <span class="badge bg-success ">فعال</span>
+                                                            }
+                                                            else
+                                                            {
+                                                            <span class="badge bg-danger ">غیرفعال</span>
+                                                            }
+                                                        </td>
+                                                        <td class="text-center">
                                                             <form>
                                                                 <a class="badge bg-warning text-muted modalProduct" data-toggle="modal" data-target="#exampleModal">ویرایش</a>
                                                                 <input type="text" name="mId" class="mId" value="@i.Id" hidden="hidden"/>
                                                                 <input type="text" name="mTitle" class="mTitle" value="@i.Title" hidden="hidden"/>
+                                                                <input type="text" name="mIsClick" class="mIsClick" value="@i.IsClick.ToString()" hidden="hidden"/>
                                                                 <input type="text" name="mLogo" class="mLogo" value="@i.LogoUri" hidden="hidden"/>
                                                             </form>
                                                         </td>
@@ -173,6 +193,10 @@
 
             </div>
             <div class="modal-footer d-flex justify-content-between gap-2">
+                <div class="form-check w-50 mt-4">
+                    @Html.CheckBox("isClick2", new { @name = "isClick2" })
+                    <label class="form-check-label">وضعیت فعال</label>
+                </div>
                 <button type="submit" class="btn btn-primary ">ذخیره تغیرات</button>
             </div>
         </form>
@@ -193,6 +217,12 @@
             $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
             $('#SubCatIdEdit').val(currentrow.find($("input.mSubCategoryId[type=text]")).val());
             $('#LogoEdit').attr("src", '/images/Brand/'+(currentrow.find($("input.mLogo[type=text]")).val()));
+            var isActiveValue = currentrow.find("input.mIsClick[type=text]").val();
+            if (isActiveValue === "True") {
+                $('#isClick2').prop('checked', true);
+            } else {
+                $('#isClick2').prop('checked', false);
+            }
         });
 
     });

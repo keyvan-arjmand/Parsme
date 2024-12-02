@@ -5,7 +5,6 @@
 @using WebApp.Models
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Home Page";
     List<Product> products = ViewBag.Products;
     List<Product> basket = ViewBag.BasketProd;
     List<MainCategory> categories = ViewBag.Categories;
@@ -13,6 +12,8 @@
     BrandLanding landing = ViewBag.Landing;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
+    ViewData["Title"] = landing.SeoTitle;
+
 }
 
 @section footer

@@ -779,23 +779,35 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertContactUs(string desc)
+    public async Task<ActionResult> InsertContactUs(string desc, IFormFile Image, string SeoTitle, string SeoDesc,
+        string SeoCanonical)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            Upload up = new Upload(_webHostEnvironment);
             var result = await _work.GenericRepository<ContactPage>().Table.FirstOrDefaultAsync();
             if (result != null)
             {
                 result.Desc = desc;
+                result.Image = Image != null
+                    ? up.Uploadfile(Image, "Pages")
+                    : result.Image;
+                result.SeoTitle = SeoTitle ?? string.Empty;
+                result.SeoCanonical = SeoCanonical ?? string.Empty;
+                result.SeoDesc = SeoDesc ?? string.Empty;
                 await _work.GenericRepository<ContactPage>().UpdateAsync(result, CancellationToken.None);
             }
             else
             {
                 await _work.GenericRepository<ContactPage>().AddAsync(new ContactPage
                 {
-                    Desc = desc
+                    Desc = desc,
+                    SeoTitle = SeoTitle,
+                    Image = up.Uploadfile(Image, "Pages"),
+                    SeoCanonical = SeoCanonical,
+                    SeoDesc = SeoDesc
                 }, CancellationToken.None);
             }
 
@@ -809,25 +821,37 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertAboutUs(string head, string body)
+    public async Task<ActionResult> InsertAboutUs(string head, string body, IFormFile Image, string SeoTitle,
+        string SeoDesc, string SeoCanonical)
     {
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
 
+            Upload up = new Upload(_webHostEnvironment);
             var result = await _work.GenericRepository<AboutUsPage>().Table.FirstOrDefaultAsync();
             if (result != null)
             {
-                result.Body = body;
-                result.Head = head;
+                result.Body = body ?? string.Empty;
+                result.Head = head ?? string.Empty;
+                result.Image = Image != null
+                    ? up.Uploadfile(Image, "Pages")
+                    : result.Image;
+                result.SeoTitle = SeoTitle ?? string.Empty;
+                result.SeoCanonical = SeoCanonical ?? string.Empty;
+                result.SeoDesc = SeoDesc ?? string.Empty;
                 await _work.GenericRepository<AboutUsPage>().UpdateAsync(result, CancellationToken.None);
             }
             else
             {
                 await _work.GenericRepository<AboutUsPage>().AddAsync(new AboutUsPage
                 {
-                    Body = body,
-                    Head = head
+                    Body = body ?? string.Empty,
+                    Head = head ?? string.Empty,
+                    SeoTitle = SeoTitle ?? string.Empty,
+                    Image = up.Uploadfile(Image, "Pages"),
+                    SeoCanonical = SeoCanonical ?? string.Empty,
+                    SeoDesc = SeoDesc ?? string.Empty,
                 }, CancellationToken.None);
             }
 
@@ -1172,8 +1196,10 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateIndexSeo(string SeoIndexDesc, string SeoIndexCanonical, string SeoIndexTitle,
-        IFormFile ImageUri, string TopBannerHref, string NavNameComp, string HeaderNumber, IFormFile HeaderLogo)
+    public async Task<ActionResult> UpdateIndexSeo(bool ShowTopBanner, string SeoIndexDesc, string SeoIndexCanonical,
+        string SeoIndexTitle,
+        IFormFile ImageUri, string TopBannerHref, string NavNameComp, string HeaderNumber, IFormFile HeaderLogo,
+        string EmailComp, string ProductTitle, string ProductTitle2, string ProductTitle3, string ProductTitle4)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1202,7 +1228,13 @@ public class AdminController : Controller
                     TopBannerHref = TopBannerHref,
                     NavNameComp = NavNameComp,
                     HeaderNumber = HeaderNumber,
-                    HeaderLogo = logo
+                    HeaderLogo = logo,
+                    ProductTitle4 = ProductTitle4,
+                    EmailComp = EmailComp,
+                    ProductTitle = ProductTitle,
+                    ProductTitle2 = ProductTitle2,
+                    ProductTitle3 = ProductTitle3,
+                    ShowTopBanner = ShowTopBanner
                 }, CancellationToken.None);
             }
             else
@@ -1219,6 +1251,12 @@ public class AdminController : Controller
                 result.TopBannerHref = TopBannerHref;
                 result.NavNameComp = NavNameComp;
                 result.HeaderNumber = HeaderNumber;
+                result.ProductTitle4 = ProductTitle4;
+                result.EmailComp = EmailComp;
+                result.ProductTitle = ProductTitle;
+                result.ProductTitle2 = ProductTitle2;
+                result.ProductTitle3 = ProductTitle3;
+                result.ShowTopBanner = ShowTopBanner;
                 await _work.GenericRepository<SeoPage>().UpdateAsync(result, CancellationToken.None);
             }
 
@@ -1423,13 +1461,14 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateBrandTag(int id, string title, IFormFile image)
+    public async Task<ActionResult> UpdateBrandTag(int id, string title, IFormFile image,bool isClick2)
     {
         if (User.Identity.IsAuthenticated && id > 0)
         {
             Upload up = new Upload(_webHostEnvironment);
             var brand = await _work.GenericRepository<BrandTag>().Table.FirstOrDefaultAsync(x => x.Id == id);
             brand.Title = title;
+            brand.IsClick = isClick2;
             brand.LogoUri = image != null
                 ? up.Uploadfile(image, "Brand")
                 : brand.LogoUri;
@@ -1468,7 +1507,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrandTag(string title, IFormFile? logo)
+    public async Task<ActionResult> InsertBrandTag(string title, IFormFile? logo,bool isClick)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1478,6 +1517,7 @@ public class AdminController : Controller
             {
                 Title = title ?? string.Empty,
                 LogoUri = img,
+                IsClick = isClick
             }, CancellationToken.None);
             return RedirectToAction("BrandTag");
         }
@@ -3135,7 +3175,7 @@ public class AdminController : Controller
                 var val = request.ProductDetails.FirstOrDefault(x => x.DetailId.ToInt() == i.CategoryDetailId);
                 if (val != null)
                 {
-                    i.Value = val.DetailName??string.Empty;
+                    i.Value = val.DetailName ?? string.Empty;
                     await _work.GenericRepository<ProductDetail>().UpdateAsync(i, CancellationToken.None);
                 }
             }

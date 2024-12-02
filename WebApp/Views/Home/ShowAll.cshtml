@@ -6,7 +6,7 @@
 @using WebApp.Models
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "نتیجه جستجو";
+    ViewData["Title"] = "نمایش همه";
     List<Product> products = ViewBag.Products;
     List<Product> maxPrice = products
         .OrderBy(x => x.ProductColors.Min(pc => pc.Price))

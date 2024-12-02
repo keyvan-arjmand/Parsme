@@ -6,7 +6,7 @@
 @using WebApp.Models
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Home Page";
+    
     List<Product> products = ViewBag.Products;
     List<CategoryDetail> categoryDetails = ViewBag.CatDetail;
     List<Product> maxPrice = products
@@ -28,6 +28,8 @@
     int id = ViewBag.Id;
     List<string> details = ViewBag.Values;
     SubCategory sub = ViewBag.SubCatId;
+    ViewData["Title"] = sub.SeoTitle;
+
 }
 
 @section footer

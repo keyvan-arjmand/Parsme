@@ -8,6 +8,7 @@ public class BrandTag : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public string LogoUri { get; set; } = string.Empty;
+    public bool IsClick { get; set; }
     public ICollection<Product> Products { get; set; } = default!;
     public int? BrandLandingId { get; set; }
     [ForeignKey("BrandLandingId")] public BrandLanding? BrandLanding { get; set; }

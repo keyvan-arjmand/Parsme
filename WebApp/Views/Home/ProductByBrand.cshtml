@@ -6,7 +6,7 @@
 @using WebApp.Models
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Home Page";
+
     List<Product> products = ViewBag.Products;
     List<Product> maxPrice = products
         .OrderBy(x => x.ProductColors.Min(pc => pc.Price))
@@ -27,6 +27,7 @@
     int pageSize = ViewBag.Page;
     int id = ViewBag.Id;
     Brand brand = ViewBag.BrandId;
+    ViewData["Title"] = brand.SeoTitle;
 }
 
 @section footer

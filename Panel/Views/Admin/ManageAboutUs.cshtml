@@ -47,34 +47,47 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active show" id="activity">
-                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-between p-2"
+                                <form style="background-color:	rgb(220,220,220,0.4)" class="d-flex justify-content-between p-2 flex-wrap"
                                       asp-action="InsertAboutUs" asp-controller="Admin" method="post" enctype="multipart/form-data">
-                                    <div class="form-group w-50">
-                                        <label for="exampleInputPassword1">عنوان معرفی صفحه</label>
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <textarea id="editor1" name="head" class="form-control editor" style="width: 100%" required="required">
-@about.Head
-                                                                                       
-</textarea>
-                                            </div>
+                                    <div class="d-flex justify-content-between w-100 flex-wrap">
+                                        <div class="d-flex flex-column">
+                                            <label for="exampleInputPassword1">تصویر شاخص</label>
+                                            <input type="file" name="Image" id="ImageIn" class="form-control">
+                                        </div>
+                                     
+                                        <div class="input-group p-3 " style="justify-content: center;">
+                                            <img src="/Images/Pages/@about.Image" id="Image" style="object-fit: cover;border-radius: 8px" class="imageOneP"/>
                                         </div>
                                     </div>
-                                    <div class="form-group w-50">
+                                    <div class="form-group w-100">
                                         <label for="exampleInputPassword1">توضیحات صفحه</label>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <textarea id="editor2" name="body" class="form-control editor" style="width: 100%" required="required">
-@about.Body
+                                                <textarea id="editor2" name="body" class="form-control " style="width: 100%" required="required">
                                                                                        
 </textarea>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="d-flex justify-content-between flex-wrap w-100">
+                                        <div class="d-flex flex-column">
+                                            <label for="exampleInputPassword1">توضیحات </label>
+                                            <textarea type="text" name="SeoDesc"  id="Desc" class="form-control ">@about.SeoDesc</textarea>
+                                        </div>
 
-                                    <div class="d-flex flex-column align-content-center justify-content-center ">
-                                        <div class="form-input">
-                                            <button type="submit" class="btn btn-primary">ثبت</button>
+                                        <div class="d-flex flex-column">
+                                            <label for="exampleInputPassword1">عنوان </label>
+                                            <input type="text" name="SeoTitle" id="SmallSideBannerin" value="@about.SeoTitle" title="test" class="form-control">
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <label for="exampleInputPassword1">لینک</label>
+                                            <input name="SeoCanonical" value="@about.SeoCanonical" class="form-control" id="exampleInputPassword1">
+                                        </div>
+
+                                    </div>
+                                    <div class="d-flex flex-column align-content-center justify-content-center m-2 p-2 w-100">
+                                        <div class="form-input w-100">
+                                            <button type="submit" class="btn btn-primary w-50">ثبت</button>
                                         </div>
                                     </div>
                                 </form>
@@ -90,11 +103,12 @@
 
 @section script{
     <script>
+     
         window.addEventListener("load", (e) => {
+            
             ClassicEditor
                 .create(document.querySelector('#editor2'), {
-                    // Editor configuration.
-                    //پشتیبانی از تگ های HTML
+                    // پشتیبانی کامل از تگ‌های HTML
                     htmlSupport: {
                         allow: [
                             {
@@ -105,22 +119,24 @@
                             }
                         ]
                     },
-                    //edit toolbar
+                    // تنظیم نوار ابزار با همه گزینه‌ها
                     toolbar: {
                         items: [
                             'undo', 'redo',
                             '|', 'heading',
-                            '|', 'fontColor', 'fontBackgroundColor',
-                            '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                            '|', 'uploadImage', 'imageInsert', 'mediaEmbed',
-                            '|', 'link', 'blockQuote', 'codeBlock',
-                            '|', 'alignment',
-                            '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-                            '|', 'htmlEmbed', 'sourceEditing'
+                            '|', 'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
+                            '|', 'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', 'highlight', 'code',
+                            '|', 'link', 'blockQuote', 'codeBlock', 'htmlEmbed', 'sourceEditing',
+                            '|', 'alignment', 'indent', 'outdent',
+                            '|', 'bulletedList', 'numberedList', 'todoList',
+                            '|', 'imageUpload', 'imageInsert', 'mediaEmbed',
+                            '|', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells',
+                            '|', 'specialCharacters', 'horizontalLine', 'pageBreak',
+                            '|', 'findAndReplace', 'removeFormat', 'selectAll'
                         ],
                         shouldNotGroupWhenFull: false
                     },
-                    //edit heading
+                    // تنظیمات هدینگ
                     heading: {
                         options: [
                             { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -129,18 +145,28 @@
                             { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
                             { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
                             { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
-                            { model: 'myHeading', view: { name: 'h2', classes: 'myHeadingCss' }, title: 'هدینگ اختصاصی', class: 'ck-myHeadingCss', converterPriority: 'high' }
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
                         ]
                     },
-                    //edit link
+                    // تنظیمات جدول
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties'
+                        ]
+                    },
+                    // تنظیمات لینک
                     link: {
                         addTargetToExternalLinks: true,
                         decorators: [
-                            { mode: 'manual', label: 'قابلیت دانلود', attributes: { download: 'download'}, defaultValue: false, },
-                        ],
+                            {
+                                mode: 'manual',
+                                label: 'قابلیت دانلود',
+                                attributes: { download: 'download' },
+                                defaultValue: false
+                            },
+                        ]
                     },
-                    //edit font color
+                    // تنظیمات رنگ فونت
                     fontColor: {
                         colors: [
                             { color: 'red', label: 'قرمز' },
@@ -150,7 +176,7 @@
                             { color: '#f7f7f7', label: 'خاکستری' },
                         ]
                     },
-                    //edit background color
+                    // تنظیمات رنگ پس‌زمینه
                     fontBackgroundColor: {
                         colors: [
                             { color: 'red', label: 'قرمز' },
@@ -159,15 +185,29 @@
                             { color: 'pink', label: 'صورتی' },
                         ]
                     },
-                    extraPlugins: [MyCustomUploadAdapterPlugin],
-
+                    extraPlugins: [
+                        // پلاگین‌های اضافی
+                        MyCustomUploadAdapterPlugin,
+                    ]
                 })
                 .then(editor => {
                     window.editor = editor;
                 })
-                .catch(handleSampleError);
+                .catch(error => {
+                    console.error('There was a problem initializing the editor.', error);
+                });
+                
         });
-
+        $('#ImageIn').on('change', function(event) {
+            var input = event.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#Image').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
         function handleSampleError(error) {
             const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
             const message = [
