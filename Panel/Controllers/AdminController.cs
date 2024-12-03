@@ -417,8 +417,10 @@ public class AdminController : Controller
 
     public async Task<IActionResult> GetDailySalesData()
     {
-        var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var endDate = DateTime.Now;
         var startDate = endDate.AddMonths(-1);
+        ViewBag.endDate = endDate;
+        ViewBag.startDate = startDate;
 
         var salesData = await _work.GenericRepository<FactorProduct>()
             .TableNoTracking
@@ -426,24 +428,41 @@ public class AdminController : Controller
             .Select(x => new
             {
                 Day = x.Factor.InsertDate.Date,
-                FactorProductColors = x.FactorProductColor // داده‌های مربوط به FactorProductColor
+                Status = x.Factor.Status,
+                FactorProductColors = x.FactorProductColor
             })
             .ToListAsync();
 
-        // حالا روی داده‌های استخراج‌شده عملیات تجمیع را انجام می‌دهیم
-        var dailySales = Enumerable.Range(1, DateTime.DaysInMonth(startDate.Year, startDate.Month))
+        // تجمیع داده‌ها برای سفارش‌های موفق
+        var dailySuccessfulSales = Enumerable.Range(1, DateTime.DaysInMonth(startDate.Year, startDate.Month))
             .Select(day => new
             {
                 Day = day,
                 Count = salesData
-                    .Where(s => s.Day.Day == day) // فیلتر کردن بر اساس روز
-                    .Sum(s => s.FactorProductColors.Sum(c => c.Count)) // جمع تعداد محصولات برای هر روز
+                    .Where(s => s.Day.Day == day && s.Status != Status.Field && s.Status != Status.Rejected)
+                    .Sum(s => s.FactorProductColors.Sum(c => c.Count))
             })
             .ToList();
 
+        // تجمیع داده‌ها برای سفارش‌های ناموفق
+        var dailyFailedSales = Enumerable.Range(1, DateTime.DaysInMonth(startDate.Year, startDate.Month))
+            .Select(day => new
+            {
+                Day = day,
+                Count = salesData
+                    .Where(s => s.Day.Day == day && (s.Status == Status.Field || s.Status == Status.Rejected))
+                    .Sum(s => s.FactorProductColors.Sum(c => c.Count))
+            })
+            .ToList();
 
-        return Ok(dailySales);
+        // بازگشت دو مجموعه داده
+        return Ok(new
+        {
+            SuccessfulSales = dailySuccessfulSales,
+            FailedSales = dailyFailedSales
+        });
     }
+
 
     public async Task<ActionResult> SalesInvoice(string search)
     {
@@ -1461,7 +1480,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> UpdateBrandTag(int id, string title, IFormFile image,bool isClick2)
+    public async Task<ActionResult> UpdateBrandTag(int id, string title, IFormFile image, bool isClick2)
     {
         if (User.Identity.IsAuthenticated && id > 0)
         {
@@ -1507,7 +1526,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> InsertBrandTag(string title, IFormFile? logo,bool isClick)
+    public async Task<ActionResult> InsertBrandTag(string title, IFormFile? logo, bool isClick)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -2020,7 +2039,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated && id > 0)
         {
-            ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
+            var product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
@@ -2030,8 +2049,35 @@ public class AdminController : Controller
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-                .AsSplitQuery()
-                .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
+                .AsSplitQuery().FirstOrDefaultAsync(x => x.Id == id);
+            var prodDetail = product.ProductDetails.Select(x => x.CategoryDetail).ToList();
+            var catDetails = await _work.GenericRepository<CategoryDetail>()
+                .TableNoTracking
+                .Include(x => x.Feature)
+                .Include(x => x.SubCategoryDetails)
+                .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == product.SubCategoryId)).ToListAsync();
+            foreach (var i in catDetails)
+            {
+                if (!prodDetail.Any(x => x.Id == i.Id))
+                {
+                    prodDetail.Add(new CategoryDetail
+                    {
+                        Id = i.Id,
+                        Feature = i.Feature,
+                        Option = i.Option,
+                        Priority = i.Priority,
+                        Title = i.Title,
+                        DataType = i.DataType,
+                        IsActive = i.IsActive,
+                        FeatureId = i.FeatureId,
+                        ShowInSearch = i.ShowInSearch,
+                        IsDelete = i.IsDelete,
+                        SubCategoryDetails = i.SubCategoryDetails
+                    });
+                }
+            }
+
+            ViewBag.Product = product;
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
             ViewBag.BrandTags = await _work.GenericRepository<BrandTag>().TableNoTracking.OrderByDescending(x => x.Id)

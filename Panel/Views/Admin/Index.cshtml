@@ -124,18 +124,15 @@
                 <div class="row">
                     <div class="col-md-8">
                         <p class="text-center d-flex justify-content-center" style="gap: 10px">
-                            @{
-                            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                            var startDate = endDate.AddMonths(-1);
-                            }
-                            <strong>@endDate.ToPersianTime()</strong>
+                         
+                            <strong>@DateTime.Now.ToPersianTime()</strong>
                             <strong>تا</strong>
-                            <strong>@startDate.ToPersianTime()</strong>
+                            <strong>@DateTime.Now.AddMonths(-1).ToPersianTime()</strong>
                         </p>
 
                         <div class="chart">
                             <!-- Sales Chart Canvas -->
-                            <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                            <canvas id="salesChart" height="240" style="height: 180px;"></canvas>
                         </div>
                         <!-- /.chart-responsive -->
                     </div>
@@ -330,16 +327,17 @@
 </section>
 @section script
 {
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        $(document).ready(function() {
-            // استفاده از AJAX برای دریافت داده‌ها
+        $(document).ready(function () {
             $.ajax({
                 url: '/Admin/GetDailySalesData',
                 method: 'GET',
-                success: function(salesData) {
-                    // پردازش داده‌های دریافتی از API
-                    const labels = salesData.map(item => `Day ${item.day}`);
-                    const data = salesData.map(item => item.count);
+                success: function (salesData) {
+                    const labels = salesData.successfulSales.map(item => `Day ${item.day}`);
+                    const successfulData = salesData.successfulSales.map(item => item.count);
+                    const failedData = salesData.failedSales.map(item => item.count);
 
                     var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
 
@@ -348,46 +346,107 @@
                         labels: labels,
                         datasets: [
                             {
-                                label: 'Sales Data',
-                                fillColor: 'rgba(0, 123, 255, 0.9)',
-                                strokeColor: 'rgba(0, 123, 255, 1)',
-                                pointColor: '#3b8bba',
-                                pointStrokeColor: 'rgba(0, 123, 255, 1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(0, 123, 255, 1)',
-                                data: data
+                                label: 'خرید موفق',
+                                data: successfulData,
+                                borderColor: 'rgba(40, 167, 69, 1)',  // رنگ خطوط
+                                backgroundColor: 'rgba(40, 167, 69, 0.2)', // رنگ پر شدن
+                                borderWidth: 2,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#28a745',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                fill: true
+                            },
+                            {
+                                label: 'خرید ناموفق',
+                                data: failedData,
+                                borderColor: 'rgba(220, 53, 69, 1)', // رنگ خطوط
+                                backgroundColor: 'rgba(220, 53, 69, 0.2)', // رنگ پر شدن
+                                borderWidth: 2,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#dc3545',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                fill: true
                             }
                         ]
                     };
 
+                    // تنظیمات چارت
                     var salesChartOptions = {
-                        showScale: true,
-                        scaleShowGridLines: false,
-                        scaleGridLineColor: 'rgba(0,0,0,.05)',
-                        scaleGridLineWidth: 1,
-                        scaleShowHorizontalLines: true,
-                        scaleShowVerticalLines: true,
-                        bezierCurve: true,
-                        bezierCurveTension: 0.3,
-                        pointDot: false,
-                        pointDotRadius: 4,
-                        pointDotStrokeWidth: 1,
-                        pointHitDetectionRadius: 20,
-                        datasetStroke: true,
-                        datasetStrokeWidth: 2,
-                        datasetFill: true,
+                        responsive: true,
                         maintainAspectRatio: false,
-                        responsive: true
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '30 روز اخیر',
+                                font: {
+                                    size: 18
+                                },
+                                color: '#333'
+                            },
+                            legend: {
+                                display: true,
+                                labels: {
+                                    font: {
+                                        size: 14
+                                    },
+                                    color: '#555'
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'روز',
+                                    color: '#333',
+                                    font: {
+                                        size: 14
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(200, 200, 200, 0.2)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'تعداد',
+                                    color: '#333',
+                                    font: {
+                                        size: 14
+                                    }
+                                },
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 2,
+                                    color: '#666'
+                                },
+                                grid: {
+                                    color: 'rgba(200, 200, 200, 0.2)'
+                                }
+                            }
+                        }
                     };
 
                     // ایجاد چارت
-                    new Chart(salesChartCanvas).Line(salesChartData, salesChartOptions);
+                    new Chart(salesChartCanvas, {
+                        type: 'line',
+                        data: salesChartData,
+                        options: salesChartOptions
+                    });
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error fetching sales data:', error);
-                }
-            });
+                },
+});
+
         });
+
+
 
     </script>
 }
