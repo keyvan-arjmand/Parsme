@@ -1329,7 +1329,12 @@ header.header-main {
         padding: 0 12px;
         text-align: center;
     }
-
+    #HeaderBurger{
+        padding: 0px !important;
+    } 
+    #InnerDrop{
+        width: 0px !important;
+    }
     header .header-logo {
         float: right;
         padding-right: 0;
@@ -2392,7 +2397,7 @@ header.header-main {
 
 .countdown {
     direction: ltr;
-    margin-bottom: -10px;
+    margin-bottom: -7px;
     margin-top: 10px;
     width: 100%;
     overflow: hidden;

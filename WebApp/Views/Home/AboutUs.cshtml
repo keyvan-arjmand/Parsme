@@ -320,10 +320,10 @@
         {
             @if (i.IsOffer)
             {
-                if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                 {
                     offer += i.Offer.OfferAmount;
-                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,  i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                    price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                 }
                 else
                 {
@@ -422,9 +422,9 @@
     <div id="main-nav">
     <div class="container-fluid">
     <div class="row ">
-    <div class="col-9">
+    <div id="HeaderBurger" class="col-3 col-sm-3 col-md-9 col-lg-9 col-xl-9">
         <div class="encrypt233211 dmarrow-down droopmenu-horizontal dmpos-top dmfade">
-            <div class="droopmenu-inner" style="padding: 10px;">
+            <div class="droopmenu-inner " id="InnerDrop" style="padding: 10px;z-index: 990!important;">
                 <div class="droopmenu-encrypt231432">
                     <a href="#" class="droopmenu-toggle">
                         <i class="dm-burg"></i>
@@ -576,7 +576,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3 align-items-center">
+    <div class="col-9 col-sm-9 col-md-3 col-lg-3  col-xl-3 align-items-center">
     <ul class="menu-ul mega-menu-level-one">
     <li class="divider-space-card">
     <div class="d-flex justify-content-end gap-1">
@@ -871,9 +871,9 @@
                                                                     var priceBasket = new double();
                                                                     if (i.IsOffer)
                                                                     {
-                                                                        if (i.Offer.StartDate.CalcOffer( i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
                                                                         {
-                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price,  i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                                            priceBasket = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
                                                                         }
                                                                         else
                                                                         {
@@ -939,15 +939,15 @@
         <div class="header-account text-left">
             <div class="account-box"
                  style="padding: 12px 15px 5px 5px">
-                <div class="nav-account d-block pl">
-                    <a href="tel:@seoPage.HeaderNumber"
+                <a class="nav-account d-block pl" href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;">
+                    <a href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;"
                        class="d-flex justify-content-center">
                         <span
                             class="title-account">
                             @seoPage.HeaderNumber
                         </span>
                     </a>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -1015,6 +1015,7 @@
     </header>
 
 }
+
 @section loader
 {
 <div class="P-loader">

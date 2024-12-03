@@ -519,10 +519,14 @@ public class HomeController : Controller
         }
     }
 
-    public async Task<IActionResult> UserOrder()
+    public async Task<IActionResult> UserOrder(bool isClear)
     {
         if (User.Identity.IsAuthenticated)
         {
+            if (isClear)
+            {
+                HttpContext.Session.Remove("basket");
+            }
             var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
                 .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
                 .ToListAsync();
@@ -560,7 +564,8 @@ public class HomeController : Controller
                 .Include(x => x.UserAddress)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
-                .Where(x => x.User.UserName == User.Identity.Name&&x.Status!=Status.PendingForPayment&&x.Status!=Status.Field)
+                .Where(x => x.User.UserName == User.Identity.Name && x.Status != Status.PendingForPayment &&
+                            x.Status != Status.Field)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -570,11 +575,11 @@ public class HomeController : Controller
         }
         else
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Home");
         }
     }
 
-    public async Task<IActionResult> EditeProfile(string name, string family,int cityId,
+    public async Task<IActionResult> EditeProfile(string name, string family, int cityId,
         string email, string Sheba, string NationalCode, string code, int postMethod, bool toCheckout = false)
     {
         if (User.Identity.IsAuthenticated)
@@ -890,7 +895,7 @@ public class HomeController : Controller
 
         ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
 
-        var prodD = await _work.GenericRepository<Product>().TableNoTracking
+        var prodD = await _work.GenericRepository<Product>().Table
             .Include(x => x.Brand)
             .Include(x => x.Offer)
             .Include(x => x.BrandTag)
@@ -902,7 +907,8 @@ public class HomeController : Controller
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id);
         if (prodD == null) throw new Exception();
-
+        prodD.OnClick++;
+        await _work.GenericRepository<Product>().UpdateAsync(prodD, CancellationToken.None);
         prodD.ProductDetails = prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority).ToList();
         ViewBag.Product = prodD;
         var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
@@ -956,7 +962,10 @@ public class HomeController : Controller
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
-        ViewBag.BrandId = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync();
+        var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync();
+        ViewBag.BrandId = brand;
+        brand.OnClick++;
+        await _work.GenericRepository<Brand>().UpdateAsync(brand, CancellationToken.None);
         var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
             .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
             .ToListAsync();
@@ -1340,8 +1349,9 @@ public class HomeController : Controller
         ViewBag.Id = id;
         ViewBag.Page = page;
         ViewBag.Values = values;
-        ViewBag.SubCatId = await _work.GenericRepository<SubCategory>().TableNoTracking
+        var sub= await _work.GenericRepository<SubCategory>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == id);
+        ViewBag.SubCatId = sub;
         if (max > 0)
         {
             if (values.Count > 0)

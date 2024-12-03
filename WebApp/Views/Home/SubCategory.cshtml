@@ -416,9 +416,9 @@
     <div id="main-nav">
     <div class="container-fluid">
     <div class="row ">
-    <div class="col-9">
+    <div id="HeaderBurger" class="col-3 col-sm-3 col-md-9 col-lg-9 col-xl-9">
         <div class="encrypt233211 dmarrow-down droopmenu-horizontal dmpos-top dmfade">
-            <div class="droopmenu-inner" style="padding: 10px;">
+            <div class="droopmenu-inner " id="InnerDrop" style="padding: 10px;z-index: 990!important;">
                 <div class="droopmenu-encrypt231432">
                     <a href="#" class="droopmenu-toggle">
                         <i class="dm-burg"></i>
@@ -570,7 +570,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3 align-items-center">
+    <div class="col-9 col-sm-9 col-md-3 col-lg-3  col-xl-3 align-items-center">
     <ul class="menu-ul mega-menu-level-one">
     <li class="divider-space-card">
     <div class="d-flex justify-content-end gap-1">
@@ -933,15 +933,15 @@
         <div class="header-account text-left">
             <div class="account-box"
                  style="padding: 12px 15px 5px 5px">
-                <div class="nav-account d-block pl">
-                    <a href="tel:@seoPage.HeaderNumber"
+                <a class="nav-account d-block pl" href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;">
+                    <a href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;"
                        class="d-flex justify-content-center">
                         <span
                             class="title-account">
                             @seoPage.HeaderNumber
                         </span>
                     </a>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -1009,6 +1009,7 @@
     </header>
 
 }
+
 
 @section loader
 {
@@ -1299,7 +1300,7 @@
                     {
                         foreach (var i in products)
                         {
-                            <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                            <div class="col-lg-3 col-md-4 col-xs-12 order-1 d-block mb-3">
                                 <section class="product-box product product-type-simple">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
@@ -1413,7 +1414,7 @@
                     {
                         foreach (var i in minPrice)
                         {
-                            <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                            <div class="col-lg-3 col-md-4 col-xs-12 order-1 d-block mb-3">
                                 <section class="product-box product product-type-simple">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">
@@ -1527,7 +1528,7 @@
                     {
                         foreach (var i in maxPrice)
                         {
-                            <div class="col-lg-3 col-md-3 col-xs-12 order-1 d-block mb-3">
+                            <div class="col-lg-3 col-md-4 col-xs-12 order-1 d-block mb-3">
                                 <section class="product-box product product-type-simple">
                                     <div class="thumb" style="min-height: 265px">
                                         <a href="@Url.Action("ProductPage", "Home", new { i.Id })" class="d-block">

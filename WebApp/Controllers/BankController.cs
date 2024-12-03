@@ -83,7 +83,7 @@ public class BankController : Controller
                     date,
                     time,
                     "خرید از فروشگاه اینترنتی پارس می",
-                    $"https://front.parsme.com{redirect}",
+                    $"https://parsme.com{redirect}",
                     "0",
                     string.Empty,
                     string.Empty,
@@ -213,7 +213,7 @@ public class BankController : Controller
     {
         //iewBag.Message = null;
         ViewBag.IsSuccess = false;
-
+        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
         //iewBag.RefId = RefId;
         //iewBag.ResCode = ResCode;
         //iewBag.SaleReferenceId = SaleReferenceId;

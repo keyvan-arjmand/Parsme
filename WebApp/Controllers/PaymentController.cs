@@ -223,7 +223,7 @@ public class PaymentController : Controller
 
             var result =
                 await httpClient.GetAsync(
-                    $"https://front.parsme.com/bank/Index?Price={factor.Amount}&factorId={factor.Id}&userId={user.Id}");
+                    $"https://parsme.com/bank/Index?Price={factor.Amount}&factorId={factor.Id}&userId={user.Id}");
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadAsStringAsync();
