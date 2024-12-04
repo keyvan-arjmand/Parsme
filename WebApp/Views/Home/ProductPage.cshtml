@@ -8,7 +8,6 @@
 @{
     Layout = "_Layout";
     Product prod = ViewBag.Product;
-
     SaleServices services = ViewBag.SaleService;
     List<Product> basket = ViewBag.BasketProd;
     List<Product> prods = ViewBag.Prods;
@@ -16,8 +15,6 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
-    var seoTitle = prod?.SeoTitle ?? "Default Title";
- 
     var catDetail = new List<CatDetailEdit>();
     foreach (var i in prod.ProductDetails)
     {
@@ -46,7 +43,10 @@
     }
 
 }
-
+@section PageTitle
+{
+<title>@prod.PersianTitle</title>
+}
 @section footer
 {
     <footer style="z-index: 10;" class="footer-main-site">
@@ -1370,7 +1370,7 @@
                     style="gap:37px">
                     <div class="promotion-badge align-self-center badge badge-danger p-2"
                          style=" width: 83px ;color: white !important;height: 30px!important;background-color: #ff2828 !important;">
-                        فروش ویژه
+                        پیشنهاد ویژه
                     </div>
                     <div class="countdown-timer text-start"
                          style="margin-top: 0 !important;text-align: start">
@@ -2117,7 +2117,7 @@
                                                                     <div class="d-flex justify-content-between gap-3">
                                                                         <div class="promotion-badge w-50"
                                                                              style="margin-bottom: -10px;text-align: right;align-content: center">
-                                                                            فروش ویژه
+                                                                            پیشنهاد ویژه
                                                                         </div>
                                                                         <div
                                                                             class="countdown-timer w-50 d-flex justify-content-between">

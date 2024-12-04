@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 using Application.Admin.V1.Commands.ConfirmCodAdmin;
 using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
 using Application.Dtos;
 using Application.Dtos.Products;
 using Application.Interfaces;
+using Application.RedisDto;
+using AutoMapper;
 using Domain.Entity.Factor;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
@@ -19,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApp.Models;
 using WebApp.Models.Search;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace WebApp.Controllers;
 
@@ -30,9 +34,12 @@ public class HomeController : Controller
     private readonly RoleManager<Role> _roleManager;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IResponseCacheService _responseCacheService;
+    private readonly IMapper _mapper;
 
     public HomeController(ILogger<HomeController> logger, IUnitOfWork work, SignInManager<User> signInManager,
-        RoleManager<Role> roleManager, UserManager<User> userManager, IMediator mediator)
+        RoleManager<Role> roleManager, UserManager<User> userManager, IMediator mediator,
+        IResponseCacheService responseCacheService, IMapper mapper)
     {
         _logger = logger;
         _work = work;
@@ -40,17 +47,42 @@ public class HomeController : Controller
         _roleManager = roleManager;
         _userManager = userManager;
         _mediator = mediator;
+        _responseCacheService = responseCacheService;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .AsSplitQuery()
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -74,15 +106,26 @@ public class HomeController : Controller
 
         ViewBag.BasketProd = basketProducts;
 
-        ViewBag.ProdCatalog = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.SubCategory)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .AsSplitQuery()
-            .Where(x => x.IsShowIndex)
-            .Take(20).ToListAsync();
+        ViewBag.ProdCatalog = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "ProdCatalogView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.SubCategory)
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .AsSplitQuery()
+                        .Where(x => x.IsShowIndex)
+                        .Take(20).ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
         var otherProd = new List<Product>();
-        foreach (var i in cats.Select(x => x.Id).ToList())
+        foreach (var i in CatsViews.Select(x => x.Id).ToList())
         {
             otherProd.AddRange(await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.SubCategory)
@@ -93,37 +136,100 @@ public class HomeController : Controller
         }
 
         ViewBag.OtherParsme = otherProd;
-        ViewBag.BestSeller = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.SubCategory)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .AsSplitQuery()
-            .OrderByDescending(x => x.InterestRate)
-            .Take(10).ToListAsync();
-        ViewBag.Banners = await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
-        ViewBag.NewProd = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.SubCategory)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .AsSplitQuery()
-            .OrderByDescending(x => x.InsertDate).Take(20).ToListAsync();
-        ViewBag.OfferMoments =
-            await _work.GenericRepository<Product>().TableNoTracking
-                .Include(x => x.Offer)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .AsSplitQuery()
-                .Where(x => x.MomentaryOffer).Take(7).ToListAsync();
+        var bestSeller = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "BestSellerView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.SubCategory)
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .AsSplitQuery()
+                        .OrderByDescending(x => x.InterestRate)
+                        .Take(10).ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+        ViewBag.BestSeller = bestSeller;
+
+        ViewBag.Banners = _mapper.Map<Banner>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<BannerRedis>(
+                "BannerView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<Banner>().TableNoTracking.FirstOrDefaultAsync() ?? new Banner();
+
+                    return _mapper.Map<BannerRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
 
-        var offer = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.ProductColors)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
-            .AsSplitQuery()
-            .Where(x => x.IsOffer && x.IsActive && !x.IsDelete)
-            .Take(7)
-            .ToListAsync();
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.NewProd = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "NewProdView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.SubCategory)
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .AsSplitQuery()
+                        .OrderByDescending(x => x.InsertDate).Take(20).ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+        ViewBag.OfferMoments = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "OfferMomentsView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .AsSplitQuery()
+                        .Where(x => x.MomentaryOffer).Take(7).ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        var offer = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "offerView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.ProductColors)
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail)
+                        .AsSplitQuery()
+                        .Where(x => x.IsOffer && x.IsActive && !x.IsDelete)
+                        .Take(7)
+                        .ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         // foreach (var i in offer.ProductDetails)
         // {
@@ -133,8 +239,18 @@ public class HomeController : Controller
 
         ViewBag.Offer = offer;
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View();
     }
 
@@ -224,12 +340,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
@@ -254,10 +394,29 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
-
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -270,12 +429,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
@@ -304,9 +487,29 @@ public class HomeController : Controller
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
                 .ThenInclude(x => x.State)
                 .Where(x => x.UserId == user.Id).ToListAsync();
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -319,12 +522,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
@@ -350,13 +577,35 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
+           var address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
                 .ThenInclude(x => x.State)
                 .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == id);
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+           ViewBag.Address = address;
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.Where(x=>x.StateId==address.City.StateId).ToListAsync();
+            ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.ToListAsync();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -369,12 +618,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
@@ -400,10 +673,31 @@ public class HomeController : Controller
             }
 
             ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
+            ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.ToListAsync();
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View("AddAddress");
         }
         else
@@ -416,12 +710,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
@@ -446,7 +764,17 @@ public class HomeController : Controller
                 }
             }
 
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
 
             ViewBag.BasketProd = basketProducts;
             ViewBag.Fav = await _work.GenericRepository<UserFav>().TableNoTracking
@@ -455,8 +783,18 @@ public class HomeController : Controller
                 .Include(x => x.Product).ThenInclude(x => x.Offer).ThenInclude(x => x.Color)
                 .Where(x => x.UserId == user.Id)
                 .ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -469,12 +807,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
@@ -499,7 +861,17 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x => x.User)
                 .Include(x => x.PostMethod)
@@ -509,8 +881,18 @@ public class HomeController : Controller
                 .FirstOrDefaultAsync(x => x.Id == id);
             ViewBag.ReturnFactor = await _work.GenericRepository<ReturnedFactor>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.FactorId == id);
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -527,12 +909,37 @@ public class HomeController : Controller
             {
                 HttpContext.Session.Remove("basket");
             }
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
@@ -557,7 +964,17 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x => x.User)
                 .Include(x => x.PostMethod)
@@ -569,8 +986,18 @@ public class HomeController : Controller
                 .AsNoTracking()
                 .ToListAsync();
 
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -584,17 +1011,27 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            if (!NationalCode.IsValidIranianNationalCode()) throw new Exception();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            //if (!NationalCode.IsValidIranianNationalCode()) throw new Exception();
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                        new User();
             if (user != null)
             {
-                user.Name = name;
-                user.Family = family;
-                user.Email = email;
-                user.Sheba = Sheba;
-                user.NationalCode = NationalCode;
+                user.Name = name??string.Empty;
+                user.Family = family??string.Empty;
+                user.Email = email??string.Empty;
+                user.Sheba = Sheba??string.Empty;
+                user.NationalCode = NationalCode??string.Empty;
                 await _userManager.UpdateAsync(user);
             }
 
@@ -686,12 +1123,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
@@ -716,7 +1177,17 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             ViewBag.Order = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x => x.User)
                 .Include(x => x.PostMethod)
@@ -724,8 +1195,18 @@ public class HomeController : Controller
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -829,21 +1310,65 @@ public class HomeController : Controller
                                  !string.IsNullOrWhiteSpace(user.NationalCode));
             ViewBag.User = user;
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.Code = await _work.GenericRepository<DiscountCode>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Code == code) ?? new DiscountCode();
             ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Id == postMethod);
             ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -886,37 +1411,93 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ProductPage(int id)
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        var prodD = await _work.GenericRepository<Product>().Table
-            .Include(x => x.Brand)
-            .Include(x => x.Offer)
-            .Include(x => x.BrandTag)
-            .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(q => q.Feature)
-            .Include(x => x.ProductImages)
-            .Include(x => x.SubCategory).ThenInclude(x => x.Category).ThenInclude(x => x!.MainCategory)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
-            .AsSplitQuery()
-            .FirstOrDefaultAsync(x => x.Id == id);
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+        var prodD = _mapper.Map<Product>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<ProductRedis>(
+                $"Product:{id}",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.Brand)
+                        .Include(x => x.Offer)
+                        .Include(x => x.BrandTag)
+                        .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(q => q.Feature)
+                        .Include(x => x.ProductImages)
+                        .Include(x => x.SubCategory).ThenInclude(x => x.Category).ThenInclude(x => x!.MainCategory)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync(x => x.Id == id);
+                    return _mapper.Map<ProductRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         if (prodD == null) throw new Exception();
-        prodD.OnClick++;
-        await _work.GenericRepository<Product>().UpdateAsync(prodD, CancellationToken.None);
+        var prodd = await _work.GenericRepository<Product>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
+
+        prodd.OnClick++;
+        await _work.GenericRepository<Product>().UpdateAsync(prodd, CancellationToken.None);
         prodD.ProductDetails = prodD.ProductDetails.OrderByDescending(x => x.CategoryDetail.Priority).ToList();
         ViewBag.Product = prodD;
-        var prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-            .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
-            .Include(x => x.Offer)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .Where(x => x.SubCategoryId == prodD.SubCategoryId && x.Id != prodD.Id)
-            .Take(12).ToListAsync();
+
+        var prods = _mapper.Map<List<Product>>(
+            await _responseCacheService.GetOrSetCacheAsync<ProductRedis>(
+                "ProductPageListView",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<Product>().TableNoTracking
+                        .Include(x => x.ProductColors)
+                        .Include(x => x.SubCategory).Where(x => x.IsShowIndex)
+                        .Include(x => x.Offer)
+                        .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                        .Where(x => x.SubCategoryId == prodD.SubCategoryId && x.Id != prodD.Id)
+                        .Take(12).ToListAsync();
+                    return _mapper.Map<List<ProductRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         if (prods.Count <= 0)
         {
             ViewBag.Prods = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
@@ -953,52 +1534,154 @@ public class HomeController : Controller
         ViewBag.BasketProd = basketProducts;
         ViewBag.SaleService = await _work.GenericRepository<SaleServices>().TableNoTracking.FirstOrDefaultAsync() ??
                               new SaleServices();
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View();
     }
 
-    public async Task<IActionResult> GetByBrand(int id, double min, double max, int page = 1)
+    public async Task<IActionResult> GetByBrand(int id, double min, double max, List<string> values, int page = 1)
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
+        ViewBag.Values = values;
+       
+
+
         var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync();
+        ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
+            .Include(x => x.Feature)
+            .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == brand.SubCategoryId) &&
+                        x.ShowInSearch).ToListAsync();
         ViewBag.BrandId = brand;
         brand.OnClick++;
         await _work.GenericRepository<Brand>().UpdateAsync(brand, CancellationToken.None);
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         if (max > 0)
         {
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-                .Include(x => x.SubCategory)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Include(x => x.Offer)
-                .Where(x => x.BrandId == id)
-                .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
-                .Skip((page - 1) * 10)
-                .Take(12)
-                .ToListAsync();
+            if (values.Count > 0)
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.BrandId == id)
+                    .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
+                    .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .Skip((page - 1) * 10)
+                    .Take(12)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.BrandId == id)
+                    .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .Skip((page - 1) * 10)
+                    .Take(12)
+                    .ToListAsync();
+            }
         }
         else
         {
-            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking.Include(x => x.ProductColors)
-                .Include(x => x.SubCategory)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Include(x => x.Offer)
-                .Where(x => x.BrandId == id)
-                .Skip((page - 1) * 10)
-                .Take(12)
-                .ToListAsync();
+            if (values.Count > 0)
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.BrandId == id)
+                    .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .Skip((page - 1) * 10)
+                    .Take(12)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.SubCategory)
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.Offer)
+                    .Where(x => x.BrandId == id)
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .Skip((page - 1) * 10)
+                    .Take(12)
+                    .ToListAsync();
+            }
         }
-
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -1025,22 +1708,66 @@ public class HomeController : Controller
         ViewBag.Landing = await _work.GenericRepository<BrandLanding>().TableNoTracking
             .FirstOrDefaultAsync(x => x.BrandTagId == id) ?? new();
         ViewBag.BasketProd = basketProducts;
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View("ProductByBrand");
     }
 
 
     public async Task<IActionResult> Faq()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -1062,8 +1789,18 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.FaqCats = await _work.GenericRepository<FaqCat>().TableNoTracking.Include(x => x.Faqs).ToListAsync();
         ViewBag.Faqs = await _work.GenericRepository<Faq>().TableNoTracking.Where(x => x.ShowFirst).ToListAsync();
 
@@ -1072,15 +1809,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> InstallmentPage()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -1102,22 +1872,65 @@ public class HomeController : Controller
 
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View();
     }
 
     public async Task<IActionResult> AboutUs()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -1137,8 +1950,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.BasketProd = basketProducts;
         ViewBag.About = await _work.GenericRepository<AboutUsPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
@@ -1146,15 +1969,47 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ContactUs()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -1174,8 +2029,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.BasketProd = basketProducts;
         ViewBag.Contact = await _work.GenericRepository<ContactPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
@@ -1195,15 +2060,48 @@ public class HomeController : Controller
             .Take(12)
             .ToListAsync();
 
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
             .Include(x => x.Brands)
             .ToListAsync();
@@ -1227,8 +2125,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -1305,15 +2213,48 @@ public class HomeController : Controller
                 .ToListAsync();
         }
 
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
             .Include(x => x.Brands)
             .ToListAsync();
@@ -1337,8 +2278,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -1349,7 +2300,7 @@ public class HomeController : Controller
         ViewBag.Id = id;
         ViewBag.Page = page;
         ViewBag.Values = values;
-        var sub= await _work.GenericRepository<SubCategory>().TableNoTracking
+        var sub = await _work.GenericRepository<SubCategory>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.SubCatId = sub;
         if (max > 0)
@@ -1367,6 +2318,10 @@ public class HomeController : Controller
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
                     .Skip((page - 1) * 10)
                     .Take(12)
                     .ToListAsync();
@@ -1383,6 +2338,10 @@ public class HomeController : Controller
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
                     .Skip((page - 1) * 10)
                     .Take(12)
                     .ToListAsync();
@@ -1403,6 +2362,10 @@ public class HomeController : Controller
                     .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
                     .Skip((page - 1) * 10)
                     .Take(12)
                     .ToListAsync();
@@ -1417,8 +2380,11 @@ public class HomeController : Controller
                     .Include(x => x.Offer)
                     .Include(x => x.ProductDetails)
                     .AsSplitQuery()
-                    .OrderBy(x => x.Id)
                     .Where(x => x.SubCategoryId == id)
+                    .OrderByDescending(x =>
+                        x.ProductStatus == ProductStatus.Available &&
+                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
+                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
                     .Skip((page - 1) * 10)
                     .Take(12)
                     .ToListAsync();
@@ -1430,15 +2396,48 @@ public class HomeController : Controller
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == id) &&
                         x.ShowInSearch).ToListAsync();
 
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.SubCats = await _work.GenericRepository<SubCategory>().TableNoTracking
             .Include(x => x.Brands)
             .ToListAsync();
@@ -1463,8 +2462,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.BasketProd = basketProducts;
         return View();
     }
@@ -1524,15 +2533,47 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Privacy()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
         {
@@ -1552,8 +2593,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -1631,16 +2682,48 @@ public class HomeController : Controller
             }
         }
 
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .AsSplitQuery()
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         var prods = new List<Product>();
         var ProdBySubCat = new List<Product>();
         var CatDetails = new List<CategoryDetail>();
@@ -1696,8 +2779,18 @@ public class HomeController : Controller
         }
 
         ViewBag.BasketProd = basketProducts;
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View();
     }
 
@@ -1781,22 +2874,66 @@ public class HomeController : Controller
 
         ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking
             .ToListAsync();
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking.Take(4).ToListAsync();
 
         ViewBag.BasketProd = basketProducts;
 
         ViewBag.SelectPostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == pId) ?? new PostMethod();
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         return View();
     }
 
@@ -1885,6 +3022,7 @@ public class HomeController : Controller
 
     public async Task<ActionResult> WelcomeParsme()
     {
+        ViewBag.Seo = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync();
         return View();
     }
 
@@ -1994,12 +3132,36 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-                .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-                .ToListAsync();
-            ViewBag.Categories = cats;
-            ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                                 new FooterLink();
+            var CatsViews = _mapper.Map<List<MainCategory>>(
+                await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                    "CatsViews",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                            .Include(x => x.Categories)
+                            .ThenInclude(x => x.SubCategories)
+                            .ThenInclude(x => x.Brands)
+                            .AsSplitQuery()
+                            .ToListAsync();
+                        return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
+            ViewBag.Categories = CatsViews;
+            ViewBag.FooterLink = _mapper.Map<FooterLink>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                    "FooterLinkView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new FooterLink();
+                        return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+
 
             ViewBag.User = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name) ??
                            new User();
@@ -2024,9 +3186,29 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-            ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
-            ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                              new SeoPage();
+            ViewBag.Search = _mapper.Map<List<SearchResult>>(
+                await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                    "SearchView",
+                    async () =>
+                    {
+                        var categoriesFromDb = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6)
+                            .ToListAsync();
+                        return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
+            ViewBag.SeoPage = _mapper.Map<SeoPage>(
+                await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                    "SeoPageView",
+                    async () =>
+                    {
+                        var categoriesFromDb =
+                            await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                            new SeoPage();
+                        return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                    },
+                    TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+                ));
             return View();
         }
         else
@@ -2083,14 +3265,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> WhyParsPage()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2111,8 +3327,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2121,14 +3347,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsAtGlance()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2149,8 +3409,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2158,14 +3428,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsGoals()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2186,8 +3490,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2195,14 +3509,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsBuyingGuide()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2223,8 +3571,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2232,14 +3590,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsOrganizationalPurchase()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2260,8 +3652,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2269,14 +3671,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsGuarantee()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2297,8 +3733,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2306,14 +3752,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsShippingMethods()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2334,8 +3814,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2343,14 +3833,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsConsultationBeforePurchase()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2371,8 +3895,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2380,14 +3914,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ProceduresForReturning()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2408,8 +3976,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2417,14 +3995,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> TrackingOrders()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2445,8 +4057,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2455,14 +4077,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsOnlineSupport()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2483,8 +4139,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();
@@ -2492,14 +4158,48 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ParsRulesAndRegulations()
     {
-        var cats = await _work.GenericRepository<MainCategory>().TableNoTracking
-            .Include(x => x.Categories).ThenInclude(x => x.SubCategories).ThenInclude(x => x.Brands)
-            .ToListAsync();
-        ViewBag.Categories = cats;
-        ViewBag.FooterLink = await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
-                             new FooterLink();
+        var CatsViews = _mapper.Map<List<MainCategory>>(
+            await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
+                "CatsViews",
+                async () =>
+                {
+                    var categoriesFromDb = await _work.GenericRepository<MainCategory>().TableNoTracking
+                        .Include(x => x.Categories)
+                        .ThenInclude(x => x.SubCategories)
+                        .ThenInclude(x => x.Brands)
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    return _mapper.Map<List<MainCategoryRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
-        ViewBag.Search = await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+        ViewBag.Categories = CatsViews;
+        ViewBag.FooterLink = _mapper.Map<FooterLink>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
+                "FooterLinkView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<FooterLink>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new FooterLink();
+                    return _mapper.Map<FooterLinkRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
+
+
+        ViewBag.Search = _mapper.Map<List<SearchResult>>(
+            await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
+                "SearchView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SearchResult>().TableNoTracking.Take(6).ToListAsync();
+                    return _mapper.Map<List<SearchResultRedis>>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
 
         var basketProducts = new List<Product>();
         if (HttpContext.Session.GetString("basket") != null)
@@ -2520,8 +4220,18 @@ public class HomeController : Controller
             }
         }
 
-        ViewBag.SeoPage = await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
-                          new SeoPage();
+        ViewBag.SeoPage = _mapper.Map<SeoPage>(
+            await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
+                "SeoPageView",
+                async () =>
+                {
+                    var categoriesFromDb =
+                        await _work.GenericRepository<SeoPage>().TableNoTracking.FirstOrDefaultAsync() ??
+                        new SeoPage();
+                    return _mapper.Map<SeoPageRedis>(categoriesFromDb);
+                },
+                TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
+            ));
         ViewBag.Pages = await _work.GenericRepository<FooterPage>().Table.FirstOrDefaultAsync();
         ViewBag.BasketProd = basketProducts;
         return View();

@@ -1175,31 +1175,69 @@
 
                                                                     if (details.Contains(c))
                                                                     {
-                                                                        <div class="form-auth-row">
-                                                                            <label for="@idC" class="ui-checkbox">
-                                                                                <input type="checkbox" value="@c" checked="checked" name="IsSearch" id="@idC" onchange="submitFormWithSelectedValues()">
-                                                                                <span class="ui-checkbox-check"></span>
-                                                                            </label>
-                                                                            @* href="@Url.Action("SubCategory", "Home", new { id, detailId = i.Id, value = c })" *@
-                                                                            <a
-                                                                                class="remember-me" id="@c">
-                                                                                @c
-                                                                            </a>
-                                                                        </div>
+                                                                        if (i.DataType == DataType.CheckBox)
+                                                                        {
+                                                                            <div class="form-auth-row">
+                                                                                <label class="ui-switch">
+                                                                                    <input type="radio" name="IsSearch" value="true" onchange="submitFormWithSelectedValues()" checked>
+                                                                                    <span class="ui-switch-toggle"></span>
+                                                                                    <span class="ui-switch-label">دارد</span>
+                                                                                </label>
+                                                                                <label class="ui-switch">
+                                                                                    <input type="radio" name="IsSearch" value="false" onchange="submitFormWithSelectedValues()">
+                                                                                    <span class="ui-switch-toggle"></span>
+                                                                                    <span class="ui-switch-label">ندارد</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="form-auth-row">
+                                                                                <label for="@idC" class="ui-checkbox">
+                                                                                    <input type="checkbox" value="@c" checked="checked" name="IsSearch" id="@idC" onchange="submitFormWithSelectedValues()">
+                                                                                    <span class="ui-checkbox-check"></span>
+                                                                                </label>
+                                                                                @* href="@Url.Action("SubCategory", "Home", new { id, detailId = i.Id, value = c })" *@
+                                                                                <a
+                                                                                    class="remember-me" id="@c">
+                                                                                    @c
+                                                                                </a>
+                                                                            </div>
+                                                                        }
+                                                                     
                                                                     }
                                                                     else
                                                                     {
-                                                                        <div class="form-auth-row">
-                                                                            <label for="@idC" class="ui-checkbox">
-                                                                                <input type="checkbox" value="@c" name="IsSearch" id="@idC" onchange="submitFormWithSelectedValues()">
-                                                                                <span class="ui-checkbox-check"></span>
-                                                                            </label>
-                                                                            @* href="@Url.Action("SubCategory", "Home", new { id, detailId = i.Id, value = c })" *@
-                                                                            <a
-                                                                                class="remember-me" id="@c">
-                                                                                @c
-                                                                            </a>
-                                                                        </div>
+                                                                        if (i.DataType == DataType.CheckBox)
+                                                                        {
+                                                                            <div class="form-auth-row">
+                                                                                <label class="ui-switch">
+                                                                                    <input type="radio" name="IsSearch" value="true" onchange="submitFormWithSelectedValues()" >
+                                                                                    <span class="ui-switch-toggle"></span>
+                                                                                    <span class="ui-switch-label">دارد</span>
+                                                                                </label>
+                                                                                <label class="ui-switch">
+                                                                                    <input type="radio" name="IsSearch" value="false" onchange="submitFormWithSelectedValues()" checked>
+                                                                                    <span class="ui-switch-toggle"></span>
+                                                                                    <span class="ui-switch-label">ندارد</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="form-auth-row">
+                                                                                <label for="@idC" class="ui-checkbox">
+                                                                                    <input type="checkbox" value="@c" name="IsSearch" id="@idC" onchange="submitFormWithSelectedValues()">
+                                                                                    <span class="ui-checkbox-check"></span>
+                                                                                </label>
+                                                                                @* href="@Url.Action("SubCategory", "Home", new { id, detailId = i.Id, value = c })" *@
+                                                                                <a
+                                                                                    class="remember-me" id="@c">
+                                                                                    @c
+                                                                                </a>
+                                                                            </div> 
+                                                                        }
+                                                                    
                                                                     }
                                                                 }
 
@@ -1312,7 +1350,7 @@
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">پیشنهاد ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 @{
                                                                     var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
@@ -1426,7 +1464,7 @@
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">پیشنهاد ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 @{
                                                                     var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;
@@ -1539,7 +1577,7 @@
                                                     if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer))
                                                     {
                                                         <div class="d-flex justify-content-between gap-3">
-                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">فروش ویژه</div>
+                                                            <div class="promotion-badge w-50" style="margin-bottom: -10px;text-align: right;align-content: center">پیشنهاد ویژه</div>
                                                             <div class="countdown-timer w-50 d-flex justify-content-between">
                                                                 @{
                                                                     var totalHours = i.Offer.Hours + i.Offer.Minutes / 60.0;

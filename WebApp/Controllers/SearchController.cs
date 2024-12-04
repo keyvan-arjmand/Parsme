@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.DataBase;
 using Domain.Entity.Product;
+using Domain.Entity.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -56,5 +57,13 @@ public class SearchController : Controller
                 Id = x.Id
             })
             .ToListAsync();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCities(int stateId)
+    {
+        var cities = await _work.GenericRepository<City>().TableNoTracking.Where(x => x.StateId == stateId)
+            .ToListAsync();
+        return Ok(cities);
     }
 }

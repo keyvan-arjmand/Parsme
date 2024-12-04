@@ -10,6 +10,7 @@ Layout = "_Layout";
 List<MainCategory> categories = ViewBag.Categories;
 List<Product> basket = ViewBag.BasketProd;
 List<City> cities = ViewBag.City;
+List<State> states = ViewBag.State;
 Domain.Entity.User.User user = ViewBag.User;
 List<SearchResult> searchResults = ViewBag.Search;
 UserAddress address = ViewBag.Address;
@@ -1108,16 +1109,59 @@ ViewData["Title"] = "ویرایش آدرس";
                                                        class="input-name-checkout form-control text-left" name="Number">
 
                                                 <div class="form-checkout-valid-row">
-                                                    <label for="city">شهر
+                                                    <label for="city">
+                                                        استان
                                                         <abbr class="required" title="ضروری"
-                                                              style="color:red;">*</abbr></label>
-                                                    <select name="CityId" id="city"   class="form-control">  
-                                                        <option value="0" selected="selected">شهر مورد نظر
-                                                            خود را انتخاب کنید</option>
+                                                              style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
+                                                    <select name="stateId" id="state" class="form-control">
+                                                        <option value="0" selected="selected">
+                                                            استان مورد نظر
+                                                            خود را انتخاب کنید
+                                                        </option>
+                                                        @foreach (var i in states)
+                                                        {
+                                                            if (i.Id==address.City.StateId)
+                                                            {
+                                                                <option value="@i.Id" selected="selected">@i.Title</option>
+                                                                
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@i.Id">@i.Title</option>
+
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                </div>
+                                                <div class="form-checkout-valid-row">
+                                                    <label for="city">
+                                                        شهر
+                                                        <abbr class="required" title="ضروری"
+                                                              style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
+                                                    <select name="CityId" id="city" class="form-control">
+                                                        <option value="0" selected="selected">
+                                                            شهر مورد نظر
+                                                            خود را انتخاب کنید
+                                                        </option>
                                                         @foreach (var i in cities)
                                                         {
-                                                            <option value="@i.Id">@i.Name</option>
+                                                            if (i.Id == address.CityId)
+                                                            {
+                                                                <option value="@i.Id" selected="selected">@i.Name</option>
+                                                                
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@i.Id">@i.Name</option>
 
+                                                            }
                                                         }
                                                     </select>
 
@@ -1175,5 +1219,42 @@ ViewData["Title"] = "ویرایش آدرس";
 <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
 <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
+    <script src="/assetsCli/js/main.js"></script>
+<script>
+    $(document).ready(function() {
+        // هنگام تغییر استان، شهرها را بارگذاری کن
+        $('#state').change(function() {
+            var stateId = $(this).val();
+            var $citySelect = $('#city');
+
+            // ابتدا محتویات قبلی شهر را پاک می‌کنیم
+            $citySelect.empty();
+            $citySelect.append('<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>');
+
+            // اگر استان انتخاب شده باشد، درخواست AJAX ارسال می‌کنیم
+            if (stateId > 0) {
+                $.ajax({
+                    url: '/Search/GetCities',
+                    type: 'GET',
+                    data: { stateId: stateId },
+                    success: function(cities) {
+                        // برای هر شهر، گزینه‌ای به سلکت اضافه می‌کنیم
+                        $.each(cities, function(index, city) {
+                            $citySelect.append('<option value="' + city.id + '">' + city.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        alert("خطا در بارگذاری شهرها")
+                    },
+                    beforeSend: function() {
+                        Notiflix.Loading.circle('در حال پردازش ...');
+                    },
+                    complete: function() {
+                        Notiflix.Loading.remove();
+                    },
+                });
+            }
+        });
+    });
+</script>
 }

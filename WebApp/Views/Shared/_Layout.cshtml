@@ -4,7 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@(ViewData["Title"]??"Defualt")</title>
+    @if (ViewData["Title"]==null)
+    {
+        @RenderSection("PageTitle", false)
+    }
+    else
+    {
+    <title>@ViewData["Title"]</title>
+        
+    }
     <!-- font---------------------------------------->
     <link rel="stylesheet" href="/Header/assets/plugins/hover-master/css/hover-min.css">
     <link rel="stylesheet" href="/Header/assets/css/ionicons.css">

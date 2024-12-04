@@ -1,5 +1,9 @@
-﻿@{
+﻿@using Domain.Entity.IndexPage
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     Layout = null;
+    SeoPage seoPage = ViewBag.Seo;
+
 }
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -26,23 +30,21 @@
             <section class="page-account-box">
                 <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
                     <div class="ds-userlogin">
-                        <a href="#" class="account-box-logo">Parsme</a>
                         <div class="account-box">
                             <div class="Login-to-account mt-4">
                                 <div class="account-box-content">
+                                    <div class="user-account-welcome">
+                                        <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo">
+                                    </div>
                                     <h4 class="mb-2">به پارس می خوش آمدید</h4>
                                     <form action="#" class="form-account text-center">
-                                        <div class="user-account-welcome">
-                                            <img src="/assetsCli/images/man.png">
-                                        </div>
+
                                         <div class="made-account">
                                             <h2>حساب کاربری شما در پارس می ساخته شد</h2>
-                                            <p>اکنون می‌توانید به صفحه‌ای که در آن بودید بازگردید و یا با تکمیل اطلاعات حساب کاربری
-                                                خود به کلیه امکانات و
-                                                سرویس‌های پارس می و سرویس‌های وابسته به آن دسترسی داشته باشید</p>
+                                            <p>جهت ادامه خرید لطفا اطلاعات کاربریتون رو تکمیل کنید</p>
                                         </div>
                                         <div class="form-row-account">
-                                            <button class="btn btn-primary"><a href="@Url.Action("ProfileDetail", "Home")" class="text-decoration-none text-white">تکمیل حساب کاربری</a></button>
+                                            <button class="btn btn-primary"><a href="@Url.Action("ProfileDetail", "Home")" class="text-decoration-none text-white">تکمیل اطلاعات</a></button>
                                         </div>
                                     </form>
                                 </div>
