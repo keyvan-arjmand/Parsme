@@ -1128,29 +1128,37 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th scope="row">مجموع:</th>
+                                            <th scope="row">نام تحویل گیرنده:</th>
                                             <td>
                                                 <span class="amount">
-                                                    <span>تومان</span>
-                                                    @factorAmountPrice.ToString("N0")
+                                               @factor.UserAddress.Name
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">حمل و نقل:</th>
-                                            <td>@factor.PostMethod.Title</td>
+                                            <th scope="row">وضعیت</th>
+                                            <td>@factor.Status.ToDisplay()</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">روش پرداخت:</th>
                                             <td>انتقال مستقیم بانکی</td>
                                         </tr>
-
+@if (!string.IsNullOrEmpty(factor.RefPostUrl))
+{
+    <tr>
+        <th scope="row">کد رهگیری:</th>
+        <td>
+            <a class="amount" href="@factor.RefPostUrl">
+               @factor.RefPostUrl
+            </a>
+        </td>
+    </tr>
+}
                                         <tr>
-                                            <th scope="row">قیمت نهایی:</th>
+                                            <th scope="row">تاریخ ثبت:</th>
                                             <td>
                                                 <span class="amount">
-                                                    <span>تومان</span>
-                                                    @factorAmountPrice.ToString("N0")
+                                                    @factor.InsertDate.ToPersianTime()
                                                 </span>
                                             </td>
                                         </tr>
@@ -1175,9 +1183,13 @@
                                     }
                                     else
                                     {
-                                        <div class="d-flex justify-content-between">
-                                            <a href="@Url.Action("ReturnedFactor", "Home", new { factor.Id })" style="width: 150px"
-                                               class="btn btn-warning d-block">
+                                        <div class="d-flex justify-content-start" style="gap: 6px">
+                                            <a href="@Url.Action("CanceledFactor", "Home", new { factor.Id })" style="width: 150px"
+                                               class="btn btn-danger d-block">
+                                                لغو سفارش
+                                            </a>
+                                            <a href="@Url.Action("ReturnedFactor", "Home", new { factor.Id })" style="width: 150px;color: white"
+                                               class="btn btn-warning d-block" >
                                                 درخواست مرجوعی
                                             </a>
                                             <a href="@Url.Action("ShowFactor", "Home", new { factor.Id })" style="width: 150px"

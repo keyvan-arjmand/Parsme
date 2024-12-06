@@ -37,7 +37,7 @@
                                     <div class="message-light" style="padding:14px -1px !important;">
                                         <div class="d-flex justify-content-between" style="gap:10px ">
                                             <a href="@Url.Action("Login", "Home")">
-                                                <img src="/assetsCli/images/right-arrow.png" width="40"/>
+                                                <img src="/assetsCli/images/back-arrow.svg" width="40"/>
                                             </a>
 
                                             <a href="@Url.Action("Index", "Home")">
@@ -52,6 +52,7 @@
                                             <input type="text" value="@ViewBag.Phone" hidden="hidden" id="PhoneNumber">
                                         </div>
                                         <div class="account-box-verify-content">
+                                         
                                             <div class="form-account">
                                                 <div class="form-account-title">کد فعال سازی را وارد کنید</div>
                                                 <div class="form-account-row">
@@ -66,12 +67,18 @@
                                             </div>
                                         </div>
                                         <div class="form-account-row">
-                                            <div class="receive-verify-code">
-                                                <p id="countdown-verify-end">
-                                                    <span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span>
-                                                    <i class="fa fa-clock-o"></i>
-                                                </p>
+                                            <div class="d-flex flex-column">
+                                                <div class="receive-verify-code">
+                                                    <p id="countdown-verify-end">
+                                                        <span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span>
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span>مانده تا دریافت مجدد کد</span>
+                                                </div>
                                             </div>
+                                         
                                         </div>
                                         <div class="account-footer">
                                             <div class="account-footer">

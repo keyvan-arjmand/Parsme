@@ -2,6 +2,7 @@
 using Domain.DataBase;
 using Domain.Entity.Product;
 using Domain.Entity.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,13 @@ public class SearchController : Controller
 {
     private readonly IUnitOfWork _work;
     private readonly AppDbContext _context;
+    private readonly UserManager<User> _userManager;
 
-    public SearchController(IUnitOfWork work, AppDbContext context)
+    public SearchController(IUnitOfWork work, AppDbContext context, UserManager<User> userManager)
     {
         _work = work;
         _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -65,5 +68,12 @@ public class SearchController : Controller
         var cities = await _work.GenericRepository<City>().TableNoTracking.Where(x => x.StateId == stateId)
             .ToListAsync();
         return Ok(cities);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> CheckNationalCode(string nationalCode)
+    {
+        var exists = await _userManager.Users.AnyAsync(x => x.NationalCode == nationalCode);
+        return Ok(new { exists = exists });
     }
 }

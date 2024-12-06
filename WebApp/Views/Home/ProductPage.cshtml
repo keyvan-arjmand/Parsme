@@ -1248,45 +1248,37 @@
                                 <span>مقایسه</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul> 
                 </div>
             </div>
             <div class="gallery-item">
                 <div class="gallery-img">
-                    <div id="">
-                        <a href="#" data-toggle="modal" data-target="#more-product">
-                            <img class="zoom-img" id="img-product-zoom"
-                                 src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
-                                 data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
-                                 width="411"/>
-                            <div id="gallery_01f" style="width:420px;float:right;">
-                        </a>
-
-                        <ul class="gallery-items owl-carousel owl-theme"
-                            id="gallery-slider">
-                            @{
-                                foreach (var i in prod.ProductImages)
-                                {
-                                    <li class="item">
-                                        <a href="#" class="elevatezoom-gallery "
-                                           data-update=""
-                                           data-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                           data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri">
-                                            <img
-                                                src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                width="100"/>
-                                        </a>
-                                    </li>
-                                }
+                    <a href="#" data-toggle="modal" data-target="#more-product">
+                        <img class="zoom-img" id="img-product-zoom"
+                             src="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
+                             data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri"
+                             width="411" />
+                    </a>
+                    <div id="gallery_01f" style="width:420px;float:right;">
+                        <ul class="gallery-items owl-carousel owl-theme" id="gallery-slider">
+                            @foreach (var i in prod.ProductImages)
+                            {
+                                <li class="item">
+                                    <a href="#" class="elevatezoom-gallery active"
+                                       data-update=""
+                                       data-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                       data-zoom-image="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri">
+                                        <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                             width="100" />
+                                    </a>
+                                </li>
                             }
-
                         </ul>
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
     </section>
 </div>
 <div class="col-lg-7 col-xs-12 pl mt-1 d-block">
@@ -1313,7 +1305,6 @@
                    class="product-link product-cat-title">
                     @prod.SubCategory.Category.Name
                 </a>
-                ,
                 <a href="@Url.Action("SubCategory", "Home", new { id = @prod.SubCategoryId })"
                    class="product-link product-cat-title">
                     @prod.SubCategory.Name
@@ -2527,6 +2518,27 @@
                         slideBy: 1
                     }
                 }
+            });
+            
+            if ($("#img-product-zoom").length) {
+                $("#img-product-zoom").ezPlus({
+                    zoomType: "inner",
+                    containLensZoom: true,
+                    gallery: 'gallery_01f',
+                    cursor: "crosshair",
+                    galleryActiveClass: "active",
+                    responsive: true,
+                    imageCrossfade: true,
+                    zoomWindowFadeIn: 500,
+                    zoomWindowFadeOut: 500
+                });
+            }
+            var $customEvents = $('#custom-events');
+            $customEvents.lightGallery();
+
+            var colours = ['#21171A', '#81575E', '#9C5043', '#8F655D'];
+            $customEvents.on('onBeforeSlide.lg', function (event, prevIndex, index) {
+                $('.lg-outer').css('background-color', colours[index])
             });
             $("#slider").owlCarousel({
                 rtl: true,

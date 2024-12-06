@@ -16,7 +16,6 @@
     List<SearchResult> searchResults = ViewBag.Search;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
-    ViewData["Title"] = "مقایسه کالا";
 
     var catDetail = new List<CatDetailEdit>();
     foreach (var i in categoryDetails)
@@ -45,7 +44,10 @@
         }
     }
 }
-
+@section PageTitle
+{
+    <title>مقایسه کالا</title>
+}
 @section footer
 {
 <footer style="z-index: 10;" class="footer-main-site">

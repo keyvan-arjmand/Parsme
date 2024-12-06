@@ -1521,33 +1521,71 @@ else
 
     // Set the initial values
     document.querySelectorAll('.quantity-input').forEach(input => {
-        previousValues[input.id] = parseInt(input.value);
+        previousValues[input.id] = parseInt(input.value) || 0;
     });
 
     function handleValueChange(input) {
         let newValue = parseInt(input.value);
+        if (isNaN(newValue) || newValue < 0) {
+            Notiflix.Notify.failure('مقدار وارد شده معتبر نیست.');
+            return;
+        }
+
         let inputId = input.id;
+
+        if (!(inputId in previousValues)) {
+            previousValues[inputId] = newValue;
+        }
+
         if (newValue > previousValues[inputId]) {
             previousValues[inputId] = newValue;
 
-            let numberPart = inputId.match(/\d+/)[0];
+            let matchResult = inputId.match(/\d+/);
+            if (!matchResult) {
+                Notiflix.Notify.failure('شناسه محصول معتبر نیست.');
+                return;
+            }
 
-            let quantityNumber = parseInt(numberPart, 10);
+            let quantityNumber = parseInt(matchResult[0], 10);
 
-            let href =`@Url.Action("AddToBasket", "Basket")`
-            window.location.href = href+ '?id=' + encodeURIComponent(quantityNumber);
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddToBasket",
+                data: { id: quantityNumber },
+                beforeSend: function () {
+                    Notiflix.Loading.circle('در حال پردازش...');
+                },
+                success: function (response) {
+                    if (response.isSuccess) {
+                        Notiflix.Notify.success(response.message);
+                    } else {
+                        Notiflix.Notify.failure(response.message);
+                    }
+                    // به‌روزرسانی DOM به جای رفرش
+                },
+                error: function () {
+                    Notiflix.Notify.failure('خطایی در ارتباط با سرور رخ داد.');
+                },
+                complete: function () {
+                    Notiflix.Loading.remove();
+                }
+            });
         } else if (newValue < previousValues[inputId]) {
             previousValues[inputId] = newValue;
 
-            let numberPart = inputId.match(/\d+/)[0];
+            let matchResult = inputId.match(/\d+/);
+            if (!matchResult) {
+                Notiflix.Notify.failure('شناسه محصول معتبر نیست.');
+                return;
+            }
 
-            let quantityNumber = parseInt(numberPart, 10);
+            let quantityNumber = parseInt(matchResult[0], 10);
+            let href = '/Basket/RemoveInBasket';
+            window.location.href = `${href}?id=${encodeURIComponent(quantityNumber)}`;
+        }
+}
 
-            let href = `@Url.Action("RemoveInBasket", "Basket")`
-            window.location.href = href+ '?id=' + encodeURIComponent(quantityNumber);
-        } 
-    }
 
 
-</script>
+    </script>
 }

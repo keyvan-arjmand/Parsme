@@ -32,6 +32,7 @@ public class Factor:BaseEntity
     public bool IsLegal { get; set; }
     public AccountType AccountType { get; set; }
     
+    public string? RefPostUrl { get; set; }
     public string? RecipientName { get; set; }
     public string? EconomicNumber { get; set; }//شماره اقتصادی
     public string? OrganizationName { get; set; }//نام سازمان

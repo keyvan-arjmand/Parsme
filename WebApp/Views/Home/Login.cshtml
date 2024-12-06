@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="/assetsCli/css/main.css">
 </head>
 <body>
-
 <!-- login----------------------------------->
 <div class="container">
     <div class="row">
@@ -31,30 +30,30 @@
                     <div class="ds-userlogin">
                         <div class="account-box">
                             <div class="account-box-headline">
-                                    <a href="@Url.Action("Index","Home")" ><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
+                                    <a href="@Url.Action("Index","Home")" style="margin-top: 20px"><img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo"/></a>
                                     <a href="@Url.Action("Login", "Home")" class="login-ds active w-100">
                                         <span class="title">ورود / ثبت نام</span>
                                     </a>
                                     <div style="padding-right: 35px">
-                                        <h6 style="font-size: 14px">
+                                        <h6 style="font-size: 14px;padding: 10px">
                                             سلام!
 
                                         </h6>
-                                        <h6 style="font-size: 17px;color: #797979">
+                                        <h6 style="font-size: 17px;color: #797979;padding: 10px">
                                             لطفا شماره موبایل خود را وارد کنید
                                         </h6>
                                     </div>
                             </div>
                             <div class="Login-to-account ">
                                 <div class="account-box-content">
-                                    <form class=" text-right" asp-action="SendLoginCode" asp-controller="Home">
+                                    <form class=" text-right" asp-action="SendLoginCode" asp-controller="Home" id="loginForm">
                                         <div class="form-account-title">
                                             <input type="text" class="number-email-input" id="Phone" name="phoneNumber" required="required">
                                         </div>
                                       
                                         <div class="d-flex justify-content-center gap-2 w-100">
                                             <div class="form-row-account w-100">
-                                                <button   class="btn btn-primary" type="submit"><a class="text-decoration-none text-white">ورود</a></button>
+                                                <button   class="btn btn-primary" type="button" id="loginButton"><a class="text-decoration-none text-white">ورود</a></button>
                                             </div>
                                         </div>
                                     </form>
@@ -91,27 +90,37 @@
 <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
 <!-- main js-/assetsCli--------------------------------------------->
 <script src="/assetsCli/js/main.js"></script>
-<script>
- 
-    function Login(){
-        if ($('#Phone').val()!=='')
-        {
-            $.ajax({
-                type: "Post",
-                data: {phoneNumber:$('#Phone').val()},
-                url: "/Home/SendLoginCode/",
-                success: function (data) {
-                    var phoneNumber = $('#Phone').val();
-                    var confirmCodeUrl = '@Url.Action("ConfirmCode", "Home")';
-                    window.location.href = confirmCodeUrl + '?phoneNumber=' + encodeURIComponent(phoneNumber);
-                },
-                error: function (xhr) {
-                    alert("شماره وارد شده معتبر نمیباشد");
-                }
-            });
-        }else{
-            alert("شماره تلفن را وارد کنید")}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    function validateIranianMobileNumber(phoneNumber) {
+        // الگوی شماره موبایل ایران
+        const iranMobileRegex = /^(\+98|0)?9\d{9}$/;
+
+        // بررسی مطابقت شماره
+        return iranMobileRegex.test(phoneNumber);
     }
+    document.getElementById("loginButton").addEventListener("click", function () {
+        const phoneInput = document.getElementById("Phone").value.trim();
+
+        if (phoneInput === '') {
+            Swal.fire({
+                icon: 'info',
+                title: 'وارد کردن شماره!',
+                text: 'لطفاً شماره تلفن را وارد کنید.',
+                confirmButtonText: 'باشه'
+            });
+        } else if (!validateIranianMobileNumber(phoneInput)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'شماره نامعتبر!',
+                text: 'شماره تلفن وارد شده معتبر نمی‌باشد. لطفاً شماره صحیح وارد کنید.',
+                confirmButtonText: 'باشه'
+            });
+        } else {
+            // اگر شماره معتبر باشد، فرم ارسال می‌شود
+            document.getElementById("loginForm").submit();
+        }
+    });
 </script>
 </html>

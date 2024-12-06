@@ -144,7 +144,7 @@ $(document).ready(function (e) {
             }
         }
     });
-    
+
     $(".product-carousel").owlCarousel({
         rtl: true,
         margin: 10,
@@ -157,9 +157,9 @@ $(document).ready(function (e) {
         autoplayTimeout: 6000,
         autoplayHoverPause: true,
         smartSpeed: 800,
-        touchDrag: true, 
-        mouseDrag: true, 
-        pullDrag: true,  
+        touchDrag: true,
+        mouseDrag: true,
+        pullDrag: true,
         freeDrag: false,
         loop: true,
         responsive: {
@@ -180,8 +180,7 @@ $(document).ready(function (e) {
             }
         }
     });
-    
-    
+
 
     // brand---------------------------------------
     $(".product-carousel-brand").owlCarousel({
@@ -645,20 +644,43 @@ $(document).ready(function (e) {
     // });
 
 
+    if ($("#countdown-verify-end2").length) {
+        var $countdownOptionEnd = $("#countdown-verify-end2");
+        $countdownOptionEnd.countdown({
+            date: (new Date()).getTime() + 180 * 1000, // 1 minute later
+            text: '<span style="color: #FE0002">مانده تا دریافت مجدد کد</span>',
+            end: function () {
+                $countdownOptionEnd.html(" ");
+            }
+        });
+    }
     //    verify-phone-number------------------------
     if ($("#countdown-verify-end").length) {
         var $countdownOptionEnd = $("#countdown-verify-end");
 
         $countdownOptionEnd.countdown({
             date: (new Date()).getTime() + 180 * 1000, // 1 minute later
-            text: '<span class="day">%s</span><span class="hour">%s</span><span>: %s</span><span>%s</span>',
+            text: ' <span class="day">%s</span><span class="hour">%s</span><span>: %s</span><span>%s</span> ',
             end: function () {
                 $countdownOptionEnd.html("<a onclick='ResendCode()' class='link-border-verify'>ارسال مجدد</a>");
             }
         });
     }
-    $(".line-number-account").keyup(function () {
-        $(this).next().focus();
+    $(".line-number-account").keyup(function (e) {
+        // بررسی اینکه آیا کاربر یک عدد وارد کرده است
+        if (e.key >= '0' && e.key <= '9') {
+            $(this).val(e.key);  // وارد کردن عدد در فیلد
+            $(this).next().focus();  // رفتن به فیلد بعدی
+        } else if (e.key === "Backspace" || e.key === "Delete") {
+            $(this).val('');  // پاک کردن مقدار فعلی
+            $(this).prev().focus();  // رفتن به فیلد قبلی
+        }
+    });
+    $(".line-number-account").on("keydown", function (e) {
+        // اگر کلید زده شده غیر از اعداد 0-9 باشد، جلوگیری می‌کند
+        if (e.key < '0' || e.key > '9') {
+            e.preventDefault();
+        }
     });
     //    verify-phone-number-----------------------
 
@@ -684,39 +706,39 @@ $(document).ready(function (e) {
 
 
     // product-img-----------------------------
-    $("#gallery-slider").owlCarousel({
-        rtl: true,
-        margin: 10,
-        nav: true,
-        navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
-        dots: false,
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 4,
-                slideBy: 1
-            }
-        }
-    });
+    // $("#gallery-slider").owlCarousel({
+    //     rtl: true,
+    //     margin: 10,
+    //     nav: true,
+    //     navText: ['<i class="fa fa-angle-right"></i>', '<i class="fa fa-angle-left"></i>'],
+    //     dots: false,
+    //     responsiveClass: true,
+    //     responsive: {
+    //         0: {
+    //             items: 4,
+    //             slideBy: 1
+    //         }
+    //     }
+    // });
 
     $('.back-to-top').click(function (e) {
         e.preventDefault();
         $('html, body').animate({scrollTop: 0}, 800, 'easeInExpo');
     });
 
-    if ($("#img-product-zoom").length) {
-        $("#img-product-zoom").ezPlus({
-            zoomType: "inner",
-            containLensZoom: true,
-            gallery: 'gallery_01f',
-            cursor: "crosshair",
-            galleryActiveClass: "active",
-            responsive: true,
-            imageCrossfade: true,
-            zoomWindowFadeIn: 500,
-            zoomWindowFadeOut: 500
-        });
-    }
+    // if ($("#img-product-zoom").length) {
+    //     $("#img-product-zoom").ezPlus({
+    //         zoomType: "inner",
+    //         containLensZoom: true,
+    //         gallery: 'gallery_01f',
+    //         cursor: "crosshair",
+    //         galleryActiveClass: "active",
+    //         responsive: true,
+    //         imageCrossfade: true,
+    //         zoomWindowFadeIn: 500,
+    //         zoomWindowFadeOut: 500
+    //     });
+    // }
 
     //zoomgallerymodal---------------------------
     $(function () {

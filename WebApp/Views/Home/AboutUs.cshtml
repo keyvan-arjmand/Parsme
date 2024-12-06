@@ -1035,10 +1035,9 @@
     <div class="col-12">
         <div id="content">
             <div class="about">
-                <div class="about-us-head">
-                    <div class="about-us-head-inner">
-                        @Html.Raw(about.Head)
-                    </div>
+                <div class="about-us-head" style="
+                    background: url('@Url.Content("https://newdev.parsme.com/Images/Pages/" + about.Image)') no-repeat 50%;
+                ">
                 </div>
                 <div class="page-content-about">
                     @Html.Raw(about.Body)

@@ -45,7 +45,6 @@ builder.Services.AddCors(options =>
 });
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console() // برای نمایش در کنسول
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) // ذخیره در فایل
     .CreateLogger();
 
 builder.Services.ConfigureApplicationCookie(options =>

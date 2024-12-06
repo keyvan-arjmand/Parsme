@@ -577,10 +577,10 @@ public class HomeController : Controller
             }
 
             ViewBag.BasketProd = basketProducts;
-           var address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
+            var address = await _work.GenericRepository<UserAddress>().TableNoTracking.Include(x => x.City)
                 .ThenInclude(x => x.State)
                 .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == id);
-           ViewBag.Address = address;
+            ViewBag.Address = address;
             ViewBag.Search = _mapper.Map<List<SearchResult>>(
                 await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
                     "SearchView",
@@ -592,7 +592,8 @@ public class HomeController : Controller
                     },
                     TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
                 ));
-            ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.Where(x=>x.StateId==address.City.StateId).ToListAsync();
+            ViewBag.City = await _work.GenericRepository<City>().TableNoTracking
+                .Where(x => x.StateId == address.City.StateId).ToListAsync();
             ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.ToListAsync();
             ViewBag.SeoPage = _mapper.Map<SeoPage>(
                 await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
@@ -633,7 +634,7 @@ public class HomeController : Controller
                     },
                     TimeSpan.FromMinutes(10) // مدت زمان انقضا کش
                 ));
-
+            ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.Include(x => x.Cities).ToListAsync();
             ViewBag.Categories = CatsViews;
             ViewBag.FooterLink = _mapper.Map<FooterLink>(
                 await _responseCacheService.GetOrSetSingleCacheAsync<FooterLinkRedis>(
@@ -673,7 +674,6 @@ public class HomeController : Controller
             }
 
             ViewBag.City = await _work.GenericRepository<City>().TableNoTracking.ToListAsync();
-            ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.ToListAsync();
             ViewBag.BasketProd = basketProducts;
             ViewBag.Search = _mapper.Map<List<SearchResult>>(
                 await _responseCacheService.GetOrSetCacheAsync<SearchResultRedis>(
@@ -1027,11 +1027,11 @@ public class HomeController : Controller
                        new User();
             if (user != null)
             {
-                user.Name = name??string.Empty;
-                user.Family = family??string.Empty;
-                user.Email = email??string.Empty;
-                user.Sheba = Sheba??string.Empty;
-                user.NationalCode = NationalCode??string.Empty;
+                user.Name = name ?? string.Empty;
+                user.Family = family ?? string.Empty;
+                user.Email = email ?? string.Empty;
+                user.Sheba = Sheba ?? string.Empty;
+                user.NationalCode = NationalCode ?? string.Empty;
                 await _userManager.UpdateAsync(user);
             }
 
@@ -1096,7 +1096,7 @@ public class HomeController : Controller
     }
 
     public async Task<IActionResult> InsertUserAddress(string name, string address, int cityId, string number,
-        string postCode)
+        string postCode, string code, int postMethod, bool toCheckout = false)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1110,6 +1110,10 @@ public class HomeController : Controller
                 Name = name,
                 Number = number, UserId = user.Id
             }, CancellationToken.None);
+            if (toCheckout)
+            {
+                return RedirectToAction("Checkout", "Home", new { code = code, postMethod = postMethod });
+            }
 
             return RedirectToAction("UserAddress");
         }
@@ -1117,6 +1121,18 @@ public class HomeController : Controller
         {
             return RedirectToAction("Index");
         }
+    }
+
+    public async Task<IActionResult> CanceledFactor(int id)
+    {
+        var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+        factor.Status = Status.Canceled;
+        await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+
+        var result = webApi.VerifyLookup(factor.User.PhoneNumber, factor.User.Name, factor.FactorCode, string.Empty,
+            "UserCanceledFactor");
+        return RedirectToAction("OrderDetail", "Home", new { id });
     }
 
     public async Task<IActionResult> ReturnedFactor(int id)
@@ -1285,6 +1301,7 @@ public class HomeController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
+            ViewBag.State = await _work.GenericRepository<State>().TableNoTracking.ToListAsync();
             var basketProducts = new List<Product>();
             if (HttpContext.Session.GetString("basket") != null)
             {
@@ -1356,7 +1373,8 @@ public class HomeController : Controller
                 .FirstOrDefaultAsync(x => x.Code == code) ?? new DiscountCode();
             ViewBag.PostMethod = await _work.GenericRepository<PostMethod>().TableNoTracking
                 .FirstOrDefaultAsync(x => x.Id == postMethod);
-            ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking.ToListAsync();
+            ViewBag.Address = await _work.GenericRepository<UserAddress>().TableNoTracking
+                .Where(x => x.UserId == user.Id).ToListAsync();
             ViewBag.SeoPage = _mapper.Map<SeoPage>(
                 await _responseCacheService.GetOrSetSingleCacheAsync<SeoPageRedis>(
                     "SeoPageView",
@@ -1554,7 +1572,6 @@ public class HomeController : Controller
         ViewBag.Id = id;
         ViewBag.Page = page;
         ViewBag.Values = values;
-       
 
 
         var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync();

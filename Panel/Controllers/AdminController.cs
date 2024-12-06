@@ -940,7 +940,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ChangeStatus(int id, string desc, int status, int rejectType = 0)
+    public async Task<ActionResult> ChangeStatus(int id, string desc, int status,string? refPost, int rejectType = 0)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -949,6 +949,7 @@ public class AdminController : Controller
                 .FirstOrDefaultAsync(x => x.Id == id);
             factor.Status = (Status)status;
             factor.RejectStatus = (RejectStatus)rejectType;
+            factor.RefPostUrl= refPost??string.Empty;
             var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             await _work.GenericRepository<LogFactor>().AddAsync(new LogFactor
             {

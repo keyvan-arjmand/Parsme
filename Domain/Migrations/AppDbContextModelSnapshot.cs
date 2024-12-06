@@ -131,6 +131,9 @@ namespace Domain.Migrations
                     b.Property<string>("RecipientName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RefPostUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ReferenceNumber")
                         .HasColumnType("nvarchar(max)");
 

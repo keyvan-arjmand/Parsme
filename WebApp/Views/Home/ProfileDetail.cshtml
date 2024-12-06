@@ -1093,7 +1093,7 @@
                             <div class="profile-stats">
                                 <div class="profile-address">
                                     <div class="middle-container">
-                                        <form asp-action="EditeProfile" asp-controller="Home" method="post" class="form-checkout">
+                                        <form asp-action="EditeProfile" asp-controller="Home" method="post" class="form-checkout" id="profileSend">
                                             <div class="form-checkout-row">
                                                 <label for="namefirst">
                                                     نام
@@ -1102,7 +1102,7 @@
                                                         *
                                                     </abbr>
                                                 </label>
-                                                <input type="text" id="namefirst"
+                                                <input type="text" id="namefirst" required="required"
                                                        class="input-namefirst-checkout form-control" name="name" value="@user.Name">
 
                                                 <label for="namelast">
@@ -1112,7 +1112,7 @@
                                                         *
                                                     </abbr>
                                                 </label>
-                                                <input type="text" id="namelast"
+                                                <input type="text" id="namelast" required="required"
                                                        name="family"   class="input-namelast-checkout form-control" value="@user.Family">
                                                 <label for="namelast">
                                                     شماره
@@ -1121,16 +1121,13 @@
                                                         *
                                                     </abbr>
                                                 </label>
-                                                <input type="text" id="namelast"
+                                                <input type="email" id="namelast" 
                                                        class="input-namelast-checkout form-control" value="@user.PhoneNumber" disabled="disabled">
                                                 <label for="email">
                                                     ایمیل
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                  
                                                 </label>
-                                                <input type="text" name="email"
+                                                <input type="text" name="email" 
                                                        class="input-email-checkout form-control" value="@user.Email">
                                                 <label for="NationalCode">
                                                     کد ملی
@@ -1139,20 +1136,17 @@
                                                         *
                                                     </abbr>
                                                 </label>
-                                                <input type="text" name="NationalCode"
+                                                <input type="text" name="NationalCode" required="required"
                                                        class="input-email-checkout form-control" value="@user.NationalCode">
                                                 <label for="Sheba">
                                                     شماره شبا
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                  
                                                 </label>
                                                 <input type="text" name="Sheba"
                                                        class="input-email-checkout form-control" value="@user.Sheba">
                                              
                                                 <div class="AR-CR">
-                                                    <button class="btn-registrar"> ثبت تغییرات </button>
+                                                    <button class="btn-registrar" type="button" id="submitButton"> ثبت تغییرات </button>
                                                     <a href="@Url.Action("Profile")" class="cancel-edit-address" data-dismiss="modal"
                                                        aria-label="Close">
                                                         بازگشت
@@ -1185,4 +1179,48 @@
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <!-- main js-/assetsCli--------------------------------------------->
     <script src="/assetsCli/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $("#submitButton").on("click", function () {
+            var phone = $("input[name='phoneNumber']").val();
+            var nationalCode = $("input[name='NationalCode']").val();
+            var email = $("input[name='email']").val();
+
+            // بررسی ولیدیشن کد ملی
+            if (!validateNationalCode(nationalCode)) {
+                Swal.fire('خطا', 'کد ملی معتبر نمی‌باشد.', 'error');
+                return false;
+            }
+         
+            // بررسی کد ملی در سرور
+            checkNationalCodeExists(nationalCode, function (exists) {
+                if (exists) {
+                    Swal.fire('خطا', 'کد ملی قبلاً ثبت شده است.', 'error');
+                } else {
+                    // در صورت موفقیت، ارسال فرم
+                    $("form.form-checkout").submit();
+                }
+            });
+        });
+        // ولیدیشن کد ملی
+        function validateNationalCode(nationalCode) {
+            var nationalCodeRegex = /^[0-9]{10}$/; // فقط اعداد 10 رقمی
+            return nationalCodeRegex.test(nationalCode);
+        }
+  
+        // بررسی اینکه کد ملی قبلاً ثبت شده یا نه
+        function checkNationalCodeExists(nationalCode, callback) {
+            $.ajax({
+                type: "Get",
+                url: "/Search/CheckNationalCode", // URL مربوط به درخواست چک کردن کد ملی
+                data: { nationalCode: nationalCode },
+                success: function (response) {
+                    callback(response.exists); // فرض می‌کنیم که پاسخ `exists` را دریافت می‌کنیم
+                },
+                error: function () {
+                    Swal.fire('خطا', 'مشکلی در ارسال درخواست پیش آمد. لطفاً دوباره تلاش کنید.', 'error');
+                }
+            });
+        }
+    </script>
 }
