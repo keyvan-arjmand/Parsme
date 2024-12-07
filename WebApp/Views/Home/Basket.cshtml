@@ -1217,7 +1217,7 @@ else
                                                     <td class="product-cart-quantity">
                                                         <div class="required-number before">
                                                             <div class="quantity">
-                                                                <input type="number" min="0" max="5" step="1" value="@i.Count" id="@qn`" class="quantity-input" onchange="handleValueChange(this)">
+                                                                <input type="number" min="0" max="8" step="3" value="@i.Count" id="@qn" class="quantity-input" onchange="handleValueChange(this)">
                                                             </div>
                                                         </div>
                                                     </td>
@@ -1448,22 +1448,22 @@ else
             });
         });
         // Get all quantity input elements
-        const quantityInputs = document.querySelectorAll('.quantity-input');
+       //const quantityInputs = document.querySelectorAll('.quantity-input');
 
-        quantityInputs.forEach(input => {
-            // Add event listener for input change
-            input.addEventListener('input', function() {
-                const quantity = parseInt(this.value);
-                const price = parseFloat(this.getAttribute('data-price'));
-                const productId = this.id.replace('quantity', '');
-                const totalElement = document.getElementById('total' + productId);
+       //quantityInputs.forEach(input => {
+       //    // Add event listener for input change
+       //    input.addEventListener('input', function() {
+       //        const quantity = parseInt(this.value);
+       //        const price = parseFloat(this.getAttribute('data-price'));
+       //        const productId = this.id.replace('quantity', '');
+       //        const totalElement = document.getElementById('total' + productId);
 
-                if (!isNaN(quantity) && !isNaN(price)) {
-                    const totalAmount = quantity * price;
-                    totalElement.textContent = totalAmount.toLocaleString('en') + ' تومان';
-                }
-            });
-        });
+       //        if (!isNaN(quantity) && !isNaN(price)) {
+       //            const totalAmount = quantity * price;
+       //            totalElement.textContent = totalAmount.toLocaleString('en') + ' تومان';
+       //        }
+       //    });
+       //});
     });
     function CheckOut(){
         if (getCheckedRadioId()===0 || !getCheckedRadioId()){
@@ -1519,15 +1519,23 @@ else
 
     const previousValues = {};
 
-    // Set the initial values
+    // مقداردهی اولیه
     document.querySelectorAll('.quantity-input').forEach(input => {
-        previousValues[input.id] = parseInt(input.value) || 0;
-    });
+        if (!input.id) {
+            console.error('Input element missing an ID:', input);
+        } else {
+            previousValues[input.id] = parseInt(input.value) || 0;
+        }
+});
+
+    let isAjaxInProgress = false; // برای جلوگیری از درخواست‌های همزمان
 
     function handleValueChange(input) {
         let newValue = parseInt(input.value);
+
         if (isNaN(newValue) || newValue < 0) {
             Notiflix.Notify.failure('مقدار وارد شده معتبر نیست.');
+            input.value = previousValues[input.id] || 0; // بازگرداندن مقدار قبلی
             return;
         }
 
@@ -1543,10 +1551,18 @@ else
             let matchResult = inputId.match(/\d+/);
             if (!matchResult) {
                 Notiflix.Notify.failure('شناسه محصول معتبر نیست.');
+                input.value = previousValues[inputId]; // بازگرداندن مقدار قبلی
                 return;
             }
 
             let quantityNumber = parseInt(matchResult[0], 10);
+
+            if (isAjaxInProgress) {
+                Notiflix.Notify.warning('لطفاً منتظر بمانید.');
+                return;
+            }
+
+            isAjaxInProgress = true;
 
             $.ajax({
                 type: "POST",
@@ -1561,12 +1577,14 @@ else
                     } else {
                         Notiflix.Notify.failure(response.message);
                     }
-                    // به‌روزرسانی DOM به جای رفرش
+                    location.reload();
                 },
                 error: function () {
                     Notiflix.Notify.failure('خطایی در ارتباط با سرور رخ داد.');
+                    location.reload();
                 },
                 complete: function () {
+                    isAjaxInProgress = false;
                     Notiflix.Loading.remove();
                 }
             });
@@ -1576,6 +1594,7 @@ else
             let matchResult = inputId.match(/\d+/);
             if (!matchResult) {
                 Notiflix.Notify.failure('شناسه محصول معتبر نیست.');
+                input.value = previousValues[inputId]; // بازگرداندن مقدار قبلی
                 return;
             }
 
@@ -1585,7 +1604,7 @@ else
         }
 }
 
-
-
     </script>
+  
+
 }
