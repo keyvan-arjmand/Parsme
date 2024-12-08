@@ -567,37 +567,38 @@ $(document).ready(function (e) {
 
     //    quantity-selector--------------------
     jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
+
     jQuery('.quantity').each(function () {
         var spinner = jQuery(this),
             input = spinner.find('input[type="number"]'),
             btnUp = spinner.find('.quantity-up'),
             btnDown = spinner.find('.quantity-down'),
-            min = input.attr('min'),
-            max = input.attr('max');
+            min = parseFloat(input.attr('min')) || 0,
+            max = parseFloat(input.attr('max')) || Infinity;
 
-        btnUp.click(function () {
-            var oldValue = parseFloat(input.val());
-            if (oldValue >= max) {
-                var newVal = oldValue;
-            } else {
-                var newVal = oldValue + 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
+        // جلوگیری از رفتار پیش‌فرض مرورگر در ورودی عددی
+        input.on('wheel keydown', function (e) {
+            e.preventDefault();
         });
 
-        btnDown.click(function () {
-            var oldValue = parseFloat(input.val());
-            if (oldValue <= min) {
-                var newVal = oldValue;
-            } else {
-                var newVal = oldValue - 1;
-            }
-            spinner.find("input").val(newVal);
-            spinner.find("input").trigger("change");
+        // رویداد کلیک دکمه افزایش
+        btnUp.off('click').on('click', function (e) {
+            e.preventDefault(); // جلوگیری از رفتار پیش‌فرض
+            var oldValue = parseFloat(input.val()) || 0; // مقدار فعلی
+            var newVal = (oldValue >= max) ? oldValue : oldValue + 1; // مقدار جدید
+            input.val(newVal).trigger("change"); // تنظیم مقدار جدید و فعال کردن رویداد
         });
 
+        // رویداد کلیک دکمه کاهش
+        btnDown.off('click').on('click', function (e) {
+            e.preventDefault(); // جلوگیری از رفتار پیش‌فرض
+            var oldValue = parseFloat(input.val()) || 0; // مقدار فعلی
+            var newVal = (oldValue <= min) ? oldValue : oldValue - 1; // مقدار جدید
+            input.val(newVal).trigger("change"); // تنظیم مقدار جدید و فعال کردن رویداد
+        });
     });
+
+
     //    quantity-selector-------------------
 
     // Page Loader----------------------------

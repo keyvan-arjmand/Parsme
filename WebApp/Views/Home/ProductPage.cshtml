@@ -2718,7 +2718,7 @@
           "@@type": "ListItem",
           "position": 2,
           "item": {
-            "@@id": "https://www.parsme.com/Home/GetByBrand/prod.BrandId",
+            "@@id": "https://www.parsme.com/Home/GetByBrand/@prod.BrandId",
             "name": "دسته‌بندی محصولات"
           }
         },
@@ -2727,20 +2727,20 @@
           "position": 3,
           "item": {
             "@@id": "https://www.parsme.com/Home/ProductPage/@prod.Id",
-            "name": "@prod.PersianTitle"
+            "name": "@Html.Raw(prod.PersianTitle)"
           }
         }
       ]
     },
     {
       "@@type": "Product",
-      "name": "@prod.SeoTitle",
+      "name": "@Html.Raw(prod.SeoTitle)",
       "image": "https://newdev.parsme.com/Images/ProductImage/@prod.ImageUri",
-      "description": "@prod.SeoDesc",
+      "description": "@Html.Raw(prod.SeoDesc)",
       "sku": "PRD-12345",
       "brand": {
         "@@type": "Brand",
-        "name": "@prod.Brand.Title"
+        "name": "@Html.Raw(prod.Brand.Title)"
       },
       "aggregateRating": {
         "@@type": "AggregateRating",

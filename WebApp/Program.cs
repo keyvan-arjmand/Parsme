@@ -4,7 +4,9 @@ using Domain.Entity.User;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using Serilog;
+using WebApp.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,7 +59,20 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Host.UseSerilog();
 builder.Host.UseSerilog();
+builder.Services.AddQuartz(q =>
+{
+    // Create a job and trigger
+    q.UseMicrosoftDependencyInjectionJobFactory(); // use DI for job creation
+    q.ScheduleJob<RemindMe>(trigger => trigger
+        .WithIdentity("MyJobTrigger")
+        .StartNow()
+        .WithSimpleSchedule(x => x
+            .WithIntervalInHours(6)
+            .RepeatForever()));
+});
 
+// Add Quartz Hosted Service
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

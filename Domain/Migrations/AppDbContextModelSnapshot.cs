@@ -1430,13 +1430,21 @@ namespace Domain.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsRemind")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ProductColorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("InventoryNotifications");
                 });
@@ -2530,6 +2538,17 @@ namespace Domain.Migrations
                         .HasForeignKey("FaqCatId");
 
                     b.Navigation("FaqCat");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Notif.InventoryNotification", b =>
+                {
+                    b.HasOne("Domain.Entity.Product.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entity.Product.Brand", b =>

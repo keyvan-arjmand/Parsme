@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entity.Notif;
+using Domain.Entity.Product;
 using Domain.Entity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +24,21 @@ public class NotificationController : Controller
         if (User.Identity.IsAuthenticated)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
-            if (!await _work.GenericRepository<InventoryNotification>().TableNoTracking
-                    .AnyAsync(x => x.UserId == user.Id && x.ProductColorId == id))
+            var prod = await _work.GenericRepository<Product>().TableNoTracking.Include(x=>x.ProductColors).FirstOrDefaultAsync(x => x.Id == id);
+            foreach (var i in prod.ProductColors)
             {
-                await _work.GenericRepository<InventoryNotification>().AddAsync(new InventoryNotification
+                if (!await _work.GenericRepository<InventoryNotification>().TableNoTracking
+                        .AnyAsync(x => x.UserId == user.Id && x.ProductColorId == i.Id))
                 {
-                    ProductColorId = id,
-                    InsertDate = DateTime.Now,
-                    UserId = user.Id
-                }, CancellationToken.None);
+                    await _work.GenericRepository<InventoryNotification>().AddAsync(new InventoryNotification
+                    {
+                        ProductColorId = i.Id,
+                        ProductId = prod.Id,
+                        InsertDate = DateTime.Now,
+                        UserId = user.Id,
+                        IsRemind = false
+                    }, CancellationToken.None);
+                }
             }
             
             var previousUrl = Request.Headers["Referer"];
