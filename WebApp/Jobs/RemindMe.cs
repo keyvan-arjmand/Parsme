@@ -36,7 +36,7 @@ public class RemindMe : IJob
                 if (prod.ProductColors.Any(x => x.Id == i.ProductColorId && x.Inventory < 0))
                 {
                     KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-                    var result = webApi.VerifyLookup(user.PhoneNumber, user.Name, prod.PersianTitle.Substring(0, 25),
+                    var result = webApi.VerifyLookup(user.PhoneNumber, user.Name.Replace(" ","-"), prod.PersianTitle.Substring(0, 25).Replace(" ","-"),
                         string.Empty,
                         "RemindMe");
                     i.IsRemind = true;

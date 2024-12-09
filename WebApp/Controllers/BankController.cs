@@ -360,7 +360,7 @@ public class BankController : Controller
 
                 try
                 {
-                    var factor = await _work.GenericRepository<Factor>().Table.Include(x=>x.User)
+                    var factor = await _work.GenericRepository<Factor>().Table.Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ReferenceNumber.Contains(RefId));
                     ViewBag.Factor = factor;
                     var payment = new PaymentGatewayClient();
@@ -371,33 +371,58 @@ public class BankController : Controller
                         saleOrderId,
                         saleReferenceIdLong);
 
-                   
 
                     if (result.Body.@return == "0")
                     {
                         ViewBag.Message = "پرداخت شما با موفقیت انجام شد";
                         ViewBag.SaleReferenceId = saleReferenceIdLong;
                         ViewBag.IsSuccess = true;
-                         factor.Status = Status.Pending;
-                         factor.SaleReferenceId = saleReferenceIdLong;
-                         factor.StatusPayment = "پرداخت شما با موفقیت انجام شد";
-                         KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
-                         webApi.VerifyLookup(factor.User.PhoneNumber, factor.User.Name, factor.FactorCode, "-", "ProcessingOrder");
-                         var tr = await _work.GenericRepository<BankTransaction>().Table
-                             .FirstOrDefaultAsync(x => x.Id == saleOrderId);
-                         tr.StatusPayment = resCode;
-                         tr.SaleReferenceId = saleReferenceIdLong;
-                         tr.PaymentFinished = true;
-                         tr.BuyDatetime = DateTime.Now;
-                         await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
-                         await _work.GenericRepository<BankTransaction>().UpdateAsync(tr, CancellationToken.None);
+                        factor.Status = Status.Pending;
+                        factor.SaleReferenceId = saleReferenceIdLong;
+                        factor.StatusPayment = "پرداخت شما با موفقیت انجام شد";
+                        KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);
+                        webApi.VerifyLookup(factor.User.PhoneNumber, factor.User.Name, factor.FactorCode, "-",
+                            "ProcessingOrder");
+                        var tr = await _work.GenericRepository<BankTransaction>().Table
+                            .FirstOrDefaultAsync(x => x.Id == saleOrderId);
+                        tr.StatusPayment = resCode;
+                        tr.SaleReferenceId = saleReferenceIdLong;
+                        tr.PaymentFinished = true;
+                        tr.BuyDatetime = DateTime.Now;
+                        await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+                        await _work.GenericRepository<BankTransaction>().UpdateAsync(tr, CancellationToken.None);
+                        if (!string.IsNullOrWhiteSpace(factor.DiscountCode))
+                        {
+                            var discount = await _work.GenericRepository<DiscountCode>().Table
+                                .FirstOrDefaultAsync(x => x.Code == factor.DiscountCode);
+                            discount.Count--;
+                            await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
+                        }
+
+                        var prods = factor.Products;
+                        foreach (var p in prods)
+                        {
+                            var prod = await _work.GenericRepository<Product>().Table.Include(x => x.ProductColors)
+                                .FirstOrDefaultAsync(x => x.Id == p.ProductId);
+
+                            foreach (var c in p.FactorProductColor)
+                            {
+                                if (prod.ProductColors.Any(x => x.ColorId == c.ColorId))
+                                {
+                                    var color = prod.ProductColors.First(x => x.ColorId == c.ColorId);
+                                    color.Inventory -= c.Count;
+                                    await _work.GenericRepository<ProductColor>()
+                                        .UpdateAsync(color, CancellationToken.None);
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                         factor.Status = Status.Field;
-                         factor.SaleReferenceId = saleReferenceIdLong;
-                         factor.StatusPayment = $"پرداخت آنلاین با خطا {result.Body.@return} مواجه شده است.";
-                         await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
+                        factor.Status = Status.Field;
+                        factor.SaleReferenceId = saleReferenceIdLong;
+                        factor.StatusPayment = $"پرداخت آنلاین با خطا {result.Body.@return} مواجه شده است.";
+                        await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
                         ViewBag.IsSuccess = false;
                         ViewBag.Message = $"پرداخت آنلاین با خطا {result.Body.@return} مواجه شده است.";
                     }

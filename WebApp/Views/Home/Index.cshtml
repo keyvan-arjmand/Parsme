@@ -19,6 +19,7 @@
     ViewData["Title"] = seoPage.SeoIndexTitle;
 }
 
+
 @section footer
 {
     <footer style="z-index: 10;" class="footer-main-site">
@@ -241,16 +242,26 @@
                                href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
                                 <img referrerpolicy="origin"
                                      src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                     alt="" style="cursor:pointer"
+                                     alt="" style="cursor:pointer;width: 95px"
                                      code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
                             </a>
                         </div>
                         <div>
                             <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                 style='cursor:pointer'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
                                  onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                  alt='logo-samandehi'
                                  src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                        </div>
+                        <div>
+                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
+                                 onclick='window.open("https://qr.mojavez.ir/track/6518300")'
+                                 alt='logo-samandehi'
+                                 src='/Images/logo.png' width="70"/>
 
                         </div>
                     </div>
@@ -1052,7 +1063,7 @@
     <aside class="col-lg-3 col-md-3 col-xs-12 order-2 order-lg-2 pr sticky-sidebar">
         <div class="sidebar-inner">
             <div class="sidebar-main widget-banner widget card">
-                <h1 style="display: none">@seoPage.SeoIndexTitle</h1>
+                <h1 style="display: none">@Html.Raw(seoPage.SeoIndexTitle)</h1>
                 <!-- category-menu-------------------------->
                 <div class="slider-main-container d-block d-sm-block d-md-none d-lg-none">
                     <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">

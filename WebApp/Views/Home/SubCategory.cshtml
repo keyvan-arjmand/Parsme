@@ -28,9 +28,10 @@
     int id = ViewBag.Id;
     List<string> details = ViewBag.Values;
     SubCategory sub = ViewBag.SubCatId;
-    ViewData["Title"] = sub.SeoTitle;
+    ViewData["Title"] = Html.Raw(sub.SeoTitle);
 
 }
+
 
 @section footer
 {
@@ -254,16 +255,26 @@
                                href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
                                 <img referrerpolicy="origin"
                                      src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                     alt="" style="cursor:pointer"
+                                     alt="" style="cursor:pointer;width: 95px"
                                      code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
                             </a>
                         </div>
                         <div>
                             <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                 style='cursor:pointer'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
                                  onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                  alt='logo-samandehi'
                                  src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                        </div>
+                        <div>
+                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
+                                 onclick='window.open("https://qr.mojavez.ir/track/6518300")'
+                                 alt='logo-samandehi'
+                                 src='/Images/logo.png' width="70"/>
 
                         </div>
                     </div>
@@ -305,6 +316,7 @@
     </footer>
 
 }
+
 
 @section Header{
     @{
@@ -842,7 +854,7 @@
                                                         </a>
                                                         <span
                                                             class="product-name-card">
-                                                            @i.PersianTitle
+                                                            @Html.Raw(i.PersianTitle)
                                                         </span>
                                                         <div
                                                             class="header-basket-list-item-color-badge">
@@ -1406,7 +1418,7 @@
                                     </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                            @i.PersianTitle
+                                            @Html.Raw(i.PersianTitle)
                                         </a>
                                     </h2>
                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
@@ -1520,7 +1532,7 @@
                                     </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                            @i.PersianTitle
+                                            @Html.Raw(i.PersianTitle)
                                         </a>
                                     </h2>
                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)
@@ -1633,7 +1645,7 @@
                                     </div>
                                     <h2 class="post-title">
                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
-                                            @i.PersianTitle
+                                            @Html.Raw(i.PersianTitle)
                                         </a>
                                     </h2>
                                     @if (!i.ProductColors.Any(x => x.Inventory > 0) || i.ProductStatus != ProductStatus.Available)

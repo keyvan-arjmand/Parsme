@@ -6,6 +6,7 @@ public class CatDetailEdit
 {
     public int FeatureId { get; set; } 
     public Feature? Feature { get; set; }
+    public int Priority { get; set; }
     public List<CategoryDetailDtoEdit> CategoryDetails { get; set; } = new();
 }
 public class CategoryDetailDtoEdit

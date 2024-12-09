@@ -112,14 +112,6 @@ public class PaymentController : Controller
             }
 
             var discountAmount = 0.0;
-            if (!string.IsNullOrWhiteSpace(discountCode))
-            {
-                var discount = await _work.GenericRepository<DiscountCode>().Table
-                    .FirstOrDefaultAsync(x => x.Code == discountCode);
-                discountAmount = discount.Amount;
-                discount.Count--;
-                await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
-            }
 
             var factor = new Factor()
             {
@@ -212,7 +204,6 @@ public class PaymentController : Controller
                     }
                 }
 
-                prod.Inventory--;
                 await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
             }
 

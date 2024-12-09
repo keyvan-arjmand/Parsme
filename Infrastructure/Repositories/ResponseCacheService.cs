@@ -13,7 +13,7 @@ public class ResponseCacheService : IResponseCacheService
         _database = redis.GetDatabase();
     }
 
-    public async Task CacheResponseAsync(string cacheKey, object? response, TimeSpan timeToLive)
+    public async Task CacheResponseAsync(string cacheKey, object? response)
     {
         if (response is null)
             return;
@@ -25,7 +25,7 @@ public class ResponseCacheService : IResponseCacheService
 
         var serializedResponse = JsonSerializer.Serialize(response, options);
 
-        await _database.StringSetAsync(cacheKey, serializedResponse, timeToLive).ConfigureAwait(false);
+        await _database.StringSetAsync(cacheKey, serializedResponse, TimeSpan.FromMinutes(2)).ConfigureAwait(false);
     }
 
     public async Task<string?> GetCachedResponseAsync(string cacheKey)
@@ -38,7 +38,7 @@ public class ResponseCacheService : IResponseCacheService
         return cachedResponse;
     }
 
-    public async Task<List<T>> GetOrSetCacheAsync<T>(string cacheKey, Func<Task<List<T>>> getDataFunc, TimeSpan expiration)
+    public async Task<List<T>> GetOrSetCacheAsync<T>(string cacheKey, Func<Task<List<T>>> getDataFunc  )
     {
         var cachedData = await GetCachedResponseAsync(cacheKey);
         List<T> data;
@@ -50,12 +50,12 @@ public class ResponseCacheService : IResponseCacheService
         else
         {
             data = await getDataFunc();
-            await CacheResponseAsync(cacheKey, data, expiration);
+            await CacheResponseAsync(cacheKey, data );
         }
         return data;
     }
 
-    public async Task<T> GetOrSetSingleCacheAsync<T>(string cacheKey, Func<Task<T>> getSingleDataFunc, TimeSpan expiration)
+    public async Task<T> GetOrSetSingleCacheAsync<T>(string cacheKey, Func<Task<T>> getSingleDataFunc)
     {
         var cachedData = await GetCachedResponseAsync(cacheKey);
         T data;
@@ -68,7 +68,7 @@ public class ResponseCacheService : IResponseCacheService
         else
         {
             data = await getSingleDataFunc();
-            await CacheResponseAsync(cacheKey, data, expiration);
+            await CacheResponseAsync(cacheKey, data);
         }
 
         return data;

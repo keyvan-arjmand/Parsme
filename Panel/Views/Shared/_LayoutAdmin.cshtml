@@ -490,6 +490,24 @@ with font-awesome or any other icon font library -->
 <script src="/js/Notiflix.js"></script>
 <script>
     Notiflix.Notify.init();
+    if ('connection' in navigator) {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const warningMessage = document.getElementById('warningMessage');
+
+        function checkConnection() {
+            const downlink = connection.downlink; // مقدار سرعت اینترنت بر حسب مگابیت بر ثانیه
+
+            if (downlink < 2.5) {
+                alert('سرعت اینترنت شما پایین است. لطفاً اتصال خود را بررسی کنید.')
+            } else {
+              console.log('اتصال اینترنت شما مناسب است.');
+            }
+        }
+        connection.addEventListener('change', checkConnection);
+        checkConnection(); // بررسی وضعیت در لحظه بارگذاری صفحه
+    } else {
+        console.log('API وضعیت شبکه در مرورگر شما پشتیبانی نمی‌شود.');
+    }
 </script>
 <script src="/js/ckEditor.js"></script>
 @await RenderSectionAsync("script", false)

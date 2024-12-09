@@ -15,9 +15,10 @@
     List<Faq> faqs = ViewBag.Faqs;
     FooterLink footerLink = ViewBag.FooterLink;
     SeoPage seoPage = ViewBag.SeoPage;
-    ViewData["Title"] ="مقایسه کالا";
+    ViewData["Title"] ="پرسش و پاسخ";
 
 }
+
 
 
 @section footer
@@ -242,16 +243,26 @@
                                href="https://trustseal.enamad.ir/?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2">
                                 <img referrerpolicy="origin"
                                      src="https://trustseal.enamad.ir/logo.aspx?id=439864&amp;Code=sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2"
-                                     alt="" style="cursor:pointer"
+                                     alt="" style="cursor:pointer;width: 95px"
                                      code="sSj8qYvbSfqRgs7XwLkHhMDTJsvfcml2" width="70">
                             </a>
                         </div>
                         <div>
                             <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                 style='cursor:pointer'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
                                  onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                  alt='logo-samandehi'
                                  src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+
+                        </div>
+                        <div>
+                            <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
+                                 style='cursor:pointer;width: 95px'
+                                 target="_blank"
+                                 onclick='window.open("https://qr.mojavez.ir/track/6518300")'
+                                 alt='logo-samandehi'
+                                 src='/Images/logo.png' width="70"/>
 
                         </div>
                     </div>
@@ -1028,6 +1039,8 @@
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
     <style>
         #myTab{
             border-bottom: none;
@@ -1067,23 +1080,25 @@
                     <h2 class="box-rounded_headline">پرتکرارترین پرسش ها</h2>
                     @foreach (var q in faqCats)
                     {
-                    var id = q.Id + "tab";
+                    var id1 = q.Id + "tab";
                     var id2 = q.Id + "tabz";
-                    <div class="tab-pane fade" id="@id2" role="tabpanel" aria-labelledby="@id">
+                    <div class="tab-pane fade" id="@id2" role="tabpanel" aria-labelledby="@id1">
                         @foreach (var i in q.Faqs)
                         {
-                            <div class="toggle-box">
-                                <div class="toggle-box-active">
-                                    <ul>
-                                        <li class="has-sub">
-                                            <a href="#">@i.Title</a>
-                                            <ul>
-                                                <li class="has-sub">
-                                                    <a href="#">@i.Desc</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                            var id = "collapse-" + i.Id;
+                            <div class="card">
+                                <div class="card-header" style="background-color: rgb(123 123 123 / 13%)" id="heading-@i.Id">
+                                    <h5 class="mb-0 text-right">
+                                        <button  style="
+    background: none;font-weight: bold;font-size: 15px"  data-toggle="collapse" href="#@id" role="button" aria-expanded="false" aria-controls="@id">
+                                            @i.Title
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="@id" class="collapse" aria-labelledby="heading-@i.Id" data-parent="#accordion">
+                                    <div class="card-body text-right">
+                                        @i.Desc
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -1092,26 +1107,28 @@
                     }
                     @foreach (var i in faqs)
                     {
-                    if (i.ShowFirst)
-                    {
-                        var id = "desc"+i.Id;
-                                 <div class="tab-pane show active" id="none" role="tabpanel" aria-labelledby="none2">
-                            <div class="toggle-box">
-                                <div class="toggle-box-active">
-                                    <ul>
-                                        <li class="has-sub"><a href="#">@i.Title</a>
-                                            <ul>
-                                                <li class="has-sub"><a href="#">@i.Desc</a></li>
-                                             
-                                            </ul>
-                                        </li>
-
-                                    </ul>
+                        @if (i.ShowFirst)
+                        {
+                            var id = "desc" + i.Id;
+                            <div class="tab-pane show active" id="@id" role="tabpanel" aria-labelledby="@id">
+                                <div class="card">
+                                    <div class="card-header" style="background-color: rgb(123 123 123 / 13%)" id="heading-@id">
+                                        <h5 class="mb-0 text-right">
+                                            <button class=" @((i.ShowFirst ? "" : "collapsed"))" style="
+    background: none;font-weight: bold;font-size: 15px" data-toggle="collapse" data-target="#collapse-@id" aria-expanded="@i.ShowFirst.ToString().ToLower()" aria-controls="collapse-@id">
+                                                @i.Title
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse-@id" class="collapse @((i.ShowFirst ? "show" : ""))" aria-labelledby="heading-@id" data-parent="#accordion">
+                                        <div class="card-body text-right">
+                                            @i.Desc
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
 
-                    }
                     }
                 </div>
             </div>
@@ -1133,7 +1150,8 @@
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <!-- main js-/assetsCli--------------------------------------------->
     <script src="/assetsCli/js/main.js"></script>
-<script>
+
+    <script>
     $(document).ready(function () {
         // هنگام کلیک روی هر تب، وضعیت آن تغییر می‌کند
         $('#myTab a').on('click', function (e) {
@@ -1150,6 +1168,7 @@
             $($(this).attr('href')).addClass('show active');
         });
     });
+
 </script>
 
 
