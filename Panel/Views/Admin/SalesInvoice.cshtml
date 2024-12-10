@@ -125,8 +125,7 @@
                                                         <td class="text-center">@i.Amount.ToString("N0")</td>
                                                         <td class="text-center">@i.InsertDate.ToPersianTime()</td>
                                                         <td class="text-center">به پرداخت ملت</td>
-                                                        @if (i.Status == Status.PendingForPayment || i.Status == Status.Field 
-                                                                                                  || i.Status == Status.Field)
+                                                        @if (!i.IsPay)
                                                         {
                                                             <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span>
                                                             </td>

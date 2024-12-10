@@ -2064,7 +2064,6 @@ public class AdminController : Controller
                     prodDetail.Add(new ProductDetail
                     {
                         Id = 0,
-                        Priority = i.Priority,
                         IsDelete = i.IsDelete,
                         Value = string.Empty,
                         CategoryDetailId = i.Id,
@@ -2122,7 +2121,6 @@ public class AdminController : Controller
                     prodDetail.Add(new ProductDetail
                     {
                         Id = 0,
-                        Priority = i.Priority,
                         IsDelete = i.IsDelete,
                         Value = string.Empty,
                         CategoryDetailId = i.Id,

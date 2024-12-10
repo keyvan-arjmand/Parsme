@@ -110,6 +110,9 @@ namespace Domain.Migrations
                     b.Property<bool>("IsLegal")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPay")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsReturned")
                         .HasColumnType("bit");
 
@@ -1973,9 +1976,6 @@ namespace Domain.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

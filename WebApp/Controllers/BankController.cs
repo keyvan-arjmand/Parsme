@@ -378,6 +378,7 @@ public class BankController : Controller
                         ViewBag.SaleReferenceId = saleReferenceIdLong;
                         ViewBag.IsSuccess = true;
                         factor.Status = Status.Pending;
+                        factor.IsPay = true;
                         factor.SaleReferenceId = saleReferenceIdLong;
                         factor.StatusPayment = "پرداخت شما با موفقیت انجام شد";
                         KavenegarApi webApi = new KavenegarApi(apikey: ApiKeys.ApiKey);

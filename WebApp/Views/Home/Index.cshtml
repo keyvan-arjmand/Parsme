@@ -1303,10 +1303,22 @@
 <!-- slider-amazing------------------------->
 <div class="slider-widget-products slider-content-tabs slider-amazing-product pr-0 pl-0">
     <div class="widget widget-product card slider-content-tabs pr-0 pl-0">
-        <header class="card-header text-start">
-            <span class="title-one text-start black-color-text-pars fw-bold" style="font-size: 23px">تخفیفات شگفت انگیز</span>
+        <header class="card-header d-flex justify-content-between">
+            <span class="title-one text-start black-color-text-pars fw-bold" style="font-size: 16px">تخفیفات شگفت انگیز</span>
             <h3 class="card-title"></h3>
+            <a href="@Url.Action("ShowAll", "Home", new { q = "تخفیفات شگفت انگیز" })">
+            <span class="title-one text-start" style="padding-bottom: 10px;
+    color: #0c0c0c;
+    border-bottom: 2px solid #FF2D2D;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    font-weight: 600;
+    font-size: 14px;">نمایش همه</span>
+                <h3 class="card-title"></h3>
+            </a>
         </header>
+        
         <div class="product-carousel product-amazing owl-carousel owl-theme owl-rtl owl-loaded owl-drag" id="moboffer">
             <div class="owl-stage-outer">
                 <div class="owl-stage"

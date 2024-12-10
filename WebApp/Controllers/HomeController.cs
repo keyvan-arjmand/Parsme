@@ -1462,7 +1462,6 @@ public class HomeController : Controller
             ));
         if (prodD == null) throw new Exception();
         var prodd = await _work.GenericRepository<Product>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
-
         prodd.OnClick++;
         await _work.GenericRepository<Product>().UpdateAsync(prodd, CancellationToken.None);
         ViewBag.Product = prodD;
@@ -1540,7 +1539,8 @@ public class HomeController : Controller
         ViewBag.Page = page;
         ViewBag.Values = values??new List<string>();
 
-
+        values.RemoveAll(value => value.Equals("true", StringComparison.OrdinalIgnoreCase) || 
+                                  value.Equals("false", StringComparison.OrdinalIgnoreCase));
         var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
             .Include(x => x.Feature)
@@ -2014,15 +2014,30 @@ public class HomeController : Controller
     {
         ViewBag.q = q;
         ViewBag.Page = page;
-
-        ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-            .Include(x => x.ProductColors)
-            .Include(x => x.SubCategory)
-            .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-            .Include(x => x.Offer)
-            .Skip((page - 1) * 10)
-            .Take(12)
-            .ToListAsync();
+        if (q=="تخفیفات شگفت انگیز")
+        {
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.ProductColors)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.Offer)
+                .Where(x=>x.IsOffer)
+                .Skip((page - 1) * 10)
+                .Take(24)
+                .ToListAsync();
+        }
+        else
+        {
+            ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
+                .Include(x => x.ProductColors)
+                .Include(x => x.SubCategory)
+                .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                .Include(x => x.Offer)
+                .Skip((page - 1) * 10)
+                .Take(24)
+                .ToListAsync();
+        }
+       
 
         var CatsViews = _mapper.Map<List<MainCategory>>(
             await _responseCacheService.GetOrSetCacheAsync<MainCategoryRedis>(
@@ -2265,6 +2280,8 @@ public class HomeController : Controller
         ViewBag.Values = values??new List<string>();
         var sub = await _work.GenericRepository<SubCategory>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == id);
+        values.RemoveAll(value => value.Equals("true", StringComparison.OrdinalIgnoreCase) || 
+                                  value.Equals("false", StringComparison.OrdinalIgnoreCase));
         ViewBag.SubCatId = sub;
         if (max > 0)
         {

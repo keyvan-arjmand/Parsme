@@ -25,8 +25,15 @@
             var result = catDetail.FirstOrDefault(x => x.FeatureId == i.CategoryDetail.FeatureId);
             result.CategoryDetails.Add(new CategoryDetailDtoEdit
             {
-                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
-                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = prod.SubCategoryId, Id = i.CategoryDetailId, Value = i.Value
+                Option = i.CategoryDetail.Option,
+                DataType = (int)i.CategoryDetail.DataType,
+                Priority = i.CategoryDetail.Priority,
+                Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId,
+                ShowInSearch = i.CategoryDetail.ShowInSearch, 
+                SubCategoryId = prod.SubCategoryId,
+                Id = i.CategoryDetailId,
+                Value = i.Value,
             });
         }
         else
@@ -34,15 +41,25 @@
             var li = new CatDetailEdit();
             li.Feature = i.CategoryDetail.Feature;
             li.FeatureId = i.CategoryDetail.FeatureId;
-            li.Priority = i.Priority;
+            li.Priority = i.CategoryDetail.Feature.Priority;
             li.CategoryDetails.Add(new CategoryDetailDtoEdit
             {
-                Option = i.CategoryDetail.Option, DataType = (int)i.CategoryDetail.DataType, Priority = i.CategoryDetail.Priority, Title = i.CategoryDetail.Title,
-                FeatureId = i.CategoryDetail.FeatureId, ShowInSearch = i.CategoryDetail.ShowInSearch, SubCategoryId = prod.SubCategoryId, Id = i.CategoryDetailId, Value = i.Value
+                Option = i.CategoryDetail.Option, 
+                DataType = (int)i.CategoryDetail.DataType,
+                Priority = i.CategoryDetail.Priority, 
+                Title = i.CategoryDetail.Title,
+                FeatureId = i.CategoryDetail.FeatureId,
+                ShowInSearch = i.CategoryDetail.ShowInSearch,
+                SubCategoryId = prod.SubCategoryId,
+                Id = i.CategoryDetailId,
+                Value = i.Value
             });
             catDetail.Add(li);
         }
     }
+
+    var catd = catDetail;
+    
 }
 
 @section PageTitle
@@ -1435,7 +1452,7 @@
                                         <div class="product-params pt-3">
                                             <ul data-title="ویژگی‌ها">
                                                 @{
-                                                    foreach (var i in prod.ProductDetails.OrderBy(x=>x.Priority).Where(x => x.CategoryDetail.ShowInSearch).OrderBy(x => x.Priority).Take(7))
+                                                    foreach (var i in prod.ProductDetails.Where(x => x.CategoryDetail.ShowInSearch).OrderBy(x => x.CategoryDetail.Priority).Take(7))
                                                     {
                                                         @if (i.CategoryDetail.DataType == DataType.CheckBox)
                                                         {
@@ -2057,10 +2074,10 @@
                                     </h2>
                                     <section>
                                         <ul class="params-list">
-                                            @foreach (var i in catDetail.OrderBy(x => x.Priority))
+                                            @foreach (var i in catDetail.OrderBy(x => x.Priority).ToList())
                                             {
                                                 <h5 class="block fw-bold p-4 m-1 align-content-center">@i.Feature.Title</h5>
-                                                @foreach (var d in i.CategoryDetails.OrderBy(x => x.Priority))
+                                                @foreach (var d in i.CategoryDetails.OrderBy(x => x.Priority).ToList())
                                                 {
                                                     if (!string.IsNullOrWhiteSpace(d.Value))
                                                     {
