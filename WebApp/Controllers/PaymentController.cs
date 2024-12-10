@@ -57,7 +57,7 @@ public class PaymentController : Controller
 
     public async Task<string> ProductFactor(string discountCode, int postMethodId,
         int userAddressId, string desc, string economicNumber, string organizationName, string nationalId,
-        string postCode, string organizationNumber, string registrationNumber, string adders, bool isLegal = false)
+        string postCode, string organizationPhone, string registrationNumber, string organizationAddress, bool isLegal = false)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -132,9 +132,9 @@ public class PaymentController : Controller
                 IsLegal = isLegal,
                 NationalId = nationalId,
                 RegistrationNumber = registrationNumber ?? string.Empty,
-                Adders = adders ?? string.Empty,
-                OrganizationNumber = organizationNumber ?? string.Empty,
-                OrganizationName = organizationName, PostCode = postCode
+                Adders = organizationAddress ?? string.Empty,
+                OrganizationNumber = organizationPhone ?? string.Empty,
+                OrganizationName = organizationName, PostCode = postCode,
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
             List<FactorProduct> fc = new List<FactorProduct>();

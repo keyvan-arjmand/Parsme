@@ -9,7 +9,6 @@ $(document).ready(function (e) {
             beforeSend: function () {
             },
             error: function (xhr) {
-                Notiflix.Notify.failure('خطای داخلی');
             },
             complete: function () {
             },

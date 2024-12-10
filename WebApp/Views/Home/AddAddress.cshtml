@@ -1119,87 +1119,60 @@
                             <div class="profile-stats">
                                 <div class="profile-address">
                                     <div class="middle-container">
-                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout">
+                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout" id="addressForm">
                                             <div class="form-checkout-row">
                                                 <label for="name">
                                                     نام تحویل گیرنده
-                                                    <abbr class="required"
-                                                          title="ضروری" style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="name"
-                                                       class="input-name-checkout form-control" name="Name">
+                                                <input type="text" id="name" class="input-name-checkout form-control" name="Name">
+
                                                 <label for="phone-number">
                                                     شماره موبایل
-                                                    <abbr class="required"
-                                                          title="ضروری" style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="phone-number"
-                                                       class="input-name-checkout form-control text-left" name="Number">
+                                                <input type="text" id="phone-number" class="input-name-checkout form-control text-left" name="Number">
 
                                                 <div class="form-checkout-valid-row">
                                                     <label for="city">
                                                         استان
-                                                        <abbr class="required" title="ضروری"
-                                                              style="color:red;">
-                                                            *
-                                                        </abbr>
+                                                        <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                     </label>
                                                     <select name="stateId" id="state" class="form-control">
-                                                        <option value="0" selected="selected">
-                                                            استان مورد نظر
-                                                            خود را انتخاب کنید
-                                                        </option>
+                                                        <option value="0" selected="selected">استان مورد نظر خود را انتخاب کنید</option>
                                                         @foreach (var i in states)
                                                         {
                                                             <option value="@i.Id">@i.Title</option>
                                                         }
                                                     </select>
-
                                                 </div>
+
                                                 <div class="form-checkout-valid-row">
                                                     <label for="city">
                                                         شهر
-                                                        <abbr class="required" title="ضروری"
-                                                              style="color:red;">
-                                                            *
-                                                        </abbr>
+                                                        <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                     </label>
                                                     <select name="CityId" id="city" class="form-control">
-                                                        <option value="0" selected="selected">
-                                                            شهر مورد نظر
-                                                            خود را انتخاب کنید
-                                                        </option>
-                                                       
+                                                        <option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>
                                                     </select>
-
                                                 </div>
+
                                                 <label for="post-code">
                                                     کد پستی
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="post-code"
-                                                       class="input-name-checkout form-control" name="PostCode"
+                                                <input type="text" id="post-code" class="input-name-checkout form-control" name="PostCode"
                                                        placeholder="کد پستی را بدون خط تیره بنویسید">
 
                                                 <label for="address">
                                                     آدرس
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
                                                 <textarea rows="5" cols="30" id="address" name="Address"
                                                           class="textarea-name-checkout form-control"></textarea>
 
                                                 <div class="AR-CR">
-                                                    <button type="submit" class="btn-registrar"> ثبت آدرس</button>
+                                                    <button type="button" class="btn-registrar" onclick="submitAddressForm()">ثبت آدرس</button>
                                                     <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal"
                                                        aria-label="Close">
                                                         بازگشت
@@ -1268,5 +1241,49 @@
                 }
             });
         });
+        function validateIranianPostalCode(postalCode) {
+            const postalCodeRegex = /^[1-9][0-9]{9}$/;
+            return postalCodeRegex.test(postalCode);
+        }
+
+        function validateRequiredFields() {
+            const requiredFields = [
+                { id: 'name', message: 'لطفاً نام تحویل گیرنده را وارد کنید.' },
+                { id: 'phone-number', message: 'لطفاً شماره موبایل را وارد کنید.' },
+                { id: 'state', message: 'لطفاً استان خود را انتخاب کنید.', select: true },
+                { id: 'city', message: 'لطفاً شهر خود را انتخاب کنید.', select: true },
+                { id: 'post-code', message: 'لطفاً کد پستی را وارد کنید.' },
+                { id: 'address', message: 'لطفاً آدرس خود را وارد کنید.' }
+            ];
+
+            for (const field of requiredFields) {
+                const element = document.getElementById(field.id);
+                const value = field.select ? element.value : element.value.trim();
+
+                if (!value || (field.select && value === '0')) {
+                    alert(field.message);
+                    element.focus();
+                    return false;
+                }
+            }
+
+            const postCodeInput = document.getElementById('post-code');
+            const postalCode = postCodeInput.value.trim();
+
+            if (!validateIranianPostalCode(postalCode)) {
+                alert('کد پستی وارد شده معتبر نیست. لطفاً یک کد پستی ۱۰ رقمی معتبر وارد کنید.');
+                postCodeInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function submitAddressForm() {
+            if (validateRequiredFields()) {
+                document.getElementById('addressForm').submit();
+            }
+}
+
     </script>
 }

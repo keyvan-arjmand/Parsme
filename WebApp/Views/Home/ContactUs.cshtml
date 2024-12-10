@@ -1055,6 +1055,7 @@
     <!-- main-style--------------/assetsCli-------------->
     <link rel="stylesheet" href="/assetsCli/css/main.css">
     <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 }
 
@@ -1169,10 +1170,7 @@
                                 </label>
                             </div>
                             <div class="contact-us-row contact-us-row-align-left text-left d-block pl-3">
-                                <button type="submit" class="btn btn-info js-contact-form-submit g-recaptcha"
-                                        data-sitekey="6LdMnJYqAAAAALAEZChwcWOLlqyaQ2ObpyzTeC9F"
-                                        data-callback='validateForm'
-                                        data-action='submit'>
+                                <button type="button" onclick="validateForm()" class="btn btn-info js-contact-form-submit">
                                     ثبت و ارسال
                                 </button>
                             </div>
@@ -1190,6 +1188,7 @@
     </div>
 </div>
 
+<div class="g-recaptcha" data-sitekey="6LerCZgqAAAAALfkSEuopNztkSMgUSF5hu83ObO0"></div>
 
 @section script
 
@@ -1203,34 +1202,38 @@
     <script src="/assetsCli/js/vendor/jquery.ez-plus.js"></script>
     <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
     <!-- main js-/assetsCli--------------------------------------------->
-    <script
-        src="https://www.google.com/recaptcha/enterprise.js?render=6LdMnJYqAAAAALAEZChwcWOLlqyaQ2ObpyzTeC9F"></script>
 
     <script src="/assetsCli/js/main.js"></script>
     <script>
-        function validateForm(event) {
-            event.preventDefault(); // جلوگیری از ارسال فرم به صورت پیش‌فرض
-
-            let form = document.getElementById("contactForm");
-            let inputs = form.querySelectorAll("input, select, textarea");
-            let isValid = true;
-
-            // بررسی تمام فیلدها
-            inputs.forEach((input) => {
-                if (input.hasAttribute("required") && !input.value.trim()) {
-                    isValid = false;
-                    input.classList.add("is-invalid"); // اضافه کردن کلاس خطا
-                } else {
-                    input.classList.remove("is-invalid"); // حذف کلاس خطا
-                }
-            });
-
-            // ارسال فرم اگر تمام فیلدها مقدار داشته باشند
-            if (isValid) {
-                form.submit();
-            } else {
-                alert("لطفاً تمام فیلدهای اجباری را پر کنید.");
+        function validateForm() {
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse === "") {
+                alert("Please verify that you are not a robot.");
             }
+            else{
+                let form = document.getElementById("contactForm");
+                let inputs = form.querySelectorAll("input, select, textarea");
+                let isValid = true;
+
+                // بررسی تمام فیلدها
+                inputs.forEach((input) => {
+                    if (input.hasAttribute("required") && !input.value.trim()) {
+                        isValid = false;
+                        input.classList.add("is-invalid"); // اضافه کردن کلاس خطا
+                    } else {
+                        input.classList.remove("is-invalid"); // حذف کلاس خطا
+                    }
+                });
+
+                // ارسال فرم اگر تمام فیلدها مقدار داشته باشند
+                if (isValid) {
+                    form.submit();
+                } else {
+                    alert("لطفاً تمام فیلدهای اجباری را پر کنید.");
+                }
+            }
+          
         }
     </script>
+    
 }
