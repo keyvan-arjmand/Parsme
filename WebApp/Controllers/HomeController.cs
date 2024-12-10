@@ -2270,87 +2270,87 @@ public class HomeController : Controller
         {
             if (values.Count > 0)
             {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.ProductColors)
-                    .ThenInclude(x => x.Color)
-                    .Include(x => x.SubCategory)
-                    .ThenInclude(sc => sc.Category)
+                var productsQuery = _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.SubCategory).ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
-                    .AsSplitQuery()
-                    .OrderBy(x => x.Id)
+                    .AsSplitQuery();
+
+                var filteredProducts = productsQuery
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
-                    .OrderByDescending(x =>
-                        x.ProductStatus == ProductStatus.Available &&
-                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
-                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                            x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                    .ThenByDescending(x => x.IsOffer)
                     .Skip((page - 1) * 10)
-                    .Take(12)
-                    .ToListAsync();
+                    .Take(12);
+
+                ViewBag.Products = await filteredProducts.ToListAsync();
             }
             else
             {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.ProductColors)
-                    .ThenInclude(x => x.Color)
-                    .Include(x => x.SubCategory)
-                    .ThenInclude(sc => sc.Category)
+                var productsQuery = _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.SubCategory).ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
-                    .AsSplitQuery()
-                    .OrderBy(x => x.Id)
+                    .AsSplitQuery();
+
+                var filteredProducts = productsQuery
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductColors.Any(c => c.Price >= min && c.Price <= max))
-                    .OrderByDescending(x =>
-                        x.ProductStatus == ProductStatus.Available &&
-                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
-                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                            x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                    .ThenByDescending(x => x.IsOffer)
                     .Skip((page - 1) * 10)
-                    .Take(12)
-                    .ToListAsync();
+                    .Take(12);
+
+                ViewBag.Products = await filteredProducts.ToListAsync();
+
             }
         }
         else
         {
             if (values.Count > 0)
             {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.ProductColors)
-                    .ThenInclude(x => x.Color)
-                    .Include(x => x.SubCategory)
-                    .ThenInclude(sc => sc.Category)
+                var productsQuery = _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.SubCategory).ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
                     .Include(x => x.ProductDetails)
-                    .AsSplitQuery()
-                    .OrderBy(x => x.Id)
+                    .AsSplitQuery();
+
+                var filteredProducts = productsQuery
                     .Where(x => x.SubCategoryId == id)
                     .Where(x => x.ProductDetails.Any(q => values.Contains(q.Value)))
-                    .OrderByDescending(x =>
-                        x.ProductStatus == ProductStatus.Available &&
-                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
-                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                            x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                    .ThenByDescending(x => x.IsOffer)
                     .Skip((page - 1) * 10)
-                    .Take(12)
-                    .ToListAsync();
+                    .Take(12);
+
+                ViewBag.Products = await filteredProducts.ToListAsync();
+
             }
             else
             {
-                ViewBag.Products = await _work.GenericRepository<Product>().TableNoTracking
-                    .Include(x => x.ProductColors)
-                    .ThenInclude(x => x.Color)
-                    .Include(x => x.SubCategory)
-                    .ThenInclude(sc => sc.Category)
+                var productsQuery = _work.GenericRepository<Product>().TableNoTracking
+                    .Include(x => x.ProductColors).ThenInclude(x => x.Color)
+                    .Include(x => x.SubCategory).ThenInclude(sc => sc.Category)
                     .Include(x => x.Offer)
                     .Include(x => x.ProductDetails)
-                    .AsSplitQuery()
+                    .AsSplitQuery();
+
+                var filteredProducts = productsQuery
                     .Where(x => x.SubCategoryId == id)
-                    .OrderByDescending(x =>
-                        x.ProductStatus == ProductStatus.Available &&
-                        x.ProductColors.Sum(x => x.Inventory) > 0) // اول موجود بودن
-                    .ThenByDescending(x => x.IsOffer) // سپس پیشنهاد ویژه
+                    .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                            x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                    .ThenByDescending(x => x.IsOffer)
                     .Skip((page - 1) * 10)
-                    .Take(12)
-                    .ToListAsync();
+                    .Take(12);
+
+                ViewBag.Products = await filteredProducts.ToListAsync();
+
             }
         }
 
