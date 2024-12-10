@@ -3,17 +3,18 @@
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-Layout = "_LayoutAdmin";
-List<Factor> factors = ViewBag.Factors;
+    Layout = "_LayoutAdmin";
+    List<Factor> factors = ViewBag.Factors;
 }
 
 @section link
+
 {
-<style>
-    .modal{
-        top: 80px;
-    }
-</style>
+    <style>
+        .modal {
+            top: 80px;
+        }
+    </style>
 }
 
 <div class="content-header">
@@ -42,8 +43,10 @@ List<Factor> factors = ViewBag.Factors;
                     <div class="card-header">
                         <h3 class="card-title">درصد فروش</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-widget="remove"><i class="fa fa-times"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -78,8 +81,12 @@ List<Factor> factors = ViewBag.Factors;
                             <div class="card mt-3">
                                 <form asp-action="SalesInvoice" asp-controller="Admin" method="post">
                                     <div class="input-group p-3  m-2 w-50">
-                                        <input type="text" class="form-control " name="search" style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
-                                        <button class="input-group-text" type="submit" style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">جستجو</button>
+                                        <input type="text" class="form-control " name="search"
+                                               style="border-radius: 0px 5px 5px 0px; !important;" placeholder="جستجو">
+                                        <button class="input-group-text" type="submit"
+                                                style=" border-radius: 5px 0px 0px 5px !important;cursor: pointer !important;">
+                                            جستجو
+                                        </button>
                                     </div>
                                 </form>
 
@@ -100,8 +107,8 @@ List<Factor> factors = ViewBag.Factors;
                                             if (factors.Count < 1)
                                             {
                                                 <tr>
-                                                    <td> </td>
-                                                    <td> </td>
+                                                    <td></td>
+                                                    <td></td>
                                                     <td class="text-center">
                                                         یافت نشد
 
@@ -118,20 +125,21 @@ List<Factor> factors = ViewBag.Factors;
                                                         <td class="text-center">@i.Amount.ToString("N0")</td>
                                                         <td class="text-center">@i.InsertDate.ToPersianTime()</td>
                                                         <td class="text-center">به پرداخت ملت</td>
-                                                        @if (i.Status == Status.PendingForPayment || i.Status == Status.Field)
+                                                        @if (i.Status == Status.PendingForPayment || i.Status == Status.Field 
+                                                                                                  || i.Status == Status.Field)
                                                         {
-                                                            <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span></td>
-
+                                                            <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span>
+                                                            </td>
                                                         }
                                                         else
                                                         {
-                                                            <td class="text-center"><span class="badge badge-success">پرداخت شده</span></td>
-
-
+                                                            <td class="text-center"><span class="badge badge-success">پرداخت شده</span>
+                                                            </td>
                                                         }
                                                         <td class="text-center">@i.SaleReferenceId</td>
                                                         <td class="text-center">
-                                                            <a href="@Url.Action("Invoice","Admin",new{i.Id})" class="badge bg-warning text-muted">مشاهده</a>
+                                                            <a href="@Url.Action("Invoice", "Admin", new { i.Id })"
+                                                               class="badge bg-warning text-muted">مشاهده</a>
                                                         </td>
                                                     </tr>
                                                 }
@@ -155,90 +163,90 @@ List<Factor> factors = ViewBag.Factors;
 
     <script>
 
-    $(document).ready(function () {
-        $(".modalProduct").click(function () {
-            var currentrow = $(this).closest("form");
+        $(document).ready(function () {
+            $(".modalProduct").click(function () {
+                var currentrow = $(this).closest("form");
 
-            $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
-            $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
-            $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
-        });
-        $.ajax({
-            url: '/Admin/GetSalesData',  // URL برای فراخوانی API
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                // تنظیم داده‌های چارت
-                const colors = ['#dc3545', '#28a745', '#ffc107', '#17a2b8', '#007bff', '#6c757d', '#ff6347'];
-                const highlights = ['#e74c3c', '#2ecc71', '#f1c40f', '#1abc9c', '#3498db', '#95a5a6', '#ff4500'];
+                $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
+                $("#TitleEdit").val(currentrow.find($("input.mTitle[type=text]")).val());
+                $("#DescEdit").val(currentrow.find($("input.mDesc[type=text]")).val());
+            });
+            $.ajax({
+                url: '/Admin/GetSalesData',  // URL برای فراخوانی API
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // تنظیم داده‌های چارت
+                    const colors = ['#dc3545', '#28a745', '#ffc107', '#17a2b8', '#007bff', '#6c757d', '#ff6347'];
+                    const highlights = ['#e74c3c', '#2ecc71', '#f1c40f', '#1abc9c', '#3498db', '#95a5a6', '#ff4500'];
 
-                var chartData = {
-                    labels: data.map(item => item.label),
-                    datasets: [{
-                        data: data.map(item => item.value),
-                        backgroundColor: data.map((item, index) => colors[index % colors.length]),  // رنگ‌ها از آرایه
-                        hoverBackgroundColor: data.map((item, index) => highlights[index % highlights.length]),  // هایلایت‌ها از آرایه
-                    }]
-                };
+                    var chartData = {
+                        labels: data.map(item => item.label),
+                        datasets: [{
+                            data: data.map(item => item.value),
+                            backgroundColor: data.map((item, index) => colors[index % colors.length]),  // رنگ‌ها از آرایه
+                            hoverBackgroundColor: data.map((item, index) => highlights[index % highlights.length]),  // هایلایت‌ها از آرایه
+                        }]
+                    };
 
-                // تنظیم داده‌های چارت
-                const PieData = data.map((item, index) => ({
-                    value: item.value,
-                    color: colors[index % colors.length],
-                    highlight: highlights[index % highlights.length],
-                    label: item.label
-                }));
-                const totalValue = data.reduce((sum, item) => sum + item.value, 0);
+                    // تنظیم داده‌های چارت
+                    const PieData = data.map((item, index) => ({
+                        value: item.value,
+                        color: colors[index % colors.length],
+                        highlight: highlights[index % highlights.length],
+                        label: item.label
+                    }));
+                    const totalValue = data.reduce((sum, item) => sum + item.value, 0);
 
-                const pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-                const pieChart = new Chart(pieChartCanvas);
+                    const pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+                    const pieChart = new Chart(pieChartCanvas);
 
-                const pieOptions = {
-                    segmentShowStroke: true,
-                    segmentStrokeColor: '#fff',
-                    segmentStrokeWidth: 1,
-                    percentageInnerCutout: 50,
-                    animationSteps: 100,
-                    animationEasing: 'easeOutBounce',
-                    animateRotate: true,
-                    animateScale: false,
-                    responsive: true,
-                    maintainAspectRatio: false,
-                };
+                    const pieOptions = {
+                        segmentShowStroke: true,
+                        segmentStrokeColor: '#fff',
+                        segmentStrokeWidth: 1,
+                        percentageInnerCutout: 50,
+                        animationSteps: 100,
+                        animationEasing: 'easeOutBounce',
+                        animateRotate: true,
+                        animateScale: false,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    };
 
-                // ایجاد چارت
-                pieChart.Doughnut(PieData, pieOptions);
+                    // ایجاد چارت
+                    pieChart.Doughnut(PieData, pieOptions);
 
-                // پر کردن لیست توضیحات (Legend)
-                // پر کردن لیست توضیحات (Legend)
-                var chartLegend = $('#chartLegend');
-                data.forEach((item, index) => {
-                    var li = $('<li></li>').html(`<i class="fa fa-circle-o" style="color: ${colors[index % colors.length]};"></i> ${item.label}`);
-                    chartLegend.append(li);
-                });
+                    // پر کردن لیست توضیحات (Legend)
+                    // پر کردن لیست توضیحات (Legend)
+                    var chartLegend = $('#chartLegend');
+                    data.forEach((item, index) => {
+                        var li = $('<li></li>').html(`<i class="fa fa-circle-o" style="color: ${colors[index % colors.length]};"></i> ${item.label}`);
+                        chartLegend.append(li);
+                    });
 
-                // پر کردن فوتر لیست
-                var footerList = $('#footerList');
-                data.forEach((item, index) => {
-                    var percentage = ((item.value / totalValue) * 100).toFixed(2); // محاسبه درصد
-                    var li = $('<li></li>').html(`
+                    // پر کردن فوتر لیست
+                    var footerList = $('#footerList');
+                    data.forEach((item, index) => {
+                        var percentage = ((item.value / totalValue) * 100).toFixed(2); // محاسبه درصد
+                        var li = $('<li></li>').html(`
                 <a href="#" class="nav-link">
                     ${item.label}
                     <span class="float-left text-info">${percentage}%</span>
                 </a>
             `);
-                    footerList.append(li);
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching data:', error);
-            },
-});
+                        footerList.append(li);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                },
+            });
 
 
-    });
+        });
 
 
-</script>
+    </script>
 
 }

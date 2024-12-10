@@ -486,7 +486,6 @@ with font-awesome or any other icon font library -->
     }
 </script>
 <script src="/js/sweetalert.js"></script>
-<!-- Notiflix JS (CDN) -->
 <script src="/js/Notiflix.js"></script>
 <script>
     Notiflix.Notify.init();
@@ -497,7 +496,7 @@ with font-awesome or any other icon font library -->
         function checkConnection() {
             const downlink = connection.downlink; // مقدار سرعت اینترنت بر حسب مگابیت بر ثانیه
 
-            if (downlink < 2.5) {
+            if (downlink < 1.5) {
                 alert('سرعت اینترنت شما پایین است. لطفاً اتصال خود را بررسی کنید.')
             } else {
               console.log('اتصال اینترنت شما مناسب است.');

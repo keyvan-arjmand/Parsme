@@ -12,5 +12,5 @@ public enum Status
     [Display(Name = "در انتظار پرداخت")] PendingForPayment =6,
     [Display(Name = "پرداخت ناموفق")] Field = 5,
     [Display(Name = "مرجوعی")] Returned = 3,
-    [Display(Name = "لغو سفارش توسط خریدار")] Canceled = 3,
+    [Display(Name = "لغو سفارش توسط خریدار")] Canceled = 4,
 }
