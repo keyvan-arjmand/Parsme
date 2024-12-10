@@ -1052,7 +1052,6 @@
     }
 
     $(function () {
-
         $('#Colors').change(function (e) {
             let json12 = @Json.Serialize(Guarantees);
             const optionsHTML = json12.map(option => `<option value="${option.id}">${option.title}</option>`).join('');

@@ -1096,7 +1096,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> CanceledFactor(int id)
     {
-        var factor = await _work.GenericRepository<Factor>().Table.FirstOrDefaultAsync(x => x.Id == id);
+        var factor = await _work.GenericRepository<Factor>().Table.Include(x=>x.User).FirstOrDefaultAsync(x => x.Id == id);
         factor.Status = Status.Canceled;
         await _work.GenericRepository<Factor>().UpdateAsync(factor, CancellationToken.None);
         try
@@ -1465,7 +1465,6 @@ public class HomeController : Controller
 
         prodd.OnClick++;
         await _work.GenericRepository<Product>().UpdateAsync(prodd, CancellationToken.None);
-        prodD.ProductDetails = prodD.ProductDetails.OrderBy(x => x.Priority).ToList();
         ViewBag.Product = prodD;
 
         var prods = _mapper.Map<List<Product>>(

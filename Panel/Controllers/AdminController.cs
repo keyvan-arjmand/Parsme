@@ -2051,7 +2051,7 @@ public class AdminController : Controller
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
                 .AsSplitQuery().FirstOrDefaultAsync(x => x.Id == id);
-            var prodDetail = product.ProductDetails.Select(x => x.CategoryDetail).ToList();
+            var prodDetail = product.ProductDetails.ToList();
             var catDetails = await _work.GenericRepository<CategoryDetail>()
                 .TableNoTracking
                 .Include(x => x.Feature)
@@ -2061,19 +2061,14 @@ public class AdminController : Controller
             {
                 if (!prodDetail.Any(x => x.Id == i.Id))
                 {
-                    prodDetail.Add(new CategoryDetail
+                    prodDetail.Add(new ProductDetail
                     {
-                        Id = i.Id,
-                        Feature = i.Feature,
-                        Option = i.Option,
+                        Id = 0,
                         Priority = i.Priority,
-                        Title = i.Title,
-                        DataType = i.DataType,
-                        IsActive = i.IsActive,
-                        FeatureId = i.FeatureId,
-                        ShowInSearch = i.ShowInSearch,
                         IsDelete = i.IsDelete,
-                        SubCategoryDetails = i.SubCategoryDetails
+                        Value = string.Empty,
+                        CategoryDetailId = i.Id,
+                        ProductId = product.Id,
                     });
                 }
             }
@@ -2102,7 +2097,7 @@ public class AdminController : Controller
     {
         if (User.Identity.IsAuthenticated && id > 0)
         {
-            ViewBag.Product = await _work.GenericRepository<Product>().TableNoTracking
+            var product = await _work.GenericRepository<Product>().TableNoTracking
                 .Include(x => x.Brand)
                 .Include(x => x.Offer)
                 .Include(x => x.ProductDetails).ThenInclude(x => x.CategoryDetail).ThenInclude(x => x.Feature)
@@ -2114,6 +2109,29 @@ public class AdminController : Controller
                 .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
                 .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
+            var prodDetail = product.ProductDetails.ToList();
+            var catDetails = await _work.GenericRepository<CategoryDetail>()
+                .TableNoTracking
+                .Include(x => x.Feature)
+                .Include(x => x.SubCategoryDetails)
+                .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == product.SubCategoryId)).ToListAsync();
+            foreach (var i in catDetails)
+            {
+                if (!prodDetail.Any(x => x.Id == i.Id))
+                {
+                    prodDetail.Add(new ProductDetail
+                    {
+                        Id = 0,
+                        Priority = i.Priority,
+                        IsDelete = i.IsDelete,
+                        Value = string.Empty,
+                        CategoryDetailId = i.Id,
+                        ProductId = product.Id,
+                    });
+                }
+            }
+
+            ViewBag.Product = product;
             ViewBag.Brands = await _work.GenericRepository<Brand>().TableNoTracking.OrderByDescending(x => x.Id)
                 .ToListAsync();
             ViewBag.BrandTags = await _work.GenericRepository<BrandTag>().TableNoTracking.OrderByDescending(x => x.Id)
@@ -3055,14 +3073,14 @@ public class AdminController : Controller
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == request.SubCategoryId.ToInt()))
             .CountAsync();
 
-        if (catDetailCount != request.ProductDetails.Count())
-        {
-            return new ApiAction
-            {
-                IsSuccess = false,
-                Message = "خطا در پردازش جزئیات محصول"
-            };
-        }
+        // if (catDetailCount != request.ProductDetails.Count())
+        // {
+        //     return new ApiAction
+        //     {
+        //         IsSuccess = false,
+        //         Message = "خطا در پردازش جزئیات محصول"
+        //     };
+        // }
 
         if (request.ProductColors.Count <= 0)
         {
@@ -3126,15 +3144,15 @@ public class AdminController : Controller
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == request.SubCategoryId.ToInt()))
             .CountAsync();
 
-        if (
-            catDetailCount != request.ProductDetails.Count())
-        {
-            return new ApiAction
-            {
-                IsSuccess = false,
-                Message = "خطا در پردازش جزئیات محصول"
-            };
-        }
+        // if (
+        //     catDetailCount != request.ProductDetails.Count())
+        // {
+        //     return new ApiAction
+        //     {
+        //         IsSuccess = false,
+        //         Message = "خطا در پردازش جزئیات محصول"
+        //     };
+        // }
 
         if (request.ProductColors.Count <= 0)
         {

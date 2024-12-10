@@ -2062,47 +2062,39 @@
                                     </h2>
                                     <section>
                                         <ul class="params-list">
-                                            @{
-                                                foreach (var i in catDetail.OrderBy(x => x.Priority))
+                                            @foreach (var i in catDetail.OrderBy(x => x.Priority))
+                                            {
+                                                <h5 class="block fw-bold p-4 m-1 align-content-center">@i.Feature.Title</h5>
+                                                @foreach (var d in i.CategoryDetails.OrderBy(x => x.Priority))
                                                 {
-                                                    <h5 class="block fw-bold p-4 m-1 align-content-center">@i.Feature.Title</h5>
-                                                    foreach (var d in i.CategoryDetails.OrderBy(x => x.Priority))
+                                                    if (!string.IsNullOrWhiteSpace(d.Value))
                                                     {
-                                                        if (!string.IsNullOrWhiteSpace(d.Value))
-                                                        {
-                                                            <li class="params-list-item">
-                                                                <div class="params-list-key">
-                                                                    <span class="block fw-bold">@d.Title</span>
-                                                                </div>
-                                                                <div class="params-list-value">
-                                                                    @if ((DataType)d.DataType == DataType.CheckBox)
+                                                        <li class="params-list-item">
+                                                            <div class="params-list-key">
+                                                                <span class="block fw-bold">@d.Title</span>
+                                                            </div>
+                                                            <div class="params-list-value">
+                                                                @if ((DataType)d.DataType == DataType.CheckBox)
+                                                                {
+                                                                    if (d.Value == "true")
                                                                     {
-                                                                        if (d.Value == "true")
-                                                                        {
-                                                                            <span class="block fw-bold">
-                                                                دارد
-                                                            </span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <span class="block fw-bold">
-                                                                ندارد
-                                                            </span>
-                                                                        }
+                                                                        <span class="block fw-bold">دارد</span>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <span class="block fw-bold">
-                                                            @d.Value
-                                                        </span>
+                                                                        <span class="block fw-bold">ندارد</span>
                                                                     }
-
-                                                                </div>
-                                                            </li>
-                                                        }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="block fw-bold">@d.Value</span>
+                                                                }
+                                                            </div>
+                                                        </li>
                                                     }
                                                 }
                                             }
+
                                         </ul>
                                     </section>
                                 </article>

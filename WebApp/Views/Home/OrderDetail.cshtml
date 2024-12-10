@@ -23,6 +23,8 @@
 
 @section footer
 
+
+
 {
     <footer style="z-index: 10;" class="footer-main-site">
         <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
@@ -1046,6 +1048,8 @@
 
 @section loader
 
+
+
 {
     <div class="P-loader">
         <div class="P-loader-content">
@@ -1060,6 +1064,8 @@
 }
 
 @section link
+
+
 
 {
     <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
@@ -1230,26 +1236,30 @@
                                             </div>
                                         }
                                     }
-                                    else
-                                    {
-                                        <div class="d-flex justify-content-start" style="gap: 6px">
+                                    <div class="d-flex justify-content-start" style="gap: 6px">
+                                        @if (factor.Status != Status.Canceled&&!factor.IsReturned )
+                                        {
                                             <a href="@Url.Action("CanceledFactor", "Home", new { factor.Id })"
                                                style="width: 150px"
                                                class="btn btn-danger d-block">
                                                 لغو سفارش
                                             </a>
+                                        }
+                                        @if (!factor.IsReturned && factor.Status != Status.Canceled)
+                                        {
                                             <a href="@Url.Action("ReturnedFactor", "Home", new { factor.Id })"
                                                style="width: 150px;color: white"
                                                class="btn btn-warning d-block">
                                                 درخواست مرجوعی
                                             </a>
-                                            <a href="@Url.Action("ShowFactor", "Home", new { factor.Id })"
-                                               style="width: 150px"
-                                               class="btn btn-info d-block">
-                                                مشاهده فاکتور
-                                            </a>
-                                        </div>
-                                    }
+                                        }
+
+                                        <a href="@Url.Action("ShowFactor", "Home", new { factor.Id })"
+                                           style="width: 150px"
+                                           class="btn btn-info d-block">
+                                            مشاهده فاکتور
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1261,6 +1271,8 @@
 </div>
 
 @section script
+
+
 
 {
     <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
