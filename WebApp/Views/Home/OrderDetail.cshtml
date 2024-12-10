@@ -22,9 +22,6 @@
 }
 
 @section footer
-
-
-
 {
     <footer style="z-index: 10;" class="footer-main-site">
         <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
@@ -39,7 +36,7 @@
                         </div>
                         <div class="text-start p-2">
                             <h6 class="text-muted p-2 fw-bold">
-                                @seoPage.NavNameComp
+                                @seoPage.NavNameComp.ToRaw()
                             </h6>
                         </div>
                     </div>
@@ -64,31 +61,33 @@
                                         <section class="footer-links-col">
                                             <div class="headline-links">
                                                 <a href="#" class="text-decoration-none fw-bold">
-                                                    @footerLink.DescCol
+                                                    @footerLink.DescCol.ToRaw()
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
                                                     <a href="@footerLink.HrefCol1" class="text-decoration-none fw-bold">
-                                                        @footerLink.TitleCol1
+                                                        @footerLink.TitleCol1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col1"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title1Col1
+                                                    <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title1Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col1"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title2Col1
+                                                    <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title2Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col1"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title3Col1
+                                                    <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title3Col1.ToRaw()
+                                                    </a>
+                                                </li>
+                                                <li class="p-2">
+                                                    <a href="@footerLink.Href4Col1" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title4Col1.ToRaw()
                                                     </a>
                                                 </li>
                                             </ul>
@@ -100,31 +99,38 @@
                                         <section class="footer-links-col">
                                             <div class="headline-links">
                                                 <a href="#" class="text-decoration-none fw-bold">
-                                                    @footerLink.DescCol2
+                                                    @footerLink.DescCol2.ToRaw()
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
                                                     <a href="@footerLink.HrefCol2" class="text-decoration-none fw-bold">
-                                                        @footerLink.TitleCol2
+                                                        @footerLink.TitleCol2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col2"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title1Col2
+                                                    <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title1Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col2"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title2Col2
+                                                    <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title2Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col2"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title3Col2
+                                                    <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title3Col2.ToRaw()
+                                                    </a>
+                                                </li>
+                                                <li class="p-2">
+                                                    <a href="@footerLink.Href4Col2" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title4Col2.ToRaw()
+                                                    </a>
+                                                </li>
+                                                <li class="p-2">
+                                                    <a href="@footerLink.Href5Col2" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title5Col2.ToRaw()
                                                     </a>
                                                 </li>
                                             </ul>
@@ -136,25 +142,23 @@
                                         <section class="footer-links-col">
                                             <div class="headline-links">
                                                 <a href="#" class="text-decoration-none fw-bold">
-                                                    @footerLink.DescCol3
+                                                    @footerLink.DescCol3.ToRaw()
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
                                                     <a href="@footerLink.HrefCol3" class="text-decoration-none fw-bold">
-                                                        @footerLink.TitleCol3
+                                                        @footerLink.TitleCol3.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col3"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title1Col3
+                                                    <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title1Col3.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col3"
-                                                       class="text-decoration-none fw-bold">
-                                                        @footerLink.Title2Col3
+                                                    <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title2Col3.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li>
@@ -169,30 +173,26 @@
                                         <section class="footer-links-col">
                                             <div class="headline-links">
                                                 <a href="#" class="text-decoration-none fw-bold">
-                                                    درباره پارس می
+                                                    @footerLink.DescCol4.ToRaw()
                                                 </a>
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
-                                                    <a href="@Url.Action("ContactUs", "Home")"
-                                                       class="text-decoration-none fw-bold">
-                                                        تماس با ما
-                                                    </a>
-                                                </li>
-                                                <li class="p-2">
-                                                    <a href="@Url.Action("Faq", "Home")"
-                                                       class="text-decoration-none fw-bold">
-                                                        سوالات متداول
-                                                    </a>
-                                                </li>
-                                                <li class="p-2">
-                                                    <a href="@Url.Action("AboutUs", "Home")"
-                                                       class="text-decoration-none fw-bold">
+                                                    <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
                                                         درباره ما
                                                     </a>
                                                 </li>
+                                                <li class="p-2">
+                                                    <a href="@footerLink.HrefCol4" class="text-decoration-none fw-bold">
+                                                        @footerLink.TitleCol4.ToRaw()
+                                                    </a>
+                                                </li>
+                                                <li class="p-2">
+                                                    <a href="@footerLink.Href1Col4" class="text-decoration-none fw-bold">
+                                                        @footerLink.Title1Col4.ToRaw()
+                                                    </a>
+                                                </li>
                                                 <li>
-
                                                 </li>
                                             </ul>
                                         </section>
@@ -231,10 +231,10 @@
                             <div class="footer-populated text-right p-2">
                                 <div class="footer-social d-flex flex-column">
                                     <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
-                                        تماس: @seoPage.HeaderNumber
+                                        تماس: @seoPage.HeaderNumber.ToRaw()
                                     </a>
                                     <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
-                                        ایمیل: @seoPage.EmailComp
+                                        ایمیل: @seoPage.EmailComp.ToRaw()
                                     </a>
                                 </div>
                             </div>
@@ -244,7 +244,7 @@
                                 <div class="footer-content d-block">
                                     <div class="text pr-1 p-2">
                                         <h2 class="title fw-bold">فروشگاه اینترنتی پارس می</h2>
-                                        <p class="desc fw-bold">@footerLink.DescFooter</p>
+                                        <p class="desc fw-bold">@footerLink.DescFooter.ToRaw()</p>
                                     </div>
                                 </div>
                             </div>
@@ -267,8 +267,7 @@
                                                      target="_blank"
                                                      onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                                      alt='logo-samandehi'
-                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq'
-                                                     width="70"/>
+                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
 
                                             </div>
                                             <div>
@@ -308,8 +307,7 @@
                             </div>
                             <div class="footer-copyright">
                                 <div class="footer-copyright-text">
-                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می
-                                        باشد.</p>
+                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
                                 </div>
                             </div>
                         </div>
@@ -374,7 +372,7 @@
                                 <p class="text-muted fw-bold" style="    margin: 0;
     font-size: 14px;
     margin-top: 17px;">
-                                    @seoPage.NavNameComp
+                                    @seoPage.NavNameComp.ToRaw()
                                 </p>
                             </div>
                         </div>
@@ -382,8 +380,7 @@
                             <div class="header-search row text-right">
                                 <div class="header-search-box">
                                     <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                        <input id="SearchEl" type="search" class="header-search-input EnFont"
-                                               name="search"
+                                        <input id="SearchEl" type="search" class="header-search-input EnFont" name="search"
                                                placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                         <div class="action-btns">
                                             <button class="btn btn-search" type="submit">
@@ -403,8 +400,7 @@
                                                                 <a href="@i.Href">
                                                                     <i class="mdi mdi-clock-outline"></i>
                                                                     @i.Value
-                                                                    <a class="btn btn-light btn-continue-search"
-                                                                       href="@i.Href">
+                                                                    <a class="btn btn-light btn-continue-search" href="@i.Href">
                                                                         <i class="fa fa-angle-left"></i>
                                                                     </a>
                                                                 </a>
@@ -435,8 +431,7 @@
                             <div class="row ">
                                 <div id="HeaderBurger" class="col-3 col-sm-3 col-md-9 col-lg-9 col-xl-9">
                                     <div class="encrypt233211 dmarrow-down droopmenu-horizontal dmpos-top dmfade">
-                                        <div class="droopmenu-inner " id="InnerDrop"
-                                             style="padding: 10px;z-index: 990!important;">
+                                        <div class="droopmenu-inner " id="InnerDrop" style="padding: 10px;z-index: 990!important;">
                                             <div class="droopmenu-encrypt231432">
                                                 <a href="#" class="droopmenu-toggle">
                                                     <i class="dm-burg"></i>
@@ -456,7 +451,7 @@
                                                                             @* <img *@
                                                                             @*     src="https://newdev.parsme.com/Images/Category/@i.LogoUri" *@
                                                                             @*     width="22px"/> *@
-                                                                            @i.Name
+                                                                            @i.Name.ToRaw()
                                                                         </a>
                                                                         <div class="dm-arrow"></div>
                                                                         <ul class="droopmenu-grid droopmenu-grid-10">
@@ -469,30 +464,27 @@
                                                                                             var id = "droopmenutab" + index.ToString();
                                                                                             if (index == 0)
                                                                                             {
-                                                                                                <div
-                                                                                                    class="encrypt111212132 droopmenu-tab-active"
-                                                                                                    id="@id">
+                                                                                                <div class="encrypt111212132 droopmenu-tab-active"
+                                                                                                     id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
-                                                                                                        @c.Name
+                                                                                                        @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div
-                                                                                                        class="encrypt234324311">
-                                                                                                        <div
-                                                                                                            class="droopmenu-row">
+                                                                                                    <div class="encrypt234324311">
+                                                                                                        <div class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
                                                                                                                     <ul class="droopmenu-col droopmenu-col3">
                                                                                                                         <li>
                                                                                                                             <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
-                                                                                                                                <h4>@s.Name</h4>
+                                                                                                                                <h4>@s.Name.ToRaw()</h4>
                                                                                                                             </a>
                                                                                                                         </li>
                                                                                                                         @foreach (var b in s.Brands)
                                                                                                                         {
                                                                                                                             <li>
-                                                                                                                                <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title</a>
+                                                                                                                                <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title.ToRaw()</a>
                                                                                                                             </li>
                                                                                                                         }
                                                                                                                     </ul>
@@ -510,30 +502,26 @@
                                                                                             }
                                                                                             else
                                                                                             {
-                                                                                                <div
-                                                                                                    class="encrypt111212132"
-                                                                                                    id="@id">
+                                                                                                <div class="encrypt111212132" id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
-                                                                                                        @c.Name
+                                                                                                        @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div
-                                                                                                        class="encrypt234324311">
-                                                                                                        <div
-                                                                                                            class="droopmenu-row">
+                                                                                                    <div class="encrypt234324311">
+                                                                                                        <div class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
                                                                                                                     <ul class="droopmenu-col droopmenu-col3">
                                                                                                                         <li>
                                                                                                                             <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
-                                                                                                                                <h4>@s.Name</h4>
+                                                                                                                                <h4>@s.Name.ToRaw()</h4>
                                                                                                                             </a>
                                                                                                                         </li>
                                                                                                                         @foreach (var b in s.Brands)
                                                                                                                         {
                                                                                                                             <li>
-                                                                                                                                <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title</a>
+                                                                                                                                <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title.ToRaw()</a>
                                                                                                                             </li>
                                                                                                                         }
                                                                                                                     </ul>
@@ -614,8 +602,7 @@
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account"
-                                                                                                  id="profImg">
+                                                                                            <span class="icon-account" id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -623,8 +610,7 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span
-                                                                                                    class="title-account">ورود / ثبت نام</span>
+                                                                                                <span class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -667,8 +653,7 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span
-                                                                                                    class="title-account">ورود / ثبت نام</span>
+                                                                                                <span class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -712,8 +697,7 @@
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account"
-                                                                                                  id="profImg">
+                                                                                            <span class="icon-account" id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -721,8 +705,7 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span
-                                                                                                    class="title-account">ورود / ثبت نام</span>
+                                                                                                <span class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -765,8 +748,7 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span
-                                                                                                    class="title-account">ورود / ثبت نام</span>
+                                                                                                <span class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -873,7 +855,7 @@
                                                                                                                 </a>
                                                                                                                 <span
                                                                                                                     class="product-name-card">
-                                                            @i.PersianTitle
+                                                            @i.PersianTitle.ToRaw()
                                                         </span>
                                                                                                                 <div
                                                                                                                     class="header-basket-list-item-color-badge">
@@ -882,16 +864,14 @@
                                                                                                                         style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode">
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div
-                                                                                                                    class="quantity">
+                                                                                                                <div class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
 
                                                                 <span> تعداد:@i.Count</span>
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div
-                                                                                                                    class="quantity">
+                                                                                                                <div class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
                                                                 @{
@@ -966,15 +946,12 @@
                                                                 <div class="header-account text-left">
                                                                     <div class="account-box"
                                                                          style="padding: 12px 15px 5px 5px">
-                                                                        <a class="nav-account d-block pl"
-                                                                           href="tel:@seoPage.HeaderNumber"
-                                                                           style="z-index: 999!important;">
-                                                                            <a href="tel:@seoPage.HeaderNumber"
-                                                                               style="z-index: 999!important;"
+                                                                        <a class="nav-account d-block pl" href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;">
+                                                                            <a href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;"
                                                                                class="d-flex justify-content-center">
                         <span
                             class="title-account">
-                            @seoPage.HeaderNumber
+                            @seoPage.HeaderNumber.ToRaw()
                         </span>
                                                                             </a>
                                                                         </a>
