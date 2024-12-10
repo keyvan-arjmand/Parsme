@@ -2,6 +2,7 @@
 @using Domain.Entity.IndexPage
 @using Domain.Entity.Product
 @using Domain.Enums
+@using WebApp.Helper
 @using WebApp.Models
 @{
     Layout = "_Layout";
@@ -35,7 +36,7 @@
                     </div>
                     <div class="text-start p-2">
                         <h6 class="text-muted p-2 fw-bold">
-                            @seoPage.NavNameComp
+                            @seoPage.NavNameComp.ToRaw()
                         </h6>
                     </div>
                 </div>
@@ -60,33 +61,33 @@
                     <section class="footer-links-col">
                         <div class="headline-links">
                             <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol
+                                @footerLink.DescCol.ToRaw()
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
                                 <a href="@footerLink.HrefCol1" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol1
+                                    @footerLink.TitleCol1.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col1
+                                    @footerLink.Title1Col1.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col1
+                                    @footerLink.Title2Col1.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title3Col1
+                                    @footerLink.Title3Col1.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href4Col1" class="text-decoration-none fw-bold">
-                                    @footerLink.Title4Col1
+                                    @footerLink.Title4Col1.ToRaw()
                                 </a>
                             </li>
                         </ul>
@@ -98,38 +99,38 @@
                     <section class="footer-links-col">
                         <div class="headline-links">
                             <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol2
+                                @footerLink.DescCol2.ToRaw()
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
                                 <a href="@footerLink.HrefCol2" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol2
+                                    @footerLink.TitleCol2.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col2
+                                    @footerLink.Title1Col2.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col2
+                                    @footerLink.Title2Col2.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title3Col2
+                                    @footerLink.Title3Col2.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href4Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title4Col2
+                                    @footerLink.Title4Col2.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href5Col2" class="text-decoration-none fw-bold">
-                                    @footerLink.Title5Col2
+                                    @footerLink.Title5Col2.ToRaw()
                                 </a>
                             </li>
                         </ul>
@@ -141,23 +142,23 @@
                     <section class="footer-links-col">
                         <div class="headline-links">
                             <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol3
+                                @footerLink.DescCol3.ToRaw()
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
                             <li class="p-2">
                                 <a href="@footerLink.HrefCol3" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol3
+                                    @footerLink.TitleCol3.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col3
+                                    @footerLink.Title1Col3.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
-                                    @footerLink.Title2Col3
+                                    @footerLink.Title2Col3.ToRaw()
                                 </a>
                             </li>
                             <li>
@@ -172,7 +173,7 @@
                     <section class="footer-links-col">
                         <div class="headline-links">
                             <a href="#" class="text-decoration-none fw-bold">
-                                @footerLink.DescCol4
+                                @footerLink.DescCol4.ToRaw()
                             </a>
                         </div>
                         <ul class="footer-menu-ul">
@@ -183,12 +184,12 @@
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.HrefCol4" class="text-decoration-none fw-bold">
-                                    @footerLink.TitleCol4
+                                    @footerLink.TitleCol4.ToRaw()
                                 </a>
                             </li>
                             <li class="p-2">
                                 <a href="@footerLink.Href1Col4" class="text-decoration-none fw-bold">
-                                    @footerLink.Title1Col4
+                                    @footerLink.Title1Col4.ToRaw()
                                 </a>
                             </li>
                             <li>
@@ -230,10 +231,10 @@
         <div class="footer-populated text-right p-2">
             <div class="footer-social d-flex flex-column">
                 <a class="fw-bold p-2" href="tel:@seoPage.HeaderNumber">
-                    تماس: @seoPage.HeaderNumber
+                    تماس: @seoPage.HeaderNumber.ToRaw()
                 </a>
                 <a href="mailto:@seoPage.EmailComp" class="fw-bold p-2">
-                    ایمیل: @seoPage.EmailComp
+                    ایمیل: @seoPage.EmailComp.ToRaw()
                 </a>
             </div>
         </div>
@@ -243,7 +244,7 @@
             <div class="footer-content d-block">
                 <div class="text pr-1 p-2">
                     <h2 class="title fw-bold">فروشگاه اینترنتی پارس می</h2>
-                    <p class="desc fw-bold">@footerLink.DescFooter</p>
+                    <p class="desc fw-bold">@footerLink.DescFooter.ToRaw()</p>
                 </div>
             </div>
         </div>
@@ -371,7 +372,7 @@
                         <p class="text-muted fw-bold" style="    margin: 0;
     font-size: 14px;
     margin-top: 17px;">
-                            @seoPage.NavNameComp
+                            @seoPage.NavNameComp.ToRaw()
                         </p>
                     </div>
                 </div>
@@ -450,7 +451,7 @@
                                                 @* <img *@
                                                 @*     src="https://newdev.parsme.com/Images/Category/@i.LogoUri" *@
                                                 @*     width="22px"/> *@
-                                                @i.Name
+                                                @i.Name.ToRaw()
                                             </a>
                                             <div class="dm-arrow"></div>
                                             <ul class="droopmenu-grid droopmenu-grid-10">
@@ -467,7 +468,7 @@
                                                                          id="@id">
                                                                         <a class="droopmenu-tabencrypt231432"
                                                                            href="#">
-                                                                            @c.Name
+                                                                            @c.Name.ToRaw()
                                                                         </a>
                                                                         <div class="encrypt234324311">
                                                                             <div class="droopmenu-row">
@@ -477,13 +478,13 @@
                                                                                         <ul class="droopmenu-col droopmenu-col3">
                                                                                             <li>
                                                                                                 <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
-                                                                                                    <h4>@s.Name</h4>
+                                                                                                    <h4>@s.Name.ToRaw()</h4>
                                                                                                 </a>
                                                                                             </li>
                                                                                             @foreach (var b in s.Brands)
                                                                                             {
                                                                                                 <li>
-                                                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title</a>
+                                                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title.ToRaw()</a>
                                                                                                 </li>
                                                                                             }
                                                                                         </ul>
@@ -504,7 +505,7 @@
                                                                     <div class="encrypt111212132" id="@id">
                                                                         <a class="droopmenu-tabencrypt231432"
                                                                            href="#">
-                                                                            @c.Name
+                                                                            @c.Name.ToRaw()
                                                                         </a>
                                                                         <div class="encrypt234324311">
                                                                             <div class="droopmenu-row">
@@ -514,13 +515,13 @@
                                                                                         <ul class="droopmenu-col droopmenu-col3">
                                                                                             <li>
                                                                                                 <a href="@Url.Action("SubCategory", "Home", new { s.Id })">
-                                                                                                    <h4>@s.Name</h4>
+                                                                                                    <h4>@s.Name.ToRaw()</h4>
                                                                                                 </a>
                                                                                             </li>
                                                                                             @foreach (var b in s.Brands)
                                                                                             {
                                                                                                 <li>
-                                                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title</a>
+                                                                                                    <a href="@Url.Action("GetByBrand", "Home", new { b.Id })">@b.Title.ToRaw()</a>
                                                                                                 </li>
                                                                                             }
                                                                                         </ul>
@@ -854,7 +855,7 @@
                                                         </a>
                                                         <span
                                                             class="product-name-card">
-                                                            @i.PersianTitle
+                                                            @i.PersianTitle.ToRaw()
                                                         </span>
                                                         <div
                                                             class="header-basket-list-item-color-badge">
@@ -950,7 +951,7 @@
                        class="d-flex justify-content-center">
                         <span
                             class="title-account">
-                            @seoPage.HeaderNumber
+                            @seoPage.HeaderNumber.ToRaw()
                         </span>
                     </a>
                 </a>

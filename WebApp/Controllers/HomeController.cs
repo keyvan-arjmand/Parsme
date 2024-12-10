@@ -1539,7 +1539,7 @@ public class HomeController : Controller
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
-        ViewBag.Values = values;
+        ViewBag.Values = values??new List<string>();
 
 
         var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
@@ -2263,7 +2263,7 @@ public class HomeController : Controller
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
-        ViewBag.Values = values;
+        ViewBag.Values = values??new List<string>();
         var sub = await _work.GenericRepository<SubCategory>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.SubCatId = sub;
