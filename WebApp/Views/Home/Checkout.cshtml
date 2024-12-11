@@ -1168,7 +1168,7 @@ SeoPage seoPage = ViewBag.SeoPage;
                             <div class="profile-stats">
                                 <div class="profile-address">
                                     <div class="middle-container">
-                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout">
+                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout" id="checkoutaddres">
                                             <input type="text"
                                                    name="code" value="@code1.Code" hidden="hidden">
                                             <input type="text"
@@ -1254,11 +1254,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                           class="textarea-name-checkout form-control"></textarea>
 
                                                 <div class="AR-CR">
-                                                    <button type="submit" class="btn-registrar"> ثبت آدرس</button>
-                                                    <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal"
-                                                       aria-label="Close">
-                                                        بازگشت
-                                                    </a>
+                                                    <button type="button" class="btn-registrar" onclick="submitAddressForm()">ادامه خرید</button>
+                                                 
                                                 </div>
                                             </div>
                                         </form>
@@ -1924,5 +1921,48 @@ else
             }
         });
     }
+    function validateIranianPostalCode(postalCode) {
+        const postalCodeRegex = /^[1-9][0-9]{9}$/;
+        return postalCodeRegex.test(postalCode);
+    }
+
+    function validateRequiredFields() {
+        const requiredFields = [
+            { id: 'name', message: 'لطفاً نام تحویل گیرنده را وارد کنید.' },
+            { id: 'phone-number', message: 'لطفاً شماره موبایل را وارد کنید.' },
+            { id: 'state', message: 'لطفاً استان خود را انتخاب کنید.', select: true },
+            { id: 'city', message: 'لطفاً شهر خود را انتخاب کنید.', select: true },
+            { id: 'post-code', message: 'لطفاً کد پستی را وارد کنید.' },
+            { id: 'address', message: 'لطفاً آدرس خود را وارد کنید.' }
+        ];
+
+        for (const field of requiredFields) {
+            const element = document.getElementById(field.id);
+            const value = field.select ? element.value : element.value.trim();
+
+            if (!value || (field.select && value === '0')) {
+                alert(field.message);
+                element.focus();
+                return false;
+            }
+        }
+
+        const postCodeInput = document.getElementById('post-code');
+        const postalCode = postCodeInput.value.trim();
+
+        if (!validateIranianPostalCode(postalCode)) {
+            alert('کد پستی وارد شده معتبر نیست. لطفاً یک کد پستی ۱۰ رقمی معتبر وارد کنید.');
+            postCodeInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function submitAddressForm() {
+        if (validateRequiredFields()) {
+            document.getElementById('checkoutaddres').submit();
+        }
+}
 </script>
 }

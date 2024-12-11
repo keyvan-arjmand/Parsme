@@ -1185,7 +1185,7 @@ ViewData["Title"] = "ویرایش آدرس";
                                                 <textarea rows="5" cols="30" id="address" name="Address" class="textarea-name-checkout form-control">@address.Address</textarea>
 
                                                 <div class="AR-CR">
-                                                    <button type="button" class="btn-registrar" onclick="submitUpdateAddressForm()">ثبت آدرس</button>
+                                                    <button type="button" class="btn-registrar" onclick="submitAddressForm()">ثبت آدرس</button>
                                                     <a href="@Url.Action("UserAddress")" class="cancel-edit-address" data-dismiss="modal" aria-label="Close">بازگشت</a>
                                                 </div>
                                             </div>
@@ -1300,7 +1300,7 @@ ViewData["Title"] = "ویرایش آدرس";
 
     function submitAddressForm() {
         if (validateRequiredFields()) {
-            document.getElementById('addressForm').submit();
+            document.getElementById('updateAddressForm').submit();
         }
 }
 
