@@ -505,9 +505,9 @@
                                         @i.Color.Title
                                     </span>
                                 </div>
-                                <input name="colorPrice`@i.Color.Id`" value="@i.Price"
+                                <input name="colorPrice`@i.Color.Id`" value="@i.Price.ToString("N0")"
                                        style="border-radius: 5px 0 0 5px;" type="text"
-                                       class="form-control" required="required">
+                                       class="form-control number-input" required="required">
                                 <input name="ColorId`@i.Color.Id`" value="@i.Color.Id"
                                        hidden="hidden">
                             </div>
@@ -948,7 +948,7 @@
 
                 return {
                     ColorId: colorId,
-                    ColorPrice: colorPrice,
+                    ColorPrice:  parseInt(colorPrice.replace(/,/g, ''), 10),
                     ColorInv: colorInv,
                     Gu: gu
                 };
@@ -1079,7 +1079,7 @@
                             <div class="input-group-prepend">
                                 <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${colorName}</span>
                             </div>
-                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="form-control" required="required">
+                            <input name="colorPrice${id}" style="border-radius: 5px 0 0 5px;" type="text" class="number-input form-control " required="required">
                             <input name="ColorId${id}" value="${id}" hidden="hidden">
                         </div>
                         <div class="form-group d-flex w-100 colors-form" style="max-width: 250px;max-height: 50px">
@@ -1119,7 +1119,21 @@
                     element.innerHTML = optionsHTML;
                 });
             });
+            document.querySelectorAll('.number-input').forEach(input => {
+                input.addEventListener('input', function () {
+                    // حذف تمام کاراکترهای غیر عددی
+                    let value = this.value.replace(/\D/g, '');
+                    // اضافه کردن جداکننده سه‌رقمی
+                    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                });
 
+                input.addEventListener('blur', function () {
+                    // اگر مقدار خالی است، جایگزین نکن
+                    if (!this.value) return;
+                    let value = this.value.replace(/\D/g, '');
+                    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                });
+            });
 
         });
 
@@ -1380,7 +1394,21 @@
     }
 
     addOption(@Html.Raw(products.SubCategoryId))
+    document.querySelectorAll('.number-input').forEach(input => {
+        input.addEventListener('input', function () {
+            // حذف تمام کاراکترهای غیر عددی
+            let value = this.value.replace(/\D/g, '');
+            // اضافه کردن جداکننده سه‌رقمی
+            this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        });
 
+        input.addEventListener('blur', function () {
+            // اگر مقدار خالی است، جایگزین نکن
+            if (!this.value) return;
+            let value = this.value.replace(/\D/g, '');
+            this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        });
+    });
     //   $('.normal-example').persianDatepicker();
     $('.datepicker').datepicker({
         format: 'YYYY-MM-DD HH:mm',

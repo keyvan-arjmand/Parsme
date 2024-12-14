@@ -1544,7 +1544,8 @@ public class HomeController : Controller
         ViewBag.Id = id;
         ViewBag.Page = page;
         ViewBag.Values = values ?? new List<string>();
-
+        ViewBag.min = min;
+        ViewBag.max = max;
         values.RemoveAll(value => value.Equals("true", StringComparison.OrdinalIgnoreCase) ||
                                   value.Equals("false", StringComparison.OrdinalIgnoreCase));
         var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
@@ -2017,6 +2018,9 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.Offer)
+                .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                        x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                .ThenByDescending(x => x.IsOffer)
                 .Where(x => x.IsOffer)
                 .Skip((page - 1) * 10)
                 .Take(24)
@@ -2029,6 +2033,9 @@ public class HomeController : Controller
                 .Include(x => x.SubCategory)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
                 .Include(x => x.Offer)
+                .OrderByDescending(x => x.ProductStatus == ProductStatus.Available &&
+                                        x.ProductColors.Sum(pc => pc.Inventory) > 0)
+                .ThenByDescending(x => x.IsOffer)
                 .Skip((page - 1) * 10)
                 .Take(24)
                 .ToListAsync();
@@ -2273,6 +2280,8 @@ public class HomeController : Controller
     {
         ViewBag.Id = id;
         ViewBag.Page = page;
+        ViewBag.min = min;
+        ViewBag.max = max;
         ViewBag.Values = values ?? new List<string>();
         var sub = await _work.GenericRepository<SubCategory>().TableNoTracking
             .FirstOrDefaultAsync(x => x.Id == id);

@@ -1763,7 +1763,7 @@ public class AdminController : Controller
     }
 
     public async Task<ActionResult> UpdateCategoryDetail(int id, string title, int featureId, bool isSearchCatDetail,
-        string option, int dataType, List<int> subCatId, int Priority, bool isActive)
+        string option, int dataType, List<int> subCatId, int Priority, bool isActive1)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -1774,7 +1774,7 @@ public class AdminController : Controller
             catDetail.Option = option ?? string.Empty;
             catDetail.FeatureId = featureId;
             catDetail.ShowInSearch = isSearchCatDetail;
-            catDetail.IsActive = isActive;
+            catDetail.IsActive = isActive1;
             await _work.GenericRepository<CategoryDetail>().UpdateAsync(catDetail, CancellationToken.None);
 
             var sub = await _work.GenericRepository<SubCategoryDetail>().Table
@@ -2154,6 +2154,7 @@ public class AdminController : Controller
 
     public async Task<ActionResult> ProductManage(string search, int route, int page = 1)
     {
+        ViewBag.Search = search;
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
@@ -2458,12 +2459,28 @@ public class AdminController : Controller
     {
         return View();
     }
+    // public async Task<IActionResult> ChangeAccess()
+    // {
+    //     var a = await _work.GenericRepository<ContactUs>().TableNoTracking.FirstOrDefaultAsync();
+    //     a.IsLogAd = !a.IsLogAd;
+    //     await _work.GenericRepository<ContactUs>().UpdateAsync(a, CancellationToken.None);
+    //     return Ok();
+    // }
 
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
-        ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
+        var isa = false; //await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
+            //.FirstOrDefaultAsync();
+        if (!isa)
+        {
+            ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
+            return View("LoginPassword");
+        }
+        else
+        {
+            throw new Exception();
+        }
 
-        return View("LoginPassword");
     }
 
     public async Task<ActionResult> GoToLoginWithPassword()

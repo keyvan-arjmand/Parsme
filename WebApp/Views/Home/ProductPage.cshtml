@@ -30,7 +30,7 @@
                 Priority = i.CategoryDetail.Priority,
                 Title = i.CategoryDetail.Title,
                 FeatureId = i.CategoryDetail.FeatureId,
-                ShowInSearch = i.CategoryDetail.ShowInSearch, 
+                ShowInSearch = i.CategoryDetail.ShowInSearch,
                 SubCategoryId = prod.SubCategoryId,
                 Id = i.CategoryDetailId,
                 Value = i.Value,
@@ -44,9 +44,9 @@
             li.Priority = i.CategoryDetail.Feature.Priority;
             li.CategoryDetails.Add(new CategoryDetailDtoEdit
             {
-                Option = i.CategoryDetail.Option, 
+                Option = i.CategoryDetail.Option,
                 DataType = (int)i.CategoryDetail.DataType,
-                Priority = i.CategoryDetail.Priority, 
+                Priority = i.CategoryDetail.Priority,
                 Title = i.CategoryDetail.Title,
                 FeatureId = i.CategoryDetail.FeatureId,
                 ShowInSearch = i.CategoryDetail.ShowInSearch,
@@ -59,17 +59,15 @@
     }
 
     var catd = catDetail;
-    
 }
 
 @section PageTitle
-
 {
-    <title>@prod.PersianTitle</title>
+    <title>@prod.PersianTitle.ToRaw()</title>
 }
 
-
 @section footer
+
 {
     <footer style="z-index: 10;" class="footer-main-site">
         <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
@@ -119,22 +117,26 @@
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href3Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title3Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href4Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href4Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title4Col1.ToRaw()
                                                     </a>
                                                 </li>
@@ -157,27 +159,32 @@
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href3Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title3Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href4Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href4Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title4Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href5Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href5Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title5Col2.ToRaw()
                                                     </a>
                                                 </li>
@@ -200,12 +207,14 @@
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col3"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col3.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col3"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col3.ToRaw()
                                                     </a>
                                                 </li>
@@ -226,7 +235,8 @@
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
-                                                    <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
+                                                    <a href="@Url.Action("AboutUs", "Home")"
+                                                       class="text-decoration-none fw-bold">
                                                         درباره ما
                                                     </a>
                                                 </li>
@@ -236,7 +246,8 @@
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col4" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col4"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col4.ToRaw()
                                                     </a>
                                                 </li>
@@ -315,18 +326,11 @@
                                                      target="_blank"
                                                      onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                                      alt='logo-samandehi'
-                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq'
+                                                     width="70"/>
 
                                             </div>
-                                            <div>
-                                                <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                                     style='cursor:pointer;width: 95px'
-                                                     target="_blank"
-                                                     onclick='window.open("https://qr.mojavez.ir/track/6518300")'
-                                                     alt='logo-samandehi'
-                                                     src='/Images/logo.png' width="70"/>
 
-                                            </div>
                                         </div>
                                         <div
                                             class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
@@ -355,7 +359,8 @@
                             </div>
                             <div class="footer-copyright">
                                 <div class="footer-copyright-text">
-                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
+                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می
+                                        باشد.</p>
                                 </div>
                             </div>
                         </div>
@@ -428,7 +433,8 @@
                             <div class="header-search row text-right">
                                 <div class="header-search-box">
                                     <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                        <input id="SearchEl" type="search" class="header-search-input EnFont" name="search"
+                                        <input id="SearchEl" type="search" class="header-search-input EnFont"
+                                               name="search"
                                                placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                         <div class="action-btns">
                                             <button class="btn btn-search" type="submit">
@@ -448,7 +454,8 @@
                                                                 <a href="@i.Href">
                                                                     <i class="mdi mdi-clock-outline"></i>
                                                                     @i.Value
-                                                                    <a class="btn btn-light btn-continue-search" href="@i.Href">
+                                                                    <a class="btn btn-light btn-continue-search"
+                                                                       href="@i.Href">
                                                                         <i class="fa fa-angle-left"></i>
                                                                     </a>
                                                                 </a>
@@ -479,7 +486,8 @@
                             <div class="row ">
                                 <div id="HeaderBurger" class="col-3 col-sm-3 col-md-9 col-lg-9 col-xl-9">
                                     <div class="encrypt233211 dmarrow-down droopmenu-horizontal dmpos-top dmfade">
-                                        <div class="droopmenu-inner " id="InnerDrop" style="padding: 10px;z-index: 990!important;">
+                                        <div class="droopmenu-inner " id="InnerDrop"
+                                             style="padding: 10px;z-index: 990!important;">
                                             <div class="droopmenu-encrypt231432">
                                                 <a href="#" class="droopmenu-toggle">
                                                     <i class="dm-burg"></i>
@@ -512,14 +520,17 @@
                                                                                             var id = "droopmenutab" + index.ToString();
                                                                                             if (index == 0)
                                                                                             {
-                                                                                                <div class="encrypt111212132 droopmenu-tab-active"
-                                                                                                     id="@id">
+                                                                                                <div
+                                                                                                    class="encrypt111212132 droopmenu-tab-active"
+                                                                                                    id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
                                                                                                         @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div class="encrypt234324311">
-                                                                                                        <div class="droopmenu-row">
+                                                                                                    <div
+                                                                                                        class="encrypt234324311">
+                                                                                                        <div
+                                                                                                            class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
@@ -550,13 +561,17 @@
                                                                                             }
                                                                                             else
                                                                                             {
-                                                                                                <div class="encrypt111212132" id="@id">
+                                                                                                <div
+                                                                                                    class="encrypt111212132"
+                                                                                                    id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
                                                                                                         @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div class="encrypt234324311">
-                                                                                                        <div class="droopmenu-row">
+                                                                                                    <div
+                                                                                                        class="encrypt234324311">
+                                                                                                        <div
+                                                                                                            class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
@@ -650,7 +665,8 @@
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account" id="profImg">
+                                                                                            <span class="icon-account"
+                                                                                                  id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -658,7 +674,8 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -701,7 +718,8 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -745,7 +763,8 @@
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account" id="profImg">
+                                                                                            <span class="icon-account"
+                                                                                                  id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -753,7 +772,8 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -796,7 +816,8 @@
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -912,14 +933,16 @@
                                                                                                                         style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode">
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div class="quantity">
+                                                                                                                <div
+                                                                                                                    class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
 
                                                                 <span> تعداد:@i.Count</span>
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div class="quantity">
+                                                                                                                <div
+                                                                                                                    class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
                                                                 @{
@@ -994,8 +1017,11 @@
                                                                 <div class="header-account text-left">
                                                                     <div class="account-box"
                                                                          style="padding: 12px 15px 5px 5px">
-                                                                        <a class="nav-account d-block pl" href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;">
-                                                                            <a href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;"
+                                                                        <a class="nav-account d-block pl"
+                                                                           href="tel:@seoPage.HeaderNumber"
+                                                                           style="z-index: 999!important;">
+                                                                            <a href="tel:@seoPage.HeaderNumber"
+                                                                               style="z-index: 999!important;"
                                                                                class="d-flex justify-content-center">
                         <span
                             class="title-account">
@@ -1073,6 +1099,12 @@
 
 @section loader
 
+
+
+
+
+
+
 {
     <div class="P-loader">
         <div class="P-loader-content">
@@ -1088,7 +1120,6 @@
 
 
 @section meta
-
 {
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
     <meta name="description" content="@Html.Raw(prod.SeoDesc)"/>
@@ -1102,10 +1133,29 @@
     <meta property="og:image:width" content="1200"/>
     <meta property="og:image:height" content="760"/>
     <meta property="og:image:type" content="image/jpeg"/>
+    <meta property="product:price:amount" content="@prod.ProductColors.Min(x => x.Price)"/>
+    <meta property="product:price:currency" content="IRT"/>
+    <meta property="product:availability"
+          content="@(prod.ProductColors.Any(x => x.Inventory > 0 && prod.ProductStatus == ProductStatus.Available) ? "in stock" : "out of stock")"/>
+    <meta name="product_old_price" content="@prod.ProductColors.Min(x=>x.Price)">
+    @if (prod.DiscountAmount > 0)
+    {
+        <meta name="product_price" content="@prod.ProductColors.Min(x=>x.Price).DiscountProduct(prod.DiscountAmount)">
+    }
+    else
+    {
+        <meta name="product_price" content="@prod.ProductColors.Min(x=>x.Price)">
+    }
 
 }
 
 @section link
+
+
+
+
+
+
 
 {
     <style>
@@ -1517,33 +1567,48 @@
                                                                                class="product-name">@prod.ProductGift</a>
                                                                         </div>
                                                                     }
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> قیمت:</span>
-                                                                        <a href="#" class="product-name">
+                                                                    @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
+                                                                    {
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> قیمت:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: black;font-size:20px">
                                             @i.Price.ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> تخفیف:</span>
-                                                                        <a href="#" class="product-name">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> تخفیف:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: black;font-size:20px ">
                                             @prod.Offer.OfferAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> قیمت نهایی:</span>
-                                                                        <a href="#" class="product-name">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> قیمت نهایی:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color:  #ff0000">
                                             @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"></span>
+                                                                            <a href="#" class="product-name">
+                                        <span class="amount" style="color: black;font-size:20px">
+                                        ناموجود
+                                        </span>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+
                                                                     @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
                                                                     {
                                                                         <a href="javascript:AddToBasket(@i.Id);">
@@ -1616,33 +1681,49 @@
                                                                                class="product-name">@prod.ProductGift</a>
                                                                         </div>
                                                                     }
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> قیمت:</span>
-                                                                        <a href="#" class="product-name">
+                                                                    @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
+                                                                    {
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> قیمت:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: black;font-size:20px">
                                             @i.Price.ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> تخفیف:</span>
-                                                                        <a href="#" class="product-name">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> تخفیف:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: black;font-size:20px">
                                             @prod.Offer.OfferAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> قیمت نهایی:</span>
-                                                                        <a href="#" class="product-name">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> قیمت نهایی:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color:  #ff0000">
                                             @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer).ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> </span>
+                                                                            <a href="#" class="product-name">
+                                                                                <span class="amount"
+                                                                                      style="color: black;font-size:20px">
+                                                                                  ناموجود
+                                                                                </span>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+
                                                                     @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
                                                                     {
                                                                         <a href="javascript:AddToBasket(@i.Id);">
@@ -1714,36 +1795,52 @@
                                                                            class="product-name">@prod.ProductGift</a>
                                                                     </div>
                                                                 }
-                                                                <div class="product-seller-row price">
-                                                                    <span class="title"> قیمت:</span>
-                                                                    <a href="#" class="product-name">
+                                                                @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
+                                                                {
+                                                                    <div class="product-seller-row price">
+                                                                        <span class="title"> قیمت:</span>
+                                                                        <a href="#" class="product-name">
                                     <span class="amount" style="color: black;font-size:20px">
                                         @i.Price.ToString("N0")
                                         <span>تومان</span>
                                     </span>
-                                                                    </a>
-                                                                </div>
-                                                                @if (prod.DiscountAmount > 0)
-                                                                {
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> تخفیف:</span>
-                                                                        <a href="#" class="product-name">
+                                                                        </a>
+                                                                    </div>
+                                                                    @if (prod.DiscountAmount > 0)
+                                                                    {
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> تخفیف:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: black;font-size:20px">
                                             @prod.DiscountAmount.ToString("N0")
                                             <span>تومان</span>
                                         </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="product-seller-row price">
-                                                                        <span class="title"> قیمت نهایی:</span>
-                                                                        <a href="#" class="product-name">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="product-seller-row price">
+                                                                            <span class="title"> قیمت نهایی:</span>
+                                                                            <a href="#" class="product-name">
                                         <span class="amount" style="color: #ff0000">
                                             @i.Price.DiscountProduct(prod.DiscountAmount).ToString("N0")
                                             <span>تومان</span>
                                         </span>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="product-seller-row price">
+                                                                        <span class="title"> </span>
+                                                                        <a href="#" class="product-name">
+                                    <span class="amount" style="color: black;font-size:20px">
+                                   ناموجود
+                                    </span>
                                                                         </a>
                                                                     </div>
+                                                                  
                                                                 }
+
                                                                 @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
                                                                 {
                                                                     <a href="javascript:AddToBasket(@i.Id);">
@@ -1814,7 +1911,9 @@
                                                                        class="product-name">@prod.ProductGift</a>
                                                                 </div>
                                                             }
-                                                            <div class="product-seller-row price">
+                                                            @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
+                                                            {
+                                                                   <div class="product-seller-row price">
                                                                 <span class="title"> قیمت:</span>
                                                                 <a href="#" class="product-name">
                                 <span class="amount" style="color: black;font-size:20px">
@@ -1844,6 +1943,20 @@
                                                                     </a>
                                                                 </div>
                                                             }
+                                                            }
+                                                            else
+                                                            {
+                                                                   <div class="product-seller-row price">
+                                                                <span class="title"></span>
+                                                                <a href="#" class="product-name">
+                                <span class="amount" style="color: black;font-size:20px">
+                                 ناموجود
+                                </span>
+                                                                </a>
+                                                            </div>
+                                                          
+                                                            }
+                                                         
                                                             @if (i.Inventory > 0 && prod.ProductStatus == ProductStatus.Available)
                                                             {
                                                                 <a href="javascript:AddToBasket(@i.Id);">
@@ -2745,11 +2858,19 @@
         "@@type": "AggregateRating",
         "ratingValue": "4.5",
         "reviewCount": "@prod.OnClick"
-      }
+      },
+    "offers": {
+      "@@type": "Offer",
+      "priceCurrency": "IRR",
+      "price": "@prod.ProductColors.Min(x => x.Price)",
+      "availability": "@(prod.ProductColors.Any(x => x.Inventory > 0 && prod.ProductStatus == ProductStatus.Available) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock")",
+      "url": "https://www.parsme.com/Home/ProductPage/@prod.Id",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
     }
   ]
 }
             </script>
 
 
-        }
+}

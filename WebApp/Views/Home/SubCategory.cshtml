@@ -283,15 +283,7 @@
                                                      src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
 
                                             </div>
-                                            <div>
-                                                <img referrerpolicy='origin' id='rgvjjzpejxlzfukzjzpefukz'
-                                                     style='cursor:pointer;width: 95px'
-                                                     target="_blank"
-                                                     onclick='window.open("https://qr.mojavez.ir/track/6518300")'
-                                                     alt='logo-samandehi'
-                                                     src='/Images/logo.png' width="70"/>
 
-                                            </div>
                                         </div>
                                         <div
                                             class="product-carousel-symbol owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
@@ -1704,7 +1696,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize - 1, id, values = details, min = minPrice, max = maxPrice })" aria-label="Previous">
+                <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize - 1, id, values = details, min =  ViewBag.min, max =  ViewBag.max })" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -1713,18 +1705,18 @@
                 if (i == pageSize)
                 {
                     <li class="page-item">
-                        <a class="page-link active" href="@Url.Action("SubCategory", "Home", new { page = i, id, values = details, min = minPrice, max = maxPrice })">@i</a>
+                        <a class="page-link active" href="@Url.Action("SubCategory", "Home", new { page = i, id, values = details, min =  ViewBag.min, max =  ViewBag.max })">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link " href="@Url.Action("SubCategory", "Home", new { page = i, id, values = details, min = minPrice, max = maxPrice })">@i</a>
+                        <a class="page-link " href="@Url.Action("SubCategory", "Home", new { page = i, id, values = details, min =  ViewBag.min, max =  ViewBag.max })">@i</a>
                     </li>
                 }
             }
             <li class="page-item">
-                <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize + 1, id, values = details, min = minPrice, max = maxPrice })" aria-label="Next">
+                <a class="page-link" href="@Url.Action("SubCategory", "Home", new { page = pageSize + 1, id, values = details, min =  ViewBag.min, max =  ViewBag.max })" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
