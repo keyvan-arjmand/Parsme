@@ -2151,10 +2151,18 @@ public class AdminController : Controller
         }
     }
 
-
-    public async Task<ActionResult> ProductManage(string search, int route, int page = 1)
+    [HttpGet]
+    public async Task<IActionResult> GetBrand(int id)
+    {
+        var cities = await _work.GenericRepository<Brand>().TableNoTracking.Where(x => x.SubCategoryId == id)
+            .ToListAsync();
+        return Ok(cities);
+    }
+    public async Task<ActionResult> ProductManage(string search, int route,int subCatId,int brandId, int page = 1)
     {
         ViewBag.Search = search;
+        ViewBag.brandId = brandId;
+        ViewBag.subCatId = subCatId;
         if (User.Identity.IsAuthenticated)
         {
             #region ViewBag
@@ -2205,11 +2213,19 @@ public class AdminController : Controller
                     break;
             }
 
+            if (subCatId > 0)
+            {
+                productsQuery = productsQuery.Where(x => x.SubCategoryId==subCatId);
+                if (brandId > 0)
+                {
+                    productsQuery = productsQuery.Where(x => x.BrandId==brandId);
+                }
+            }
 
             ViewBag.Products = await productsQuery
                 .OrderByDescending(x => x.Id)
-                .Skip((page - 1) * 10)
-                .Take(10)
+                .Skip((page - 1) * 50)
+                .Take(50)
                 .ToListAsync();
 
 
