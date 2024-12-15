@@ -247,7 +247,6 @@ ul {
 /* Cards */
 
 .card-header>.card-tools {
-    right:auto;
     left:1rem;
 }
 
