@@ -15,6 +15,36 @@
 
 @section link
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
     <style>
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -80,10 +110,6 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-
-            <!-- Profile Image -->
-
-            <!-- /.col -->
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header p-2">
@@ -161,69 +187,72 @@
                             </div>
                             <div class="col-12">
                                 <div class="card">
-                                        <form asp-action="ProductManage" asp-controller="Admin" method="post">
-                                    <div class="p-4 d-flex justify-content-start align-items-center flex-wrap" style="gap: 4px">
- 
-                                        <div class="w-50 d-flex justify-content-between align-items-center" style="gap: 7px">
-                                            <div class="form-group w-50 pr-2">
-                                                <select class="form-control" id="selectSubCategories" name="subCatId">
-                                                    <option value="0">انتخاب دسته بندی</option>
-                                                    @foreach (var i in subCategories)
-                                                    {
-                                                        if (i.Id == ViewBag.subCatId)
-                                                        {
-                                                            <option value="@i.Id" selected="selected">@i.Name</option>
+                                    <form asp-action="ProductManage" asp-controller="Admin" method="post">
+                                        <div class="p-4 d-flex justify-content-start align-items-center flex-wrap"
+                                             style="gap: 4px">
 
-                                                        }
-                                                        else
+                                            <div class="w-50 d-flex justify-content-between align-items-center"
+                                                 style="gap: 7px">
+                                                <div class="form-group w-50 pr-2">
+                                                    <select class="form-control" id="selectSubCategories"
+                                                            name="subCatId">
+                                                        <option value="0">انتخاب دسته بندی</option>
+                                                        @foreach (var i in subCategories)
                                                         {
-                                                            <option value="@i.Id">@i.Name</option>
-
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div class="form-group w-50 pl-2">
-                                                <select class="form-control" id="select2" name="brandId">
-                                                    @if ( ViewBag.subCatId>0)
-                                                    {
-                                                        foreach (var i in brands)
-                                                        {
-                                                            if (i.Id == ViewBag.brandId)
+                                                            if (i.Id == ViewBag.subCatId)
                                                             {
-                                                                <option value="@i.Id" selected="selected">@i.Title</option>
-
+                                                                <option value="@i.Id"
+                                                                        selected="selected">@i.Name</option>
                                                             }
                                                             else
                                                             {
-                                                                <option value="@i.Id" >@i.Title</option>
-
+                                                                <option value="@i.Id">@i.Name</option>
                                                             }
                                                         }
-
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="0">انتخاب کنید</option>
-
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="card-tools" style="width: fit-content;padding-bottom: 15px">
-                                            <div class="input-group input-group-sm" style="width: 322px;">
-                                                <input type="text" name="search" class="form-control float-right" value="@ViewBag.Search" placeholder="جستجو" style="border-radius: 5px;padding: 7px">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default" style="border: #5d5d5d4f 1px solid;">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group w-50 pl-2">
+                                                    <select class="form-control" id="select2" name="brandId">
+                                                        @if (ViewBag.subCatId > 0)
+                                                        {
+                                                            foreach (var i in brands)
+                                                            {
+                                                                if (i.Id == ViewBag.brandId)
+                                                                {
+                                                                    <option value="@i.Id"
+                                                                            selected="selected">@i.Title</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@i.Id">@i.Title</option>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="0">انتخاب کنید</option>
+                                                        }
+                                                    </select>
                                                 </div>
                                             </div>
+                                            <div class="card-tools" style="width: fit-content;padding-bottom: 15px">
+                                                <div class="input-group input-group-sm" style="width: 322px;">
+                                                    <input type="text" name="search" class="form-control float-right"
+                                                           value="@ViewBag.Search" placeholder="جستجو"
+                                                           style="border-radius: 5px;padding: 7px">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-default"
+                                                                style="border: #5d5d5d4f 1px solid;">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- عنوان کارت -->
+                                            <a class="badge badge-danger text-center" style="margin-right: 10px;text-decoration: none;"
+                                               href="@Url.Action("ProductManage")">حذف فیلتر</a>
                                         </div>
-                                        <!-- عنوان کارت -->
-                                        <a class="pr-3 badge badge-danger text-center" href="@Url.Action("ProductManage")">حذف فیلتر</a>
-                                    </div>
-                                        </form>
+                                    </form>
 
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0">
@@ -236,7 +265,7 @@
                                                 <th class="text-center">بازدید</th>
                                                 <th class="text-center">عکس</th>
                                                 <th class="text-center">بروزرسانی</th>
-                                                <th class="text-center">برند</th>
+                                                <th class="text-center">رنگ بندی</th>
                                                 <th class="text-center">گروه کالا</th>
                                                 <th class="text-center">قیمت</th>
                                                 <th class="text-center">موجودی</th>
@@ -256,13 +285,24 @@
                                                     {
                                                         <tr>
                                                             <td class="text-center">@i.Id</td>
-                                                            <td class="text-center" style="overflow: hidden;
+                                                            <td class="text-center " style="overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
     text-align: center;
     letter-spacing: -0.3px;
     line-height: 25px;
-    max-height: 90px;">@i.PersianTitle</td>
+    max-height: 90px;">
+                                                                <form>
+                                                                    <a data-toggle="modal" data-target="#exampleModal"
+                                                                       class="modalProduct text-decoration-none"> @i.PersianTitle</a>
+                                                                    <input type="text" name="mId" class="mId"
+                                                                           value="@i.Id" hidden="hidden"/>
+                                                                    <input type="text" name="mPersianTitle"
+                                                                           class="mPersianTitle"
+                                                                           value="@i.PersianTitle" hidden="hidden"/>
+                                                                </form>
+
+                                                            </td>
                                                             <td class="text-center">@i.UnicCode</td>
                                                             <td class="text-center">
                                                                 @if (i.MomentaryOffer || i.IsOffer)
@@ -298,9 +338,16 @@
                                                             {
                                                                 <td class="text-center">@i.InsertDate.ToPersianTime()</td>
                                                             }
-                                                            <td class="text-center">@i.BrandTag.Title</td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex justify-content-center flex-wrap text-center" style="gap: 3px">
+                                                                    @foreach (var c in i.ProductColors)
+                                                                    {
+                                                                        <span class="badge badge-dark">@c.Color.Title</span>
+                                                                    }
+                                                                </div>
+                                                            </td>
                                                             <td class="text-center">@i.Brand.Title</td>
-                                                            <td class="text-center">@i.ProductColors.Max(x => x.Price)</td>
+                                                            <td class="text-center">@i.ProductColors.Max(x => x.Price).ToString("N0")</td>
                                                             <td class="text-center">@i.ProductColors.Sum(x => x.Inventory)</td>
                                                             @if (@i.ProductStatus == ProductStatus.Available)
                                                             {
@@ -341,7 +388,7 @@
                                         <ul class="pagination">
                                             <li class="page-item">
                                                 <a class="page-link"
-                                                   href="@Url.Action("ProductManage", "Admin", new { page = @productsPage - 1, route = ViewBag.route, search = ViewBag.Search,subCatId=ViewBag.subCatId ,brandId=ViewBag.brandId })"
+                                                   href="@Url.Action("ProductManage", "Admin", new { page = @productsPage - 1, route = ViewBag.route, search = ViewBag.Search, subCatId = ViewBag.subCatId, brandId = ViewBag.brandId })"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                     <span class="sr-only">Previous</span>
@@ -351,12 +398,12 @@
                                             {
                                                 <li class="page-item">
                                                     <a class="page-link"
-                                                       href="@Url.Action("ProductManage", "Admin", new { page = @i, route = ViewBag.route, search = ViewBag.Search,subCatId=ViewBag.subCatId ,brandId=ViewBag.brandId })">@i</a>
+                                                       href="@Url.Action("ProductManage", "Admin", new { page = @i, route = ViewBag.route, search = ViewBag.Search, subCatId = ViewBag.subCatId, brandId = ViewBag.brandId })">@i</a>
                                                 </li>
                                             }
                                             <li class="page-item">
                                                 <a class="page-link"
-                                                   href="@Url.Action("ProductManage", "Admin", new { page = @productsPage + 1, route = ViewBag.route, search = ViewBag.Search,subCatId=ViewBag.subCatId ,brandId=ViewBag.brandId })"
+                                                   href="@Url.Action("ProductManage", "Admin", new { page = @productsPage + 1, route = ViewBag.route, search = ViewBag.Search, subCatId = ViewBag.subCatId, brandId = ViewBag.brandId })"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                     <span class="sr-only">Next</span>
@@ -817,6 +864,33 @@
         </div>
     </div>
 </section>
+<div class="modal fade exampleModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+
+    <div class="modal-dialog" style="max-width: 700px !important;">
+        <form class="modal-content" asp-action="UpdatePrice" asp-controller="Admin" method="post"
+              enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ویرایش </h5>
+                <button type="button" class="close text-left" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group w-100 p-3" id="">
+                    <label>نام محصول</label>
+                    <input id="NameProd" type="text" class="form-control" disabled="disabled">
+                </div>
+
+                <div id="modalContent" class=" d-flex flex-wrap justify-content-between" style="gap: 8px">
+
+                </div>
+                <div class="modal-footer d-flex justify-content-between gap-2">
+                    <button type="submit" class="btn btn-primary " id="submitBtn">ذخیره تغیرات</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section script{
 
@@ -955,8 +1029,6 @@
                         Time: datePicker
                     }
                 };
-
-                console.dir(request)
                 $.ajax({
                     type: "Post",
                     data: {request},
@@ -1086,47 +1158,103 @@
             // Function to create and append a new option
 
         });
+        function formatPrice(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
         // Add new options
         document.addEventListener('DOMContentLoaded', (event) => {
 
-                // هنگام تغییر استان، شهرها را بارگذاری کن
-                $('#selectSubCategories').change(function() {
-                    var stateId = $(this).val();
-                    var $citySelect = $('#select2');
-
-                    // ابتدا محتویات قبلی شهر را پاک می‌کنیم
-                    $citySelect.empty();
-                    $citySelect.append('<option value="0" >انتخاب زیر دسته</option>');
-                    // اگر استان انتخاب شده باشد، درخواست AJAX ارسال می‌کنیم
-                    if (stateId > 0) {
-                        $.ajax({
-                            url: '/Admin/GetBrand/',
-                            type: 'GET',
-                            data: { id: stateId },
-                            success: function(cities) {
-                                // برای هر شهر، گزینه‌ای به سلکت اضافه می‌کنیم
-                                $.each(cities, function(index, city) {
-                                    if (index==0){
-                                    $citySelect.append('<option value="' + city.id + '" selected="selected">' + city.title + '</option>');
-                                    }else{
-                                        $citySelect.append('<option value="' + city.id + '" >' + city.title + '</option>');
-                                        
-                                    }
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                alert("خطا در بارگذاری ")
-                            },
-                            beforeSend: function() {
-                                Notiflix.Loading.circle('در حال پردازش ...');
-                            },
-                            complete: function() {
-                                Notiflix.Loading.remove();
-                            },
+            $(".modalProduct").click(function () {
+                var currentrow = $(this).closest("form");
+                $("#idP").val(currentrow.find($("input.mId[type=text]")).val());
+                $("#NameProd").val(currentrow.find($("input.mPersianTitle[type=text]")).val());
+                var productId = currentrow.find($("input.mId[type=text]")).val();
+                $("#modalContent").empty();
+                $.ajax({
+                    url: 'GetColorProduct', // آدرس API
+                    method: 'GET',
+                    data: {id: productId},
+                    success: function (response) {
+                        $("#modalContent").append(`  <input type="text" class="idP" id="idP" required="required" name="prodId" value="${productId}" hidden="hidden">`)
+                        response.forEach(function (item, index) {
+                            var formattedPrice = formatPrice(item.price);
+                            var html = `
+                    <div class="d-flex justify-content-between w-100">
+                        <div class="form-group d-flex w-50 colors-form" style="max-width: 250px; max-height: 50px">
+                        <div class="input-group-prepend">
+                            <span style="border-radius: 0 5px 5px 0;" class="input-group-text">${item.color.title}</span>
+                        </div>
+                        <input name="colors[${index}][price]" style="border-radius: 5px 0 0 5px;" value="${formattedPrice}" type="text" class="form-control number-input">
+                        <input name="colors[${index}][id]" value="${item.id}" hidden="hidden">
+                        </div>    
+                    <div class="form-group w-50 " id="">
+                        <input id="garan" type="text" value="${item.guarantee.title}" class="form-control" disabled="disabled">
+                       </div>
+                    </div>
+                `;
+                            $("#modalContent").append(html);
                         });
+                        document.querySelectorAll('.number-input').forEach(input => {
+                            input.addEventListener('input', function () {
+                                // حذف تمام کاراکترهای غیر عددی
+                                let value = this.value.replace(/\D/g, '');
+                                // اضافه کردن جداکننده سه‌رقمی
+                                this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            });
+
+                            input.addEventListener('blur', function () {
+                                // اگر مقدار خالی است، جایگزین نکن
+                                if (!this.value) return;
+                                let value = this.value.replace(/\D/g, '');
+                                this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            });
+                        });
+                    },
+                    error: function (error) {
+                        console.error("خطا در دریافت داده‌ها:", error);
                     }
                 });
-            
+            });
+
+
+            // هنگام تغییر استان، شهرها را بارگذاری کن
+            $('#selectSubCategories').change(function () {
+                var stateId = $(this).val();
+                var $citySelect = $('#select2');
+
+                // ابتدا محتویات قبلی شهر را پاک می‌کنیم
+                $citySelect.empty();
+                $citySelect.append('<option value="0" >انتخاب زیر دسته</option>');
+                // اگر استان انتخاب شده باشد، درخواست AJAX ارسال می‌کنیم
+                if (stateId > 0) {
+                    $.ajax({
+                        url: '/Admin/GetBrand/',
+                        type: 'GET',
+                        data: {id: stateId},
+                        success: function (cities) {
+                            // برای هر شهر، گزینه‌ای به سلکت اضافه می‌کنیم
+                            $.each(cities, function (index, city) {
+                                if (index == 0) {
+                                    $citySelect.append('<option value="' + city.id + '" selected="selected">' + city.title + '</option>');
+                                } else {
+                                    $citySelect.append('<option value="' + city.id + '" >' + city.title + '</option>');
+
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            alert("خطا در بارگذاری ")
+                        },
+                        beforeSend: function () {
+                            Notiflix.Loading.circle('در حال پردازش ...');
+                        },
+                        complete: function () {
+                            Notiflix.Loading.remove();
+                        },
+                    });
+                }
+            });
+
             ClassicEditor
                 .create(document.querySelector('#editor1'), {
                     // پشتیبانی کامل از تگ‌های HTML
@@ -1216,7 +1344,7 @@
                 })
                 .catch(error => {
                     console.error('There was a problem initializing the editor.', error);
-                  
+
                 });
             const checkbox = document.getElementById('Offer');
             checkbox.addEventListener('change', () => {
@@ -1332,7 +1460,6 @@
                     data: {subCatId: catId},
                     url: "/Admin/GetBrandBySubCat",
                     success: function (data) {
-                        console.dir(data)
                         var selectElement = document.getElementById("BrandId");
                         selectElement.replaceChildren();
                         data.forEach(x => {
@@ -1351,6 +1478,7 @@
                 });
             }
         }
+
         document.querySelectorAll('.number-input').forEach(input => {
             input.addEventListener('input', function () {
                 // حذف تمام کاراکترهای غیر عددی

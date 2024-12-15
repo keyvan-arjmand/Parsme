@@ -940,7 +940,7 @@ public class AdminController : Controller
         }
     }
 
-    public async Task<ActionResult> ChangeStatus(int id, string desc, int status,string? refPost, int rejectType = 0)
+    public async Task<ActionResult> ChangeStatus(int id, string desc, int status, string? refPost, int rejectType = 0)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -949,7 +949,7 @@ public class AdminController : Controller
                 .FirstOrDefaultAsync(x => x.Id == id);
             factor.Status = (Status)status;
             factor.RejectStatus = (RejectStatus)rejectType;
-            factor.RefPostUrl= refPost??string.Empty;
+            factor.RefPostUrl = refPost ?? string.Empty;
             var admin = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
             await _work.GenericRepository<LogFactor>().AddAsync(new LogFactor
             {
@@ -2158,7 +2158,19 @@ public class AdminController : Controller
             .ToListAsync();
         return Ok(cities);
     }
-    public async Task<ActionResult> ProductManage(string search, int route,int subCatId,int brandId, int page = 1)
+
+    [HttpGet]
+    public async Task<IActionResult> GetColorProduct(int id)
+    {
+        var color = await _work.GenericRepository<ProductColor>().TableNoTracking
+            .Include(x => x.Color)
+            .Include(x=>x.Guarantee)
+            .Where(x => x.ProductId == id)
+            .ToListAsync();
+        return Ok(color);
+    }
+
+    public async Task<ActionResult> ProductManage(string search, int route, int subCatId, int brandId, int page = 1)
     {
         ViewBag.Search = search;
         ViewBag.brandId = brandId;
@@ -2215,10 +2227,10 @@ public class AdminController : Controller
 
             if (subCatId > 0)
             {
-                productsQuery = productsQuery.Where(x => x.SubCategoryId==subCatId);
+                productsQuery = productsQuery.Where(x => x.SubCategoryId == subCatId);
                 if (brandId > 0)
                 {
-                    productsQuery = productsQuery.Where(x => x.BrandId==brandId);
+                    productsQuery = productsQuery.Where(x => x.BrandId == brandId);
                 }
             }
 
@@ -2486,7 +2498,7 @@ public class AdminController : Controller
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
         var isa = false; //await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
-            //.FirstOrDefaultAsync();
+        //.FirstOrDefaultAsync();
         if (!isa)
         {
             ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
@@ -2496,7 +2508,6 @@ public class AdminController : Controller
         {
             throw new Exception();
         }
-
     }
 
     public async Task<ActionResult> GoToLoginWithPassword()
@@ -3156,6 +3167,28 @@ public class AdminController : Controller
             IsSuccess = true,
             Message = "محصول با موفقیت ثبت و اضافه شد"
         };
+    }
+
+    public class UpdatePriceDto
+    {
+        public int Id { get; set; }
+        public string Price { get; set; }
+    }
+
+    public async Task<ActionResult> UpdatePrice(int prodId, List<UpdatePriceDto> colors)
+    {
+        var prod = await _work.GenericRepository<Product>().Table.Include(x => x.ProductColors)
+            .ThenInclude(x => x.Color).FirstOrDefaultAsync(x => x.Id == prodId);
+        foreach (var c in prod.ProductColors)
+        {
+            if (colors.Any(x => x.Id == c.Id))
+            {
+                var req = colors.FirstOrDefault(x => x.Id == c.Id);
+                c.Price = Convert.ToInt32(req.Price.Replace(",", ""));
+            }
+        }
+        await _work.GenericRepository<Product>().UpdateAsync(prod, CancellationToken.None);
+        return RedirectToAction("ProductManage");
     }
 
     public async Task<ApiAction> UpdateProduct(Root request)
