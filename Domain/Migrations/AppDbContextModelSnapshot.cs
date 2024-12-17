@@ -748,6 +748,9 @@ namespace Domain.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLogAd")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

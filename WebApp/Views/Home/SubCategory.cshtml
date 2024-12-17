@@ -1112,6 +1112,7 @@
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index")">خانه</a>
             </li>
+            <li class="breadcrumb-item active" aria-current="page">@sub.Name</li>
         </ol>
     </nav>
 </div>
@@ -1197,12 +1198,12 @@
                                                                         {
                                                                             <div class="form-auth-row">
                                                                                 <label class="ui-switch">
-                                                                                    <input type="radio" name="IsSearch" value="true" onchange="submitFormWithSelectedValues()" checked>
+                                                                                    <input type="radio" name="@idC" value="true" onchange="submitFormWithSelectedValues()" >
                                                                                     <span class="ui-switch-toggle"></span>
                                                                                     <span class="ui-switch-label">دارد</span>
                                                                                 </label>
                                                                                 <label class="ui-switch">
-                                                                                    <input type="radio" name="IsSearch" value="false" onchange="submitFormWithSelectedValues()">
+                                                                                    <input type="radio" name="@idC" value="false" onchange="submitFormWithSelectedValues()">
                                                                                     <span class="ui-switch-toggle"></span>
                                                                                     <span class="ui-switch-label">ندارد</span>
                                                                                 </label>
@@ -1230,12 +1231,12 @@
                                                                         {
                                                                             <div class="form-auth-row">
                                                                                 <label class="ui-switch">
-                                                                                    <input type="radio" name="IsSearch" value="true" onchange="submitFormWithSelectedValues()" >
+                                                                                    <input type="radio" name="@idC" value="true" onchange="submitFormWithSelectedValues()" >
                                                                                     <span class="ui-switch-toggle"></span>
                                                                                     <span class="ui-switch-label">دارد</span>
                                                                                 </label>
                                                                                 <label class="ui-switch">
-                                                                                    <input type="radio" name="IsSearch" value="false" onchange="submitFormWithSelectedValues()" checked>
+                                                                                    <input type="radio" name="@idC" value="false" onchange="submitFormWithSelectedValues()" >
                                                                                     <span class="ui-switch-toggle"></span>
                                                                                     <span class="ui-switch-label">ندارد</span>
                                                                                 </label>

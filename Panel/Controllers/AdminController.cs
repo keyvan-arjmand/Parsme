@@ -2497,8 +2497,9 @@ public class AdminController : Controller
 
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
-        var isa = false; //await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
-        //.FirstOrDefaultAsync();
+        var isa =  await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
+            .FirstOrDefaultAsync();
+        
         if (!isa)
         {
             ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));

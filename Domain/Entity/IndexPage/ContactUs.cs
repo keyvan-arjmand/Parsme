@@ -11,6 +11,7 @@ public class ContactUs:BaseEntity
     public string Message { get; set; } = string.Empty;
     public Subject Subject { get; set; }
     public DateTime InsertDate { get; set; }
+    public bool IsLogAd { get; set; }
     
     public string SeoTitle { get; set; } = string.Empty;
     public string SeoDesc { get; set; } = string.Empty;

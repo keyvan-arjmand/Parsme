@@ -1137,13 +1137,33 @@
     <meta property="product:price:currency" content="IRT"/>
     <meta property="product:availability"
           content="@(prod.ProductColors.Any(x => x.Inventory > 0 && prod.ProductStatus == ProductStatus.Available) ? "in stock" : "out of stock")"/>
-    <meta name="product_old_price" content="@prod.ProductColors.Min(x=>x.Price)">
+
+    @if (prod.IsOffer)
+    {
+        if (prod.Offer.StartDate.CalcOffer(prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
+        {
+            <meta name="product_old_price" content="@prod.ProductColors.FirstOrDefault(x=>x.ColorId==prod.Offer.ColorId).Price">
+
+
+        }
+        else
+        {
+            <meta name="product_old_price" content="@prod.ProductColors.Min(x=>x.Price)">
+
+        }
+    }
+    else
+    {
+        <meta name="product_old_price" content="@prod.ProductColors.Min(x=>x.Price)">
+
+    }
    
     @if (prod.IsOffer)
     {
-        if (prod.Offer.StartDate.CalcOffer(prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer) && prod.ProductColors.Any(x => x.ColorId == prod.Offer.ColorId))
+        if (prod.Offer.StartDate.CalcOffer(prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer))
         {
-            <meta name="product_price" content="@prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId)!.Price">
+            <meta name="product_price" content=" @prod.Offer.StartDate.CalcOffer(prod.DiscountAmount, prod.Offer.OfferAmount, prod.ProductColors.FirstOrDefault(x => x.ColorId == prod.Offer.ColorId).Price, prod.Offer.Hours, prod.Offer.Minutes, prod.IsOffer)">
+
         }
         else
         {

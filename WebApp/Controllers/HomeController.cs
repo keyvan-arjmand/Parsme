@@ -1548,7 +1548,7 @@ public class HomeController : Controller
         ViewBag.max = max;
         values.RemoveAll(value => value.Equals("true", StringComparison.OrdinalIgnoreCase) ||
                                   value.Equals("false", StringComparison.OrdinalIgnoreCase));
-        var brand = await _work.GenericRepository<Brand>().TableNoTracking.FirstOrDefaultAsync(x => x.Id == id);
+        var brand = await _work.GenericRepository<Brand>().TableNoTracking.Include(x=>x.SubCategory).FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.CatDetail = await _work.GenericRepository<CategoryDetail>().TableNoTracking
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == brand.SubCategoryId) &&
