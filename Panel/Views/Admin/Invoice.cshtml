@@ -7,8 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فاکتور</title>
-    <link rel="stylesheet" href="/dist/css/custom-style.css">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap JS (برای استفاده از ویژگی‌هایی مثل کار با دکمه‌ها، مدال‌ها و غیره) -->
@@ -24,7 +22,7 @@
 
         .invoice-container {
             width: 100%;
-            
+
             border: 1px solid #000;
         }
 
@@ -97,17 +95,17 @@
     </style>
 </head>
 @{
-Layout = null;
-Factor factor = ViewBag.Factor;
+    Layout = null;
+    Factor factor = ViewBag.Factor;
 
-double price = 0;
-foreach (var i in factor.Products)
-{
-foreach (var q in i.FactorProductColor)
-{
-price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
-}
-}
+    double price = 0;
+    foreach (var i in factor.Products)
+    {
+        foreach (var q in i.FactorProductColor)
+        {
+            price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount) * q.Count;
+        }
+    }
 
 }
 <body>
@@ -127,19 +125,23 @@ price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
     <table class="party-info">
         <tr>
             <td class="seller-info">
-                <strong>فروشنده:</strong>شرکت کسری تامین اندیشان ستد نیشتمان<br>
-                <strong>شناسه ملی:</strong> 10610074776<br>
+                <strong>فروشنده:</strong>فروشگاه پارس می<br>
+                @* <strong>شناسه ملی:</strong> 10610074776<br> *@
                 <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری و تجاری ولی عصر، طبقه 6، واحد 33<br>
-                <strong>شماره تماس:</strong> 02143000107
+                <strong>کدپستی:</strong> 1593733493<br>
+                <strong>شماره تماس:</strong> 02143000107<br>
             </td>
+            @{
+                var addres = factor.UserAddress.City.State.Title + " - " + factor.UserAddress.City.Name + " - " + factor.UserAddress.Address;
+            }
             @if (factor.AccountType == AccountType.Genuine)
             {
                 <td class="buyer-info">
                     <strong>خریدار:</strong> @factor.User.Name @factor.User.Family<br>
                     <strong>شماره اقتصادی / شماره ملی:</strong> @factor.User.NationalCode<br>
                     <strong>شماره ثبت:</strong> @factor.RegistrationNumber<br>
-                    <strong>آدرس:</strong>@factor.UserAddress.Address<br>
-                    <strong>شماره تماس:</strong> @factor.UserAddress.Number
+                    <strong>آدرس:</strong>@addres<br>
+                    <strong>شماره تماس:</strong> @factor.UserAddress.Number<br>
                     <strong>کدپستی:</strong> @factor.UserAddress.PostCode
                 </td>
             }
@@ -150,7 +152,7 @@ price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
                     <strong>شماره اقتصادی / شماره ملی:</strong> @factor.EconomicNumber<br>
                     <strong>شماره ثبت:</strong> @factor.RegistrationNumber<br>
                     <strong>آدرس:</strong>@factor.Adders<br>
-                    <strong>شماره تماس:</strong> @factor.OrganizationNumber
+                    <strong>شماره تماس:</strong> @factor.OrganizationNumber<br>
                     <strong>کدپستی:</strong> @factor.PostCode
                 </td>
             }
@@ -180,36 +182,48 @@ price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
                         <td>@q.Count</td>
                         @{
                             var priceBasket = new double();
-
+                            var vahed = new double();
                             priceBasket = q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
+                            vahed=q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
 
 
                             priceBasket = (priceBasket * q.Count) * 10;
                             var countPrice = priceBasket * q.Count;
                         }
+                        <td>@vahed.ToString("N0")</td>
                         <td>@priceBasket.ToString("N0")</td>
-                        <td>@countPrice.ToString("N0")</td>
                     </tr>
                 }
             }
         }
         <tr>
             <td>#</td>
-            <td>@factor.PostMethodId</td>
-            <td>@factor.PostMethod.Title</td>
-            <td>-</td>
+            @if (factor.Id == 147)
+            {
+                <td>0</td>
+                <td>پست پیشتاز</td>
+                <td>-</td>
+            }
+            else
+            {
+                <td>@factor.PostMethodId</td>
+                <td>@factor.PostMethod.Title</td>
+                <td>-</td>
+            }
+
             @{
-                if (factor.PostMethod.Price > 0)
+                if (factor.Id == 147)
+                {
+                    <td>0</td>
+                    <td>0</td>
+                }
+                else
                 {
                     var post = factor.PostMethod.Price * 10;
                     <td>@post.ToString("N0")</td>
                     <td>@post.ToString("N0")</td>
                 }
-                else
-                {
-                    <td>رایگان</td>
-                    <td>رایگان</td>
-                }
+
             }
 
         </tr>
@@ -234,7 +248,17 @@ price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
         </tr>
         <tr>
             @{
-                var feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount + factor.AmountPrice)) * 10;
+                var feeAll = 0.0;
+                if (factor.Id == 147)
+                {
+                    feeAll  = (price + 0 - (factor.DiscountAmount + factor.AmountPrice)) * 10;
+
+                }
+                else
+                {
+                    feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount + factor.AmountPrice)) * 10;
+
+                }
             }
             <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال): </td>
             <td colspan="2">@feeAll.ToString("N0")</td>
@@ -244,7 +268,7 @@ price += @q.Price.CalcOffer(i.DiscountAmount, q.OfferAmount);
     <div class="footer d-flex justify-content-between">
         <div class="signatures p-3">
             <p>مهر و امضای فروشنده:</p>
-            <img src="/Images/mohr.png" alt="Signature Image" class="signature-image">
+            <img src="/assetsCli/images/mohr.png" alt="Signature Image" class="signature-image">
         </div>
         <div class="signatures p-3">
             <p>مهر و امضای خریدار:</p>

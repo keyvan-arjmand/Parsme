@@ -32,7 +32,7 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _work;
     private readonly RoleManager<Role> _roleManager;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<User> _userManager;   
     private readonly SignInManager<User> _signInManager;
     private readonly IResponseCacheService _responseCacheService;
     private readonly IMapper _mapper;
@@ -4096,7 +4096,7 @@ public class HomeController : Controller
         var factor = await _work.GenericRepository<Factor>().TableNoTracking.Include(x => x.Products)
             .ThenInclude(x => x.FactorProductColor)
             .Include(x => x.User)
-            .Include(x => x.UserAddress)
+            .Include(x => x.UserAddress).ThenInclude(x=>x.City).ThenInclude(x=>x.State)
             .Include(x => x.PostMethod)
             .FirstOrDefaultAsync(x => x.Id == id);
         ViewBag.Factor = factor;

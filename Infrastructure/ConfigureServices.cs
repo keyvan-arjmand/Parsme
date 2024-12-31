@@ -10,8 +10,16 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddSingleton<IConnectionMultiplexer>(_ =>
-            ConnectionMultiplexer.Connect("185.165.118.72"));
+        services.AddScoped<IConnectionMultiplexer>(_ =>
+        {
+            var configOptions = new ConfigurationOptions
+            {
+                EndPoints = { "185.165.118.72:6379" },
+                ConnectTimeout = 5000,
+                AbortOnConnectFail = false 
+            };
+            return ConnectionMultiplexer.Connect(configOptions);
+        });
         services.AddScoped<IResponseCacheService, ResponseCacheService>();
         return services;
     }

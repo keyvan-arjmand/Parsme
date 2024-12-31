@@ -57,7 +57,8 @@ public class PaymentController : Controller
 
     public async Task<string> ProductFactor(string discountCode, int postMethodId,
         int userAddressId, string desc, string economicNumber, string organizationName, string nationalId,
-        string postCode, string organizationPhone, string registrationNumber, string organizationAddress, bool isLegal = false)
+        string postCode, string organizationPhone, string registrationNumber, string organizationAddress,
+        bool isLegal = false)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -211,16 +212,20 @@ public class PaymentController : Controller
 
 
             HttpClient httpClient = new HttpClient();
-
+            var post = await _work.GenericRepository<PostMethod>().Table.FirstOrDefaultAsync(x => x.Id == postMethodId);
+            var finaAmount = factor.Amount;
+            if (post.Price > 0)
+            {
+                finaAmount += post.Price;
+            }
             var result =
                 await httpClient.GetAsync(
-                    $"https://parsme.com/bank/Index?Price={factor.Amount}&factorId={factor.Id}&userId={user.Id}");
+                    $"https://parsme.com/bank/Index?Price={finaAmount}&factorId={factor.Id}&userId={user.Id}");
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(response))
                 {
-            
                     ViewBag.RefId = response;
                     ViewBag.UrlBank = BpmConfig.PostUrl;
                     ViewBag.Error = false;
@@ -242,6 +247,4 @@ public class PaymentController : Controller
             return string.Empty;
         }
     }
-
-
 }

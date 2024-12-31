@@ -7,84 +7,85 @@
 @using WebApp.Models
 
 @{
-Layout = "_Layout";
-List<Product> basket = ViewBag.BasketProd;
-List<MainCategory> categories = ViewBag.Categories;
-List<UserAddress> userAddresses = ViewBag.Address;
-List<SearchResult> searchResults = ViewBag.Search;
-PostMethod postMethods = ViewBag.PostMethod;
-DiscountCode code1 = ViewBag.Code;
-FooterLink footerLink = ViewBag.FooterLink;
-Domain.Entity.User.User user = ViewBag.User;
-ViewData["Title"] = "فاکتور نهایی";
-List<State> states = ViewBag.State;
+    Layout = "_Layout";
+    List<Product> basket = ViewBag.BasketProd;
+    List<MainCategory> categories = ViewBag.Categories;
+    List<UserAddress> userAddresses = ViewBag.Address;
+    List<SearchResult> searchResults = ViewBag.Search;
+    PostMethod postMethods = ViewBag.PostMethod;
+    DiscountCode code1 = ViewBag.Code;
+    FooterLink footerLink = ViewBag.FooterLink;
+    Domain.Entity.User.User user = ViewBag.User;
+    ViewData["Title"] = "فاکتور نهایی";
+    List<State> states = ViewBag.State;
 
-double price = 0;
-double offer = 0;
-foreach (var i in basket)
-{
-@if (i.IsOffer)
-{
-if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
-{
-offer += i.Offer.OfferAmount;
-price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
-}
-else
-{
-offer += i.DiscountAmount;
-price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
-}
-}
-else
-{
-offer += i.DiscountAmount;
-price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
-}
-}
+    double price = 0;
+    double offer = 0;
+    foreach (var i in basket)
+    {
+        @if (i.IsOffer)
+        {
+            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+            {
+                offer += i.Offer.OfferAmount;
+                price += @i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+            }
+            else
+            {
+                offer += i.DiscountAmount;
+                price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+            }
+        }
+        else
+        {
+            offer += i.DiscountAmount;
+            price += @i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+        }
+    }
 
-List<BasketProduct> products = new List<BasketProduct>();
-foreach (var q in basket)
-{
-if (products.Any(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id))
-{
-products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id).Count++;
-}
-else
-{
-products.Add(new BasketProduct
-{
-SubCategoryId = q.SubCategoryId,
-ProductStatus = q.ProductStatus,
-ProductColors = q.ProductColors.ToList(),
-InsertDate = q.InsertDate,
-Count = 1,
-DiscountAmount = q.DiscountAmount,
-Detail = q.Detail,
-Strengths = q.Strengths,
-Title = q.Title,
-BrandId = q.BrandId,
-ImageUri = q.ImageUri,
-FullDesc = q.FullDesc,
-InterestRate = q.InterestRate,
-IsOffer = q.IsOffer,
-IsActive = q.IsActive,
-MetaKeyword = q.MetaKeyword,
-MomentaryOffer = q.MomentaryOffer,
-PersianTitle = q.PersianTitle,
-ProductGift = q.ProductGift,
-WeakPoints = q.WeakPoints,
-IsShowIndex = q.IsShowIndex,
-Id = q.Id,
-Offer = q.Offer
-});
-}
-}
+    List<BasketProduct> products = new List<BasketProduct>();
+    foreach (var q in basket)
+    {
+        if (products.Any(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id))
+        {
+            products.FirstOrDefault(x => x.ProductColors.FirstOrDefault().Id == q.ProductColors.FirstOrDefault().Id).Count++;
+        }
+        else
+        {
+            products.Add(new BasketProduct
+            {
+                SubCategoryId = q.SubCategoryId,
+                ProductStatus = q.ProductStatus,
+                ProductColors = q.ProductColors.ToList(),
+                InsertDate = q.InsertDate,
+                Count = 1,
+                DiscountAmount = q.DiscountAmount,
+                Detail = q.Detail,
+                Strengths = q.Strengths,
+                Title = q.Title,
+                BrandId = q.BrandId,
+                ImageUri = q.ImageUri,
+                FullDesc = q.FullDesc,
+                InterestRate = q.InterestRate,
+                IsOffer = q.IsOffer,
+                IsActive = q.IsActive,
+                MetaKeyword = q.MetaKeyword,
+                MomentaryOffer = q.MomentaryOffer,
+                PersianTitle = q.PersianTitle,
+                ProductGift = q.ProductGift,
+                WeakPoints = q.WeakPoints,
+                IsShowIndex = q.IsShowIndex,
+                Id = q.Id,
+                Offer = q.Offer
+            });
+        }
+    }
 
-SeoPage seoPage = ViewBag.SeoPage;
+    SeoPage seoPage = ViewBag.SeoPage;
 }
 
 @section footer
+
 {
     <footer style="z-index: 10;" class="footer-main-site">
         <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
@@ -134,22 +135,26 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href3Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title3Col1.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href4Col1" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href4Col1"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title4Col1.ToRaw()
                                                     </a>
                                                 </li>
@@ -172,27 +177,32 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href3Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href3Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title3Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href4Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href4Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title4Col2.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href5Col2" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href5Col2"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title5Col2.ToRaw()
                                                     </a>
                                                 </li>
@@ -215,12 +225,14 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col3" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col3"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col3.ToRaw()
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href2Col3" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href2Col3"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title2Col3.ToRaw()
                                                     </a>
                                                 </li>
@@ -241,7 +253,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                             </div>
                                             <ul class="footer-menu-ul">
                                                 <li class="p-2">
-                                                    <a href="@Url.Action("AboutUs", "Home")" class="text-decoration-none fw-bold">
+                                                    <a href="@Url.Action("AboutUs", "Home")"
+                                                       class="text-decoration-none fw-bold">
                                                         درباره ما
                                                     </a>
                                                 </li>
@@ -251,7 +264,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                     </a>
                                                 </li>
                                                 <li class="p-2">
-                                                    <a href="@footerLink.Href1Col4" class="text-decoration-none fw-bold">
+                                                    <a href="@footerLink.Href1Col4"
+                                                       class="text-decoration-none fw-bold">
                                                         @footerLink.Title1Col4.ToRaw()
                                                     </a>
                                                 </li>
@@ -330,7 +344,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                      target="_blank"
                                                      onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=371676&p=xlaojyoerfthgvkajyoegvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")'
                                                      alt='logo-samandehi'
-                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq' width="70"/>
+                                                     src='https://logo.samandehi.ir/logo.aspx?id=371676&p=qftiyndtnbpdwlbqyndtwlbq'
+                                                     width="70"/>
 
                                             </div>
 
@@ -362,7 +377,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                             </div>
                             <div class="footer-copyright">
                                 <div class="footer-copyright-text">
-                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می باشد.</p>
+                                    <p class="p-3 fw-bold">تمامی مطالب، عکس ها و... متعلق به سایت فروشگاهی پارس می می
+                                        باشد.</p>
                                 </div>
                             </div>
                         </div>
@@ -435,7 +451,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                             <div class="header-search row text-right">
                                 <div class="header-search-box">
                                     <form asp-action="search" asp-controller="home" method="post" class="form-search">
-                                        <input id="SearchEl" type="search" class="header-search-input EnFont" name="search"
+                                        <input id="SearchEl" type="search" class="header-search-input EnFont"
+                                               name="search"
                                                placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                                         <div class="action-btns">
                                             <button class="btn btn-search" type="submit">
@@ -455,7 +472,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                 <a href="@i.Href">
                                                                     <i class="mdi mdi-clock-outline"></i>
                                                                     @i.Value
-                                                                    <a class="btn btn-light btn-continue-search" href="@i.Href">
+                                                                    <a class="btn btn-light btn-continue-search"
+                                                                       href="@i.Href">
                                                                         <i class="fa fa-angle-left"></i>
                                                                     </a>
                                                                 </a>
@@ -486,7 +504,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                             <div class="row ">
                                 <div id="HeaderBurger" class="col-3 col-sm-3 col-md-9 col-lg-9 col-xl-9">
                                     <div class="encrypt233211 dmarrow-down droopmenu-horizontal dmpos-top dmfade">
-                                        <div class="droopmenu-inner " id="InnerDrop" style="padding: 10px;z-index: 990!important;">
+                                        <div class="droopmenu-inner " id="InnerDrop"
+                                             style="padding: 10px;z-index: 990!important;">
                                             <div class="droopmenu-encrypt231432">
                                                 <a href="#" class="droopmenu-toggle">
                                                     <i class="dm-burg"></i>
@@ -519,14 +538,17 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                             var id = "droopmenutab" + index.ToString();
                                                                                             if (index == 0)
                                                                                             {
-                                                                                                <div class="encrypt111212132 droopmenu-tab-active"
-                                                                                                     id="@id">
+                                                                                                <div
+                                                                                                    class="encrypt111212132 droopmenu-tab-active"
+                                                                                                    id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
                                                                                                         @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div class="encrypt234324311">
-                                                                                                        <div class="droopmenu-row">
+                                                                                                    <div
+                                                                                                        class="encrypt234324311">
+                                                                                                        <div
+                                                                                                            class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
@@ -557,13 +579,17 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                             }
                                                                                             else
                                                                                             {
-                                                                                                <div class="encrypt111212132" id="@id">
+                                                                                                <div
+                                                                                                    class="encrypt111212132"
+                                                                                                    id="@id">
                                                                                                     <a class="droopmenu-tabencrypt231432"
                                                                                                        href="#">
                                                                                                         @c.Name.ToRaw()
                                                                                                     </a>
-                                                                                                    <div class="encrypt234324311">
-                                                                                                        <div class="droopmenu-row">
+                                                                                                    <div
+                                                                                                        class="encrypt234324311">
+                                                                                                        <div
+                                                                                                            class="droopmenu-row">
                                                                                                             @{
                                                                                                                 foreach (var s in c.SubCategories)
                                                                                                                 {
@@ -657,7 +683,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account" id="profImg">
+                                                                                            <span class="icon-account"
+                                                                                                  id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -665,7 +692,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -708,7 +736,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -752,7 +781,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                     <div class="nav-account d-block pl">
                                                                                         @if (User.Identity.IsAuthenticated)
                                                                                         {
-                                                                                            <span class="icon-account" id="profImg">
+                                                                                            <span class="icon-account"
+                                                                                                  id="profImg">
                                         <img src="/assetsCli/images/man.png" class="avator">
                                     </span>
                                                                                         }
@@ -760,7 +790,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -803,7 +834,8 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                         {
                                                                                             <a href="@Url.Action("Login", "Home")"
                                                                                                class="d-flex justify-content-center">
-                                                                                                <span class="title-account">ورود / ثبت نام</span>
+                                                                                                <span
+                                                                                                    class="title-account">ورود / ثبت نام</span>
                                                                                             </a>
                                                                                         }
                                                                                         @if (User.Identity.IsAuthenticated)
@@ -919,14 +951,16 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                                                                         style="background: @i.ProductColors.FirstOrDefault().Color.ColorCode">
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div class="quantity">
+                                                                                                                <div
+                                                                                                                    class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
 
                                                                 <span> تعداد:@i.Count</span>
                                                             </span>
                                                                                                                 </div>
-                                                                                                                <div class="quantity">
+                                                                                                                <div
+                                                                                                                    class="quantity">
                                                             <span
                                                                 class="quantity-Price-amount">
                                                                 @{
@@ -1001,8 +1035,11 @@ SeoPage seoPage = ViewBag.SeoPage;
                                                                 <div class="header-account text-left">
                                                                     <div class="account-box"
                                                                          style="padding: 12px 15px 5px 5px">
-                                                                        <a class="nav-account d-block pl" href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;">
-                                                                            <a href="tel:@seoPage.HeaderNumber" style="z-index: 999!important;"
+                                                                        <a class="nav-account d-block pl"
+                                                                           href="tel:@seoPage.HeaderNumber"
+                                                                           style="z-index: 999!important;">
+                                                                            <a href="tel:@seoPage.HeaderNumber"
+                                                                               style="z-index: 999!important;"
                                                                                class="d-flex justify-content-center">
                         <span
                             class="title-account">
@@ -1079,58 +1116,60 @@ SeoPage seoPage = ViewBag.SeoPage;
 }
 
 @section loader
+
 {
-<div class="P-loader">
-    <div class="P-loader-content">
-        <div class="logo-loader">
-            <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
-        </div>
-        <div class="pic-loader text-center">
-            <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+    <div class="P-loader">
+        <div class="P-loader-content">
+            <div class="logo-loader">
+                <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
+            </div>
+            <div class="pic-loader text-center">
+                <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+            </div>
         </div>
     </div>
-</div>
 }
 
 @section link
+
 {
-<!-- font---------------------------------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
-<!-- plugin------------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
-<link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
-<!-- main-style--------------/assetsCli-------------->
-<link rel="stylesheet" href="/assetsCli/css/main.css">
-<link rel="stylesheet" href="/assetsCli/css/responsive.css">
-<style>
-    .middle-container .form-checkout .form-checkout-row label {
-        float: none;
-        width: 50%;
-    }
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/materialdesignicons.css">
+    <!-- plugin------------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/vendor/bootstrap.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/noUISlider.min.css">
+    <link rel="stylesheet" href="/assetsCli/css/vendor/nice-select.css">
+    <!-- main-style--------------/assetsCli-------------->
+    <link rel="stylesheet" href="/assetsCli/css/main.css">
+    <link rel="stylesheet" href="/assetsCli/css/responsive.css">
+    <style>
+        .middle-container .form-checkout .form-checkout-row label {
+            float: none;
+            width: 50%;
+        }
 
-    .middle-container .form-checkout .form-checkout-row input {
-        width: 50%;
-        height: 21px;
-    }
+        .middle-container .form-checkout .form-checkout-row input {
+            width: 50%;
+            height: 21px;
+        }
 
-    /* استایل برای فیلدهای خالی که به آنها کلاس is-invalid اضافه شده */
-    .input-name-checkout.is-invalid {
-        border-color: red !important;
-    }
+        /* استایل برای فیلدهای خالی که به آنها کلاس is-invalid اضافه شده */
+        .input-name-checkout.is-invalid {
+            border-color: red !important;
+        }
 
-    .invalid-feedback {
-        color: red;
-        font-size: 0.875em;
-        margin-top: 5px;
-    }
+        .invalid-feedback {
+            color: red;
+            font-size: 0.875em;
+            margin-top: 5px;
+        }
 
-    .middle-container .form-checkout .form-checkout-row input {
-        margin-bottom: 0px !important;
-    }
-</style>
+        .middle-container .form-checkout .form-checkout-row input {
+            margin-bottom: 0px !important;
+        }
+    </style>
 }
 
 @if (ViewBag.ProfValid)
@@ -1138,424 +1177,561 @@ SeoPage seoPage = ViewBag.SeoPage;
     if (userAddresses.Count <= 0)
     {
         <div class="container-main">
-    <div class="d-block">
-        <section class="profile-home">
-            <div class="col-lg">
-                <div class="post-item-profile order-1 d-block">
-                    <div class="notices-wrapper" style="    padding: 10px;
+            <div class="d-block">
+                <section class="profile-home">
+                    <div class="col-lg">
+                        <div class="post-item-profile order-1 d-block">
+                            <div class="notices-wrapper" style="    padding: 10px;
     font-size: 18px;
     font-weight: bolder;
 }">
-                        <div class="col-12">
-                            <div class="form-coupon-toggle">
-                                <div class="info">
-                                    آدرس خود را وارد کنید
+                                <div class="col-12">
+                                    <div class="form-coupon-toggle">
+                                        <div class="info">
+                                            آدرس خود را وارد کنید
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12 pl">
-                        <div class="profile-content">
-                            <div class="profile-stats">
-                                <div class="profile-address">
-                                    <div class="middle-container">
-                                        <form asp-action="InsertUserAddress" asp-controller="Home" method="post" class="form-checkout" id="checkoutaddres">
-                                            <input type="text"
-                                                   name="code" value="@code1.Code" hidden="hidden">
-                                            <input type="text"
-                                                   name="postMethod" value="@postMethods.Id" hidden="hidden">
-                                            <input type="text"
-                                                   name="toCheckout" value="true" hidden="hidden">
-                                            <div class="form-checkout-row">
-                                                <label for="name">
-                                                    نام تحویل گیرنده
-                                                    <abbr class="required"
-                                                          title="ضروری" style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" id="name"
-                                                       class="input-name-checkout form-control" name="Name">
-                                                <label for="phone-number">
-                                                    شماره موبایل
-                                                    <abbr class="required"
-                                                          title="ضروری" style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" id="phone-number"
-                                                       class="input-name-checkout form-control text-left" name="Number">
+                            <div class="col-lg-12 col-md-12 col-xs-12 pl">
+                                <div class="profile-content">
+                                    <div class="profile-stats">
+                                        <div class="profile-address">
+                                            <div class="middle-container">
+                                                <form asp-action="InsertUserAddress" asp-controller="Home" method="post"
+                                                      class="form-checkout" id="checkoutaddres">
+                                                    <input type="text"
+                                                           name="code" value="@code1.Code" hidden="hidden">
+                                                    <input type="text"
+                                                           name="postMethod" value="@postMethods.Id" hidden="hidden">
+                                                    <input type="text"
+                                                           name="toCheckout" value="true" hidden="hidden">
+                                                    <div class="form-checkout-row">
+                                                        <label for="name">
+                                                            نام تحویل گیرنده
+                                                            <abbr class="required"
+                                                                  title="ضروری" style="color:red;">
+                                                                *
+                                                            </abbr>
+                                                        </label>
+                                                        <input type="text" id="name"
+                                                               class="input-name-checkout form-control" name="Name">
+                                                        <label for="phone-number">
+                                                            شماره موبایل
+                                                            <abbr class="required"
+                                                                  title="ضروری" style="color:red;">
+                                                                *
+                                                            </abbr>
+                                                        </label>
+                                                        <input type="text" id="phone-number"
+                                                               class="input-name-checkout form-control text-left"
+                                                               name="Number">
 
-                                                <div class="form-checkout-valid-row">
-                                                    <label for="city">
-                                                        استان
-                                                        <abbr class="required" title="ضروری"
-                                                              style="color:red;">
-                                                            *
-                                                        </abbr>
-                                                    </label>
-                                                    <select name="stateId" id="state" class="form-control">
-                                                        <option value="0" selected="selected">
-                                                            استان مورد نظر
-                                                            خود را انتخاب کنید
-                                                        </option>
-                                                        @foreach (var i in states)
-                                                        {
-                                                            <option value="@i.Id">@i.Title</option>
-                                                        }
-                                                    </select>
+                                                        <div class="form-checkout-valid-row">
+                                                            <label for="city">
+                                                                استان
+                                                                <abbr class="required" title="ضروری"
+                                                                      style="color:red;">
+                                                                    *
+                                                                </abbr>
+                                                            </label>
+                                                            <select name="stateId" id="state" class="form-control">
+                                                                <option value="0" selected="selected">
+                                                                    استان مورد نظر
+                                                                    خود را انتخاب کنید
+                                                                </option>
+                                                                @foreach (var i in states)
+                                                                {
+                                                                    <option value="@i.Id">@i.Title</option>
+                                                                }
+                                                            </select>
 
-                                                </div>
-                                                <div class="form-checkout-valid-row">
-                                                    <label for="city">
-                                                        شهر
-                                                        <abbr class="required" title="ضروری"
-                                                              style="color:red;">
-                                                            *
-                                                        </abbr>
-                                                    </label>
-                                                    <select name="CityId" id="city" class="form-control">
-                                                        <option value="0" selected="selected">
-                                                            شهر مورد نظر
-                                                            خود را انتخاب کنید
-                                                        </option>
+                                                        </div>
+                                                        <div class="form-checkout-valid-row">
+                                                            <label for="city">
+                                                                شهر
+                                                                <abbr class="required" title="ضروری"
+                                                                      style="color:red;">
+                                                                    *
+                                                                </abbr>
+                                                            </label>
+                                                            <select name="CityId" id="city" class="form-control">
+                                                                <option value="0" selected="selected">
+                                                                    شهر مورد نظر
+                                                                    خود را انتخاب کنید
+                                                                </option>
 
-                                                    </select>
+                                                            </select>
 
-                                                </div>
-                                                <label for="post-code">
-                                                    کد پستی
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" id="post-code"
-                                                       class="input-name-checkout form-control" name="PostCode"
-                                                       placeholder="کد پستی را بدون خط تیره بنویسید">
+                                                        </div>
+                                                        <label for="post-code">
+                                                            کد پستی
+                                                            <abbr class="required" title="ضروری"
+                                                                  style="color:red;">
+                                                                *
+                                                            </abbr>
+                                                        </label>
+                                                        <input type="text" id="post-code"
+                                                               class="input-name-checkout form-control" name="PostCode"
+                                                               placeholder="کد پستی را بدون خط تیره بنویسید">
 
-                                                <label for="address">
-                                                    آدرس
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <textarea rows="5" cols="30" id="address" name="Address"
-                                                          class="textarea-name-checkout form-control"></textarea>
+                                                        <label for="address">
+                                                            آدرس
+                                                            <abbr class="required" title="ضروری"
+                                                                  style="color:red;">
+                                                                *
+                                                            </abbr>
+                                                        </label>
+                                                        <textarea rows="5" cols="30" id="address" name="Address"
+                                                                  class="textarea-name-checkout form-control"></textarea>
 
-                                                <div class="AR-CR">
-                                                    <button type="button" class="btn-registrar" onclick="submitAddressForm()">ادامه خرید</button>
-                                                 
-                                                </div>
+                                                        <div class="AR-CR">
+                                                            <button type="button" class="btn-registrar"
+                                                                    onclick="submitAddressForm()">ادامه خرید
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
-    </div>
-</div>
+        </div>
     }
     else
     {
-            <div class="container-main">
-        <div class="d-block">
-            <section class="blog-checkout d-block order-1">
-                <div class="col-lg">
-                    <div class="checkout woocommerce-checkout">
-                        <div class="content-checkout container">
-                            @if (code1.Amount > 0)
-                            {
-                                <div class="notices-wrapper">
-                                    <div class="col-12">
-                                        <div class="form-coupon-toggle">
+        <div class="container-main">
+            <div class="d-block">
+                <section class="blog-checkout d-block order-1">
+                    <div class="col-lg">
+                        <div class="checkout woocommerce-checkout">
+                            <div class="content-checkout container">
+                                @if (code1.Amount > 0)
+                                {
+                                    <div class="notices-wrapper">
+                                        <div class="col-12">
+                                            <div class="form-coupon-toggle">
 
-                                            <div class="info">
+                                                <div class="info">
                                                 <span>
                                                     کد تخفیف: @code1.Code @code1.Amount.ToString("N0")
                                                 </span>
 
-                                            </div>
+                                                </div>
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
+                                }
 
-                            <div class="middle-container">
-                                @* asp-action="ProductFactor" asp-controller="Payment" method="post" *@
-                                <form class="form-checkout">
-                                    <div class="col2-set">
-                                        <div class="col-12">
-                                            <div class="billing-fields mt-4">
-                                                <h4>جزئیات صورتحساب</h4>
-                                                <div class="form-checkout-row">
-                                                    <h5 class="p-3" id="UserAddresT">ارسال به آدرس</h5>
-                                                    <div class="d-flex flex-column" id="UserAddres">
-                                                        @{
-                                                            foreach (var i in userAddresses)
-                                                            {
-                                                                <div class="shipping-totals-item">
+                                <div class="middle-container">
+                                    @* asp-action="ProductFactor" asp-controller="Payment" method="post" *@
+                                    <form class="form-checkout">
+                                        <div class="col2-set">
+                                            <div class="col-12">
+                                                <div class="billing-fields mt-4">
+                                                    <h4>جزئیات صورتحساب</h4>
+                                                    <div class="form-checkout-row">
+                                                        <h5 class="p-3" id="UserAddresT">ارسال به آدرس</h5>
+                                                        <div class="d-flex flex-column" id="UserAddres">
+                                                            @{
+                                                                foreach (var i in userAddresses)
+                                                                {
+                                                                    <div class="shipping-totals-item">
 
-                                                                    <div class="shipping-totals-outline" style="display: flex;
+                                                                        <div class="shipping-totals-outline" style="display: flex;
     justify-content: start;
     align-items: center;">
-                                                                        <label for="address`@i.Id`" class="outline-radio"
-                                                                               style="width: 0 !important;">
-                                                                            <input value="@i.Id" type="radio" name="userAddressId"
-                                                                                   id="address`@i.Id`">
-                                                                            <span class="outline-radio-check"></span>
-                                                                        </label>
-                                                                        <label for="#" class="shipping-totals-title-row"
-                                                                               style="width: 100% !important;">
-                                                                            <div class="shipping-totals-title">
-                                                                                <span> @i.Address</span>
-                                                                            </div>
-                                                                        </label>
+                                                                            <label for="address`@i.Id`"
+                                                                                   class="outline-radio"
+                                                                                   style="width: 0 !important;">
+                                                                                <input value="@i.Id" type="radio"
+                                                                                       name="userAddressId"
+                                                                                       id="address`@i.Id`">
+                                                                                <span
+                                                                                    class="outline-radio-check"></span>
+                                                                            </label>
+                                                                            <label for="#"
+                                                                                   class="shipping-totals-title-row"
+                                                                                   style="width: 100% !important;">
+                                                                                <div class="shipping-totals-title">
+                                                                                    <span> @i.Address</span>
+                                                                                </div>
+                                                                            </label>
 
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                        <input value="@postMethods.Id" id="postMethodId"
+                                                               name="postMethodId" hidden="hidden"/>
+                                                        <input value="@code1.Code" name="discountCode" id="discountCode"
+                                                               hidden="hidden"/>
+                                                        <div class="Order-another-shipping-address mt-5">
+                                                            <div class="Order-address d-inline-block">
+                                                                <div class="d-flex justify-content-start"
+                                                                     style="gap:14px">
+                                                                    <label class="outline-radio"
+                                                                           style="width: 0 !important;margin-bottom: 0px">
+                                                                        <input type="checkbox" id="hoqoqiCheckbox"
+                                                                               disabled>
+                                                                    </label>
+                                                                    <button class="btn btn-block text-right collapsed"
+                                                                            data-toggle="collapse"
+                                                                            href="#collapseExample"
+                                                                            role="button" aria-expanded="false"
+                                                                            type="button"
+                                                                            aria-controls="collapseExample"
+                                                                            onclick="toggleCheckbox()">
+                                                                        <span>مشتری حقوقی هستید؟</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="shipping-address">
+                                                                <div id="collapseExample" class="collapse">
+                                                                    <div class="middle-container">
+                                                                        <form id="checkoutForm">
+                                                                            <div class="form-checkout-row">
+                                                                                <label for="organizationName">نام
+                                                                                    شرکت/فروشگاه/سازمان</label>
+                                                                                <input type="text" id="organizationName"
+                                                                                       class="form-control">
+
+                                                                                <label for="registrationNumber">شماره
+                                                                                    ثبت</label>
+                                                                                <input type="text"
+                                                                                       id="registrationNumber"
+                                                                                       class="form-control">
+
+                                                                                <label for="economicNumber">کد
+                                                                                    اقتصادی</label>
+                                                                                <input type="text" id="economicNumber"
+                                                                                       class="form-control">
+
+                                                                                <label for="nationalId">شناسه
+                                                                                    ملی</label>
+                                                                                <input type="text" id="nationalId"
+                                                                                       class="form-control">
+
+                                                                                <label for="postCode">کدپستی</label>
+                                                                                <input type="text" id="postCode"
+                                                                                       class="form-control">
+
+                                                                                <label for="organizationAddress">آدرس
+                                                                                    شرکت</label>
+                                                                                <input type="text"
+                                                                                       id="organizationAddress"
+                                                                                       class="form-control">
+
+                                                                                <label for="organizationPhone">شماره
+                                                                                    تماس شرکت</label>
+                                                                                <input type="text"
+                                                                                       id="organizationPhone"
+                                                                                       class="form-control">
+
+                                                                                <label for="mobilePhone">تلفن
+                                                                                    همراه</label>
+                                                                                <input type="text" id="mobilePhone"
+                                                                                       class="form-control">
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
-                                                            }
-                                                        }
-                                                    </div>
-                                                    <input value="@postMethods.Id" id="postMethodId" name="postMethodId" hidden="hidden"/>
-                                                    <input value="@code1.Code" name="discountCode" id="discountCode" hidden="hidden"/>
-                                                    <div class="Order-another-shipping-address mt-5">
-                                                        <div class="Order-address d-inline-block">
-                                                            <div class="d-flex justify-content-start" style="gap:14px">
-                                                                <label class="outline-radio" style="width: 0 !important;margin-bottom: 0px">
-                                                                    <input type="checkbox" id="hoqoqiCheckbox" disabled>
-                                                                </label>
-                                                                <button class="btn btn-block text-right collapsed" data-toggle="collapse" href="#collapseExample"
-                                                                        role="button" aria-expanded="false" type="button" aria-controls="collapseExample"
-                                                                        onclick="toggleCheckbox()">
-                                                                    <span>مشتری حقوقی هستید؟</span>
-                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <div class="shipping-address">
-                                                            <div id="collapseExample" class="collapse">
-                                                                <div class="middle-container">
-                                                                    <form id="checkoutForm">
-                                                                        <div class="form-checkout-row">
-                                                                            <label for="organizationName">نام شرکت/فروشگاه/سازمان</label>
-                                                                            <input type="text" id="organizationName" class="form-control">
 
-                                                                            <label for="registrationNumber">شماره ثبت</label>
-                                                                            <input type="text" id="registrationNumber" class="form-control">
+                                                        <label for="address">
+                                                            توضیحات سفارش
+                                                            <span class="optional">(اختیاری)</span>
+                                                        </label>
+                                                        <textarea rows="5" cols="30" id="desc" name="desc"
+                                                                  class="textarea-name-checkout form-control"
+                                                                  placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
 
-                                                                            <label for="economicNumber">کد اقتصادی</label>
-                                                                            <input type="text" id="economicNumber" class="form-control">
-
-                                                                            <label for="nationalId">شناسه ملی</label>
-                                                                            <input type="text" id="nationalId" class="form-control">
-
-                                                                            <label for="postCode">کدپستی</label>
-                                                                            <input type="text" id="postCode" class="form-control">
-
-                                                                            <label for="organizationAddress">آدرس شرکت</label>
-                                                                            <input type="text" id="organizationAddress" class="form-control">
-
-                                                                            <label for="organizationPhone">شماره تماس شرکت</label>
-                                                                            <input type="text" id="organizationPhone" class="form-control">
-
-                                                                            <label for="mobilePhone">تلفن همراه</label>
-                                                                            <input type="text" id="mobilePhone" class="form-control">
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-
-                                                    <label for="address">
-                                                        توضیحات سفارش
-                                                        <span class="optional">(اختیاری)</span>
-                                                    </label>
-                                                    <textarea rows="5" cols="30" id="desc" name="desc"
-                                                          class="textarea-name-checkout form-control"
-                                                          placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
-
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <h3 class="order-review-heading">سفارش شما</h3>
-                                    <div class="checkout-review-order">
-                                        <table class="checkout-review-order-table table table-borderless">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col" class="product-name">تصویر</th>
-                                                <th scope="col" class="product-name">محصول</th>
-                                                <th scope="col" class="product-name">تعداد</th>
-                                                <th scope="col" class="product-price">قیمت کل</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @{
-                                                foreach (var i in products)
-                                                {
-                                                    var price = 0.0;
-                                                    @if (i.IsOffer)
+                                        <h3 class="order-review-heading">سفارش شما</h3>
+                                        <div class="checkout-review-order">
+                                            <table class="checkout-review-order-table table table-borderless">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col" class="product-name">تصویر</th>
+                                                    <th scope="col" class="product-name">محصول</th>
+                                                    <th scope="col" class="product-name">تعداد</th>
+                                                    <th scope="col" class="product-price">قیمت کل</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @{
+                                                    foreach (var i in products)
                                                     {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        var price = 0.0;
+                                                        @if (i.IsOffer)
                                                         {
-                                                            price = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                                price = i.Offer.StartDate.CalcOffer(i.DiscountAmount, i.Offer.OfferAmount, i.ProductColors.FirstOrDefault(x => x.ColorId == i.Offer.ColorId).Price, i.Offer.Hours, i.Offer.Minutes, i.IsOffer);
+                                                            }
+                                                            else
+                                                            {
+                                                                price = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
+                                                            }
                                                         }
                                                         else
                                                         {
                                                             price = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        price = i.ProductColors.FirstOrDefault()!.Price.DiscountProduct(i.DiscountAmount);
-                                                    }
 
-                                                    price = price * i.Count;
-                                                    <tr class="checkout-cart-item">
-                                                        <td class="product-image">
-                                                            <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" width="45">
-                                                        </td>
-                                                        <td class="product-name">@i.PersianTitle</td>
-                                                        <td class="product-name">@i.Count +</td>
-                                                        <td class="product-price text-success">
+                                                        price = price * i.Count;
+                                                        <tr class="checkout-cart-item">
+                                                            <td class="product-image">
+                                                                <img
+                                                                    src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
+                                                                    width="45">
+                                                            </td>
+                                                            <td class="product-name">@i.PersianTitle</td>
+                                                            <td class="product-name">@i.Count +</td>
+                                                            <td class="product-price text-success">
                                                             <span class="amount">
                                                                 @price.ToString("N0")
                                                                 <span>تومان</span>
                                                             </span>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 }
-                                            }
 
-                                            </tbody>
-                                            <tfoot>
-                                            @if (code1.Amount > 0)
-                                            {
-                                                <tr class="cart-subtotal">
+                                                </tbody>
+                                                <tfoot>
+                                                @if (code1.Amount > 0)
+                                                {
+                                                    <tr class="cart-subtotal">
 
-                                                    <th>کد تخفیف</th>
-                                                    <td>
+                                                        <th>کد تخفیف</th>
+                                                        <td>
                                                         <span class="amount">
                                                             @code1.Amount.ToString("N0")
                                                             <span>تومان</span>
                                                         </span>
-                                                    </td>
-                                                </tr>
-                                            }
-                                            @{
-                                                var offerDiscount = 0.0;
-                                                foreach (var i in basket)
-                                                {
-                                                    @if (i.IsOffer)
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @{
+                                                    var offerDiscount = 0.0;
+                                                    foreach (var i in basket)
                                                     {
-                                                        if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                        @if (i.IsOffer)
                                                         {
-                                                            offerDiscount += @i.Offer.OfferAmount;
+                                                            if (i.Offer.StartDate.CalcOffer(i.Offer.Hours, i.Offer.Minutes, i.IsOffer) && i.ProductColors.Any(x => x.ColorId == i.Offer.ColorId))
+                                                            {
+                                                                offerDiscount += @i.Offer.OfferAmount;
+                                                            }
                                                         }
                                                     }
-                                                }
 
-                                                var discountProd = basket.Sum(x => x.DiscountAmount) + offerDiscount;
-                                            }
-                                            <tr class="cart-subtotal">
-                                                <th>تخفیف محصول</th>
-                                                <td>
+                                                    var discountProd = basket.Sum(x => x.DiscountAmount) + offerDiscount;
+                                                }
+                                                <tr class="cart-subtotal">
+                                                    <th>تخفیف محصول</th>
+                                                    <td>
                                                     <span class="amount">
                                                         @discountProd.ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
-                                                </td>
-                                            </tr>
-                                            <tr class="cart-subtotal">
-                                                <th>ارسال</th>
-                                                <td>
+                                                    </td>
+                                                </tr>
+                                                <tr class="cart-subtotal">
+                                                    <th>ارسال</th>
+                                                    <td>
                                                     <span class="amount">
                                                         @postMethods.Price.ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
-                                                </td>
-                                            </tr>
-                                            @{
-                                                var totalPrice = price;
-                                                if (code1 != null)
-                                                {
-                                                    totalPrice -= code1.Amount;
+                                                    </td>
+                                                </tr>
+                                                @{
+                                                    var totalPrice = price;
+                                                    if (code1 != null)
+                                                    {
+                                                        totalPrice -= code1.Amount;
+                                                    }
+
+                                                    if (postMethods.Price > 0)
+                                                    {
+                                                        totalPrice += postMethods.Price;
+                                                    }
+
+                                                    offer += code1.Amount;
                                                 }
 
-                                                if (postMethods.Price > 0)
-                                                {
-                                                    totalPrice += postMethods.Price;
+                                                @{
+                                                    var totalWithDiscount = totalPrice + offer;
                                                 }
-
-                                                offer += code1.Amount;
-                                            }
-
-                                            @{
-                                                var totalWithDiscount = totalPrice + offer;
-                                            }
-                                            <tr class="cart-discount">
-                                                <th>تخفیف شما از این خرید</th>
-                                                <td data-title=" تخفیف شما از این خرید ">
-                                                    <div class="price">
-                                                        <del>
+                                                <tr class="cart-discount">
+                                                    <th>تخفیف شما از این خرید</th>
+                                                    <td data-title=" تخفیف شما از این خرید ">
+                                                        <div class="price">
+                                                            <del>
                                                             <span>
                                                                 @totalWithDiscount.ToString("N0")
                                                                 <span>تومان</span>
                                                             </span>
-                                                        </del>
-                                                        <ins>
+                                                            </del>
+                                                            <ins>
                                                             <span class="amount">
                                                                 @totalPrice.ToString("N0")
                                                                 <span>تومان</span>
                                                             </span>
-                                                        </ins>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                        <ul class="checkout-payment-methods">
-                                            <li class="checkout-payment-method-item d-block">
-                                                <label for="#" class="outline-radio">
-                                                    <input type="radio" name="payment_method"
-                                                           id="payment-option-online" readonly="readonly" checked="checked">
-                                                    <span class="outline-radio-check checked"></span>
+                                                            </ins>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                            <ul class="checkout-payment-methods">
+                                                <li class="checkout-payment-method-item d-block">
+                                                    <label for="#" class="outline-radio">
+                                                        <input type="radio" name="payment_method"
+                                                               id="payment-option-online" readonly="readonly"
+                                                               checked="checked">
+                                                        <span class="outline-radio-check checked"></span>
+                                                    </label>
+                                                    <label for="#" class="shipping-totals-title-row">
+                                                        <div class="shipping-totals-title">پرداخت با درگاه بانکی</div>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                            <div class="form-auth-row">
+                                                <label for="#" class="ui-checkbox mt-1">
+                                                    <input type="checkbox" value="1" name="login" id="remember">
+                                                    <span class="ui-checkbox-check"></span>
                                                 </label>
-                                                <label for="#" class="shipping-totals-title-row">
-                                                    <div class="shipping-totals-title">پرداخت با درگاه بانکی</div>
+                                                <label for="remember" class="remember-me mr-0">
+                                                    <a href="@Url.Action("Privacy", "Home")">حریم خصوصی</a> و
+                                                    <a href="@Url.Action("ParsRulesAndRegulations", "Home")">شرایط
+                                                        قوانین </a>استفاده از سرویس های سایت پارس می را
+                                                    مطالعه نموده و با کلیه موارد آن موافقم
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                            </li>
-                                        </ul>
-                                        <div class="form-auth-row">
-                                            <label for="#" class="ui-checkbox mt-1">
-                                                <input type="checkbox" value="1" name="login" id="remember">
-                                                <span class="ui-checkbox-check"></span>
-                                            </label>
-                                            <label for="remember" class="remember-me mr-0">
-                                                <a href="@Url.Action("Privacy","Home")">حریم خصوصی</a> و
-                                                <a href="@Url.Action("ParsRulesAndRegulations","Home")">شرایط قوانین </a>استفاده از سرویس های سایت پارس می را
-                                                مطالعه نموده و با کلیه موارد آن موافقم
-                                                <abbr class="required" title="ضروری" style="color:red;">*</abbr>
-                                            </label>
-                                            <div id="checkboxError" class="invalid-feedback"
-                                                 style="display:none; color:red;">موافقت با قوانین الزامی است.
+                                                <div id="checkboxError" class="invalid-feedback"
+                                                     style="display:none; color:red;">موافقت با قوانین الزامی است.
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <button class="btn-Order btn btn-primary mt-4 mb-3" type="button"
-                                                onclick="InsertOrder()">
-                                            ثبت
-                                            سفارش
-                                        </button>
+                                            <button class="btn-Order btn btn-primary mt-4 mb-3" type="button"
+                                                    onclick="InsertOrder()">
+                                                ثبت
+                                                سفارش
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="container-main">
+        <div class="d-block">
+            <section class="profile-home">
+                <div class="col-lg">
+                    <div class="post-item-profile order-1 d-block">
+                        <div class="notices-wrapper" style="    padding: 10px;
+    font-size: 18px;
+    font-weight: bolder;
+}">
+                            <div class="col-12">
+                                <div class="form-coupon-toggle">
+                                    <div class="info">
+                                        جهت ادامه خرید لطفا اطلاعات کاربریتون رو تکمیل کنید
                                     </div>
-                                </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-xs-12 pl">
+                            <div class="profile-content">
+                                <div class="profile-stats">
+                                    <div class="profile-address">
+                                        <div class="middle-container">
+                                            <form asp-action="EditeProfile" asp-controller="Home" method="post"
+                                                  class="form-checkout" id="profileSend">
+                                                <input type="text"
+                                                       name="code" value="@code1.Code" hidden="hidden">
+                                                <input type="text"
+                                                       name="postMethod" value="@postMethods.Id" hidden="hidden">
+                                                <input type="text"
+                                                       name="toCheckout" value="true" hidden="hidden">
+                                                <div class="form-checkout-row">
+                                                    <label for="namefirst">
+                                                        نام
+                                                        <abbr class="required" title="ضروری"
+                                                              style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
+                                                    <input type="text" id="namefirst" required="required"
+                                                           class="input-namefirst-checkout form-control" name="name"
+                                                           value="@user.Name">
+
+                                                    <label for="namelast">
+                                                        نام خانوادگی
+                                                        <abbr class="required"
+                                                              title="ضروری" style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
+                                                    <input type="text" id="namelast" required="required"
+                                                           name="family" class="input-namelast-checkout form-control"
+                                                           value="@user.Family">
+
+                                                    <label for="email">
+                                                        ایمیل
+
+                                                    </label>
+                                                    <input type="text" name="email"
+                                                           class="input-email-checkout form-control"
+                                                           value="@user.Email">
+                                                    <label for="NationalCode">
+                                                        کد ملی
+                                                        <abbr class="required" title="ضروری"
+                                                              style="color:red;">
+                                                            *
+                                                        </abbr>
+                                                    </label>
+                                                    <input type="text" name="NationalCode" required="required"
+                                                           class="input-email-checkout form-control"
+                                                           value="@user.NationalCode">
+                                                    <label for="Sheba">
+                                                        شماره شبا
+                                                    </label>
+                                                    <input type="text" name="Sheba"
+                                                           class="input-email-checkout form-control"
+                                                           value="@user.Sheba">
+
+                                                    <div class="AR-CR">
+                                                        <button class="btn-registrar" type="button" id="submitButton">
+                                                            ادامه خرید
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1563,397 +1739,311 @@ SeoPage seoPage = ViewBag.SeoPage;
             </section>
         </div>
     </div>
-
-    }
-   
-}
-else
-{
-<div class="container-main">
-    <div class="d-block">
-        <section class="profile-home">
-            <div class="col-lg">
-                <div class="post-item-profile order-1 d-block">
-                    <div class="notices-wrapper" style="    padding: 10px;
-    font-size: 18px;
-    font-weight: bolder;
-}">
-                        <div class="col-12">
-                            <div class="form-coupon-toggle">
-                                <div class="info">
-                                    جهت ادامه خرید لطفا اطلاعات کاربریتون رو تکمیل کنید
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12 pl">
-                        <div class="profile-content">
-                            <div class="profile-stats">
-                                <div class="profile-address">
-                                    <div class="middle-container">
-                                        <form asp-action="EditeProfile" asp-controller="Home" method="post" class="form-checkout" id="profileSend">
-                                            <input type="text" 
-                                                   name="code" value="@code1.Code" hidden="hidden">
-                                            <input type="text"
-                                                   name="postMethod" value="@postMethods.Id" hidden="hidden">
-                                            <input type="text"
-                                                   name="toCheckout" value="true" hidden="hidden">
-                                            <div class="form-checkout-row">
-                                                <label for="namefirst">
-                                                    نام
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" id="namefirst" required="required"
-                                                       class="input-namefirst-checkout form-control" name="name" value="@user.Name">
-
-                                                <label for="namelast">
-                                                    نام خانوادگی
-                                                    <abbr class="required"
-                                                          title="ضروری" style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" id="namelast" required="required"
-                                                       name="family" class="input-namelast-checkout form-control" value="@user.Family">
-                                             
-                                                <label for="email">
-                                                    ایمیل
-                                                
-                                                </label>
-                                                <input type="text" name="email" 
-                                                       class="input-email-checkout form-control" value="@user.Email">
-                                                <label for="NationalCode">
-                                                    کد ملی
-                                                    <abbr class="required" title="ضروری"
-                                                          style="color:red;">
-                                                        *
-                                                    </abbr>
-                                                </label>
-                                                <input type="text" name="NationalCode" required="required"
-                                                       class="input-email-checkout form-control" value="@user.NationalCode">
-                                                <label for="Sheba">
-                                                    شماره شبا
-                                                </label>
-                                                <input type="text" name="Sheba"
-                                                       class="input-email-checkout form-control" value="@user.Sheba">
-
-                                                <div class="AR-CR">
-                                                    <button class="btn-registrar" type="button" id="submitButton"> ادامه خرید</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
 }
 
 @section script
+
 {
-<!-- file js---------------------------------------------------->
-<script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
-<script src="/assetsCli/js/vendor/bootstrap.js"></script>
-<!-- plugin--/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
-<script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
-<script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
-<script src="/assetsCli/js/vendor/wNumb.js"></script>
-<script src="/assetsCli/js/vendor/nouislider.min.js"></script>
-<script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
-<!-- main js-/assetsCli--------------------------------------------->
-<script src="/assetsCli/js/main.js"></script>
-<script>
-    function validateFormc() {
-        var isValid = true;
+    <!-- file js---------------------------------------------------->
+    <script src="/assetsCli/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assetsCli/js/vendor/bootstrap.js"></script>
+    <!-- plugin--/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/vendor/owl.carousel.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.countdown.js"></script>
+    <script src="/assetsCli/js/vendor/ResizeSensor.min.js"></script>
+    <script src="/assetsCli/js/vendor/theia-sticky-sidebar.min.js"></script>
+    <script src="/assetsCli/js/vendor/wNumb.js"></script>
+    <script src="/assetsCli/js/vendor/nouislider.min.js"></script>
+    <script src="/assetsCli/js/vendor/jquery.nice-select.min.js"></script>
+    <!-- main js-/assetsCli--------------------------------------------->
+    <script src="/assetsCli/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        function validateFormc() {
+            var isValid = true;
 
-        // بررسی تیک خورده بودن چک‌باکس
-        if (!$("#remember").is(":checked")) {
-            $("#checkboxError").show();  // نمایش پیام خطا
-            isValid = false;
-        } else {
-            $("#checkboxError").hide();  // مخفی کردن پیام خطا
+            // بررسی تیک خورده بودن چک‌باکس
+            if (!$("#remember").is(":checked")) {
+                $("#checkboxError").show();  // نمایش پیام خطا
+                isValid = false;
+            } else {
+                $("#checkboxError").hide();  // مخفی کردن پیام خطا
+            }
+            if (!isValid) {
+                Notiflix.Notify.failure('موافقت با قوانین الزامی میباشد.');
+            }
+            return isValid;
         }
-        if (!isValid) {
-            Notiflix.Notify.failure('موافقت با قوانین الزامی میباشد.');
+
+        function validateForm() {
+            var isValid = true;
+            // بررسی وضعیت چک‌باکس
+            if ($("#hoqoqiCheckbox").is(":checked")) {
+                // فیلدهای ضروری فقط در صورتی بررسی شوند که چک‌باکس تیک خورده باشد
+                var requiredFields = [
+                    "#organizationName",
+                    "#registrationNumber",
+                    "#economicNumber",
+                    "#nationalId",
+                    "#postCode",
+                    "#organizationAddress",
+                    "#organizationPhone",
+                    "#mobilePhone"
+                ];
+
+                // از بین بردن استایل خطای قبلی
+                $(".input-name-checkout").removeClass("is-invalid");
+                $(".invalid-feedback").remove();
+
+                // بررسی تکمیل فیلدها
+                requiredFields.forEach(function (field) {
+                    var value = $(field).val().trim();
+                    if (!value) {
+                        // افزودن کلاس خطا
+                        $(field).addClass("is-invalid");
+                        // افزودن پیام خطا زیر فیلد
+                        //$(field).after('<div class="invalid-feedback">این فیلد ضروری است.</div>');
+                        isValid = false;
+                    }
+                });
+                // نمایش پیام کلی در صورت نامعتبر بودن
+                if (!isValid) {
+                    Notiflix.Notify.failure('لطفاً تمام فیلدهای ضروری را پر کنید.');
+                }
+            }
+
+            return isValid;
         }
-        return isValid;
-    }
 
-    function validateForm() {
-        var isValid = true;
-        // بررسی وضعیت چک‌باکس
-        if ($("#hoqoqiCheckbox").is(":checked")) {
-            // فیلدهای ضروری فقط در صورتی بررسی شوند که چک‌باکس تیک خورده باشد
-            var requiredFields = [
-                "#organizationName",
-                "#registrationNumber",
-                "#economicNumber",
-                "#nationalId",
-                "#postCode",
-                "#organizationAddress",
-                "#organizationPhone",
-                "#mobilePhone"
-            ];
+        function InsertOrder() {
+            if (!validateForm()) {
+                return;
+            }
+            if (!validateFormc()) {
+                return;
+            }
+            var formData = {
+                discountCode: $("#discountCode").val() || "",
+                postMethodId: $("#postMethodId").val() ,
+                userAddressId: $("input[name='userAddressId']:checked").val() ,
+                desc: $("#desc").val() || "",
+                economicNumber: $("#economicNumber").val() || "",
+                organizationName: $("#organizationName").val() || "",
+                nationalId: $("#nationalId").val() || "",
+                postCode: $("#postCode").val() || "",
+                organizationAddress: $("#organizationAddress").val() || "",
+                organizationPhone: $("#organizationPhone").val() || "",
+                mobilePhone: $("#mobilePhone").val() || "",
+                registrationNumber: $("#registrationNumber").val() || "",
+                isLegal: $("#hoqoqiCheckbox").is(":checked"),
+            };
+            if (formData.userAddressId < 0 ||formData.userAddressId==null) {
+                alert("آدرس خود را انتخاب کنید");
+                return;
+            }
+// ارسال به سرور یا بررسی مقادیر
+            console.log(formData);
 
-            // از بین بردن استایل خطای قبلی
-            $(".input-name-checkout").removeClass("is-invalid");
-            $(".invalid-feedback").remove();
+            if (formData.economicNumber || formData.organizationName || formData.registrationNumber) {
+                formData.isLegal = true;
+            }
 
-            // بررسی تکمیل فیلدها
-            requiredFields.forEach(function (field) {
-                var value = $(field).val().trim();
-                if (!value) {
-                    // افزودن کلاس خطا
-                    $(field).addClass("is-invalid");
-                    // افزودن پیام خطا زیر فیلد
-                    //$(field).after('<div class="invalid-feedback">این فیلد ضروری است.</div>');
-                    isValid = false;
+            $.ajax({
+                url: '/Payment/ProductFactor', // مسیر کنترلر و اکشن
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    var url = `https://bpm.shaparak.ir/pgwchannel/startpay.mellat?RefId=${response}`;
+                    window.location.replace(url);
+                },
+                beforeSend: function () {
+                    Notiflix.Loading.circle('در حال اتصال به درگاه بانک ملت ...');
+                },
+                error: function (xhr) {
+                    Notiflix.Notify.failure('خطای داخلی');
+                },
+                complete: function () {
+                    Notiflix.Loading.remove();
                 }
             });
-            // نمایش پیام کلی در صورت نامعتبر بودن
-            if (!isValid) {
-                Notiflix.Notify.failure('لطفاً تمام فیلدهای ضروری را پر کنید.');
-            }
         }
 
-        return isValid;
-    }
-
-    function InsertOrder() {
-        if (!validateForm()) {
-            return;
-        }
-        if (!validateFormc()) {
-            return;
-        }
-        var formData = {
-            discountCode: $("#discountCode").val() || "",
-            postMethodId: $("#postMethodId").val() || "",
-            userAddressId: $("input[name='userAddressId']:checked").val() || "",
-            desc: $("#desc").val() || "",
-            economicNumber: $("#economicNumber").val() || "",
-            organizationName: $("#organizationName").val() || "",
-            nationalId: $("#nationalId").val() || "",
-            postCode: $("#postCode").val() || "",
-            organizationAddress: $("#organizationAddress").val() || "",
-            organizationPhone: $("#organizationPhone").val() || "",
-            mobilePhone: $("#mobilePhone").val() || "",
-            registrationNumber: $("#registrationNumber").val() || "",
-            isLegal: $("#hoqoqiCheckbox").is(":checked"),
-        };
-        if (formData.userAddressId<0){
-            alert("آدرس خود را انتخاب کنید");
-            return;
-        }
-// ارسال به سرور یا بررسی مقادیر
-        console.log(formData);
-
-        if (formData.economicNumber || formData.organizationName || formData.registrationNumber) {
-            formData.isLegal = true;
+        function CheckCode() {
+            $.ajax({
+                type: "Post",
+                data: {
+                    discountCode: $('#DiscountCode').val(),
+                    postMethodId: $('#postMethodId').val(),
+                    userAddressId: $('#userAddressId').val(),
+                    desc: $('#desc').val(),
+                },
+                url: "/Payment/ProductFactor/",
+                success: function (data) {
+                    alert("کد تخفیف معتبر است")
+                },
+                beforeSend: function () {
+                    Notiflix.Loading.circle('در حال پردازش ...');
+                },
+                error: function (xhr) {
+                    Notiflix.Notify.failure('خطای داخلی');
+                },
+                complete: function () {
+                    Notiflix.Loading.remove();
+                }
+            });
         }
 
-        $.ajax({
-            url: '/Payment/ProductFactor', // مسیر کنترلر و اکشن
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                var url = `https://bpm.shaparak.ir/pgwchannel/startpay.mellat?RefId=${response}`;
-                window.location.replace(url);
-            },
-            beforeSend: function () {
-                Notiflix.Loading.circle('در حال اتصال به درگاه بانک ملت ...');
-            },
-            error: function (xhr) {
-                Notiflix.Notify.failure('خطای داخلی');
-            },
-            complete: function () {
-                Notiflix.Loading.remove();
-            }
+        document.querySelectorAll('input[type="radio"][name="userAddressId"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const otherInput = document.getElementById('otherInput');
+                if (this.checked) {
+                    otherInput.name = this.id + "Name"; // Change the name attribute
+                }
+            });
         });
-    }
 
-    function CheckCode() {
-        $.ajax({
-            type: "Post",
-            data: {
-                discountCode: $('#DiscountCode').val(),
-                postMethodId: $('#postMethodId').val(),
-                userAddressId: $('#userAddressId').val(),
-                desc: $('#desc').val(),
-            },
-            url: "/Payment/ProductFactor/",
-            success: function (data) {
-                alert("کد تخفیف معتبر است")
-            },
-            beforeSend: function () {
-                Notiflix.Loading.circle('در حال پردازش ...');
-            },
-            error: function (xhr) {
-                Notiflix.Notify.failure('خطای داخلی');
-            },
-            complete: function () {
-                Notiflix.Loading.remove();
-            }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#collapseExample').on('shown.bs.collapse', function () {
+                $('#UserAddres').attr('style', 'display: none !important;');
+                $('#UserAddresT').hide();
+            });
+            $('#collapseExample').on('hidden.bs.collapse', function () {
+                $('#UserAddres').attr('style', 'display: flex !important;');
+                $('#UserAddresT').show();
+            });
+            $('#state').change(function () {
+                var stateId = $(this).val();
+                var $citySelect = $('#city');
+
+                // ابتدا محتویات قبلی شهر را پاک می‌کنیم
+                $citySelect.empty();
+                $citySelect.append('<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>');
+
+                // اگر استان انتخاب شده باشد، درخواست AJAX ارسال می‌کنیم
+                if (stateId > 0) {
+                    $.ajax({
+                        url: '/Search/GetCities',
+                        type: 'GET',
+                        data: {stateId: stateId},
+                        success: function (cities) {
+                            // برای هر شهر، گزینه‌ای به سلکت اضافه می‌کنیم
+                            $.each(cities, function (index, city) {
+                                $citySelect.append('<option value="' + city.id + '">' + city.name + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            alert("خطا در بارگذاری شهرها")
+                        },
+                        beforeSend: function () {
+                            Notiflix.Loading.circle('در حال پردازش ...');
+                        },
+                        complete: function () {
+                            Notiflix.Loading.remove();
+                        },
+                    });
+                }
+            });
         });
-    }
 
-    document.querySelectorAll('input[type="radio"][name="userAddressId"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-            const otherInput = document.getElementById('otherInput');
-            if (this.checked) {
-                otherInput.name = this.id + "Name"; // Change the name attribute
-            }
-        });
-    });
-
-
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#collapseExample').on('shown.bs.collapse', function () {
-            $('#UserAddres').attr('style', 'display: none !important;');
-            $('#UserAddresT').hide();
-        });
-        $('#collapseExample').on('hidden.bs.collapse', function () {
-            $('#UserAddres').attr('style', 'display: flex !important;');
-            $('#UserAddresT').show();
-        });
-        $('#state').change(function() {
-            var stateId = $(this).val();
-            var $citySelect = $('#city');
-
-            // ابتدا محتویات قبلی شهر را پاک می‌کنیم
-            $citySelect.empty();
-            $citySelect.append('<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>');
-
-            // اگر استان انتخاب شده باشد، درخواست AJAX ارسال می‌کنیم
-            if (stateId > 0) {
-                $.ajax({
-                    url: '/Search/GetCities',
-                    type: 'GET',
-                    data: { stateId: stateId },
-                    success: function(cities) {
-                        // برای هر شهر، گزینه‌ای به سلکت اضافه می‌کنیم
-                        $.each(cities, function(index, city) {
-                            $citySelect.append('<option value="' + city.id + '">' + city.name + '</option>');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        alert("خطا در بارگذاری شهرها")
-                    },
-                    beforeSend: function() {
-                        Notiflix.Loading.circle('در حال پردازش ...');
-                    },
-                    complete: function() {
-                        Notiflix.Loading.remove();
-                    },
-                });
-            }
-        });
-    });
-
-    function toggleCheckbox() {
-        var checkbox = $('#hoqoqiCheckbox');
-        // تغییر وضعیت چک‌باکس: اگر تیک خورده باشد، برداشته می‌شود و بالعکس
-        checkbox.prop('checked', !checkbox.prop('checked'));
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    $("#submitButton").on("click", function () {
-        var phone = $("input[name='phoneNumber']").val();
-        var nationalCode = $("input[name='NationalCode']").val();
-        var email = $("input[name='email']").val();
-
-        // بررسی ولیدیشن کد ملی
-        if (!validateNationalCode(nationalCode)) {
-            Swal.fire('خطا', 'کد ملی معتبر نمی‌باشد.', 'error');
-            return false;
+        function toggleCheckbox() {
+            var checkbox = $('#hoqoqiCheckbox');
+            // تغییر وضعیت چک‌باکس: اگر تیک خورده باشد، برداشته می‌شود و بالعکس
+            checkbox.prop('checked', !checkbox.prop('checked'));
         }
+    </script>
+    <script>
+        $("#submitButton").on("click", function () {
+            var phone = $("input[name='phoneNumber']").val();
+            var nationalCode = $("input[name='NationalCode']").val();
+            var email = $("input[name='email']").val();
 
-        // بررسی کد ملی در سرور
-        checkNationalCodeExists(nationalCode, function (exists) {
-            if (exists) {
-                Swal.fire('خطا', 'کد ملی قبلاً ثبت شده است.', 'error');
-            } else {
-                // در صورت موفقیت، ارسال فرم
-                $("form.form-checkout").submit();
-            }
-        });
-    });
-    // ولیدیشن کد ملی
-    function validateNationalCode(nationalCode) {
-        var nationalCodeRegex = /^[0-9]{10}$/; // فقط اعداد 10 رقمی
-        return nationalCodeRegex.test(nationalCode);
-    }
-
-    // بررسی اینکه کد ملی قبلاً ثبت شده یا نه
-    function checkNationalCodeExists(nationalCode, callback) {
-        $.ajax({
-            type: "Get",
-            url: "/Search/CheckNationalCode", // URL مربوط به درخواست چک کردن کد ملی
-            data: { nationalCode: nationalCode },
-            success: function (response) {
-                callback(response.exists); // فرض می‌کنیم که پاسخ `exists` را دریافت می‌کنیم
-            },
-            error: function () {
-                Swal.fire('خطا', 'مشکلی در ارسال درخواست پیش آمد. لطفاً دوباره تلاش کنید.', 'error');
-            }
-        });
-    }
-    function validateIranianPostalCode(postalCode) {
-        const postalCodeRegex = /^[1-9][0-9]{9}$/;
-        return postalCodeRegex.test(postalCode);
-    }
-
-    function validateRequiredFields() {
-        const requiredFields = [
-            { id: 'name', message: 'لطفاً نام تحویل گیرنده را وارد کنید.' },
-            { id: 'phone-number', message: 'لطفاً شماره موبایل را وارد کنید.' },
-            { id: 'state', message: 'لطفاً استان خود را انتخاب کنید.', select: true },
-            { id: 'city', message: 'لطفاً شهر خود را انتخاب کنید.', select: true },
-            { id: 'post-code', message: 'لطفاً کد پستی را وارد کنید.' },
-            { id: 'address', message: 'لطفاً آدرس خود را وارد کنید.' }
-        ];
-
-        for (const field of requiredFields) {
-            const element = document.getElementById(field.id);
-            const value = field.select ? element.value : element.value.trim();
-
-            if (!value || (field.select && value === '0')) {
-                alert(field.message);
-                element.focus();
+            // بررسی ولیدیشن کد ملی
+            if (!validateNationalCode(nationalCode)) {
+                Swal.fire('خطا', 'کد ملی معتبر نمی‌باشد.', 'error');
                 return false;
             }
+
+            // بررسی کد ملی در سرور
+            checkNationalCodeExists(nationalCode, function (exists) {
+                if (exists) {
+                    Swal.fire('خطا', 'کد ملی قبلاً ثبت شده است.', 'error');
+                } else {
+                    // در صورت موفقیت، ارسال فرم
+                    $("form.form-checkout").submit();
+                }
+            });
+        });
+
+        // ولیدیشن کد ملی
+        function validateNationalCode(nationalCode) {
+            var nationalCodeRegex = /^[0-9]{10}$/; // فقط اعداد 10 رقمی
+            return nationalCodeRegex.test(nationalCode);
         }
 
-        const postCodeInput = document.getElementById('post-code');
-        const postalCode = postCodeInput.value.trim();
-
-        if (!validateIranianPostalCode(postalCode)) {
-            alert('کد پستی وارد شده معتبر نیست. لطفاً یک کد پستی ۱۰ رقمی معتبر وارد کنید.');
-            postCodeInput.focus();
-            return false;
+        // بررسی اینکه کد ملی قبلاً ثبت شده یا نه
+        function checkNationalCodeExists(nationalCode, callback) {
+            $.ajax({
+                type: "Get",
+                url: "/Search/CheckNationalCode", // URL مربوط به درخواست چک کردن کد ملی
+                data: {nationalCode: nationalCode},
+                success: function (response) {
+                    callback(response.exists); // فرض می‌کنیم که پاسخ `exists` را دریافت می‌کنیم
+                },
+                error: function () {
+                    Swal.fire('خطا', 'مشکلی در ارسال درخواست پیش آمد. لطفاً دوباره تلاش کنید.', 'error');
+                }
+            });
         }
 
-        return true;
-    }
-
-    function submitAddressForm() {
-        if (validateRequiredFields()) {
-            document.getElementById('checkoutaddres').submit();
+        function validateIranianPostalCode(postalCode) {
+            const postalCodeRegex = /^[1-9][0-9]{9}$/;
+            return postalCodeRegex.test(postalCode);
         }
-}
-</script>
+
+        function validateRequiredFields() {
+            const requiredFields = [
+                {id: 'name', message: 'لطفاً نام تحویل گیرنده را وارد کنید.'},
+                {id: 'phone-number', message: 'لطفاً شماره موبایل را وارد کنید.'},
+                {id: 'state', message: 'لطفاً استان خود را انتخاب کنید.', select: true},
+                {id: 'city', message: 'لطفاً شهر خود را انتخاب کنید.', select: true},
+                {id: 'post-code', message: 'لطفاً کد پستی را وارد کنید.'},
+                {id: 'address', message: 'لطفاً آدرس خود را وارد کنید.'}
+            ];
+
+            for (const field of requiredFields) {
+                const element = document.getElementById(field.id);
+                const value = field.select ? element.value : element.value.trim();
+
+                if (!value || (field.select && value === '0')) {
+                    alert(field.message);
+                    element.focus();
+                    return false;
+                }
+            }
+
+            const postCodeInput = document.getElementById('post-code');
+            const postalCode = postCodeInput.value.trim();
+
+            if (!validateIranianPostalCode(postalCode)) {
+                alert('کد پستی وارد شده معتبر نیست. لطفاً یک کد پستی ۱۰ رقمی معتبر وارد کنید.');
+                postCodeInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function submitAddressForm() {
+            if (validateRequiredFields()) {
+                document.getElementById('checkoutaddres').submit();
+            }
+            
+
+        }
+    </script>
 }

@@ -893,7 +893,7 @@ public class AdminController : Controller
             ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x => x.User)
                 .Include(x => x.PostMethod)
-                .Include(x => x.UserAddress).ThenInclude(q => q.City)
+                .Include(x => x.UserAddress).ThenInclude(q => q.City).ThenInclude(x=>x.State)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .Include(x => x.Products)
