@@ -101,6 +101,7 @@
                                             <th class="text-center">بانک</th>
                                             <th class="text-center">وضعیت</th>
                                             <th class="text-center">پیگیری</th>
+                                            <th class="text-center">پیام بانک</th>
                                             <th class="text-center">#</th>
                                         </tr>
                                         @{
@@ -136,6 +137,7 @@
                                                             </td>
                                                         }
                                                         <td class="text-center">@i.SaleReferenceId</td>
+                                                        <td class="text-center">@i.StatusPayment</td>
                                                         <td class="text-center">
                                                             <a href="@Url.Action("Invoice", "Admin", new { i.Id })"
                                                                class="badge bg-warning text-muted">مشاهده</a>

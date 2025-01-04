@@ -145,6 +145,8 @@
                                             <th class="text-center">مبلغ</th>
                                             <th class="text-center">تاریخ</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">رسید پرداخت</th>
+                                            <th class="text-center">وضعیت پرداخت</th>
                                             <th class="text-center">#</th>
                                         </tr>
                                         @{
@@ -171,8 +173,19 @@
                                                         <td class="text-center">@i.User.Name @i.User.Family</td>
                                                         <td class="text-center">@i.AccountType.ToDisplay()</td>
                                                         <td class="text-center">@i.Amount.ToString("N0")</td>
-                                                        <td class="text-center">@i.InsertDate.ToPersianTime()</td>
+                                                        <td class="text-center"> @i.InsertDate.Hour:@i.InsertDate.Minute @i.InsertDate.ToPersianTime()</td>
                                                         <td class="text-center">@i.Status.ToDisplay()</td>
+                                                        <td class="text-center">@i.SaleReferenceId</td>
+                                                        @if (!i.IsPay)
+                                                        {
+                                                            <td class="text-center"><span class="badge badge-danger">پرداخت نشده</span>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-center"><span class="badge badge-success">پرداخت شده</span>
+                                                            </td>
+                                                        }
                                                         <td class="text-center">
                                                             <a class="badge bg-warning text-muted" href="@Url.Action("FactorDetail", "Admin", new { @i.Id })">مشاهده</a>
                                                         </td>

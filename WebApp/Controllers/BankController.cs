@@ -400,7 +400,7 @@ public class BankController : Controller
                             await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
                         }
 
-                        var prods = factor.Products;
+                        var prods = factor.Products.ToList();
                         foreach (var p in prods)
                         {
                             var prod = await _work.GenericRepository<Product>().Table.Include(x => x.ProductColors)
@@ -415,6 +415,8 @@ public class BankController : Controller
                                     await _work.GenericRepository<ProductColor>()
                                         .UpdateAsync(color, CancellationToken.None);
                                 }
+                                prod.UpdateTime = DateTime.Now;
+                                await _work.GenericRepository<Product>().UpdateAsync(prod, CancellationToken.None);
                             }
                         }
                     }

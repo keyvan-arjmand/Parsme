@@ -1527,6 +1527,7 @@
                                                 }
                                                 @{
                                                     var offerDiscount = 0.0;
+                                                    var offers = 0.0;
                                                     foreach (var i in basket)
                                                     {
                                                         @if (i.IsOffer)
@@ -1536,15 +1537,18 @@
                                                                 offerDiscount += @i.Offer.OfferAmount;
                                                             }
                                                         }
+
+                                                        offer += i.DiscountAmount;
                                                     }
 
+                                                    offers += postMethods.Price;
                                                     var discountProd = basket.Sum(x => x.DiscountAmount) + offerDiscount;
                                                 }
                                                 <tr class="cart-subtotal">
                                                     <th>تخفیف محصول</th>
                                                     <td>
                                                     <span class="amount">
-                                                        @discountProd.ToString("N0")
+                                                        @offers.ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
                                                     </td>
@@ -1574,15 +1578,16 @@
                                                 }
 
                                                 @{
-                                                    var totalWithDiscount = totalPrice + offer;
+                                                    var totalWithDiscount = discountProd + offerDiscount;
                                                 }
                                                 <tr class="cart-discount">
                                                     <th>تخفیف شما از این خرید</th>
+                                                    <th></th>
                                                     <td data-title=" تخفیف شما از این خرید ">
                                                         <div class="price">
                                                             <del>
                                                             <span>
-                                                                @totalWithDiscount.ToString("N0")
+                                                                @offerDiscount.ToString("N0")
                                                                 <span>تومان</span>
                                                             </span>
                                                             </del>

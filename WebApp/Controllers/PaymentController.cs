@@ -218,6 +218,7 @@ public class PaymentController : Controller
             {
                 finaAmount += post.Price;
             }
+           
             var result =
                 await httpClient.GetAsync(
                     $"https://parsme.com/bank/Index?Price={finaAmount}&factorId={factor.Id}&userId={user.Id}");

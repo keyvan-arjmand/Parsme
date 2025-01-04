@@ -2271,7 +2271,7 @@ public class AdminController : Controller
 
             #endregion
 
-            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking.OrderByDescending(x => x.Id)
+            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking.Where(x=>x.IsActive||!x.IsActive).OrderByDescending(x => x.Id)
                 .Select(x => x.UnicCode).FirstOrDefaultAsync() ?? string.Empty;
             return View();
         }
