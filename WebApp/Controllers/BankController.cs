@@ -7,6 +7,7 @@ using Application.Common.Utilities;
 using Application.Constants.Kavenegar;
 using Application.Interfaces;
 using Domain.Entity.Factor;
+using Domain.Entity.Factor.Product;
 using Domain.Entity.IndexPage;
 using Domain.Entity.Product;
 using Domain.Entity.User;
@@ -360,7 +361,9 @@ public class BankController : Controller
 
                 try
                 {
-                    var factor = await _work.GenericRepository<Factor>().Table.Include(x => x.User)
+                    var factor = await _work.GenericRepository<Factor>().Table
+                        .Include(x=>x.Products).ThenInclude(x=>x.FactorProductColor)
+                        .Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ReferenceNumber.Contains(RefId));
                     ViewBag.Factor = factor;
                     var payment = new PaymentGatewayClient();
@@ -403,20 +406,22 @@ public class BankController : Controller
                         var prods = factor.Products.ToList();
                         foreach (var p in prods)
                         {
-                            var prod = await _work.GenericRepository<Product>().Table.Include(x => x.ProductColors)
+                            var prod1 = await _work.GenericRepository<Product>().Table
                                 .FirstOrDefaultAsync(x => x.Id == p.ProductId);
 
                             foreach (var c in p.FactorProductColor)
                             {
-                                if (prod.ProductColors.Any(x => x.ColorId == c.ColorId))
+                                var prod = await _work.GenericRepository<ProductColor>().Table
+                                    .FirstOrDefaultAsync(x => x.ColorId == c.ColorId);
+                                if (prod != null)
                                 {
-                                    var color = prod.ProductColors.First(x => x.ColorId == c.ColorId);
-                                    color.Inventory -= c.Count;
+                                    prod.Inventory -= c.Count;
                                     await _work.GenericRepository<ProductColor>()
-                                        .UpdateAsync(color, CancellationToken.None);
+                                        .UpdateAsync(prod, CancellationToken.None);
                                 }
-                                prod.UpdateTime = DateTime.Now;
-                                await _work.GenericRepository<Product>().UpdateAsync(prod, CancellationToken.None);
+
+                                prod1.UpdateTime = DateTime.Now;
+                                await _work.GenericRepository<Product>().UpdateAsync(prod1, CancellationToken.None);
                             }
                         }
                     }

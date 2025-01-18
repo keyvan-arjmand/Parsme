@@ -1023,7 +1023,7 @@
                 <img src="http://newdev.parsme.com/Images/Banner/@seoPage.HeaderLogo" alt="logo">
             </div>
             <div class="pic-loader text-center">
-                <img src="/assetsCli/images/three-dots.svg" width="50" alt="">
+                <img src="/assetsCli/images/three-dots.svg" width="50" alt="logo">
             </div>
         </div>
     </div>
@@ -1091,15 +1091,15 @@
                         <div class="carousel-inner">
                             <a href="@banners.SliderHref" class="carousel-item active">
                                 <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage"
-                                     class="d-block w-100" alt="...">
+                                     class="d-block w-100" alt="@banners.SliderTitle">
                             </a>
                             <a href="@banners.SliderHref1" class="carousel-item">
                                 <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage1"
-                                     class="d-block w-100" alt="...">
+                                     class="d-block w-100" alt="@banners.SliderTitle1">
                             </a>
                             <a href="@banners.SliderHref2" class="carousel-item">
                                 <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage2"
-                                     class="d-block w-100" alt="...">
+                                     class="d-block w-100" alt="@banners.SliderTitle2">
                             </a>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button"
@@ -1132,7 +1132,7 @@
                                                     <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
                                                              class="w-100"
-                                                             alt="">
+                                                             alt="@i.SeoTitle">
                                                     </a>
                                                     <h3 class="product-title">
                                                         <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">@i.PersianTitle </a>
@@ -1248,35 +1248,35 @@
             {
                 <a href="@banners.SliderHref" class="carousel-item active">
                     <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage" class="d-block w-100"
-                         alt="...">
+                         alt="@banners.SliderTitle">
                 </a>
             }
             @if (!string.IsNullOrEmpty(banners.SliderImage1))
             {
                 <a href="@banners.SliderHref1" class="carousel-item">
                     <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage1" class="d-block w-100"
-                         alt="...">
+                         alt="@banners.SliderTitle1">
                 </a>
             }
             @if (!string.IsNullOrEmpty(banners.SliderImage2))
             {
                 <a href="@banners.SliderHref2" class="carousel-item">
                     <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage2" class="d-block w-100"
-                         alt="...">
+                         alt="@banners.SliderTitle2">
                 </a>
             }
             @if (!string.IsNullOrEmpty(banners.SliderImage3))
             {
                 <a href="@banners.SliderHref3" class="carousel-item">
                     <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage3" class="d-block w-100"
-                         alt="...">
+                         alt="@banners.SliderTitle3">
                 </a>
             }
             @if (!string.IsNullOrEmpty(banners.SliderImage4))
             {
                 <a href="@banners.SliderHref4" class="carousel-item">
                     <img src="https://newdev.parsme.com/Images/Banner/@banners.SliderImage4" class="d-block w-100"
-                         alt="...">
+                         alt="@banners.SliderTitle4">
                 </a>
             }
 
@@ -1320,7 +1320,7 @@
                         <div class="owl-item tab-item active" style="width: 222.313px; margin-left: 10px;">
                         <div class="item">
                             <a href="#" class="d-block hover-img-link">
-                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="">
+                                <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri" class="img-fluid" alt="@i.SeoTitle">
                             </a>
                             <h2 class="post-title">
                                 <a href="@Url.Action("ProductPage", "Home", new { @i.Id })">
@@ -1411,7 +1411,7 @@
                                                 </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                 class="img-fluid" alt="">
+                                                 class="img-fluid" alt="@i.SeoTitle">
                                         </a>
                                     </div>
                                     <div class="col-7">
@@ -1527,7 +1527,7 @@
                                                 </div>
                                             }
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                 class="img-fluid" alt="">
+                                                 class="img-fluid" alt="@i.SeoTitle">
                                         </a>
                                     </div>
                                     <div class="col-7">
@@ -1772,7 +1772,7 @@
                                                         }
 
                                                         <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                             class="img-fluid" alt="">
+                                                             class="img-fluid" alt="@i.SeoTitle">
                                                     </a>
                                                 </div>
 
@@ -1988,7 +1988,7 @@
                                             }
 
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                 class="img-fluid" alt="">
+                                                 class="img-fluid" alt="@i.SeoTitle">
                                         </a>
                                     </div>
                                     <div class="color-d">
@@ -2186,7 +2186,7 @@
                                             }
 
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                 class="img-fluid" alt="">
+                                                 class="img-fluid" alt="@i.SeoTitle">
                                         </a>
                                     </div>
                                     <div class="color-d">
@@ -2403,7 +2403,7 @@
                                             }
 
                                             <img src="https://newdev.parsme.com/Images/ProductImage/@i.ImageUri"
-                                                 class="img-fluid" alt="">
+                                                 class="img-fluid" alt="@i.SeoTitle">
                                         </a>
                                     </div>
 
