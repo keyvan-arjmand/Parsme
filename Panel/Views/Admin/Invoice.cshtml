@@ -77,6 +77,7 @@
         .signatures p {
             margin: 0;
         }
+
         .signatures {
             position: relative;
             display: inline-block;
@@ -106,7 +107,6 @@
             price += @q.Price * q.Count;
         }
     }
-
 }
 <body>
 
@@ -127,7 +127,8 @@
             <td class="seller-info">
                 <strong>فروشنده:</strong>فروشگاه پارس می<br>
                 @* <strong>شناسه ملی:</strong> 10610074776<br> *@
-                <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری و تجاری ولی عصر، طبقه 6، واحد 33<br>
+                <strong>آدرس:</strong>تهران، میدان ولی عصر، خیابان ولی عصر، خیابان شهید علی ولدی، پلاک 48 ، مجتمع اداری
+                و تجاری ولی عصر، طبقه 6، واحد 33<br>
                 <strong>کدپستی:</strong> 1593733493<br>
                 <strong>شماره تماس:</strong> 02143000107<br>
             </td>
@@ -178,12 +179,15 @@
                     <tr>
                         <td>@index</td>
                         <td>@i.UnicCode</td>
-                        <td><a style="color: black;text-decoration: none" target="_blank"  href="@Url.Action("ProductPage","Home",new{id=i.ProductId})">@i.PersianTitle - @q.ColorName - @q.Guarantee</a></td>
+                        <td><a style="color: black;text-decoration: none" target="_blank"
+                               href="@Url.Action("ProductPage", "Home", new { id = i.ProductId })">@i.PersianTitle - @q.ColorName - @q.Guarantee</a>
+                        </td>
                         <td>@q.Count</td>
                         @{
-                            var jam = q.Price * q.Count;
+                            var jam = q.Price * q.Count * 10;
+                            var jaam =q.Price * 10;
                         }
-                        <td>@q.Price.ToString("N0")0</td>
+                        <td>@jaam.ToString("N0")</td>
                         <td>@jam.ToString("N0")</td>
                     </tr>
                 }
@@ -216,7 +220,6 @@
                     <td>@post.ToString("N0")</td>
                     <td>@post.ToString("N0")</td>
                 }
-
             }
 
         </tr>
@@ -244,16 +247,14 @@
                 var feeAll = 0.0;
                 if (factor.Id == 147)
                 {
-                    feeAll  = (price + 0 - (factor.DiscountAmount + factor.AmountPrice)) * 10;
-
+                    feeAll = (price + 0 - (factor.DiscountAmount + factor.AmountPrice)) * 10;
                 }
                 else
                 {
                     feeAll = (price + factor.PostMethod.Price - (factor.DiscountAmount + factor.AmountPrice)) * 10;
-
                 }
             }
-            <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال): </td>
+            <td colspan="4">جمع کل پس از تخفیف و کسر مالیات و عوارض (ریال):</td>
             <td colspan="2">@feeAll.ToString("N0")</td>
         </tr>
     </table>
