@@ -362,7 +362,7 @@ public class BankController : Controller
                 try
                 {
                     var factor = await _work.GenericRepository<Factor>().Table
-                        .Include(x=>x.Products).ThenInclude(x=>x.FactorProductColor)
+                        .Include(x => x.Products).ThenInclude(x => x.FactorProductColor)
                         .Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ReferenceNumber.Contains(RefId));
                     ViewBag.Factor = factor;
@@ -403,27 +403,27 @@ public class BankController : Controller
                             await _work.GenericRepository<DiscountCode>().UpdateAsync(discount, CancellationToken.None);
                         }
 
-                        var prods = factor.Products.ToList();
-                        foreach (var p in prods)
-                        {
-                            var prod1 = await _work.GenericRepository<Product>().Table
-                                .FirstOrDefaultAsync(x => x.Id == p.ProductId);
-
-                            foreach (var c in p.FactorProductColor)
-                            {
-                                var prod = await _work.GenericRepository<ProductColor>().Table
-                                    .FirstOrDefaultAsync(x => x.ColorId == c.ColorId);
-                                if (prod != null)
-                                {
-                                    prod.Inventory -= c.Count;
-                                    await _work.GenericRepository<ProductColor>()
-                                        .UpdateAsync(prod, CancellationToken.None);
-                                }
-
-                                prod1.UpdateTime = DateTime.Now;
-                                await _work.GenericRepository<Product>().UpdateAsync(prod1, CancellationToken.None);
-                            }
-                        }
+                        // var prods = factor.Products.ToList();
+                        // foreach (var p in prods)
+                        // {
+                        //     var prod1 = await _work.GenericRepository<Product>().Table
+                        //         .FirstOrDefaultAsync(x => x.Id == p.ProductId);
+                        //
+                        //     foreach (var c in p.FactorProductColor)
+                        //     {
+                        //         var prod = await _work.GenericRepository<ProductColor>().Table
+                        //             .FirstOrDefaultAsync(x => x.ColorId == c.ColorId && x.ProductId == prod1.Id);
+                        //         if (prod != null)
+                        //         {
+                        //             prod.Inventory -= c.Count;
+                        //             await _work.GenericRepository<ProductColor>()
+                        //                 .UpdateAsync(prod, CancellationToken.None);
+                        //         }
+                        //
+                        //         prod1.UpdateTime = DateTime.Now;
+                        //         await _work.GenericRepository<Product>().UpdateAsync(prod1, CancellationToken.None);
+                        //     }
+                        // }
                     }
                     else
                     {

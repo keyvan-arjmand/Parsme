@@ -38,8 +38,9 @@ public class Factor:BaseEntity
     public string? OrganizationName { get; set; }//نام سازمان
     public string? NationalId { get; set; }//شناسه ملی
     public string? PostCode { get; set; }
-        public string? OrganizationNumber { get; set; }//شماره سازمان
+     public string? OrganizationNumber { get; set; }//شماره سازمان
     public string? RegistrationNumber { get; set; }//شماره ثبت
     public string? Adders { get; set; }//
     public bool IsPay { get; set; }//
+    public bool IsCounter { get; set; }//
 }
