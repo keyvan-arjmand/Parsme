@@ -82,17 +82,17 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
         {
             ProductId = product.Id,
             Priority = 1,
-            GuaranteeId = x.Gu.ToInt(),
+            // GuaranteeId = x.Gu.ToInt(),
             ColorId = x.ColorId.ToInt(),
-            Price = x.ColorPrice.ToDouble(),
-            Inventory = x.ColorInv.ToInt(),
+            // Price = x.ColorPrice.ToDouble(),
+            // Inventory = x.ColorInv.ToInt(),
         });
         foreach (var i in productColor)
         {
             await _work.GenericRepository<Domain.Entity.Product.ProductColor>()
                 .AddAsync(i, CancellationToken.None); 
         }
-   
+   var colorGuarantee = 
         if (request.Product.IsOffer)
         {
             var offer = new Domain.Entity.Product.Offer

@@ -29,12 +29,13 @@ public class Root
     public string Strengths { get; set; } = string.Empty;
     public string WeakPoints { get; set; } = string.Empty;
     public bool MomentaryOffer { get; set; }
-        
+
     public string SeoTitle { get; set; } = string.Empty;
     public string SeoDesc { get; set; } = string.Empty;
     public string SeoCanonical { get; set; } = string.Empty;
     public double InterestRate { get; set; }
 }
+
 public class Offer
 {
     public string ColorId { get; set; }
@@ -42,7 +43,6 @@ public class Offer
     public string Hours { get; set; }
     public string Minutes { get; set; }
     public DateTime Time { get; set; }
-
 }
 
 public class ProductColor
@@ -52,8 +52,15 @@ public class ProductColor
     public string ColorInv { get; set; }
     public string ColorId { get; set; }
     public string ColorPrice { get; set; }
+    public List<ColorGuarantee> ColorGuarantees { get; set; }
 }
 
+public class ColorGuarantee
+{
+    public string Gu { get; set; }
+    public string ColorPrice { get; set; }
+    public string ColorInv { get; set; }
+}
 public class ProductDetail
 {
     public int Id { get; set; }
