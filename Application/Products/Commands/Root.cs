@@ -57,6 +57,7 @@ public class ProductColor
 
 public class ColorGuarantee
 {
+    public int Id { get; set; }
     public string Gu { get; set; }
     public string ColorPrice { get; set; }
     public string ColorInv { get; set; }

@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Panel.Models;
+using ColorGuarantee = Domain.Entity.Product.ColorGuarantee;
 using ProductColor = Domain.Entity.Product.ProductColor;
 using ProductDetail = Domain.Entity.Product.ProductDetail;
 using UserDto = Application.Dtos.Client.UserDto;
@@ -122,9 +123,9 @@ public class AdminController : Controller
                 .ToListAsync();
             ViewBag.ProductReport = new ReportIndexModel
             {
-                First = await _work.GenericRepository<ProductColor>().TableNoTracking
+                First = await _work.GenericRepository<ColorGuarantee>().TableNoTracking
                     .CountAsync(),
-                Second = await _work.GenericRepository<ProductColor>().TableNoTracking
+                Second = await _work.GenericRepository<ColorGuarantee>().TableNoTracking
                     .CountAsync(x => x.Inventory > 0),
             };
             ViewBag.FactorReport = new ReportIndexModel
@@ -893,7 +894,7 @@ public class AdminController : Controller
             ViewBag.Factor = await _work.GenericRepository<Factor>().TableNoTracking
                 .Include(x => x.User)
                 .Include(x => x.PostMethod)
-                .Include(x => x.UserAddress).ThenInclude(q => q.City).ThenInclude(x=>x.State)
+                .Include(x => x.UserAddress).ThenInclude(q => q.City).ThenInclude(x => x.State)
                 .Include(x => x.Products)
                 .ThenInclude(x => x.FactorProductColor)
                 .Include(x => x.Products)
@@ -2049,7 +2050,7 @@ public class AdminController : Controller
                 .Include(x => x.Creator)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .Include(x => x.ProductColors).ThenInclude(x => x.ColorGuarantees).ThenInclude(x => x.Guarantee)
                 .AsSplitQuery().FirstOrDefaultAsync(x => x.Id == id);
             var prodDetail = product.ProductDetails.ToList();
             var catDetails = await _work.GenericRepository<CategoryDetail>()
@@ -2105,7 +2106,7 @@ public class AdminController : Controller
                 .Include(x => x.Creator)
                 .Include(x => x.SubCategory).ThenInclude(x => x.Category)
                 .Include(x => x.ProductColors).ThenInclude(x => x.Color)
-                .Include(x => x.ProductColors).ThenInclude(x => x.Guarantee)
+                .Include(x => x.ProductColors).ThenInclude(x => x.ColorGuarantees).ThenInclude(x => x.Guarantee)
                 .AsSplitQuery()
                 .OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Id == id);
             var prodDetail = product.ProductDetails.ToList();
@@ -2164,7 +2165,7 @@ public class AdminController : Controller
     {
         var color = await _work.GenericRepository<ProductColor>().TableNoTracking
             .Include(x => x.Color)
-            .Include(x=>x.Guarantee)
+            .Include(x => x.ColorGuarantees).ThenInclude(x => x.Guarantee)
             .Where(x => x.ProductId == id)
             .ToListAsync();
         return Ok(color);
@@ -2221,7 +2222,8 @@ public class AdminController : Controller
                     productsQuery = productsQuery.Where(x => x.MomentaryOffer);
                     break;
                 case 4:
-                    productsQuery = productsQuery.Where(x => x.ProductColors.Any(q => q.Inventory <= 0));
+                    productsQuery = productsQuery.Where(x =>
+                        x.ProductColors.Any(q => q.ColorGuarantees.Any(x => x.Inventory <= 0)));
                     break;
             }
 
@@ -2254,10 +2256,10 @@ public class AdminController : Controller
 
             ViewBag.AllProd = await _work.GenericRepository<Product>().TableNoTracking.CountAsync();
 
-            ViewBag.AllInvProd = await _work.GenericRepository<ProductColor>().TableNoTracking
+            ViewBag.AllInvProd = await _work.GenericRepository<ColorGuarantee>().TableNoTracking
                 .CountAsync(x => x.Inventory > 0);
 
-            ViewBag.AllInvLowProd = await _work.GenericRepository<ProductColor>().TableNoTracking
+            ViewBag.AllInvLowProd = await _work.GenericRepository<ColorGuarantee>().TableNoTracking
                 .CountAsync(x => x.Inventory <= 0);
 
             ViewBag.AllNewProd = await _work.GenericRepository<Product>().TableNoTracking
@@ -2271,7 +2273,8 @@ public class AdminController : Controller
 
             #endregion
 
-            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking.Where(x=>x.IsActive||!x.IsActive).OrderByDescending(x => x.Id)
+            ViewBag.LastCode = await _work.GenericRepository<Product>().TableNoTracking
+                .Where(x => x.IsActive || !x.IsActive).OrderByDescending(x => x.Id)
                 .Select(x => x.UnicCode).FirstOrDefaultAsync() ?? string.Empty;
             return View();
         }
@@ -2497,9 +2500,9 @@ public class AdminController : Controller
 
     public async Task<ActionResult> LoginPassword(string phoneNumber)
     {
-        var isa =  await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
+        var isa = await _work.GenericRepository<ContactUs>().TableNoTracking.Select(x => x.IsLogAd)
             .FirstOrDefaultAsync();
-        
+
         if (!isa)
         {
             ViewBag.exUser = await _mediator.Send(new AdminExistCommand(phoneNumber));
@@ -3182,12 +3185,16 @@ public class AdminController : Controller
             .ThenInclude(x => x.Color).FirstOrDefaultAsync(x => x.Id == prodId);
         foreach (var c in prod.ProductColors)
         {
-            if (colors.Any(x => x.Id == c.Id))
+            foreach (var g in c.ColorGuarantees)
             {
-                var req = colors.FirstOrDefault(x => x.Id == c.Id);
-                c.Price = Convert.ToInt32(req.Price.Replace(",", ""));
+                if (colors.Any(x => x.Id == g.Id))
+                {
+                    var req = colors.FirstOrDefault(x => x.Id == c.Id);
+                    g.Price = Convert.ToInt32(req.Price.Replace(",", ""));
+                }
             }
         }
+
         await _work.GenericRepository<Product>().UpdateAsync(prod, CancellationToken.None);
         return RedirectToAction("ProductManage");
     }
@@ -3318,30 +3325,35 @@ public class AdminController : Controller
 
         #region color
 
-        var proColor = await _work.GenericRepository<ProductColor>().Table.Where(x => x.ProductId == product.Id)
+        var proColor = await _work.GenericRepository<ProductColor>().Table
+            .Include(x => x.ColorGuarantees).ThenInclude(x => x.Guarantee)
+            .Where(x => x.ProductId == product.Id)
             .ToListAsync();
 
         foreach (var i in request.ProductColors)
         {
-            if (proColor.Any(x => x.ColorId == i.ColorId.ToInt()))
+            foreach (var g in i.ColorGuarantees)
             {
-                var prod = proColor.FirstOrDefault(x => x.ColorId == i.ColorId.ToInt());
-                prod.Price = i.ColorPrice.ToDouble();
-                prod.Inventory = i.ColorInv.ToInt();
-                prod.GuaranteeId = i.Gu.ToInt();
-                await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
-            }
-            else
-            {
-                await _work.GenericRepository<ProductColor>().AddAsync(new ProductColor
+                if (proColor.Any(x => x.ColorGuarantees.Any(y => y.Id == g.Id)))
                 {
-                    ProductId = product.Id,
-                    Priority = 1,
-                    GuaranteeId = i.Gu.ToInt(),
-                    ColorId = i.ColorId.ToInt(),
-                    Inventory = i.ColorInv.ToInt(),
-                    Price = i.ColorPrice.ToDouble(),
-                }, CancellationToken.None);
+                    var prod =proColor.Select(x=>x.ColorGuarantees.FirstOrDefault(y => y.Id == g.Id)).FirstOrDefault();
+                    prod.Price = i.ColorPrice.ToDouble();
+                    prod.Inventory = i.ColorInv.ToInt();
+                    prod.GuaranteeId = i.Gu.ToInt();
+                    await _work.GenericRepository<ProductColor>().UpdateAsync(prod, CancellationToken.None);
+                }
+                else
+                {
+                    await _work.GenericRepository<ProductColor>().AddAsync(new ProductColor
+                    {
+                        ProductId = product.Id,
+                        Priority = 1,
+                        GuaranteeId = i.Gu.ToInt(),
+                        ColorId = i.ColorId.ToInt(),
+                        Inventory = i.ColorInv.ToInt(),
+                        Price = i.ColorPrice.ToDouble(),
+                    }, CancellationToken.None);
+                }
             }
         }
 

@@ -63,9 +63,9 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
         foreach (var i in productGallery)
         {
             await _work.GenericRepository<Domain.Entity.Product.ImageGallery>()
-                .AddAsync(i, CancellationToken.None); 
+                .AddAsync(i, CancellationToken.None);
         }
-     
+
         var prodDetail = request.Product.ProductDetails.Select(x => new Domain.Entity.Product.ProductDetail
         {
             ProductId = product.Id,
@@ -75,24 +75,34 @@ public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand>
         foreach (var i in prodDetail)
         {
             await _work.GenericRepository<Domain.Entity.Product.ProductDetail>()
-                .AddAsync(i, CancellationToken.None); 
+                .AddAsync(i, CancellationToken.None);
         }
-     
+
         var productColor = request.Product.ProductColors.Select(x => new Domain.Entity.Product.ProductColor
         {
             ProductId = product.Id,
             Priority = 1,
-            // GuaranteeId = x.Gu.ToInt(),
             ColorId = x.ColorId.ToInt(),
-            // Price = x.ColorPrice.ToDouble(),
-            // Inventory = x.ColorInv.ToInt(),
+            ColorGuarantees = x.ColorGuarantees.Select(q => new Domain.Entity.Product.ColorGuarantee
+            {
+                Inventory = q.ColorInv.ToInt(),
+                Price = q.ColorPrice.ToDouble(),
+                GuaranteeId = q.Gu.ToInt(),
+            }).ToList()
         });
         foreach (var i in productColor)
         {
+            var color = i;
             await _work.GenericRepository<Domain.Entity.Product.ProductColor>()
-                .AddAsync(i, CancellationToken.None); 
+                .AddAsync(color, CancellationToken.None);
+            foreach (var g in i.ColorGuarantees)
+            {
+                g.ProductColorId = color.Id;
+                await _work.GenericRepository<Domain.Entity.Product.ColorGuarantee>()
+                    .AddAsync(g, CancellationToken.None);
+            }
         }
-   var colorGuarantee = 
+        
         if (request.Product.IsOffer)
         {
             var offer = new Domain.Entity.Product.Offer
