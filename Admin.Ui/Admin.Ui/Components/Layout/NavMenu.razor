@@ -1,29 +1,212 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Admin.Ui</a>
+﻿@inject NavigationManager Navigation
+
+<aside id="layout-menu" style="direction: rtl !important;" class="layout-menu menu-vertical menu bg-menu-theme">
+    <div class="app-brand demo">
+        <a href="" class=" d-flex justify-content-between align-items-center" style="padding: 30px">
+            <img src="https://newdev.parsme.com/Images/Banner/parsme-logo.png" width="100%"/>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
+    <div class="menu-inner-shadow"></div>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li  class="menu-item @(IsActive("/"))">
+            <a href="/"   class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">داشبورد</div>
+            </a>
+        </li>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+        <!-- Layouts -->
+        <li class="menu-item ">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='bx bxl-firebase'></i>
+                <div data-i18n="Layouts">اطلاعات پایه</div>
+            </a>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
+            <ul class="menu-sub">
+                <li class="menu-item @(IsActive("/ManageBrandTag"))">
+                    <a href="/ManageBrandTag" class="menu-link">
+                        <div data-i18n="Without menu">برند</div>
+                    </a>
+                </li>
+                <li class="menu-item @(IsActive("/SubGroupProduct"))">
+                    <a href="/SubGroupProduct" class="menu-link">
+                        <div data-i18n="Without navbar">زیر گروه محصولات</div>
+                    </a>
+                </li>
+                <li class="menu-item @(IsActive("/ManageCategory"))">
+                    <a href="/ManageCategory" class="menu-link">
+                        <div data-i18n="Container">دسته بندی</div>
+                    </a>
+                </li>
+                <li class="menu-item @(IsActive("/ManageCategoryDetails"))">
+                    <a href="/ManageCategoryDetails" class="menu-link">
+                        <div data-i18n="Fluid">جزئیات دسته بندی</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="layouts-blank.html" class="menu-link">
+                        <div data-i18n="Blank">رنگ</div>
+                    </a>
+                </li>     
+                <li class="menu-item">
+                    <a href="layouts-blank.html" class="menu-link">
+                        <div data-i18n="Blank">شهر و استان</div>
+                    </a>
+                </li>    <li class="menu-item">
+                    <a href="layouts-blank.html" class="menu-link">
+                        <div data-i18n="Blank">گارانتی</div>
+                    </a>
+                </li>    <li class="menu-item">
+                    <a href="layouts-blank.html" class="menu-link">
+                        <div data-i18n="Blank">روش های ارسال</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">سفارش و فاکتور فروش</span>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">مدیریت سفارش</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="pages-account-settings-account.html" class="menu-link">
+                        <div data-i18n="Account">ثبت سفارش</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="pages-account-settings-account.html" class="menu-link">
+                        <div data-i18n="Account">مرجوعی سفارش</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='bx bx-purchase-tag-alt'></i>
+                <div data-i18n="Authentications">مالی</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">فاکتور فروش</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                        <div data-i18n="Basic">کد تخفیف</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+      
+        <!-- Components -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">محتوا</span></li>
+        <li class="menu-item">
+            <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-box"></i>
+                <div data-i18n="User interface">مدیریت محتوا</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="ui-accordion.html" class="menu-link">
+                        <div data-i18n="Accordion">محتوا برند</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-accordion.html" class="menu-link">
+                        <div data-i18n="Accordion">بنر</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-alerts.html" class="menu-link">
+                        <div data-i18n="Alerts">اسلایدر</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-badges.html" class="menu-link">
+                        <div data-i18n="Badges">خدمات فروش</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-buttons.html" class="menu-link">
+                        <div data-i18n="Buttons">پرسش پاسخ</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-carousel.html" class="menu-link">
+                        <div data-i18n="Carousel">نتایج جستجو</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-collapse.html" class="menu-link">
+                        <div data-i18n="Collapse">درباره ما</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-dropdowns.html" class="menu-link">
+                        <div data-i18n="Dropdowns">تماس با ما</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-footer.html" class="menu-link">
+                        <div data-i18n="Footer">پاورقی</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-list-groups.html" class="menu-link">
+                        <div data-i18n="List Groups">صفحه اصلی</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="ui-modals.html" class="menu-link">
+                        <div data-i18n="Modals"> صفحات پاورقی</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">محصول</span></li>
+        
+        <li class="menu-item">
+            <a href="icons-boxicons.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-crown"></i>
+                <div data-i18n="Boxicons">مدیریت محصولات</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">کاربران</span></li>
+        <li class="menu-item">
+            <a href="icons-boxicons.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-crown"></i>
+                <div data-i18n="Boxicons">مدیریت کاربران</div>
+            </a>
+        </li>
+        <!-- Tables -->
+        <li class="menu-item">
+            <a href="tables-basic.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Tables">پیام ها</div>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+@code {
+    private string IsActive(string href)
+    {
+        return Navigation.Uri.EndsWith(href, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+}
