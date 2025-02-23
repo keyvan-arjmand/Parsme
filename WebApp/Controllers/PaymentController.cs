@@ -136,7 +136,6 @@ public class PaymentController : Controller
                 Adders = organizationAddress ?? string.Empty,
                 OrganizationNumber = organizationPhone ?? string.Empty,
                 OrganizationName = organizationName, PostCode = postCode,
-                IsCounter = false
             };
             await _work.GenericRepository<Factor>().AddAsync(factor, CancellationToken.None);
             List<FactorProduct> fc = new List<FactorProduct>();

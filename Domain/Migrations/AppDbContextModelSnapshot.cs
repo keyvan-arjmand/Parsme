@@ -104,9 +104,6 @@ namespace Domain.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCounter")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
