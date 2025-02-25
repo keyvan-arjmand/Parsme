@@ -23,7 +23,14 @@
         </li>
 
         <!-- Layouts -->
-        <li class="menu-item ">
+        <li class="menu-item  @(IsActive(["/ManageBrandTag",
+                                  "/SubGroupProduct",
+                                  "/ManageCategory",
+                                  "/ManageCategoryDetails",
+                                  "/ManageColors",
+                                  "/ManageProvince",
+                                  "/ManageGuarantee",
+                                  "/ManagePostMethod",]))">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='bx bxl-firebase'></i>
                 <div data-i18n="Layouts">اطلاعات پایه</div>
@@ -50,45 +57,45 @@
                         <div data-i18n="Fluid">جزئیات دسته بندی</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
+                <li class="menu-item @(IsActive("/ManageColors"))">
+                    <a href="/ManageColors" class="menu-link">
                         <div data-i18n="Blank">رنگ</div>
                     </a>
                 </li>     
-                <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
+                <li class="menu-item @(IsActive("/ManageProvince"))">
+                    <a href="/ManageProvince" class="menu-link">
                         <div data-i18n="Blank">شهر و استان</div>
                     </a>
-                </li>    <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
+                </li>    <li class="menu-item @(IsActive("/ManageGuarantee"))">
+                    <a href="/ManageGuarantee" class="menu-link">
                         <div data-i18n="Blank">گارانتی</div>
                     </a>
-                </li>    <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
+                </li>    <li class="menu-item @(IsActive("/ManagePostMethod"))">
+                    <a href="/ManagePostMethod" class="menu-link">
                         <div data-i18n="Blank">روش های ارسال</div>
                     </a>
                 </li>
             </ul>
         </li>
 
-        <li class="menu-header small text-uppercase">
+        <li class="menu-header small text-uppercase ">
             <span class="menu-header-text">سفارش و فاکتور فروش</span>
         </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item @(IsActive(["/ManagePlaceOrder","ManageOrderReturn"]))">
+            <a href="" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">مدیریت سفارش</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="pages-account-settings-account.html" class="menu-link">
+                <li class="menu-item @(IsActive("/ManagePlaceOrder"))">
+                    <a href="/ManagePlaceOrder" class="menu-link">
                         <div data-i18n="Account">ثبت سفارش</div>
                     </a>
                 </li>
             </ul>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="pages-account-settings-account.html" class="menu-link">
+                <li class="menu-item @(IsActive("/ManageOrderReturn"))">
+                    <a href="/ManageOrderReturn" class="menu-link">
                         <div data-i18n="Account">مرجوعی سفارش</div>
                     </a>
                 </li>
@@ -208,5 +215,10 @@
     private string IsActive(string href)
     {
         return Navigation.Uri.EndsWith(href, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+    
+    private string IsActive(List<string> hrefs)
+    {
+        return hrefs.Any(href => Navigation.Uri.EndsWith(href, StringComparison.OrdinalIgnoreCase)) ? "active" : "";
     }
 }

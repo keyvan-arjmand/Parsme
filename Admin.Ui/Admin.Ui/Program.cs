@@ -6,6 +6,7 @@ using Domain.Entity.User;
 using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

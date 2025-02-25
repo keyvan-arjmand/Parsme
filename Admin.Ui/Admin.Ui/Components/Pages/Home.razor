@@ -1,5 +1,5 @@
 ﻿@page "/"
-<PageTitle>Dashboard admin</PageTitle>
+<PageTitle>داشبورد مدیریت</PageTitle>
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
@@ -45,7 +45,7 @@
                                     </div>
                                 
                                 </div>
-                                <span>قاکتور فروش</span>
+                                <span>فاکتور فروش</span>
                                 <h3 class="card-title text-nowrap mb-1">@_reportDashboard.AllIncome.ToString("N0")</h3>
                                 <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
                                     +1</small>
@@ -144,11 +144,12 @@
                                         />
                                     </div>
                                 </div>
+                                <span class="fw-semibold d-block mb-1">کاربران</span>
+                                <h3 class="card-title mb-2">@_reportDashboard.AllUserCount</h3>
+                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
+                                    +1</small>
                             </div>
-                            <span class="fw-semibold d-block mb-1">کاربران</span>
-                            <h3 class="card-title mb-2">@_reportDashboard.AllUserCount</h3>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>
-                                +1</small>
+                          
                         </div>
                     </div>
                 </div>

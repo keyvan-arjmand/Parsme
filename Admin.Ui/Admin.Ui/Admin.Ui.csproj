@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MudBlazor" Version="8.3.0" />
         <ProjectReference Include="..\..\Application\Application.csproj" />
         <ProjectReference Include="..\..\Domain\Domain.csproj" />
         <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj" />
@@ -15,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
+      <Folder Include="wwwroot\Images\brand\" />
     </ItemGroup>
 
 </Project>

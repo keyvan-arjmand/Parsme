@@ -1,12 +1,11 @@
-﻿@page "/SubGroupProduct"
+﻿@page "/ManageColors"
 @using Application.Interfaces
 @using Domain.Entity.Product
 @using Microsoft.EntityFrameworkCore
-<PageTitle>مدیریت زیر گروه محضولات</PageTitle>
+<PageTitle>مدیریت رنگ </PageTitle>
 
 <div style="padding: 15px">
-    <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">اطلاعات پایه /</span> زیر
-        گروه محضولات
+    <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">اطلاعات پایه /</span>رنگ ها
     </h4>
     <div class="card">
         <div class="table-responsive text-nowrap">
@@ -15,15 +14,13 @@
                 <tr>
                     <th>شماره</th>
                     <th>عنوان</th>
-                    <th>بازدید</th>
-                    <th>تعداد کالا</th>
-                    <th>وضعیت</th>
-                    <th>زیر دسته</th>
+                    <th>کد</th>
+                    <th>رنگ</th>
                     <th>عملیات</th>
                 </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                @foreach (var i in _brands)
+                @foreach (var i in _colors)
                 {
                     <tr>
                         <td>
@@ -34,34 +31,11 @@
                             @i.Title
                         </td>
                         <td>
-                            @i.OnClick
+                            @i.ColorCode
                         </td>
                         <td>
-                            @i.Products.Count
-                        </td>
-                        <td>
-                            @if (i.IsActive)
-                            {
-                                <span class="badge bg-label-success me-1">فعال</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-label-danger me-1">غیر فعال</span>
-                            }
-                        </td>
-                        <td>
-                            @if (i.SubCategory == null)
-                            {
-                                <div>
-                                    none
-                                </div>
-                            }
-                            else
-                            {
-                                <div>
-                                    @i.SubCategory.Name
-                                </div>
-                            }
+                            <div style="padding: 10px;border-radius: 50%;background-color: @i.ColorCode;width: 1px"></div>
+
                         </td>
                         <td>
                             <div class="dropdown">
@@ -71,7 +45,7 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="javascript:void(0);"><i
-                                            class="bx bx-edit-alt me-1"></i>
+                                                                                            class="bx bx-edit-alt me-1"></i>
                                         ویرایش</a
                                     >
                                     <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>
