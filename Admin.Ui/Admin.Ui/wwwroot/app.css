@@ -61,3 +61,7 @@ h1:focus {
 .modal .modal-header .btn-close {
     margin: auto 0;
 }
+.mud-input.mud-input-outlined .mud-input-outlined-border 
+{
+    border-radius: 7px;
+}

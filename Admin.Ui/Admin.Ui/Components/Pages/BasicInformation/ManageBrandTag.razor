@@ -163,16 +163,30 @@
 <div style="padding: 15px">
     <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">اطلاعات پایه /</span> برند ها
     </h4>
-    <div class="d-flex justify-content-start align-items-center p-3">
-        <div class="w-25">
-            <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#modalCenter"
-            >
-                افزودن
-            </button>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <div style="max-width: 230px">
+            <MudTextField T="string"
+                          @bind-Value="_filter.Search"
+                          Placeholder="جستجو کنید..."
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Variant="Variant.Outlined"
+                          Class="w-64"
+                          Immediate="false"
+                          OnAdornmentClick="LoadData"
+                          Style="border-radius: 20px;height: 40px"/>
+        </div>
+        <div class="d-flex justify-content-start align-items-center p-3">
+            <div class="w-25">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCenter"
+                >
+                    افزودن
+                </button>
+            </div>
         </div>
     </div>
     <div class="card">

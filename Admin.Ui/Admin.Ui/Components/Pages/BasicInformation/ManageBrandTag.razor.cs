@@ -25,21 +25,16 @@ public partial class ManageBrandTag
     private PageableParams _filter = new();
     private bool _isLoading = true;
     private string _logoPreview;
+    private MudMessageBox _mudMessageBox;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-        }
-    }
-
     private async void EditBrand(BrandTag brandEdit)
     {
+        _logoPreview = "https://newdev.parsme.com/Images/Brand/" + brandEdit.LogoUri;
         _brandEdit = new BrandTagDto
         {
             IsClick = brandEdit.IsClick,
@@ -47,26 +42,35 @@ public partial class ManageBrandTag
             LogoUri = brandEdit.LogoUri,
             Id = brandEdit.Id,
         };
+        StateHasChanged();
     }
 
     private async Task LoadData()
     {
         _isLoading = true;
         StateHasChanged();
-        _brands = await _work.GenericRepository<BrandTag>().TableNoTracking
+
+        var query = _work.GenericRepository<BrandTag>().TableNoTracking.AsNoTracking(); 
+
+        if (!string.IsNullOrWhiteSpace(_filter.Search))
+        {
+            query = query.Where(x => x.Title.Contains(_filter.Search));
+        }
+
+        int totalRecords = await query.CountAsync();
+        _filter.TotalPage = (int)Math.Ceiling((double)totalRecords / _filter.PageSize);
+
+        _brands = await query
             .OrderByDescending(x => x.Id)
             .Skip((_filter.Page - 1) * _filter.PageSize)
             .Take(_filter.PageSize)
+            .AsNoTracking() 
             .ToListAsync();
-        int totalRecords = await _work.GenericRepository<BrandTag>().TableNoTracking.CountAsync();
-        _filter.TotalPage = (int)Math.Ceiling((double)totalRecords / _filter.PageSize);
+
         _isLoading = false;
         StateHasChanged();
     }
 
-    protected override void OnInitialized()
-    {
-    }
 
     private async void OpenInsertDialog()
     {
@@ -81,8 +85,6 @@ public partial class ManageBrandTag
             }
         }
     }
-
-    private MudMessageBox _mudMessageBox;
 
     private async Task InsertBrand()
     {
@@ -123,7 +125,11 @@ public partial class ManageBrandTag
             await file.OpenReadStream().ReadAsync(buffer);
             _logoPreview = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
         }
-    }    private async void UploadFilesEdite(IBrowserFile file)
+
+        StateHasChanged();
+    }
+
+    private async void UploadFilesEdite(IBrowserFile file)
     {
         _brandEdit.LogoUriFile = file;
         if (file != null)
@@ -133,6 +139,8 @@ public partial class ManageBrandTag
             _brandEdit.LogoUri = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
             _logoPreview = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
         }
+
+        StateHasChanged();
     }
 
     private async Task DeleteBrand(int id)
@@ -147,6 +155,12 @@ public partial class ManageBrandTag
     private async Task OnPageChanged(int newPage)
     {
         _filter.Page = newPage;
+        await LoadData();
+    }
+
+    private async Task OnSearchChanged(string text)
+    {
+        _filter.Search = text;
         await LoadData();
     }
 }
