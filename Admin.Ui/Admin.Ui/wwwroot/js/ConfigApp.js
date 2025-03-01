@@ -4,3 +4,15 @@ function closeModal(modalId) {
         modal.hide();
     }
 }
+    
+window.showToast = () => {
+    var toastEl = document.querySelector(".bs-toast");
+    var toast = new bootstrap.Toast(toastEl);
+    toast.show();
+};
+
+window.showToastDelete = () => {
+    var toastEl = document.querySelector(".bs-toast-delete");
+    var toast = new bootstrap.Toast(toastEl);
+    toast.show();
+};

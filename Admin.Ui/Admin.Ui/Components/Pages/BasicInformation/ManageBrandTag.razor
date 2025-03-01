@@ -8,7 +8,24 @@
 @using MudBlazor
 @page "/ManageBrandTag"
 @rendermode InteractiveServer
-
+<div class="bs-toast toast toast-placement-ex m-2 bg-success" style="direction: rtl;" role="alert" aria-live="assertive"
+     aria-atomic="true" data-delay="5000">
+    <div class="toast-header">
+        <div class="me-auto fw-semibold w-100">عملیات موفق</div>
+        <i class="bx bx-bell me-2"></i>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">برند با موفقیت ثبت و ذخیره شد</div>
+</div>
+<div class="bs-toast bs-toast-delete toast toast-placement-ex m-2 bg-success" style="direction: rtl;" role="alert"
+     aria-live="assertive" aria-atomic="true" data-delay="5000">
+    <div class="toast-header">
+        <div class="me-auto fw-semibold w-100">عملیات موفق</div>
+        <i class="bx bx-bell me-2"></i>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">برند با موفقیت حذف شد</div>
+</div>
 <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -35,11 +52,9 @@
                             required="required"/>
                     </div>
                 </div>
-                <div class="row g-2">
+                <div class="row g-2 d-flex justify-content-between">
                     <div class="col mb-0">
                         <label for="formFile" class="form-label">لوگو *</label>
-                        @* <input class="form-control" @bind="_brand.LogoUri" type="file" id="formFile" *@
-                        @*        required="required"/> *@
                         <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
                             <ActivatorContent>
                                 <MudButton Variant="Variant.Filled"
@@ -50,18 +65,95 @@
                             </ActivatorContent>
                         </MudFileUpload>
                     </div>
+                    @if (!string.IsNullOrEmpty(_logoPreview))
+                    {
+                        <div class="col mt-3 d-flex justify-content-center">
+                            <img src="@_logoPreview" alt="لوگو آپلود شده" style="max-width: 100px; max-height: 100px;"/>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="modal-footer" style="justify-content: space-between">
+                <div>
+                    <input class="form-check-input" type="checkbox" @bind="_brand.IsClick" id="defaultCheck1"/>
+                    <label class="form-check-label" for="defaultCheck1"> فعال </label>
+                </div>
                 <div>
                     <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
                         بستن
                     </button>
                     <button type="button" class="btn btn-primary" @onclick="InsertBrand">ثبت</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalCenterEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitleEdit">ویرایش برند</h5>
+                <button
+                    id="modal-add-brand"
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nameWithTitle" class="form-label">عنوان *</label>
+                        <input
+                            type="text"
+                            id="nameWithTitle"
+                            class="form-control"
+                            placeholder="عنوان برند"
+                            @bind="_brandEdit.Title"
+                            required="required"/>
+                    </div>
+                </div>
+                <div class="row g-2 d-flex justify-content-between">
+                    <div class="col mb-0">
+                        <label for="formFile" class="form-label">لوگو *</label>
+                        <MudFileUpload T="IBrowserFile" FilesChanged="UploadFilesEdite">
+                            <ActivatorContent>
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Primary"
+                                           StartIcon="@Icons.Material.Filled.CloudUpload">
+                                    اپلود عکس
+                                </MudButton>
+                            </ActivatorContent>
+                        </MudFileUpload>
+                    </div>
+                    @if (!string.IsNullOrEmpty(_logoPreview))
+                    {
+                        <div class="col mt-3 d-flex justify-content-center">
+                            <img src="@_logoPreview" alt="لوگو آپلود شده"
+                                 style="max-width: 100px; max-height: 100px;"/>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col mt-3 d-flex justify-content-center">
+                            <img src="http://newdev.parsme.com/Images/Brand/@_brandEdit.LogoUri" alt="لوگو آپلود شده"
+                                 style="max-width: 100px; max-height: 100px;"/>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between">
                 <div>
-                    <input class="form-check-input" type="checkbox" @bind="_brand.IsClick" id="defaultCheck1"/>
+                    <input class="form-check-input" type="checkbox" @bind="_brandEdit.IsClick" id="defaultCheck1"/>
                     <label class="form-check-label" for="defaultCheck1"> فعال </label>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                        بستن
+                    </button>
+                    <button type="button" class="btn btn-primary" @onclick="UpdateBrand">ثبت</button>
                 </div>
             </div>
         </div>
@@ -97,52 +189,62 @@
                 </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                @foreach (var i in _brands)
+                @if (_isLoading)
                 {
                     <tr>
-                        <td class="text-center">
-                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                            <strong>@i.Id</strong>
-                        </td>
-                        <td class="text-center">
-                            @i.Title
-                        </td>
-                        <td class="text-center">
-                            <img width="40" src="https://newdev.parsme.com/Images/Brand/@i.LogoUri"/>
-                        </td>
-                        <td class="text-center">
-                            @if (i.IsClick)
-                            {
-                                <span class="badge bg-label-success me-1">فعال</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-label-danger me-1">غیر فعال</span>
-                            }
-                        </td>
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i
-                                            class="bx bx-edit-alt me-1"></i>
-                                        ویرایش</a
-                                    >
-                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>
-                                        حذف</a
-                                    >
-                                </div>
-                            </div>
+                        <td colspan="5" class="text-center">
+                            <MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+                            <div>در حال بارگذاری...</div>
                         </td>
                     </tr>
                 }
-
+                else
+                {
+                    @foreach (var i in _brands)
+                    {
+                        <tr>
+                            <td class="text-center"><strong>@i.Id</strong></td>
+                            <td class="text-center">@i.Title</td>
+                            <td class="text-center">
+                                <img width="40" src="https://newdev.parsme.com/Images/Brand/@i.LogoUri"/>
+                            </td>
+                            <td class="text-center">
+                                @if (i.IsClick)
+                                {
+                                    <span class="badge bg-label-success me-1">فعال</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-label-danger me-1">غیر فعال</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" @onclick="() => EditBrand(i) "
+                                           type="button"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modalCenterEdit"
+                                        ><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                        <a class="dropdown-item" @onclick="() => DeleteBrand(i.Id)"><i
+                                                class="bx bx-trash me-1"></i> حذف</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
                 </tbody>
+
             </table>
+            <div class="d-flex flex-column align-center">
+                <MudPagination ShowFirstButton="false" ShowLastButton="false" Count="@_filter.TotalPage"
+                               SelectedChanged="OnPageChanged" Class="mt-4"/>
+            </div>
         </div>
     </div>
 
