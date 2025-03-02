@@ -57,7 +57,7 @@ public partial class ManageBrandTag
             query = query.Where(x => x.Title.Contains(_filter.Search));
         }
 
-        int totalRecords = await query.CountAsync();
+        var totalRecords = await query.CountAsync();
         _filter.TotalPage = (int)Math.Ceiling((double)totalRecords / _filter.PageSize);
 
         _brands = await query
@@ -74,16 +74,8 @@ public partial class ManageBrandTag
 
     private async void OpenInsertDialog()
     {
-        var dialogRef = await DialogService.ShowAsync<DialogInsertBrandTag>("");
-        var result = await dialogRef.Result;
-
-        if (!result.Canceled)
-        {
-            if ((bool)result.Data)
-            {
-                Snackbar.Add("عملیات با موفقیت انجام شد", Severity.Success);
-            }
-        }
+       _logoPreview=string.Empty;
+       StateHasChanged();
     }
 
     private async Task InsertBrand()
