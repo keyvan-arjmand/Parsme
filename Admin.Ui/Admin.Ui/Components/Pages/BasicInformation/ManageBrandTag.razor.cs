@@ -50,7 +50,7 @@ public partial class ManageBrandTag
         _isLoading = true;
         StateHasChanged();
 
-        var query = _work.GenericRepository<BrandTag>().TableNoTracking.AsNoTracking(); 
+        var query = _work.GenericRepository<BrandTag>().TableNoTracking.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(_filter.Search))
         {
@@ -64,7 +64,7 @@ public partial class ManageBrandTag
             .OrderByDescending(x => x.Id)
             .Skip((_filter.Page - 1) * _filter.PageSize)
             .Take(_filter.PageSize)
-            .AsNoTracking() 
+            .AsNoTracking()
             .ToListAsync();
 
         _isLoading = false;
@@ -74,8 +74,8 @@ public partial class ManageBrandTag
 
     private async void OpenInsertDialog()
     {
-       _logoPreview=string.Empty;
-       StateHasChanged();
+        _logoPreview = string.Empty;
+        StateHasChanged();
     }
 
     private async Task InsertBrand()
@@ -96,13 +96,11 @@ public partial class ManageBrandTag
     {
         Uploader up = new Uploader(_env);
         var image = await up.UploadBrowserFile(_brandEdit.LogoUriFile, "brand");
-        await _work.GenericRepository<BrandTag>().UpdateAsync(new BrandTag
-        {
-            IsClick = _brandEdit.IsClick,
-            LogoUri = !string.IsNullOrEmpty(image) ? image : _brandEdit.LogoUri,
-            Title = _brandEdit.Title,
-            Id = _brandEdit.Id,
-        }, CancellationToken.None);
+        var entity = await _work.GenericRepository<BrandTag>().Table.FirstOrDefaultAsync(x => x.Id == _brandEdit.Id);
+        entity.Title = _brandEdit.Title;
+        entity.LogoUri = string.IsNullOrWhiteSpace(image) ? entity.LogoUri : image;
+        entity.IsClick = _brandEdit.IsClick;
+        await _work.GenericRepository<BrandTag>().UpdateAsync(entity, CancellationToken.None);
         await JSRuntime.InvokeVoidAsync("closeModal", "modalCenterEdit");
         await JSRuntime.InvokeVoidAsync("showToast");
         await LoadData();
