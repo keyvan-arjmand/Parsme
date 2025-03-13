@@ -1,0 +1,685 @@
+﻿@page "/InsertProduct"
+@using Domain.Entity.Product
+@using Color = MudBlazor.Color
+@rendermode InteractiveServer
+
+<div class="nav-align-top mt-2" style="padding: 15px">
+    <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">محصولات / </span> افزودن کالا
+    </h4>
+    @switch (_steps)
+    {
+        case Steps.Step1:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            اطلاعات
+                                            کلی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                            موجودی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">مشخصات کلی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step2)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step2:
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                            موجودی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            سئو
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">قیمت و موجودی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step3)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step3:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            سئو
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            گالری عکس
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">قیمت و موجودی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step4)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step4:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            گالری عکس
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            جزئیات محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">قیمت و موجودی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step5)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step5:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                       
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                گالری عکس
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                جزئیات محصول
+                                            </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            معرفی محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">قیمت و موجودی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step6)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step6:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                گالری عکس
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                جزئیات محصول
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            معرفی محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">قیمت و موجودی</h5>
+                            <small class="text-muted float-end">Default label</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
+                                    <input type="text" class="form-control" id="basic-default-fullname"
+                                           placeholder="John Doe"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-company">Company</label>
+                                    <input type="text" class="form-control" id="basic-default-company"
+                                           placeholder="ACME Inc."/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="basic-default-email"
+                                            class="form-control"
+                                            placeholder="john.doe"
+                                            aria-label="john.doe"
+                                            aria-describedby="basic-default-email2"/>
+                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                    </div>
+                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-phone">Phone No</label>
+                                    <input
+                                        type="text"
+                                        id="basic-default-phone"
+                                        class="form-control phone-mask"
+                                        placeholder="658 799 8941"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="basic-default-message">Message</label>
+                                    <textarea
+                                        id="basic-default-message"
+                                        class="form-control"
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
+                                </div>
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step1)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        default:
+                throw new ArgumentOutOfRangeException();
+    }
+</div>
