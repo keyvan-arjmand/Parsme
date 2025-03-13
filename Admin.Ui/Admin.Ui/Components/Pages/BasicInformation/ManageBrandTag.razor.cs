@@ -145,6 +145,7 @@ public partial class ManageBrandTag
     private async Task OnPageChanged(int newPage)
     {
         _filter.Page = newPage;
+        
         await LoadData();
     }
 
