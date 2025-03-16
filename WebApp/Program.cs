@@ -18,7 +18,7 @@ builder.Services.AddSession(option =>
     option.IdleTimeout = TimeSpan.FromHours(3);
     option.IOTimeout = TimeSpan.FromHours(3);
 });
-builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(Program));
 
