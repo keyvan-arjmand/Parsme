@@ -1,7 +1,10 @@
-﻿using Application.Interfaces;
+﻿using Admin.Ui.Models.Dtos;
+using Application.Interfaces;
 using Domain.Entity.Product;
 using Domain.Migrations;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Admin.Ui.Components.Pages.ManageProducts;
 
@@ -10,6 +13,58 @@ public partial class InsertProduct
     [Inject] IUnitOfWork UnitOfWork { get; set; }
     private Product _product { set; get; } = new();
     private Steps _steps { set; get; } = Steps.Step1;
+    private int _selectSubCategoryId { set; get; } = 0;
+    private List<DetailProdAdmin> detailProdAdmins = [];
+    private List<SubCategory> subCategories = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        subCategories = await UnitOfWork.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
+        StateHasChanged();
+    }
+
+    private async Task ChangeSubCategory(ChangeEventArgs e)
+    {
+        detailProdAdmins.Clear();
+        _selectSubCategoryId = Convert.ToInt32(e.Value.ToString());
+        var detail = await UnitOfWork.GenericRepository<CategoryDetail>()
+            .TableNoTracking
+            .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
+            .Include(x => x.Feature)
+            .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == _selectSubCategoryId))
+            .OrderByDescending(x => x.Feature.Priority).ToListAsync();
+        foreach (var i in detail)
+        {
+            if (detailProdAdmins.Any(x => x.FeatureId == i.FeatureId))
+            {
+                var result = detailProdAdmins.FirstOrDefault(x => x.FeatureId == i.FeatureId);
+                result.CategoryDetails.Add(new CategoryDetailDto
+                {
+                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = _selectSubCategoryId,
+                    Id = i.Id
+                });
+            }
+            else
+            {
+                var li = new DetailProdAdmin
+                {
+                    Feature = i.Feature,
+                    FeatureId = i.FeatureId
+                };
+                li.CategoryDetails.Add(new CategoryDetailDto
+                {
+                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
+                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = _selectSubCategoryId,
+                    Id = i.Id
+                });
+                detailProdAdmins.Add(li);
+            }
+        }
+
+        Console.WriteLine(detailProdAdmins.Count);
+        StateHasChanged();
+    }
 
     private async void ChangeStep(Steps step)
     {
@@ -46,4 +101,9 @@ public partial class InsertProduct
         Step5,
         Step6
     }
+    
+    
+    
+    
+    
 }
