@@ -566,42 +566,85 @@
                                 : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="d-flex justify-content-between gap-2 align-items-center">
-                                    <div class="mb-3 w-50">
-                                        <label for="defaultSelect" class="form-label"
-                                               style="font-weight: bold;font-size: 14px">برند</label>
-                                        <select id="defaultSelect" class="form-select">
-                                            <option>Default select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
+                            <form class=""> 
+                                <div style="background-color: #0000000a;border-radius: 7px" class="p-2 mt-2 mb-2">
+                                    <div class="d-flex justify-content-between gap-2 align-items-center" >
+                                        <div class="mb-3 w-50">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">برند</label>
+                                            <select id="defaultSelect" class="form-select">
+                                                <option>Default select</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 w-50">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">دسته بندی
+                                            </label>
+                                            <select id="defaultSelect" class="form-select" @onchange="ChangeSubCategory">
+                                                @foreach (var i in subCategories)
+                                                {
+                                                    if (i.Id == _selectSubCategoryId)
+                                                    {
+                                                        <option value="@i.Id" selected="selected">@i.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@i.Id">@i.Name</option>
+                                                    }
+                                                }
+                                                <option selected="selected" value="0">انتخاب</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="mb-3 w-50">
-                                        <label for="defaultSelect" class="form-label"
-                                               style="font-weight: bold;font-size: 14px">دسته بندی
-                                        </label>
-                                        <select id="defaultSelect" class="form-select">
-                                            <option>Default select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
+                                    <div>
+                                        <div class="mb-3 ">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">زیر گروه کالا
+                                            </label>
+                                            <select id="defaultSelect" class="form-select">
+                                                <option>Default select</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="mb-3 ">
-                                        <label for="defaultSelect" class="form-label"
-                                               style="font-weight: bold;font-size: 14px">زیر گروه کالا
-                                        </label>
-                                        <select id="defaultSelect" class="form-select">
-                                            <option>Default select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
+                              
+                                <div class="">
+                                    @{
+                                        if (detailProdAdmins.Any())
+                                        {
+                                            <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-2">ویژگی های محصول</h6>
+                                            foreach (var i in detailProdAdmins)
+                                            {
+                                                <div class="p-2 mt-2 mb-2" style="background-color: #0000000a;border-radius: 7px">
+                                                    
+                                                    <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-1">@i.Feature.Title</h6>
+                                                    <div class="d-flex justify-content-start align-items-center flex-wrap ">
+                                                        @foreach (var cd in i.CategoryDetails)
+                                                        {
+                                                            <div class="w-100 p-3">
+                                                                <label for="defaultFormControlInput"
+                                                                       class="form-label" style="font-weight: 600;font-size: 12px">@cd.Title</label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    id="defaultFormControlInput"
+                                                                    placeholder="@cd.Title"
+                                                                    aria-describedby="defaultFormControlHelp"/>
+
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            }
+                                        }
+                                    }
                                 </div>
                                 <a class="btn btn-primary" style="color: white"
                                    @onclick="() => ChangeStep(Steps.Step6)">
@@ -701,6 +744,7 @@
                         </div>
                         <div class="card-body">
                             <form>
+
                                 <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step1)">
                                     ثبت
                                 </a>
@@ -712,6 +756,8 @@
             </div>
             break;
         default:
-                throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();
     }
 </div>
+
+
