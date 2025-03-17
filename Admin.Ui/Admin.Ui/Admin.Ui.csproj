@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Components\Shared\Components\" />
       <Folder Include="wwwroot\Images\brand\" />
     </ItemGroup>
 
