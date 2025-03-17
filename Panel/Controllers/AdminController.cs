@@ -3589,8 +3589,8 @@ public class AdminController : Controller
         if (User.Identity.IsAuthenticated)
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
         }
-        else return RedirectToAction("Index", "Home");
+
+        return RedirectToAction("Index", "Home");
     }
 }
