@@ -2,7 +2,6 @@
 @using Domain.Entity.Product
 @using Color = MudBlazor.Color
 @rendermode InteractiveServer
-
 <div class="nav-align-top mt-2" style="padding: 15px">
     <div class="d-flex justify-content-between">
         <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">محصولات / </span> افزودن
@@ -46,7 +45,8 @@
                         </div>
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0" style="font-weight: bold;font-size: 18px">مشخصات کلی</h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body p-4">
                             <form>
@@ -57,7 +57,8 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">عنوان</label>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">عنوان</label>
 
                                     </div>
                                     <div class="form-floating w-50">
@@ -66,27 +67,8 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">عنوان فارسی</label>
-
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-between gap-3 mb-3">
-                                    <div class="form-floating w-50">
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInput"
-                                            aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">معرفی</label>
-
-                                    </div>
-                                    <div class="form-floating w-50">
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="floatingInput"
-                                            aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">کد محصول</label>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">عنوان
+                                            فارسی</label>
 
                                     </div>
                                 </div>
@@ -97,7 +79,8 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">تگ ها</label>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">معرفی</label>
 
                                     </div>
                                     <div class="form-floating w-50">
@@ -106,7 +89,30 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">هـدایا</label>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">کد
+                                            محصول</label>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">تگ
+                                            ها</label>
+
+                                    </div>
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">هـدایا</label>
 
                                     </div>
                                 </div>
@@ -118,7 +124,8 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط قوت</label>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط
+                                            قوت</label>
 
                                     </div>
                                     <div class="form-floating w-50">
@@ -127,7 +134,8 @@
                                             class="form-control"
                                             id="floatingInput"
                                             aria-describedby="floatingInputHelp"/>
-                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط ضعف</label>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط
+                                            ضعف</label>
 
                                     </div>
                                 </div>
@@ -185,14 +193,16 @@
                         </div>
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0" style="font-weight: bold;font-size: 18px">قیمت و موجودی</h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
 
                         <div class="card-body">
                             <form>
                                 <div class="d-flex justify-content-start gap-3 ">
                                     <div class="mb-3 w-50">
-                                        <label for="defaultSelect" class="form-label" style="font-weight: bold;font-size: 14px">وضعیت کالا</label>
+                                        <label for="defaultSelect" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">وضعیت کالا</label>
                                         <select id="defaultSelect" class="form-select">
                                             <option>Default select</option>
                                             <option value="1">One</option>
@@ -200,8 +210,9 @@
                                             <option value="3">Three</option>
                                         </select>
                                     </div>
-                                    <div class="w-25">
-                                        <label for="defaultFormControlInput" class="form-label" style="font-weight: bold;font-size: 14px">
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">
                                             مبلغ تخفیف</label>
                                         <input
                                             type="text"
@@ -212,8 +223,12 @@
                                         />
 
                                     </div>
-                                    <div class="w-25">
-                                        <label for="defaultFormControlInput" class="form-label" style="font-weight: bold;font-size: 14px">درصد سود</label>
+
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center gap-5 pt-3 pb-3">
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">درصد سود</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -224,19 +239,20 @@
 
                                     </div>
 
-                                </div>
-                                <div class="d-flex justify-content-start gap-5 pt-3 pb-3">
                                     <div class="form-check mt-3">
                                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
-                                        <label class="form-check-label" for="defaultCheck1" style="font-weight: bold;font-size: 14px"> پیشنهاد لحظه ای </label>
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> پیشنهاد لحظه ای </label>
                                     </div>
                                     <div class="form-check mt-3">
                                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
-                                        <label class="form-check-label" for="defaultCheck1" style="font-weight: bold;font-size: 14px"> پیشنهاد ویژه </label>
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> پیشنهاد ویژه </label>
                                     </div>
                                     <div class="form-check mt-3">
                                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
-                                        <label class="form-check-label" for="defaultCheck1" style="font-weight: bold;font-size: 14px"> نمایش در کالای
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> نمایش در کالای
                                             پیشنهادی </label>
                                     </div>
                                 </div>
@@ -303,13 +319,15 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0" style="font-weight: bold;font-size: 18px">سئو
                             </h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body">
                             <form class="p-2">
                                 <div class="d-flex justify-content-between gap-3 mb-2">
                                     <div class="w-50">
-                                        <label for="defaultFormControlInput" class="form-label" style="font-weight: bold;font-size: 14px">عنوان</label>
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">عنوان</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -320,7 +338,8 @@
 
                                     </div>
                                     <div class="w-50">
-                                        <label for="defaultFormControlInput" class="form-label" style="font-weight: bold;font-size: 14px">آدرس متعارف</label>
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">آدرس متعارف</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -333,7 +352,8 @@
                                 </div>
                                 <div class="d-flex justify-content-between pb-2">
                                     <div class="w-100">
-                                        <label for="defaultFormControlInput" class="form-label" style="font-weight: bold;font-size: 14px">توضیحات</label>
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">توضیحات</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -418,52 +438,42 @@
                             </MudTimeline>
                         </div>
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">قیمت و موجودی</h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">گالری عکس</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body pt-2">
+
+                            <h6 style="font-weight: bold;font-size: 16px">عکس شاخص محصول</h6>
                             <form>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
-                                    <input type="text" class="form-control" id="basic-default-fullname"
-                                           placeholder="John Doe"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-company">Company</label>
-                                    <input type="text" class="form-control" id="basic-default-company"
-                                           placeholder="ACME Inc."/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-email">Email</label>
-                                    <div class="input-group input-group-merge">
-                                        <input
-                                            type="text"
-                                            id="basic-default-email"
-                                            class="form-control"
-                                            placeholder="john.doe"
-                                            aria-label="john.doe"
-                                            aria-describedby="basic-default-email2"/>
-                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="inputGroupFile01"/>
                                     </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                    <div class="input-group justify-content-center">
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-phone">Phone No</label>
-                                    <input
-                                        type="text"
-                                        id="basic-default-phone"
-                                        class="form-control phone-mask"
-                                        placeholder="658 799 8941"/>
+                                <div class="p-2 mt-2">
+
+                                    <MudFileUpload T="IReadOnlyList<IBrowserFile>">
+                                        <ActivatorContent>
+                                            <MudButton Variant="Variant.Filled"
+                                                       Color="Color.Primary"
+                                                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                                                انتخاب عکس گالری
+                                            </MudButton>
+                                        </ActivatorContent>
+                                    </MudFileUpload>
+                                    <div class="d-flex justify-content-start align-items-center gap-3 mt-4 p-1 pb-2">
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-message">Message</label>
-                                    <textarea
-                                        id="basic-default-message"
-                                        class="form-control"
-                                        placeholder="Hi, Do you have a moment to talk Joe?"
-                                    ></textarea>
-                                </div>
-                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step5)">
+                                <a class="btn btn-primary" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step5)">
                                     ثبت
                                 </a>
                             </form>
@@ -551,52 +561,50 @@
                             </MudTimeline>
                         </div>
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">قیمت و موجودی</h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">جزئیات محصول</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body">
                             <form>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
-                                    <input type="text" class="form-control" id="basic-default-fullname"
-                                           placeholder="John Doe"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-company">Company</label>
-                                    <input type="text" class="form-control" id="basic-default-company"
-                                           placeholder="ACME Inc."/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-email">Email</label>
-                                    <div class="input-group input-group-merge">
-                                        <input
-                                            type="text"
-                                            id="basic-default-email"
-                                            class="form-control"
-                                            placeholder="john.doe"
-                                            aria-label="john.doe"
-                                            aria-describedby="basic-default-email2"/>
-                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
+                                <div class="d-flex justify-content-between gap-2 align-items-center">
+                                    <div class="mb-3 w-50">
+                                        <label for="defaultSelect" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">برند</label>
+                                        <select id="defaultSelect" class="form-select">
+                                            <option>Default select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
                                     </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                    <div class="mb-3 w-50">
+                                        <label for="defaultSelect" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">دسته بندی
+                                        </label>
+                                        <select id="defaultSelect" class="form-select">
+                                            <option>Default select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-phone">Phone No</label>
-                                    <input
-                                        type="text"
-                                        id="basic-default-phone"
-                                        class="form-control phone-mask"
-                                        placeholder="658 799 8941"/>
+                                <div>
+                                    <div class="mb-3 ">
+                                        <label for="defaultSelect" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">زیر گروه کالا
+                                        </label>
+                                        <select id="defaultSelect" class="form-select">
+                                            <option>Default select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-message">Message</label>
-                                    <textarea
-                                        id="basic-default-message"
-                                        class="form-control"
-                                        placeholder="Hi, Do you have a moment to talk Joe?"
-                                    ></textarea>
-                                </div>
-                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step6)">
+                                <a class="btn btn-primary" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step6)">
                                     ثبت
                                 </a>
                             </form>
@@ -687,51 +695,12 @@
                             </MudTimeline>
                         </div>
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">قیمت و موجودی</h5>
-                            <small class="text-muted float-end">Default label</small>
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">معرفی محصول</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body">
                             <form>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-fullname">Full Name</label>
-                                    <input type="text" class="form-control" id="basic-default-fullname"
-                                           placeholder="John Doe"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-company">Company</label>
-                                    <input type="text" class="form-control" id="basic-default-company"
-                                           placeholder="ACME Inc."/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-email">Email</label>
-                                    <div class="input-group input-group-merge">
-                                        <input
-                                            type="text"
-                                            id="basic-default-email"
-                                            class="form-control"
-                                            placeholder="john.doe"
-                                            aria-label="john.doe"
-                                            aria-describedby="basic-default-email2"/>
-                                        <span class="input-group-text" id="basic-default-email2">@@example.com</span>
-                                    </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-phone">Phone No</label>
-                                    <input
-                                        type="text"
-                                        id="basic-default-phone"
-                                        class="form-control phone-mask"
-                                        placeholder="658 799 8941"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="basic-default-message">Message</label>
-                                    <textarea
-                                        id="basic-default-message"
-                                        class="form-control"
-                                        placeholder="Hi, Do you have a moment to talk Joe?"
-                                    ></textarea>
-                                </div>
                                 <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step1)">
                                     ثبت
                                 </a>

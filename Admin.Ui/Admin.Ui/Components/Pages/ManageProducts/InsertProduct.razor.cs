@@ -1,10 +1,13 @@
-﻿using Domain.Entity.Product;
+﻿using Application.Interfaces;
+using Domain.Entity.Product;
 using Domain.Migrations;
+using Microsoft.AspNetCore.Components;
 
 namespace Admin.Ui.Components.Pages.ManageProducts;
 
 public partial class InsertProduct
 {
+    [Inject] IUnitOfWork UnitOfWork { get; set; }
     private Product _product { set; get; } = new();
     private Steps _steps { set; get; } = Steps.Step1;
 
@@ -12,6 +15,11 @@ public partial class InsertProduct
     {
         _steps = step;
         StateHasChanged();
+    }
+
+    private async Task CreateProduct()
+    {
+        await UnitOfWork.GenericRepository<Product>().AddAsync(new Product(), CancellationToken.None);
     }
 
     private async void BackPage()
