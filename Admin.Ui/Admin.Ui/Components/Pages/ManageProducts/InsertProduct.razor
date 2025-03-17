@@ -625,7 +625,7 @@
                                                     
                                                     <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-1">@i.Feature.Title</h6>
                                                     <div class="d-flex justify-content-start align-items-center flex-wrap ">
-                                                        @foreach (var cd in i.CategoryDetails)
+                                                        @foreach (var cd in i.CategoryDetails.OrderBy(x=>x.Priority))
                                                         {
                                                             <div class="w-100 p-3">
                                                                 <label for="defaultFormControlInput"
