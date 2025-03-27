@@ -102,6 +102,11 @@ public partial class InsertProduct
         Step6
     }
     
+    private async Task HandleContentChanged(string newContent)
+    {
+        _product.FullDesc = newContent;
+        // عملیات اضافی
+    }
     
     
     

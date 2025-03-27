@@ -1,6 +1,7 @@
 ﻿@page "/InsertProduct"
 @using Domain.Entity.Product
 @using Color = MudBlazor.Color
+@using Admin.Ui.Components.Shared.Components
 @rendermode InteractiveServer
 <div class="nav-align-top mt-2" style="padding: 15px">
     <div class="d-flex justify-content-between">
@@ -14,6 +15,7 @@
             }
         </div>
     </div>
+
     @switch (_steps)
     {
         case Steps.Step1:
@@ -566,9 +568,9 @@
                                 : PM-۱۱۱۴۷۱۶۱۶۴</small>
                         </div>
                         <div class="card-body">
-                            <form class=""> 
+                            <form class="">
                                 <div style="background-color: #0000000a;border-radius: 7px" class="p-2 mt-2 mb-2">
-                                    <div class="d-flex justify-content-between gap-2 align-items-center" >
+                                    <div class="d-flex justify-content-between gap-2 align-items-center">
                                         <div class="mb-3 w-50">
                                             <label for="defaultSelect" class="form-label"
                                                    style="font-weight: bold;font-size: 14px">برند</label>
@@ -583,7 +585,8 @@
                                             <label for="defaultSelect" class="form-label"
                                                    style="font-weight: bold;font-size: 14px">دسته بندی
                                             </label>
-                                            <select id="defaultSelect" class="form-select" @onchange="ChangeSubCategory">
+                                            <select id="defaultSelect" class="form-select"
+                                                    @onchange="ChangeSubCategory">
                                                 @foreach (var i in subCategories)
                                                 {
                                                     if (i.Id == _selectSubCategoryId)
@@ -613,23 +616,28 @@
                                         </div>
                                     </div>
                                 </div>
-                              
+
                                 <div class="">
                                     @{
                                         if (detailProdAdmins.Any())
                                         {
-                                            <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-2">ویژگی های محصول</h6>
+                                            <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-2">ویژگی های
+                                                محصول</h6>
                                             foreach (var i in detailProdAdmins)
                                             {
-                                                <div class="p-2 mt-2 mb-2" style="background-color: #0000000a;border-radius: 7px">
-                                                    
-                                                    <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-1">@i.Feature.Title</h6>
-                                                    <div class="d-flex justify-content-start align-items-center flex-wrap ">
-                                                        @foreach (var cd in i.CategoryDetails.OrderBy(x=>x.Priority))
+                                                <div class="p-2 mt-2 mb-2"
+                                                     style="background-color: #0000000a;border-radius: 7px">
+
+                                                    <h6 style="font-weight: bold;font-size: 16px"
+                                                        class="p-2 m-1">@i.Feature.Title</h6>
+                                                    <div
+                                                        class="d-flex justify-content-start align-items-center flex-wrap ">
+                                                        @foreach (var cd in i.CategoryDetails.OrderBy(x => x.Priority))
                                                         {
                                                             <div class="w-100 p-3">
                                                                 <label for="defaultFormControlInput"
-                                                                       class="form-label" style="font-weight: 600;font-size: 12px">@cd.Title</label>
+                                                                       class="form-label"
+                                                                       style="font-weight: 600;font-size: 12px">@cd.Title</label>
                                                                 <input
                                                                     type="text"
                                                                     class="form-control"
@@ -641,7 +649,6 @@
                                                         }
                                                     </div>
                                                 </div>
-                                                
                                             }
                                         }
                                     }
@@ -744,7 +751,7 @@
                         </div>
                         <div class="card-body">
                             <form>
-
+                                <CkEditor HtmlContent="@_product.FullDesc" HtmlContentChanged="@HandleContentChanged"/>
                                 <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step1)">
                                     ثبت
                                 </a>
@@ -756,7 +763,8 @@
             </div>
             break;
         default:
-            throw new ArgumentOutOfRangeException();
+            <div>خطا در عملیات ثبت محصول</div>
+            break;
     }
 </div>
 
