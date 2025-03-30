@@ -15,6 +15,8 @@ public static class ConfigureServices
         // services.AddScoped<IUserInfoRepository, UserInfoRepository>();
         // services.AddScoped<IStateRepository, StateRepository>();
         // services.AddScoped<ICityRepository, CityRepository>();
+        
+        
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

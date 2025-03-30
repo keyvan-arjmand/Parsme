@@ -98,3 +98,16 @@ h1:focus {
 .mud-timeline-horizontal.mud-timeline-position-bottom::before {
     bottom: 52px !important;
 }
+
+.avatar-xs {
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 1px;
+}
+
+.mud-input > input.mud-input-root-outlined.mud-input-root-adorned-end, div.mud-input-slot.mud-input-root-outlined.mud-input-root-adorned-end {
+    padding: 10px;
+}
+.mud-chip-filled.mud-chip-color-info>.mud-chip-content{
+    min-width: 60px;
+}

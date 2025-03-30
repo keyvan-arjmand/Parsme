@@ -16,9 +16,15 @@ public partial class InsertProduct
     private int _selectSubCategoryId { set; get; } = 0;
     private List<DetailProdAdmin> detailProdAdmins = [];
     private List<SubCategory> subCategories = [];
+    private IEnumerable<int> selectedColors = [];
+    private List<Color> colors = [];
+    private List<Guarantee> guarantees = [];
+    private List<GuaranteeIds> guaranteeIds = [];
 
     protected override async Task OnInitializedAsync()
     {
+        guarantees = await UnitOfWork.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
+        colors = await UnitOfWork.GenericRepository<Color>().TableNoTracking.ToListAsync();
         subCategories = await UnitOfWork.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
         StateHasChanged();
     }
@@ -101,9 +107,48 @@ public partial class InsertProduct
         Step5,
         Step6
     }
-    
-    
-    
-    
-    
+
+    private async Task HandleContentChanged(string newContent)
+    {
+        _product.FullDesc = newContent;
+    }
+
+    private async void OnSelectedValuesChanged(IEnumerable<int>? values)
+    {
+        selectedColors = values.ToList();
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+
+    private async void OnGuValuesChanged(IEnumerable<string>? values)
+    {
+      
+        foreach (var i in values)
+        {
+            var splited = i.Split(",");
+            if (guaranteeIds.Any(x => x.Id == Convert.ToInt32(splited[1])))
+            {
+                guaranteeIds.FirstOrDefault(x => x.Id == Convert.ToInt32(splited[1])).Ids
+                    .Add(Convert.ToInt32(splited[0]));
+            }
+            else
+            {
+                guaranteeIds.Add(new GuaranteeIds
+                {
+                    Id = Convert.ToInt32(splited[1]),
+                    Ids = [Convert.ToInt32(splited[0])]
+                });
+            }
+        }
+
+        Console.WriteLine(JsonConvert.SerializeObject(guaranteeIds));
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+
+    private class GuaranteeIds
+    {
+        public int Id { get; set; }
+        public List<int> Ids { get; set; }
+    }
 }
