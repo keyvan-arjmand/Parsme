@@ -13,9 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddSession(option =>
-{
-    option.IdleTimeout = TimeSpan.FromHours(3);
+builder.Services.AddSession(option => { option.IdleTimeout = TimeSpan.FromHours(3);
     option.IOTimeout = TimeSpan.FromHours(3);
 });
 builder.Services.AddApplicationServices();
@@ -34,6 +32,7 @@ builder.Services.AddIdentity<User, Role>(option =>
         option.Password.RequiredLength = 4;
         option.SignIn.RequireConfirmedPhoneNumber = false;
         option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(3);
+        
     })
     .AddUserManager<UserManager<User>>()
     .AddEntityFrameworkStores<AppDbContext>();
@@ -54,7 +53,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Admin/AccessDenied";
     options.Cookie.Name = "WebAppIdentityCooclie";
-    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    options.ExpireTimeSpan = TimeSpan.FromHours(2); 
     options.LoginPath = "/Admin/Login";
     options.SlidingExpiration = true;
 });
@@ -70,12 +69,6 @@ builder.Services.AddQuartz(q =>
         .WithSimpleSchedule(x => x
             .WithIntervalInHours(6)
             .RepeatForever()));
-    q.ScheduleJob<CounterProduct>(trigger => trigger
-        .WithIdentity("MyJobTrigger1")
-        .StartNow()
-        .WithSimpleSchedule(x => x
-            .WithIntervalInSeconds(30)
-            .RepeatForever()));
 });
 
 // Add Quartz Hosted Service
@@ -85,11 +78,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+ if (!app.Environment.IsDevelopment())
+ {
+     app.UseExceptionHandler("/Home/Error");
+     app.UseHsts();
+ }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
