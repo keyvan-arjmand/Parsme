@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+        <PackageReference Include="System.IO" Version="4.3.0" />
+        <PackageReference Include="System.Collections" Version="4.3.0" />
+        <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+        <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+        <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+        <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MudBlazor" Version="8.3.0" />
+        <ProjectReference Include="..\..\Application\Application.csproj" />
+        <ProjectReference Include="..\..\Domain\Domain.csproj" />
+        <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Admin.Ui.Client\Admin.Ui.Client.csproj"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Shared\Components\" />
+      <Folder Include="wwwroot\Images\brand\" />
+    </ItemGroup>
+
+</Project>

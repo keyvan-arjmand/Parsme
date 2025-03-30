@@ -92,6 +92,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
         // modelBuilder.Entity<City>().HasQueryFilter(x => !x.IsDelete);
 
        modelBuilder.Entity<Brand>().HasQueryFilter(x => !x.IsDelete);
+       modelBuilder.Entity<BrandTag>().HasQueryFilter(x => !x.IsDelete);
        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDelete );
        modelBuilder.Entity<CategoryDetail>().HasQueryFilter(x => !x.IsDelete );
        modelBuilder.Entity<MainCategory>().HasQueryFilter(x => !x.IsDelete);

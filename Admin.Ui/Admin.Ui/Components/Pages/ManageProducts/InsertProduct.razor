@@ -1,0 +1,763 @@
+﻿@page "/InsertProduct"
+@using Domain.Entity.Product
+@using Color = MudBlazor.Color
+@rendermode InteractiveServer
+<div class="nav-align-top mt-2" style="padding: 15px">
+    <div class="d-flex justify-content-between">
+        <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">محصولات / </span> افزودن
+            کالا
+        </h4>
+        <div class="p-2" style="margin-left: 2%">
+            @if (_steps != Steps.Step1)
+            {
+                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="BackPage"/>
+            }
+        </div>
+    </div>
+    @switch (_steps)
+    {
+        case Steps.Step1:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            اطلاعات
+                                            کلی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                            موجودی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">مشخصات کلی</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+                        <div class="card-body p-4">
+                            <form>
+                                <div class="d-flex justify-content-between gap-3  mb-3">
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">عنوان</label>
+
+                                    </div>
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">عنوان
+                                            فارسی</label>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">معرفی</label>
+
+                                    </div>
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">کد
+                                            محصول</label>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">تگ
+                                            ها</label>
+
+                                    </div>
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput"
+                                               style="font-weight: bold;font-size: 14px">هـدایا</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between gap-3 mb-3">
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط
+                                            قوت</label>
+
+                                    </div>
+                                    <div class="form-floating w-50">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="floatingInput"
+                                            aria-describedby="floatingInputHelp"/>
+                                        <label for="floatingInput" style="font-weight: bold;font-size: 14px">نقاط
+                                            ضعف</label>
+
+                                    </div>
+                                </div>
+
+                                <a class="btn btn-primary " style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step2)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step2:
+
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                            موجودی
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            سئو
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">قیمت و موجودی</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+
+                        <div class="card-body">
+                            <form>
+                                <div class="d-flex justify-content-start gap-3 ">
+                                    <div class="mb-3 w-50">
+                                        <label for="defaultSelect" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">وضعیت کالا</label>
+                                        <select id="defaultSelect" class="form-select">
+                                            <option>Default select</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">
+                                            مبلغ تخفیف</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="defaultFormControlInput"
+                                            placeholder=" مبلغ تخفیف"
+                                            aria-describedby="defaultFormControlHelp"
+                                        />
+
+                                    </div>
+
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center gap-5 pt-3 pb-3">
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">درصد سود</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="defaultFormControlInput"
+                                            placeholder="درصد سود"
+                                            aria-describedby="defaultFormControlHelp"
+                                        />
+
+                                    </div>
+
+                                    <div class="form-check mt-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> پیشنهاد لحظه ای </label>
+                                    </div>
+                                    <div class="form-check mt-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> پیشنهاد ویژه </label>
+                                    </div>
+                                    <div class="form-check mt-3">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
+                                        <label class="form-check-label" for="defaultCheck1"
+                                               style="font-weight: bold;font-size: 14px"> نمایش در کالای
+                                            پیشنهادی </label>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step3)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step3:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            سئو
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            گالری عکس
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">سئو
+                            </h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+                        <div class="card-body">
+                            <form class="p-2">
+                                <div class="d-flex justify-content-between gap-3 mb-2">
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">عنوان</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="defaultFormControlInput"
+                                            placeholder="عنوان"
+                                            aria-describedby="defaultFormControlHelp"
+                                        />
+
+                                    </div>
+                                    <div class="w-50">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">آدرس متعارف</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="defaultFormControlInput"
+                                            placeholder="توضیحات"
+                                            aria-describedby="defaultFormControlHelp"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between pb-2">
+                                    <div class="w-100">
+                                        <label for="defaultFormControlInput" class="form-label"
+                                               style="font-weight: bold;font-size: 14px">توضیحات</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="defaultFormControlInput"
+                                            placeholder="توضیحات"
+                                            aria-describedby="defaultFormControlHelp"
+                                        />
+
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary mt-2 pt-2 pb-2" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step4)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step4:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            گالری عکس
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            جزئیات محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">گالری عکس</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+                        <div class="card-body pt-2">
+
+                            <h6 style="font-weight: bold;font-size: 16px">عکس شاخص محصول</h6>
+                            <form>
+                                <div class="d-flex justify-content-between align-items-center p-2">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="inputGroupFile01"/>
+                                    </div>
+                                    <div class="input-group justify-content-center">
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                    </div>
+                                </div>
+                                <div class="p-2 mt-2">
+
+                                    <MudFileUpload T="IReadOnlyList<IBrowserFile>">
+                                        <ActivatorContent>
+                                            <MudButton Variant="Variant.Filled"
+                                                       Color="Color.Primary"
+                                                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                                                انتخاب عکس گالری
+                                            </MudButton>
+                                        </ActivatorContent>
+                                    </MudFileUpload>
+                                    <div class="d-flex justify-content-start align-items-center gap-3 mt-4 p-1 pb-2">
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                        <img src="Images/Logos/check-mark.png" width="60px"/>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step5)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step5:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                گالری عکس
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            جزئیات محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Default" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            معرفی محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">جزئیات محصول</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+                        <div class="card-body">
+                            <form class=""> 
+                                <div style="background-color: #0000000a;border-radius: 7px" class="p-2 mt-2 mb-2">
+                                    <div class="d-flex justify-content-between gap-2 align-items-center" >
+                                        <div class="mb-3 w-50">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">برند</label>
+                                            <select id="defaultSelect" class="form-select">
+                                                <option>Default select</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 w-50">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">دسته بندی
+                                            </label>
+                                            <select id="defaultSelect" class="form-select" @onchange="ChangeSubCategory">
+                                                @foreach (var i in subCategories)
+                                                {
+                                                    if (i.Id == _selectSubCategoryId)
+                                                    {
+                                                        <option value="@i.Id" selected="selected">@i.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@i.Id">@i.Name</option>
+                                                    }
+                                                }
+                                                <option selected="selected" value="0">انتخاب</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="mb-3 ">
+                                            <label for="defaultSelect" class="form-label"
+                                                   style="font-weight: bold;font-size: 14px">زیر گروه کالا
+                                            </label>
+                                            <select id="defaultSelect" class="form-select">
+                                                <option>Default select</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <div class="">
+                                    @{
+                                        if (detailProdAdmins.Any())
+                                        {
+                                            <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-2">ویژگی های محصول</h6>
+                                            foreach (var i in detailProdAdmins)
+                                            {
+                                                <div class="p-2 mt-2 mb-2" style="background-color: #0000000a;border-radius: 7px">
+                                                    
+                                                    <h6 style="font-weight: bold;font-size: 16px" class="p-2 m-1">@i.Feature.Title</h6>
+                                                    <div class="d-flex justify-content-start align-items-center flex-wrap ">
+                                                        @foreach (var cd in i.CategoryDetails)
+                                                        {
+                                                            <div class="w-100 p-3">
+                                                                <label for="defaultFormControlInput"
+                                                                       class="form-label" style="font-weight: 600;font-size: 12px">@cd.Title</label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    id="defaultFormControlInput"
+                                                                    placeholder="@cd.Title"
+                                                                    aria-describedby="defaultFormControlHelp"/>
+
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            }
+                                        }
+                                    }
+                                </div>
+                                <a class="btn btn-primary" style="color: white"
+                                   @onclick="() => ChangeStep(Steps.Step6)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        case Steps.Step6:
+            <div class="row">
+                <div class="col-xl">
+                    <div class="card mb-4">
+                        <div class="px-4 py-2 d-flex justify-content-start align-items-center">
+                            <MudTimeline Class="w-100" TimelineOrientation="TimelineOrientation.Horizontal"
+                                         TimelinePosition="TimelinePosition.Bottom" Reverse="false">
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText
+                                                Color="Color.Dark"
+                                                Align="Align.Center"
+                                                Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;"
+                                            >
+                                                اطلاعات کلی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">قیمت و
+                                                موجودی
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                سئو
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                گالری عکس
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Success" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <div class="d-flex justify-content-center gap-2 align-items-center">
+                                            <MudText Color="Color.Dark" Align="Align.Center"
+                                                     Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                                جزئیات محصول
+                                            </MudText>
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"/>
+                                        </div>
+
+                                    </ItemContent>
+                                </MudTimelineItem>
+                                <MudTimelineItem Color="Color.Info" Variant="Variant.Outlined" Size="Size.Medium">
+                                    <ItemContent>
+                                        <MudText Color="Color.Dark" Align="Align.Center"
+                                                 Style="text-wrap: wrap; font-weight: 800; line-height: 1.5;">
+                                            معرفی محصول
+                                        </MudText>
+                                    </ItemContent>
+                                </MudTimelineItem>
+                            </MudTimeline>
+                        </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="font-weight: bold;font-size: 18px">معرفی محصول</h5>
+                            <small class="text-muted float-end" style="font-weight: bold;font-size: 14px">اخرین کد کالا
+                                : PM-۱۱۱۴۷۱۶۱۶۴</small>
+                        </div>
+                        <div class="card-body">
+                            <form>
+
+                                <a class="btn btn-primary" @onclick="() => ChangeStep(Steps.Step1)">
+                                    ثبت
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+</div>
+
+

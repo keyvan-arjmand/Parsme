@@ -1,0 +1,65 @@
+﻿@page "/ManageColors"
+@using Application.Interfaces
+@using Domain.Entity.Product
+@using Microsoft.EntityFrameworkCore
+<PageTitle>مدیریت رنگ </PageTitle>
+
+<div style="padding: 15px">
+    <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">اطلاعات پایه /</span>رنگ ها
+    </h4>
+    <div class="card">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover" style="direction: rtl">
+                <thead>
+                <tr>
+                    <th>شماره</th>
+                    <th>عنوان</th>
+                    <th>کد</th>
+                    <th>رنگ</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                @foreach (var i in _colors)
+                {
+                    <tr>
+                        <td>
+                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                            <strong>@i.Id</strong>
+                        </td>
+                        <td>
+                            @i.Title
+                        </td>
+                        <td>
+                            @i.ColorCode
+                        </td>
+                        <td>
+                            <div style="padding: 10px;border-radius: 50%;background-color: @i.ColorCode;width: 1px"></div>
+
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                        data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="javascript:void(0);"><i
+                                                                                            class="bx bx-edit-alt me-1"></i>
+                                        ویرایش</a
+                                    >
+                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i>
+                                        حذف</a
+                                    >
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
