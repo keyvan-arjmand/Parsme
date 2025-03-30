@@ -2,7 +2,12 @@
 @using Domain.Entity.Product
 @using Color = MudBlazor.Color
 @using Admin.Ui.Components.Shared.Components
+@using Application.Common.Utilities
+@using Domain.Enums
+
 @rendermode InteractiveServer
+<MudPopoverProvider/>
+
 <div class="nav-align-top mt-2" style="padding: 15px">
     <div class="d-flex justify-content-between">
         <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">محصولات / </span> افزودن
@@ -206,10 +211,10 @@
                                         <label for="defaultSelect" class="form-label"
                                                style="font-weight: bold;font-size: 14px">وضعیت کالا</label>
                                         <select id="defaultSelect" class="form-select">
-                                            <option>Default select</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            @foreach (var status in Enum.GetValues(typeof(ProductStatus)).Cast<ProductStatus>())
+                                            {
+                                                <option value="@((int)status)">@status.ToDisplay()</option>
+                                            }
                                         </select>
                                     </div>
                                     <div class="w-50">
@@ -258,6 +263,58 @@
                                             پیشنهادی </label>
                                     </div>
                                 </div>
+                                @if (colors.Any())
+                                {
+                                    <div class="d-flex justify-content-start align-items-center gap-5 pt-3 pb-3">
+                                        <MudSelect Variant="Variant.Outlined"
+                                                   T="int" MultiSelection="true"
+                                                   SelectedValuesChanged="OnSelectedValuesChanged"
+                                                   bind-SelectedValues="selectedColors"
+                                                   ToStringFunc="@(id => colors.FirstOrDefault(c => c.Id == id)?.Title ?? "Unknown")">
+
+                                            @foreach (var i in colors)
+                                            {
+                                                <MudSelectItem T="int" Value="@i.Id">@i.Title</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach (var id in selectedColors)
+                                            {
+                                                var color = colors.FirstOrDefault(c => c.Id == id);
+                                                if (color != null)
+                                                {
+                                                    <MudChip T="string" Color="Color.Primary"
+                                                             Style="min-width: 60px">@color.Title</MudChip>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (selectedColors.Any())
+                                {
+                                    foreach (var i in colors)
+                                    {
+                                        @if (selectedColors.Any(x => i.Id == x))
+                                        {
+                                            var color = colors.FirstOrDefault(x => x.Id == i.Id);
+                                            <div
+                                                class="d-flex justify-content-start align-items-center gap-5 pt-3 pb-3">
+                                                <MudChip Size="Size.Large" T="string"
+                                                         Color="Color.Info">@color.Title</MudChip>
+                                                <MudSelect T="string" MultiSelection="true"
+                                                           SelectedValuesChanged="OnGuValuesChanged"
+                                                           ToStringFunc="@(id => guarantees.FirstOrDefault(c => c.Id == Convert.ToInt32(id.Split(",")[0]))?.Title ?? "Unknown")">
+                                                    @foreach (var x in guarantees)
+                                                    {
+                                                        var a = x.Id.ToString() + ',' + color.Id.ToString();
+                                                        <MudSelectItem T="string" Value="a">@x.Title</MudSelectItem>
+                                                    }
+                                                </MudSelect>
+                                            </div>
+                                        }
+                                    }
+                                }
                                 <a class="btn btn-primary" style="color: white"
                                    @onclick="() => ChangeStep(Steps.Step3)">
                                     ثبت
