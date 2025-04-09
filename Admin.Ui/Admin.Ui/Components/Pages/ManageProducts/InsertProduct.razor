@@ -7,7 +7,9 @@
 
 @rendermode InteractiveServer
 <MudPopoverProvider/>
-
+<HeadContent>
+    <meta name="mioooooooooooooooooooooooooooooooooooooooooooooooooooooooooo" content="Some Value"/>
+</HeadContent>
 <div class="nav-align-top mt-2" style="padding: 15px">
     <div class="d-flex justify-content-between">
         <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">محصولات / </span> افزودن
@@ -303,6 +305,7 @@
                                                 <MudChip Size="Size.Large" T="string"
                                                          Color="Color.Info">@color.Title</MudChip>
                                                 <MudSelect T="string" MultiSelection="true"
+                                                           Variant="Variant.Outlined"
                                                            SelectedValuesChanged="OnGuValuesChanged"
                                                            ToStringFunc="@(id => guarantees.FirstOrDefault(c => c.Id == Convert.ToInt32(id.Split(",")[0]))?.Title ?? "Unknown")">
                                                     @foreach (var x in guarantees)
@@ -632,10 +635,11 @@
                                             <label for="defaultSelect" class="form-label"
                                                    style="font-weight: bold;font-size: 14px">برند</label>
                                             <select id="defaultSelect" class="form-select">
-                                                <option>Default select</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                @foreach (var i in brandTags)
+                                                {
+                                                    <option value="@i.Id">@i.Title</option>
+                                                }
+                                               
                                             </select>
                                         </div>
                                         <div class="mb-3 w-50">
@@ -665,10 +669,11 @@
                                                    style="font-weight: bold;font-size: 14px">زیر گروه کالا
                                             </label>
                                             <select id="defaultSelect" class="form-select">
-                                                <option>Default select</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                @foreach (var i in brands)
+                                                {
+                                                    <option value="@i.Id">@i.Title</option>
+
+                                                }
                                             </select>
                                         </div>
                                     </div>
