@@ -20,9 +20,12 @@ public partial class InsertProduct
     private List<Color> colors = [];
     private List<Guarantee> guarantees = [];
     private List<GuaranteeIds> guaranteeIds = [];
+    private List<Brand> brands = [];
+    private List<BrandTag> brandTags = [];
 
     protected override async Task OnInitializedAsync()
     {
+        brandTags = await UnitOfWork.GenericRepository<BrandTag>().TableNoTracking.ToListAsync();
         guarantees = await UnitOfWork.GenericRepository<Guarantee>().TableNoTracking.ToListAsync();
         colors = await UnitOfWork.GenericRepository<Color>().TableNoTracking.ToListAsync();
         subCategories = await UnitOfWork.GenericRepository<SubCategory>().TableNoTracking.ToListAsync();
@@ -35,7 +38,9 @@ public partial class InsertProduct
         _selectSubCategoryId = Convert.ToInt32(e.Value.ToString());
         var detail = await UnitOfWork.GenericRepository<CategoryDetail>()
             .TableNoTracking
-            .Include(x => x.SubCategoryDetails).ThenInclude(x => x.SubCategory).ThenInclude(x => x.Category)
+            .Include(x => x.SubCategoryDetails)
+            .ThenInclude(x => x.SubCategory)
+            .ThenInclude(x => x.Category)
             .Include(x => x.Feature)
             .Where(x => x.SubCategoryDetails.Any(q => q.SubCategoryId == _selectSubCategoryId))
             .OrderByDescending(x => x.Feature.Priority).ToListAsync();
@@ -46,8 +51,13 @@ public partial class InsertProduct
                 var result = detailProdAdmins.FirstOrDefault(x => x.FeatureId == i.FeatureId);
                 result.CategoryDetails.Add(new CategoryDetailDto
                 {
-                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
-                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = _selectSubCategoryId,
+                    Option = i.Option,
+                    DataType = (int)i.DataType,
+                    Priority = i.Priority,
+                    Title = i.Title,
+                    FeatureId = i.FeatureId,
+                    ShowInSearch = i.ShowInSearch,
+                    SubCategoryId = _selectSubCategoryId,
                     Id = i.Id
                 });
             }
@@ -60,15 +70,21 @@ public partial class InsertProduct
                 };
                 li.CategoryDetails.Add(new CategoryDetailDto
                 {
-                    Option = i.Option, DataType = (int)i.DataType, Priority = i.Priority, Title = i.Title,
-                    FeatureId = i.FeatureId, ShowInSearch = i.ShowInSearch, SubCategoryId = _selectSubCategoryId,
+                    Option = i.Option,
+                    DataType = (int)i.DataType,
+                    Priority = i.Priority,
+                    Title = i.Title,
+                    FeatureId = i.FeatureId,
+                    ShowInSearch = i.ShowInSearch,
+                    SubCategoryId = _selectSubCategoryId,
                     Id = i.Id
                 });
                 detailProdAdmins.Add(li);
             }
         }
 
-        Console.WriteLine(detailProdAdmins.Count);
+        brands = await UnitOfWork.GenericRepository<Brand>().TableNoTracking
+            .Where(x => x.SubCategoryId == _selectSubCategoryId).ToListAsync();
         StateHasChanged();
     }
 
@@ -80,7 +96,7 @@ public partial class InsertProduct
 
     private async Task CreateProduct()
     {
-        await UnitOfWork.GenericRepository<Product>().AddAsync(new Product(), CancellationToken.None);
+        // await UnitOfWork.GenericRepository<Product>().AddAsync(new Product(), CancellationToken.None);
     }
 
     private async void BackPage()
@@ -122,7 +138,6 @@ public partial class InsertProduct
 
     private async void OnGuValuesChanged(IEnumerable<string>? values)
     {
-      
         foreach (var i in values)
         {
             var splited = i.Split(",");
