@@ -1,9 +1,170 @@
 ﻿@page "/ManageCategory"
-@using Application.Interfaces
-@using Domain.Entity.Product
-@using Microsoft.EntityFrameworkCore
+@rendermode InteractiveServer
+<PageTitle>مدیریت دسته بندی</PageTitle>
 
-<PageTitle>مدیریت  دسته بندی </PageTitle>
+<div class="bs-toast toast toast-placement-ex m-2 bg-success" style="direction: rtl;" role="alert" aria-live="assertive"
+     aria-atomic="true" data-delay="5000">
+    <div class="toast-header">
+        <div class="me-auto fw-semibold w-100">عملیات موفق</div>
+        <i class="bx bx-bell me-2"></i>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">اطلاعات با موفقیت ثبت شد</div>
+</div>
+
+<div class="modal fade" id="modalMain" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">افزودن دسته بندی مادر</h5>
+                <button
+                    id="modal-add-brand"
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nameWithTitle" class="form-label">عنوان *</label>
+                        <input
+                            type="text"
+                            id="nameWithTitle"
+                            class="form-control"
+                            placeholder="عنوان "
+                            @bind="_mainCat.Name"
+                            required="required"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="justify-content: space-between">
+                <div>
+                    <input class="form-check-input" type="checkbox" @bind="_mainCat.IsActive" id="defaultCheck1"/>
+                    <label class="form-check-label" for="defaultCheck1"> فعال </label>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                        بستن
+                    </button>
+                    <button type="button" class="btn btn-primary" @onclick="InsertMainCategory">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">افزودن دسته بندی </h5>
+                <button
+                    id="modal-add-brand"
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nameWithTitle" class="form-label">عنوان *</label>
+                        <input
+                            type="text"
+                            id="nameWithTitle"
+                            class="form-control"
+                            placeholder="عنوان "
+                            @bind="_cat.Name"
+                            required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">دسته بندی مادر</label>
+                        <select @bind="@_cat.MainCategoryId" class="form-select" id="exampleFormControlSelect1"
+                                aria-label="Default select example">
+                            @foreach (var i in _mainForInsert)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="justify-content: space-between">
+                <div>
+                    <input class="form-check-input" type="checkbox" @bind="_cat.IsActive" id="defaultCheck1"/>
+                    <label class="form-check-label" for="defaultCheck1"> فعال </label>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                        بستن
+                    </button>
+                    <button type="button" class="btn btn-primary" @onclick="InsertCategory">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalSubCat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">افزودن زیر دسته </h5>
+                <button
+                    id="modal-add-brand"
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nameWithTitle" class="form-label">عنوان *</label>
+                        <input
+                            type="text"
+                            id="nameWithTitle"
+                            class="form-control"
+                            placeholder="عنوان "
+                            @bind="_cat.Name"
+                            required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlSelect1" class="form-label">دسته بندی </label>
+                        <select @bind="_cat.MainCategoryId" class="form-select" id="exampleFormControlSelect1"
+                                aria-label="Default select example">
+                            @foreach (var i in _catForInsert)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="justify-content: space-between">
+                <div>
+                    <input class="form-check-input" type="checkbox" @bind="_subCat.IsActive" id="defaultCheck1"/>
+                    <label class="form-check-label" for="defaultCheck1"> فعال </label>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                        بستن
+                    </button>
+                    <button type="button" class="btn btn-primary" @onclick="InsertSubCategory">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div style="padding: 15px">
     <h4 class="fw-bold py-3 mb-4" style="direction: rtl"><span class="text-muted fw-light">اطلاعات پایه /</span> دسته
@@ -47,12 +208,38 @@
                     aria-controls="navs-pills-justified-messages"
                     aria-selected="false"
                 >
-                    <i class="tf-icons bx bx-message-square"></i> زیر ذسته
+                    <i class="tf-icons bx bx-message-square"></i> زیر دسته
                 </button>
             </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <div style="max-width: 230px">
+                        <MudTextField T="string"
+                                      @bind-Value="_mainCatFilter.Search"
+                                      Placeholder="جستجو کنید..."
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      Variant="Variant.Outlined"
+                                      Class="w-64"
+                                      Immediate="false"
+                                      OnAdornmentClick="LoadMainCatData"
+                                      Style="border-radius: 20px;height: 40px"/>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center p-3">
+                        <div class="w-25">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalMain">
+                                افزودن
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead>
@@ -64,50 +251,91 @@
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                        @foreach (var i in _mainCategory)
+                        @if (_MainCatLoading)
                         {
                             <tr>
-                                <td>
-                                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                    <strong>@i.Id</strong>
-                                </td>
-                                <td>
-                                    @i.Name
-                                </td>
-                                <td>
-                                    @if (i.IsActive)
-                                    {
-                                        <span class="badge bg-label-success me-1">فعال</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-label-danger me-1">غیر فعال</span>
-
-                                    }
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                            >
-                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a
-                                            >
-                                        </div>
-                                    </div>
+                                <td colspan="5" class="text-center">
+                                    <MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+                                    <div>در حال بارگذاری...</div>
                                 </td>
                             </tr>
                         }
-
-
+                        else
+                        {
+                            foreach (var i in _mainCategory)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                                        <strong>@i.Id</strong>
+                                    </td>
+                                    <td>
+                                        @i.Name
+                                    </td>
+                                    <td>
+                                        @if (i.IsActive)
+                                        {
+                                            <span class="badge bg-label-success me-1">فعال</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-danger me-1">غیر فعال</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="bx bx-edit-alt me-1"></i> Edit</a
+                                                >
+                                                <a class="dropdown-item" @onclick="()=>DeleteSubCategory(i.Id)"><i
+                                                        class="bx bx-trash me-1"></i> حذف</a
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
                         </tbody>
                     </table>
+                    <div class="d-flex flex-column align-center">
+                        <MudPagination ShowFirstButton="false" ShowLastButton="false" Count="@_mainCatFilter.TotalPage"
+                                       SelectedChanged="OnPageMainChanged" Class="mt-4 mb-4"/>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <div style="max-width: 230px">
+                        <MudTextField T="string"
+                                      @bind-Value="_catFilter.Search"
+                                      Placeholder="جستجو کنید..."
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      Variant="Variant.Outlined"
+                                      Class="w-64"
+                                      Immediate="false"
+                                      OnAdornmentClick="LoadCatData"
+                                      Style="border-radius: 20px;height: 40px"/>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center p-3">
+                        <div class="w-25">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalCat"
+                            >
+                                افزودن
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead>
@@ -120,60 +348,102 @@
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                        @foreach (var i in _category)
+                        @if (_CatLoading)
                         {
                             <tr>
-                                <td>
-                                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                    <strong>@i.Id</strong>
-                                </td>
-                                <td>
-                                    @i.Name
-                                </td>
-                                <td>
-                                    @if (@i.MainCategory == null)
-                                    {
-                                        <div>none</div>
-                                    }
-                                    else
-                                    {
-                                        <div>@i.MainCategory.Name</div>
-                                    }
-                                </td>
-                                <td>
-                                 @if (i.IsActive)
-                                 {
-                                     <span class="badge bg-label-success me-1">فعال</span>
-                                 }
-                                 else
-                                 {
-                                     <span class="badge bg-label-danger me-1">غیر فعال</span>
-
-                                 }
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                            >
-                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a
-                                            >
-                                        </div>
-                                    </div>
+                                <td colspan="5" class="text-center">
+                                    <MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+                                    <div>در حال بارگذاری...</div>
                                 </td>
                             </tr>
                         }
-                      
+                        else
+                        {
+                            foreach (var i in _category)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                                        <strong>@i.Id</strong>
+                                    </td>
+                                    <td>
+                                        @i.Name
+                                    </td>
+                                    <td>
+                                        @if (@i.MainCategory == null)
+                                        {
+                                            <div>none</div>
+                                        }
+                                        else
+                                        {
+                                            <div>@i.MainCategory.Name</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (i.IsActive)
+                                        {
+                                            <span class="badge bg-label-success me-1">فعال</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-danger me-1">غیر فعال</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="bx bx-edit-alt me-1"></i> Edit</a
+                                                >
+                                                <a class="dropdown-item" @onclick="()=>DeleteCategory(i.Id)"><i
+                                                        class="bx bx-trash me-1"></i> حذف</a
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
 
                         </tbody>
                     </table>
+                    <div class="d-flex flex-column align-center">
+                        <MudPagination ShowFirstButton="false" ShowLastButton="false" Count="@_catFilter.TotalPage"
+                                       SelectedChanged="OnPageCatChanged" Class="mt-4 mb-4"/>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="navs-pills-justified-messages" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <div style="max-width: 230px">
+                        <MudTextField T="string"
+                                      @bind-Value="_subCatFilter.Search"
+                                      Placeholder="جستجو کنید..."
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      Variant="Variant.Outlined"
+                                      Class="w-64"
+                                      Immediate="false"
+                                      OnAdornmentClick="LoadSubCatData"
+                                      Style="border-radius: 20px;height: 40px"/>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center p-3">
+                        <div class="w-25">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalSubCat"
+                            >
+                                افزودن
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead>
@@ -186,58 +456,74 @@
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                       @foreach (var i in _subCategory)
-                       {
+                        @if (_SubCatLoading)
+                        {
                             <tr>
-                                <td>
-                                    <i class="fab fa-angular fa-lg text-danger me-3"></i> 
-                                    <strong>@i.Id</strong>
+                                <td colspan="5" class="text-center">
+                                    <MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+                                    <div>در حال بارگذاری...</div>
                                 </td>
-                                <td>
-                                   @i.Name
-                                </td>
-                                <td>
-                                    @if (i.Category == null)
-                                    {
-                                        <div>none</div>
-                                    }
-                                    else
-                                    {
-                                        <div>@i.Category.Name</div>
-                                    }
-                                  
-                                </td>
-                                <td>
-                                    @if (i.IsActive)
-                                    {
-                                        <span class="badge bg-label-success me-1">فعال</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-label-danger me-1">غیر فعال</span>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var i in _subCategory)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                                        <strong>@i.Id</strong>
+                                    </td>
+                                    <td>
+                                        @i.Name
+                                    </td>
+                                    <td>
+                                        @if (i.Category == null)
+                                        {
+                                            <div>none</div>
+                                        }
+                                        else
+                                        {
+                                            <div>@i.Category.Name</div>
+                                        }
 
-                                    }
-                                </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                        >
-                                        <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-trash me-1"></i> Delete</a
-                                        >
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                       }
+                                    </td>
+                                    <td>
+                                        @if (i.IsActive)
+                                        {
+                                            <span class="badge bg-label-success me-1">فعال</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-label-danger me-1">غیر فعال</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="bx bx-edit-alt me-1"></i> Edit</a
+                                                >
+                                                <a class="dropdown-item" @onclick="()=>DeleteMainCategory(i.Id)"><i
+                                                        class="bx bx-trash me-1"></i> حذف</a
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
                         </tbody>
                     </table>
+                    <div class="d-flex flex-column align-center">
+                        <MudPagination ShowFirstButton="false" ShowLastButton="false" Count="@_subCatFilter.TotalPage"
+                                       SelectedChanged="OnPageSubChanged" Class="mt-4 mb-4"/>
+                    </div>
                 </div>
             </div>
         </div>
