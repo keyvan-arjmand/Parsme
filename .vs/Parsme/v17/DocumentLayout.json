@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Tanin\\RiderProjects\\Parsme\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2A45E664-40E2-4C61-9A36-336B3C264F67}|Admin.Ui\\Admin.Ui\\Admin.Ui.csproj|c:\\users\\tanin\\riderprojects\\parsme\\admin.ui\\admin.ui\\components\\pages\\manageproducts\\manageproduct.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2A45E664-40E2-4C61-9A36-336B3C264F67}|Admin.Ui\\Admin.Ui\\Admin.Ui.csproj|solutionrelative:admin.ui\\admin.ui\\components\\pages\\manageproducts\\manageproduct.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ManageProduct.razor",
+              "DocumentMoniker": "C:\\Users\\Tanin\\RiderProjects\\Parsme\\Admin.Ui\\Admin.Ui\\Components\\Pages\\ManageProducts\\ManageProduct.razor",
+              "RelativeDocumentMoniker": "Admin.Ui\\Admin.Ui\\Components\\Pages\\ManageProducts\\ManageProduct.razor",
+              "ToolTip": "C:\\Users\\Tanin\\RiderProjects\\Parsme\\Admin.Ui\\Admin.Ui\\Components\\Pages\\ManageProducts\\ManageProduct.razor",
+              "RelativeToolTip": "Admin.Ui\\Admin.Ui\\Components\\Pages\\ManageProducts\\ManageProduct.razor",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAEwHwAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-30T12:50:00.061Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
